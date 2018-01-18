@@ -17,9 +17,8 @@ npm install
 ```
 You're ready to go!
 ## Usage
-### Devevelopment, use  `npm run dev`.
-
-To run a hot-reloading web server for d
+### Devevelopment
+To run a hot-reloading web server for development use  `npm run dev`.
 Then you can go to http://localhost:8080/ and have fun!
 #### Prod
 For a production-ready build, use `npm run build`.
