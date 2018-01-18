@@ -15,6 +15,11 @@ module.exports = {
                 test: /\.(jsx|js)?$/,
                 exclude: [/node_modules/, /bin/],
                 use: ['react-hot-loader/webpack', 'babel-loader?presets[]=react']
+            },
+            {
+                test: /\.css$/,
+                exclude: [/node_modules/, /bin/],
+                use: ["style-loader", "css-loader"]
             }
         ]
     },
