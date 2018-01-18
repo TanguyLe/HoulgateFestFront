@@ -1,11 +1,11 @@
 # HoulgateFest - Front
-```
 ## Installation
 1. Install node and npm:
 ```shell
 curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo apt-get install -y build-essential
+```
 2. Clone the project in an appropriate directory:
 ```shell
 git clone git@github.com:TanguyLe/HoulgateFest.git
