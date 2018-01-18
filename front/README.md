@@ -1,5 +1,7 @@
 # HoulgateFest - Front
 ## Installation
+Note: For Windows, go to https://nodejs.org/en/ to get node (version >9) and `dir HoulgateFest\front` for step3, the rest is the same.
+
 1. Install node and npm:
 ```shell
 curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
@@ -10,16 +12,16 @@ sudo apt-get install -y build-essential
 ```shell
 git clone git@github.com:TanguyLe/HoulgateFest.git
 ```
-3. Cd to the clone directory and install the modules:
+3. Go to the cloned directory and install the modules:
 ```shell
 cd HoulgateFest/front
 npm install
 ```
 You're ready to go!
 ## Usage
-### Devevelopment, use  `npm run dev`.
+### Devevelopment
+To run a hot-reloading web server for development use  `npm run dev`.
 
-To run a hot-reloading web server for d
 Then you can go to http://localhost:8080/ and have fun!
 #### Prod
 For a production-ready build, use `npm run build`.
