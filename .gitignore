@@ -11,3 +11,7 @@ coverage
 es
 _book
 .idea
+
+package-lock.json
+
+*.min.js
