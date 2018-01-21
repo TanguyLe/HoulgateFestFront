@@ -2,9 +2,9 @@ import React, {Component} from "react";
 
 class Dummy extends Component {
     render() {
-        return (<div>
+        return <div>
             J'ai jamais aimé les abricots de toute façon.
-        </div>)
+        </div>
     }
 }
 
