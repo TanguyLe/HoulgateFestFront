@@ -33,6 +33,7 @@ class logIn extends Component {
             Password:
           </TextBlock>
           <input
+            type={"password"}
             onChange={() =>
               this.setState({
                 email: this.mailInput.value,
@@ -45,7 +46,19 @@ class logIn extends Component {
           />
         </Block>
         <Block>
-          <Button onClick={this.props.onClick}>Send</Button>
+          <Button
+            onClick={() => {
+              alert([
+                "email: ",
+                this.state.email,
+                " password: ",
+                this.state.password
+              ]);
+              this.props.onClick;
+            }}
+          >
+            Send
+          </Button>
           <Button
             onClick={() => {
               this.mailInput.value = "";

@@ -11,7 +11,7 @@ class WrappedUserLogin extends Component {
   render() {
     return;
     <div className="fullHeight fullWidth">
-      AAAAA
+      Test
       <UserLogin name={"test"} email={"test@gmail.com"} />
     </div>;
   }

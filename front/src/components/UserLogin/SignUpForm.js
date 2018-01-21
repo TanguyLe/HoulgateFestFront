@@ -8,6 +8,12 @@ import Wrapper from "../basics/Wrapper";
 class SignUpForm extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      email: "",
+      name: "",
+      password: "",
+      confirm: ""
+    };
   }
   render() {
     return (
@@ -21,7 +27,8 @@ class SignUpForm extends Component {
               this.setState({
                 email: this.mailInput.value,
                 name: this.nameInput.value,
-                password: this.pwInput.value
+                password: this.pwInput.value,
+                confirm: this.pwConfirm.value
               })
             }
             ref={node => {
@@ -38,7 +45,8 @@ class SignUpForm extends Component {
               this.setState({
                 email: this.mailInput.value,
                 name: this.nameInput.value,
-                password: this.pwInput.value
+                password: this.pwInput.value,
+                confirm: this.pwConfirm.value
               })
             }
             ref={node => {
@@ -51,11 +59,13 @@ class SignUpForm extends Component {
             Password:
           </TextBlock>
           <input
+            type={"password"}
             onChange={() =>
               this.setState({
                 email: this.mailInput.value,
                 name: this.nameInput.value,
-                password: this.pwInput.value
+                password: this.pwInput.value,
+                confirm: this.pwConfirm.value
               })
             }
             ref={node => {
@@ -63,18 +73,56 @@ class SignUpForm extends Component {
             }}
           />
         </Block>
+        <Block padding={"small"}>
+          <TextBlock weight={"bold"} padding={"small"}>
+            Confirm password:
+          </TextBlock>
+          <input
+            type={"password"}
+            onChange={() =>
+              this.setState({
+                email: this.mailInput.value,
+                name: this.nameInput.value,
+                password: this.pwInput.value,
+                confirm: this.pwConfirm.value
+              })
+            }
+            ref={node => {
+              this.pwConfirm = node;
+            }}
+          />
+        </Block>
         <Block>
-          <Button onClick={this.props.onClick}>Send</Button>
+          <Button
+            color={this.state.password == this.state.confirm ? "green" : "red"}
+            onClick={() => {
+              alert([
+                "email: ",
+                this.state.email,
+                " name: ",
+                this.state.name,
+                " password: ",
+                this.state.password,
+                " confirm: ",
+                this.state.confirm
+              ]);
+              this.props.onClick;
+            }}
+          >
+            Send
+          </Button>
           <Button
             onClick={() => {
               this.mailInput.value = "";
               this.nameInput.value = "";
               this.pwInput.value = "";
+              this.pwConfirm.value = "";
 
               this.setState({
                 email: "",
                 name: "",
-                password: ""
+                password: "",
+                confirm: ""
               });
             }}
           >
