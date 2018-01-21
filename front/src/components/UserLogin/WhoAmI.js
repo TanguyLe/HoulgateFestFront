@@ -46,7 +46,7 @@ class WhoAmI extends Component {
       );
     }
 
-    return ContentToDisplay;
+    return <ContentToDisplay />;
   }
 }
 
