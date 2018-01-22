@@ -5,16 +5,16 @@ import UserLogin from "../components/UserLogin";
 // and corresponding login / signup functions
 
 class WrappedUserLogin extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return;
-    <div className="fullHeight fullWidth">
-      Test
-      <UserLogin name={"test"} email={"test@gmail.com"} />
-    </div>;
-  }
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		return;
+		<div className="fullHeight fullWidth">
+			Test
+			<UserLogin name={"test"} email={"test@gmail.com"} />
+		</div>;
+	}
 }
 
 export default WrappedUserLogin;

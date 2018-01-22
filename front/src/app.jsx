@@ -6,20 +6,24 @@ import Header from "./components/common/menu.component";
 import UserLogin from "./containers/UserLogin";
 
 class App extends React.Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <div>
-          <Header />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/user-log-in" component={UserLogin} />
-            <Route path="/shotgun" component={Dummy} />
-          </Switch>
-        </div>
-      </BrowserRouter>
-    );
-  }
+	render() {
+		return (
+			<BrowserRouter>
+				<div>
+					<Header />
+					<Switch>
+						<Route exact path="/" component={Home} />
+						<Route
+							exact
+							path="/user-log-in"
+							component={UserLogin}
+						/>
+						<Route path="/shotgun" component={Dummy} />
+					</Switch>
+				</div>
+			</BrowserRouter>
+		);
+	}
 }
 
 export default App;
