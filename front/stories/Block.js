@@ -1,8 +1,8 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 
-import Block from "../";
-import Text from "../../Text";
+import Block from "../src/components/basics/Block";
+import Text from "../src/components/basics/Text";
 
 storiesOf("Basics/Block", module).add("Align", () => (
 	<div style={{ display: "flex" }}>

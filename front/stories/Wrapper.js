@@ -1,8 +1,8 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 
-import TextBlock from "../../TextBlock";
-import Wrapper from "../";
+import TextBlock from "../src/components/basics/TextBlock";
+import Wrapper from "../src/components/basics/Wrapper";
 
 storiesOf("Basics/Wrapper", module)
 	.add("row", () => (

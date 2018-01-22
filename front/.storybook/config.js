@@ -2,7 +2,7 @@ import { configure } from "@storybook/react";
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 // Match __stories__ folders
-const req = require.context("../src/", true, /.*\/__stories__\/.*\.js$/);
+const req = require.context("../stories/", true, /.*.*\.js$/);
 function loadStories() {
 	req.keys().forEach(req);
 }
