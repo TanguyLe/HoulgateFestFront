@@ -49,7 +49,7 @@ class Card extends Component {
   }
   render() {
     return (
-      <CardStyle /*style={{ ...this.props.style }}*/>
+      <CardStyle style={{ ...this.props.style }}>
         {this.props.children}
       </CardStyle>
     );
@@ -62,7 +62,7 @@ class Title extends Component {
   }
   render() {
     return (
-      <TitleStyle /*style={{ ...this.props.style }}*/>
+      <TitleStyle style={{ ...this.props.style }}>
         {this.props.children}
       </TitleStyle>
     );
@@ -75,7 +75,7 @@ class Content extends Component {
   }
   render() {
     return (
-      <ContentStyle /*style={{ ...this.props.style }}*/>
+      <ContentStyle style={{ ...this.props.style }}>
         {this.props.children}
       </ContentStyle>
     );
@@ -88,7 +88,7 @@ class Footer extends Component {
   }
   render() {
     return (
-      <FooterStyle /*style={{ ...this.props.style }}*/>
+      <FooterStyle style={{ ...this.props.style }}>
         {this.props.children}
       </FooterStyle>
     );

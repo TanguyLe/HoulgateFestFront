@@ -11,7 +11,7 @@ class logIn extends Component {
   }
   render() {
     return (
-      <Wrapper column /*style={{ ...this.props.style }}*/>
+      <Wrapper column style={{ ...this.props.style }}>
         <Block padding={"small"}>
           <TextBlock weight={"bold"} padding={"small"}>
             Email:
