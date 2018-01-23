@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Header = () => (
+export const Header = () => (
 	<header>
 		<nav>
 			<ul>
@@ -12,7 +12,7 @@ const Header = () => (
 					<Link to="/shotgun">Shotgun</Link>
 				</li>
 				<li>
-					<Link to="/log-in-user">User</Link>
+					<Link to="/login">User</Link>
 				</li>
 			</ul>
 		</nav>

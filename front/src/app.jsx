@@ -1,10 +1,11 @@
 import React from 'react'
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 
-import Home from './common/home.component'
+import Home from './mainLayout/home.component'
+import Header from './mainLayout/menu.component'
 import Dummy from './shotgun/dummy.component'
-import Header from './common/menu.component'
-import NotFound from './common/notFound.component'
+import NotFound from './mainLayout/notFound.component'
+import UserLogin from "./mainLayout/login/UserLogin"
 
 class App extends React.Component {
     render() {
@@ -13,7 +14,7 @@ class App extends React.Component {
                 <Switch>
                     <Route path="/" exact component={Home}/>
                     <Route path="/shotgun" component={Dummy}/>
-					<Route path="/user-log-in" component={UserLogin}/>
+					<Route path="/login" component={UserLogin}/>
                     <Route component={NotFound}/>
                 </Switch>
             </div>
