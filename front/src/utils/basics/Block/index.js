@@ -20,10 +20,10 @@ const BlockStyle = glamorous.div(props => {
 		padding: props.noPadding ? "0" : padding,
 		marginLeft: isNil(props.align)
 			? "auto"
-			: props.align.toLowerCase() == "left" ? 0 : "auto",
+			: props.align.toLowerCase() === "left" ? 0 : "auto",
 		marginRight: isNil(props.align)
 			? "auto"
-			: props.align.toLowerCase() == "right" ? 0 : "auto"
+			: props.align.toLowerCase() === "right" ? 0 : "auto"
 	};
 });
 
