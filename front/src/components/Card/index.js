@@ -1,7 +1,7 @@
 /* @flow */
 import React from "react";
 import glamorous from "glamorous";
-import { cardShadow } from "../../../style/shadows";
+import { cardShadow } from "../../utils/style/shadows";
 
 const CardStyle = glamorous.div({
 	display: "flex",
@@ -44,9 +44,6 @@ const FooterStyle = glamorous.div({
 });
 
 class Card extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 	render() {
 		return (
 			<CardStyle style={{ ...this.props.style }}>
@@ -57,9 +54,6 @@ class Card extends React.Component {
 }
 
 class Title extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 	render() {
 		return (
 			<TitleStyle style={{ ...this.props.style }}>
@@ -70,9 +64,6 @@ class Title extends React.Component {
 }
 
 class Content extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 	render() {
 		return (
 			<ContentStyle style={{ ...this.props.style }}>
@@ -83,9 +74,6 @@ class Content extends React.Component {
 }
 
 class Footer extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 	render() {
 		return (
 			<FooterStyle style={{ ...this.props.style }}>

@@ -6,10 +6,7 @@ import TextBlock from "../basics/TextBlock";
 import Wrapper from "../basics/Wrapper";
 
 class logIn extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-	render() {
+		render() {
 		return (
 			<Wrapper column style={{ ...this.props.style }}>
 				<Block padding={"small"}>

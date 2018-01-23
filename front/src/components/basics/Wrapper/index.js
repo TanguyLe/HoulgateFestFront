@@ -8,10 +8,7 @@ const WrapperStyle = glamorous.div(props => ({
 }));
 
 class Wrapper extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-	render() {
+		render() {
 		return (
 			<WrapperStyle {...this.props}>{this.props.children}</WrapperStyle>
 		);

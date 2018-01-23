@@ -2,12 +2,12 @@
 import React from "react";
 import glamorous from "glamorous";
 
-import { focusShadow, insetShadow } from "../../../../style/shadows";
+import { focusShadow, insetShadow } from "../../../utils/style/shadows";
 import {
 	lightText,
 	normalText,
 	darkText
-} from "../../../../style/colors/classics";
+} from "../../../utils/style/colors/classics";
 
 const ButtonStyle = glamorous.button(
 	{
@@ -71,10 +71,7 @@ const ButtonStyle = glamorous.button(
 );
 
 class Button extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-	render() {
+		render() {
 		return <ButtonStyle {...this.props}>{this.props.children}</ButtonStyle>;
 	}
 }

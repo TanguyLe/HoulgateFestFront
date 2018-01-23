@@ -10,11 +10,7 @@ import TextBlock from "../basics/TextBlock";
 import Wrapper from "../basics/Wrapper";
 
 class WhoAmI extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
+		render() {
 		let ContentToDisplay;
 		if (isNil(this.props.name) || isNil(this.props.email)) {
 			ContentToDisplay = () => (

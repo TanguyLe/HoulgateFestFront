@@ -6,7 +6,7 @@ import {
 	lightText,
 	normalText,
 	darkText
-} from "../../../../style/colors/classics";
+} from "../../../utils/style/colors/classics";
 
 const TextStyle = glamorous.span({}, props => {
 	let fontSize = isNil(props.size) ? "1em" : props.size;
@@ -62,10 +62,7 @@ const TextStyle = glamorous.span({}, props => {
 });
 
 class Text extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-	render() {
+		render() {
 		return <TextStyle {...this.props}>{this.props.children}</TextStyle>;
 	}
 }

@@ -28,10 +28,7 @@ const BlockStyle = glamorous.div(props => {
 });
 
 class Block extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-	render() {
+		render() {
 		return <BlockStyle {...this.props}>{this.props.children}</BlockStyle>;
 	}
 }
