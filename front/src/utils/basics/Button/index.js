@@ -2,11 +2,11 @@
 import React from "react";
 import glamorous from "glamorous";
 
-import { focusShadow, insetShadow } from "../../style/shadows";
+import { focusShadow, INSET_SHADOW } from "../../style/shadows";
 import {
-	lightText,
-	normalText,
-	darkText
+	LIGHT_TEXT,
+	NORMAL_TEXT,
+	DARK_TEXT
 } from "../../style/colors/classics";
 
 const ButtonStyle = glamorous.button(
@@ -23,7 +23,7 @@ const ButtonStyle = glamorous.button(
 		borderWidth: "0",
 		margin: "0.5em",
 		fontWeight: "700",
-		color: normalText,
+		color: NORMAL_TEXT,
 		":focus": {
 			outline: "none",
 			boxShadow: focusShadow
@@ -31,22 +31,22 @@ const ButtonStyle = glamorous.button(
 		":hover": {
 			boxShadow: "none",
 			backgroundColor: "#cacbcd",
-			color: darkText
+			color: DARK_TEXT
 		},
 		":active": {
 			outline: "none",
-			boxShadow: insetShadow,
+			boxShadow: INSET_SHADOW,
 			transform: "translate(opx,1px)"
 		}
 	},
 	props => {
 		return {
 			borderColor: props.color ? props.color : "black",
-			color: props.color ? props.color : normalText
+			color: props.color ? props.color : NORMAL_TEXT
 		};
 	},
 	props => {
-		if (props.blockButton == true) {
+		if (props.blockButton === true) {
 			return {
 				margin: 0,
 				backgroundColor: "transparent",

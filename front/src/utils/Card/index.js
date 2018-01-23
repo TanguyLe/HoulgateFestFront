@@ -1,14 +1,14 @@
 /* @flow */
 import React from "react";
 import glamorous from "glamorous";
-import { cardShadow } from "../style/shadows";
+import { CARD_SHADOW } from "../style/shadows";
 
 const CardStyle = glamorous.div({
 	display: "flex",
 	flexDirection: "column",
 	background: "white",
 	borderRadius: "5px",
-	boxShadow: cardShadow,
+	boxShadow: CARD_SHADOW,
 	minWidth: 250,
 	maxWidth: 350,
 	flexGrow: 1,
@@ -24,7 +24,6 @@ const TitleStyle = glamorous.div({
 	paddingLeft: "1em",
 	display: "flex",
 	alignItems: "center",
-
 	width: "100%",
 	fontSize: "1.5em"
 });

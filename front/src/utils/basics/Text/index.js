@@ -3,9 +3,9 @@ import React from "react";
 import glamorous from "glamorous";
 import { isNil } from "lodash/fp";
 import {
-	lightText,
-	normalText,
-	darkText
+	LIGHT_TEXT,
+	NORMAL_TEXT,
+	DARK_TEXT
 } from "../../style/colors/classics";
 
 const TextStyle = glamorous.span({}, props => {
@@ -21,15 +21,15 @@ const TextStyle = glamorous.span({}, props => {
 			break;
 	}
 
-	let color = isNil(props.color) ? normalText : props.color;
+	let color = isNil(props.color) ? NORMAL_TEXT : props.color;
 	switch (props.color) {
 		case "light":
 		case "Light":
-			color = lightText;
+			color = LIGHT_TEXT;
 			break;
 		case "Dark":
-		case "Dark":
-			color = darkText;
+		case "dark":
+			color = DARK_TEXT;
 			break;
 	}
 
@@ -38,7 +38,7 @@ const TextStyle = glamorous.span({}, props => {
 		case "Bold":
 		case "bold":
 			if (isNil(props.color)) {
-				color = darkText;
+				color = DARK_TEXT;
 			}
 			fontWeight = 700;
 			break;
