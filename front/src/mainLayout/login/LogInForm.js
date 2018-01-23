@@ -14,15 +14,8 @@ class logIn extends React.Component {
 						Email:
 					</TextBlock>
 					<input
-						onChange={() =>
-							this.setState({
-								email: this.mailInput.value,
-								password: this.pwInput.value
-							})
-						}
-						ref={node => {
-							this.mailInput = node;
-						}}
+						onChange={() => this.setState({email: this.mailInput.value})}
+						ref={node => {this.mailInput = node;}}
 					/>
 				</Block>
 				<Block padding={"small"}>
@@ -31,15 +24,8 @@ class logIn extends React.Component {
 					</TextBlock>
 					<input
 						type={"password"}
-						onChange={() =>
-							this.setState({
-								email: this.mailInput.value,
-								password: this.pwInput.value
-							})
-						}
-						ref={node => {
-							this.pwInput = node;
-						}}
+						onChange={() => this.setState({password: this.pwInput.value})}
+						ref={node => {this.pwInput = node;}}
 					/>
 				</Block>
 				<Block>
@@ -51,7 +37,7 @@ class logIn extends React.Component {
 								" password: ",
 								this.state.password
 							]);
-							this.props.onClick;
+                            /* Call something from props here*/
 						}}
 					>
 						Send

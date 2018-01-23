@@ -23,17 +23,8 @@ class SignUpForm extends React.Component {
 						Email:
 					</TextBlock>
 					<input
-						onChange={() =>
-							this.setState({
-								email: this.mailInput.value,
-								name: this.nameInput.value,
-								password: this.pwInput.value,
-								confirm: this.pwConfirm.value
-							})
-						}
-						ref={node => {
-							this.mailInput = node;
-						}}
+						onChange={() => this.setState({email: this.mailInput.value})}
+						ref={node => {this.mailInput = node}}
 					/>
 				</Block>
 				<Block padding={"small"}>
@@ -41,17 +32,8 @@ class SignUpForm extends React.Component {
 						Name:
 					</TextBlock>
 					<input
-						onChange={() =>
-							this.setState({
-								email: this.mailInput.value,
-								name: this.nameInput.value,
-								password: this.pwInput.value,
-								confirm: this.pwConfirm.value
-							})
-						}
-						ref={node => {
-							this.nameInput = node;
-						}}
+						onChange={() => this.setState({name: this.nameInput.value})}
+						ref={node => {this.nameInput = node}}
 					/>
 				</Block>
 				<Block padding={"small"}>
@@ -60,17 +42,8 @@ class SignUpForm extends React.Component {
 					</TextBlock>
 					<input
 						type={"password"}
-						onChange={() =>
-							this.setState({
-								email: this.mailInput.value,
-								name: this.nameInput.value,
-								password: this.pwInput.value,
-								confirm: this.pwConfirm.value
-							})
-						}
-						ref={node => {
-							this.pwInput = node;
-						}}
+						onChange={() => this.setState({password: this.pwInput.value})}
+						ref={node => {this.pwInput = node}}
 					/>
 				</Block>
 				<Block padding={"small"}>
@@ -79,26 +52,13 @@ class SignUpForm extends React.Component {
 					</TextBlock>
 					<input
 						type={"password"}
-						onChange={() =>
-							this.setState({
-								email: this.mailInput.value,
-								name: this.nameInput.value,
-								password: this.pwInput.value,
-								confirm: this.pwConfirm.value
-							})
-						}
-						ref={node => {
-							this.pwConfirm = node;
-						}}
+						onChange={() => this.setState({confirm: this.pwConfirm.value})}
+						ref={node => {this.pwConfirm = node}}
 					/>
 				</Block>
 				<Block>
 					<Button
-						color={
-							this.state.password == this.state.confirm
-								? "green"
-								: "red"
-						}
+						color={this.state.password === this.state.confirm ? "green" : "red"}
 						onClick={() => {
 							alert([
 								"email: ",
@@ -110,7 +70,7 @@ class SignUpForm extends React.Component {
 								" confirm: ",
 								this.state.confirm
 							]);
-							this.props.onClick;
+							/* Call something from props here*/
 						}}
 					>
 						Send
