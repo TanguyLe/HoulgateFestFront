@@ -1,11 +1,11 @@
 /* @flow */
-import React, { Component } from "react";
+import React from "react";
 import Button from "../basics/Button";
 import Block from "../basics/Block";
 import TextBlock from "../basics/TextBlock";
 import Wrapper from "../basics/Wrapper";
 
-class logIn extends Component {
+class logIn extends React.Component {
 	constructor(props) {
 		super(props);
 	}

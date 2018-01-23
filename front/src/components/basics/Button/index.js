@@ -1,5 +1,5 @@
 /* @flow */
-import React, { Component } from "react";
+import React from "react";
 import glamorous from "glamorous";
 
 import { focusShadow, insetShadow } from "../../../../style/shadows";
@@ -70,7 +70,7 @@ const ButtonStyle = glamorous.button(
 	}
 );
 
-class Button extends Component {
+class Button extends React.Component {
 	constructor(props) {
 		super(props);
 	}

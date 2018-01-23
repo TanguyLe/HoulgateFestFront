@@ -1,5 +1,5 @@
 /* @flow */
-import React, { Component } from "react";
+import React from "react";
 import glamorous from "glamorous";
 import { isNil } from "lodash/fp";
 
@@ -9,7 +9,7 @@ import Text from "../basics/Text";
 import TextBlock from "../basics/TextBlock";
 import Wrapper from "../basics/Wrapper";
 
-class WhoAmI extends Component {
+class WhoAmI extends React.Component {
 	constructor(props) {
 		super(props);
 	}

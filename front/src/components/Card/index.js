@@ -1,5 +1,5 @@
 /* @flow */
-import React, { Component } from "react";
+import React from "react";
 import glamorous from "glamorous";
 import { cardShadow } from "../../../style/shadows";
 
@@ -43,7 +43,7 @@ const FooterStyle = glamorous.div({
 	left: 0
 });
 
-class Card extends Component {
+class Card extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -56,7 +56,7 @@ class Card extends Component {
 	}
 }
 
-class Title extends Component {
+class Title extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -69,7 +69,7 @@ class Title extends Component {
 	}
 }
 
-class Content extends Component {
+class Content extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -82,7 +82,7 @@ class Content extends Component {
 	}
 }
 
-class Footer extends Component {
+class Footer extends React.Component {
 	constructor(props) {
 		super(props);
 	}

@@ -1,10 +1,10 @@
 /* @flow */
-import React, { Component } from "react";
+import React from "react";
 import glamorous from "glamorous";
 import Text from "../Text";
 import Block from "../Block";
 
-class TextBlock extends Component {
+class TextBlock extends React.Component {
 	constructor(props) {
 		super(props);
 	}

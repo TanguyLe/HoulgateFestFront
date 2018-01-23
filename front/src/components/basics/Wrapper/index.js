@@ -1,5 +1,5 @@
 /* @flow */
-import React, { Component } from "react";
+import React from "react";
 import glamorous from "glamorous";
 
 const WrapperStyle = glamorous.div(props => ({
@@ -7,7 +7,7 @@ const WrapperStyle = glamorous.div(props => ({
 	flexDirection: props.row ? "row" : props.column ? "column" : "unset"
 }));
 
-class Wrapper extends Component {
+class Wrapper extends React.Component {
 	constructor(props) {
 		super(props);
 	}

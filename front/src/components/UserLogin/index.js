@@ -1,5 +1,5 @@
 /* @flow */
-import React, { Component } from "react";
+import React from "react";
 import glamorous from "glamorous";
 import LogInForm from "./LogInForm";
 import SignUpForm from "./SignUpForm";
@@ -53,7 +53,7 @@ const StyledTab = glamorous.div(
 	}
 );
 
-class UserLogin extends Component {
+class UserLogin extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { tabIndex: 0 };

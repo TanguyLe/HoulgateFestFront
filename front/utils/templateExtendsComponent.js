@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import glamorous from "glamorous";
 
-class ComponentName extends Component {
+class ComponentName extends React.Component {
 	constructor(props) {
 		super(props);
 	}

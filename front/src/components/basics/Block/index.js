@@ -1,5 +1,5 @@
 /* @flow */
-import React, { Component } from "react";
+import React from "react";
 import glamorous from "glamorous";
 import { isNil } from "lodash/fp";
 
@@ -27,7 +27,7 @@ const BlockStyle = glamorous.div(props => {
 	};
 });
 
-class Block extends Component {
+class Block extends React.Component {
 	constructor(props) {
 		super(props);
 	}

@@ -1,5 +1,5 @@
 /* @flow */
-import React, { Component } from "react";
+import React from "react";
 import glamorous from "glamorous";
 import { isNil } from "lodash/fp";
 import {
@@ -61,7 +61,7 @@ const TextStyle = glamorous.span({}, props => {
 	};
 });
 
-class Text extends Component {
+class Text extends React.Component {
 	constructor(props) {
 		super(props);
 	}
