@@ -1,10 +1,10 @@
-import React from 'react'
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import React from "react"
+import {BrowserRouter, Route, Switch} from "react-router-dom"
 
-import Home from './mainLayout/home'
-import Header from './mainLayout/menu'
-import Dummy from './shotgun/dummy'
-import NotFound from './mainLayout/notFound'
+import Home from "./mainLayout/home"
+import Header from "./mainLayout/menu"
+import Dummy from "./shotgun/dummy"
+import NotFound from "./mainLayout/notFound"
 import UserLogin from "./mainLayout/login/UserLogin"
 
 

@@ -1,6 +1,7 @@
 /* @flow */
 import React from "react";
 import glamorous from "glamorous";
+
 import { CARD_SHADOW } from "../style/shadows";
 
 const CardStyle = glamorous.div({
@@ -16,6 +17,7 @@ const CardStyle = glamorous.div({
 	flexBasis: 300,
 	margin: "auto"
 });
+
 const TitleStyle = glamorous.div({
 	marginTop: 0,
 	marginBottom: 0,
@@ -27,11 +29,13 @@ const TitleStyle = glamorous.div({
 	width: "100%",
 	fontSize: "1.5em"
 });
+
 const ContentStyle = glamorous.div({
 	borderTop: "1px solid rgba(0, 0, 0, 0.15)",
 	margin: 0,
 	padding: "1em 1em"
 });
+
 const FooterStyle = glamorous.div({
 	borderTop: "1px solid rgba(0, 0, 0, 0.15)",
 	padding: "0.75em 1em",
@@ -41,6 +45,7 @@ const FooterStyle = glamorous.div({
 	top: 0,
 	left: 0
 });
+
 
 class Card extends React.Component {
 	render() {
@@ -52,6 +57,7 @@ class Card extends React.Component {
 	}
 }
 
+
 class Title extends React.Component {
 	render() {
 		return (
@@ -62,6 +68,7 @@ class Title extends React.Component {
 	}
 }
 
+
 class Content extends React.Component {
 	render() {
 		return (
@@ -71,6 +78,7 @@ class Content extends React.Component {
 		);
 	}
 }
+
 
 class Footer extends React.Component {
 	render() {

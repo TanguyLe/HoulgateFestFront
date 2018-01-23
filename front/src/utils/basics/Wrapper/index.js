@@ -7,6 +7,7 @@ const WrapperStyle = glamorous.div(props => ({
 	flexDirection: props.row ? "row" : props.column ? "column" : "unset"
 }));
 
+
 class Wrapper extends React.Component {
 		render() {
 		return (

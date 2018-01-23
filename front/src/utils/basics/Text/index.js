@@ -2,6 +2,7 @@
 import React from "react";
 import glamorous from "glamorous";
 import { isNil } from "lodash/fp";
+
 import {
 	LIGHT_TEXT,
 	NORMAL_TEXT,
@@ -60,6 +61,7 @@ const TextStyle = glamorous.span({}, props => {
 		color: color
 	};
 });
+
 
 class Text extends React.Component {
 		render() {

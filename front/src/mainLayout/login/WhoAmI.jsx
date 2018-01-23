@@ -6,6 +6,7 @@ import Block from "../../utils/basics/Block/index";
 import Text from "../../utils/basics/Text/index";
 import Wrapper from "../../utils/basics/Wrapper/index";
 
+
 class WhoAmI extends React.Component {
 		render() {
 		let ContentToDisplay;

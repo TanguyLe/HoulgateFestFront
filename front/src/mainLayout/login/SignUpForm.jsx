@@ -5,6 +5,7 @@ import Block from "../../utils/basics/Block/index";
 import TextBlock from "../../utils/basics/TextBlock/index";
 import Wrapper from "../../utils/basics/Wrapper/index";
 
+
 class SignUpForm extends React.Component {
 	constructor(props) {
 		super(props);

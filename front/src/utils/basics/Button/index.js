@@ -70,6 +70,7 @@ const ButtonStyle = glamorous.button(
 	}
 );
 
+
 class Button extends React.Component {
 		render() {
 		return <ButtonStyle {...this.props}>{this.props.children}</ButtonStyle>;
