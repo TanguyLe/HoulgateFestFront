@@ -2,12 +2,12 @@
 import React from "react";
 import glamorous from "glamorous";
 
-import { focusShadow, insetShadow } from "../../../utils/style/shadows";
+import { focusShadow, insetShadow } from "../../style/shadows";
 import {
 	lightText,
 	normalText,
 	darkText
-} from "../../../utils/style/colors/classics";
+} from "../../style/colors/classics";
 
 const ButtonStyle = glamorous.button(
 	{

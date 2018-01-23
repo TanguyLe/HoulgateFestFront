@@ -1,9 +1,9 @@
 /* @flow */
 import React from "react";
-import Button from "../basics/Button";
-import Block from "../basics/Block";
-import TextBlock from "../basics/TextBlock";
-import Wrapper from "../basics/Wrapper";
+import Button from "../../utils/basics/Button/index";
+import Block from "../../utils/basics/Block/index";
+import TextBlock from "../../utils/basics/TextBlock/index";
+import Wrapper from "../../utils/basics/Wrapper/index";
 
 class logIn extends React.Component {
 		render() {

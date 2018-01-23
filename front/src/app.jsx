@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Home from "./components/common/home.component";
-import Dummy from "./components/shotgun/dummy.component";
-import Header from "./components/common/menu.component";
-import UserLogin from "./containers/UserLogin";
+import Home from "./mainLayout/home.component";
+import Dummy from "./shotgun/dummy.component";
+import Header from "./mainLayout/menu.component";
+import UserLogin from "./mainLayout/login/UserLogin";
 
 class App extends React.Component {
 	render() {

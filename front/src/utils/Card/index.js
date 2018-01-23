@@ -1,7 +1,7 @@
 /* @flow */
 import React from "react";
 import glamorous from "glamorous";
-import { cardShadow } from "../../utils/style/shadows";
+import { cardShadow } from "../style/shadows";
 
 const CardStyle = glamorous.div({
 	display: "flex",

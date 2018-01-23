@@ -6,7 +6,7 @@ import {
 	lightText,
 	normalText,
 	darkText
-} from "../../../utils/style/colors/classics";
+} from "../../style/colors/classics";
 
 const TextStyle = glamorous.span({}, props => {
 	let fontSize = isNil(props.size) ? "1em" : props.size;

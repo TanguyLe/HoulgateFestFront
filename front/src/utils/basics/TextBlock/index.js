@@ -1,8 +1,8 @@
 /* @flow */
 import React from "react";
 import glamorous from "glamorous";
-import Text from "../Text";
-import Block from "../Block";
+import Text from "../Text/index";
+import Block from "../Block/index";
 
 class TextBlock extends React.Component {
 		render() {

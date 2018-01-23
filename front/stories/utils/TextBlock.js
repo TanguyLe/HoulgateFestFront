@@ -1,7 +1,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 
-import TextBlock from "../src/components/basics/TextBlock";
+import TextBlock from "../../src/utils/basics/TextBlock/index";
 
 storiesOf("Basics/TextBlock", module)
 	.add("size and align", () => (

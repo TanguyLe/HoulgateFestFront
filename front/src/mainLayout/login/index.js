@@ -4,8 +4,7 @@ import glamorous from "glamorous";
 import LogInForm from "./LogInForm";
 import SignUpForm from "./SignUpForm";
 import WhoAmI from "./WhoAmI";
-import Button from "../basics/Button";
-import Card from "../Card";
+import Card from "../../utils/Card/index";
 
 const StyledTab = glamorous.div(
 	{

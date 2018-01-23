@@ -3,11 +3,11 @@ import React from "react";
 import glamorous from "glamorous";
 import { isNil } from "lodash/fp";
 
-import Button from "../basics/Button";
-import Block from "../basics/Block";
-import Text from "../basics/Text";
-import TextBlock from "../basics/TextBlock";
-import Wrapper from "../basics/Wrapper";
+import Button from "../../utils/basics/Button/index";
+import Block from "../../utils/basics/Block/index";
+import Text from "../../utils/basics/Text/index";
+import TextBlock from "../../utils/basics/TextBlock/index";
+import Wrapper from "../../utils/basics/Wrapper/index";
 
 class WhoAmI extends React.Component {
 		render() {

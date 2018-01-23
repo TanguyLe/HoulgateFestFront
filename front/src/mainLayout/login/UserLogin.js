@@ -1,14 +1,10 @@
 import React from "react";
-import UserLogin from "../components/UserLogin";
+import UserLogin from "./index";
 
 // this part is supposed to fetch data from server
 // and corresponding login / signup functions
 
 class WrappedUserLogin extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return <div className="fullHeight fullWidth">
             Test

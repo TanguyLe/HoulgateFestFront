@@ -1,7 +1,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 
-import Button from "../src/components/basics/Button";
+import Button from "../../src/utils/basics/Button/index";
 
 storiesOf("Basics/Button", module).add("Classic", () => (
 	<div style={{ display: "flex" }}>
