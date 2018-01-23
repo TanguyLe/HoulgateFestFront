@@ -1,60 +1,60 @@
 {
-	"name": "houlgatefest",
-	"version": "1.0.0",
-	"description": "Front of the website for the HoulgateFest project.",
-	"license": "UNLICENSED",
-	"authors": [
-		{
-			"name": "Tanguy Le Floch",
-			"email": "lefloch.ta@gmail.com"
-		},
-		{
-			"name": "Gautier Barbereau",
-			"email": "gautier.barbereau@gmail.com"
-		},
-		{
-			"name": "Hugo Raynal",
-			"email": "raynalhugo@gmail.com"
-		},
-		{
-			"name": "Alexandre Vaast",
-			"email": "alex.vaast@gmail.com"
-		}
-	],
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/TanguyLe/HoulgateFest.git"
-	},
-	"main": "index.js",
-	"dependencies": {
-		"glamorous": "^4.11.4",
-		"lodash": "^4.17.4",
-		"react": "^16.2.0",
-		"react-dom": "^16.2.0",
-		"react-router-dom": "^4.2.2"
-	},
-	"devDependencies": {
-		"babel-core": "^6.26.0",
-		"babel-loader": "^7.1.2",
-		"babel-plugin-transform-object-assign": "^6.22.0",
-		"babel-preset-es2015": "^6.24.1",
-		"babel-preset-es2015-loose": "^8.0.0",
-		"babel-preset-react": "^6.24.1",
-		"css-loader": "^0.28.9",
-		"react-hot-loader": "^3.1.3",
-		"require": "^2.4.20",
-		"style-loader": "^0.19.1",
-		"webpack": "^3.10.0",
-		"webpack-dev-server": "^2.11.0",
-		"@storybook/react": "^3.3.10",
-		"@storybook/addon-actions": "^3.3.10",
-		"@storybook/addon-links": "^3.3.10",
-		"@storybook/addons": "^3.3.10"
-	},
-	"scripts": {
-		"dev": "webpack-dev-server --hot --config webpack.dev.config",
-		"build": "webpack --config webpack.prod.config",
-		"storybook": "start-storybook -p 6006",
-		"build-storybook": "build-storybook"
-	}
+  "name": "houlgatefest",
+  "version": "1.0.0",
+  "description": "Front of the website for the HoulgateFest project.",
+  "license": "UNLICENSED",
+  "authors": [
+    {
+      "name": "Tanguy Le Floch",
+      "email": "lefloch.ta@gmail.com"
+    },
+    {
+      "name": "Gautier Barbereau",
+      "email": "gautier.barbereau@gmail.com"
+    },
+    {
+      "name": "Hugo Raynal",
+      "email": "raynalhugo@gmail.com"
+    },
+    {
+      "name": "Alexandre Vaast",
+      "email": "alex.vaast@gmail.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TanguyLe/HoulgateFest.git"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "glamorous": "^4.11.4",
+    "lodash": "^4.17.4",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2015-loose": "^8.0.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.9",
+    "react-hot-loader": "^3.1.3",
+    "require": "^2.4.20",
+    "style-loader": "^0.19.1",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.0",
+    "@storybook/react": "^3.3.10",
+    "@storybook/addon-actions": "^3.3.10",
+    "@storybook/addon-links": "^3.3.10",
+    "@storybook/addons": "^3.3.10"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --hot --config webpack.dev.config",
+    "build": "webpack --config webpack.prod.config",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  }
 }
