@@ -8,7 +8,7 @@ class WrappedUserLogin extends React.Component {
     render() {
         return <div className="fullHeight fullWidth">
             Test
-            <UserLogin name={"test"} email={"test@gmail.com"}/>
+            <UserLogin name={this.props.name || null} email={this.props.email || null}/>
         </div>;
     }
 }
