@@ -1,10 +1,12 @@
-import React from 'react'
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import React from "react"
+import {BrowserRouter, Route, Switch} from "react-router-dom"
 
-import Home from './common/home.component'
-import Dummy from './shotgun/dummy.component'
-import Header from './common/menu.component'
-import NotFound from './common/notFound.component'
+import Home from "./mainLayout/home"
+import Header from "./mainLayout/menu"
+import Dummy from "./shotgun/dummy"
+import NotFound from "./mainLayout/notFound"
+import UserLogin from "./mainLayout/login/UserLogin"
+
 
 class App extends React.Component {
     render() {
@@ -13,6 +15,7 @@ class App extends React.Component {
                 <Switch>
                     <Route path="/" exact component={Home}/>
                     <Route path="/shotgun" component={Dummy}/>
+                    <Route path="/login" component={UserLogin}/>
                     <Route component={NotFound}/>
                 </Switch>
             </div>
@@ -20,4 +23,4 @@ class App extends React.Component {
     }
 }
 
-export default App
+export default App;
