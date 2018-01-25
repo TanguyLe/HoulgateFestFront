@@ -1,22 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
+import {Menu, Item, Container} from 'semantic-ui-react';
 
 export const Header = () => (
-	<header>
-		<nav>
-			<ul>
-				<li>
-					<Link to="/">Home</Link>
-				</li>
-				<li>
-					<Link to="/shotgun">Shotgun</Link>
-				</li>
-				<li>
-					<Link to="/login">User</Link>
-				</li>
-			</ul>
-		</nav>
-	</header>
+    <Menu className={'secondary large fixed shadowMenu'}>
+        <Container>
+            <Item><Link to="/">Home</Link></Item>
+            <Item><Link to="/shotgun">Shotgun</Link></Item>
+            <Item><Link to="/login">User</Link></Item>
+        </Container>
+    </Menu>
 );
 
 export default Header;
