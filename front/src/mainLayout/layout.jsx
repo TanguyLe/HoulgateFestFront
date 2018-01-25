@@ -15,7 +15,7 @@ const DefaultLayout = ({component: Component, ...rest}) => {
                         <Header/>
                     </Grid.Row>
                     <Grid.Row>
-                        <Container>
+                        <Container className={'mast'}>
                             <Component {...matchProps} />
                         </Container>
                     </Grid.Row>

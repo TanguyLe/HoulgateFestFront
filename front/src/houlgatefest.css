@@ -6,6 +6,7 @@ body {
     font-family: 'Open Sans', sans-serif;
     margin: 0;
     height: 100%;
+    background: white;
 }
 
 .HoulgateFest {
@@ -34,4 +35,8 @@ body {
     top: 0px;
     z-index: 500;
     background: #ffffff !important;
+}
+
+.mast {
+    padding: 2rem 0.5rem;
 }
