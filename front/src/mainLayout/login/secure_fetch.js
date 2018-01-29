@@ -1,4 +1,4 @@
-import {getLogin, setLogin} from "./store";
+import {getCredentials, login} from "./store";
 import {REFRESH_LOGIN_URL, genPostParams} from "./constants";
 
 export const refresh_login = (creds) => {
@@ -12,14 +12,14 @@ export const refresh_login = (creds) => {
         })
         .then((response) => response.json())
         .then((jsonData) => {
-            setLogin(jsonData.username, jsonData.api_token, jsonData.refresh_token);
+            login(jsonData.username, jsonData.api_token, jsonData.refresh_token);
             alert("Login successfull " + jsonData.username + " !");
         })
         .catch(error => alert(error))
 };
 
 export const secure_fetch = (request_url, params) => {
-    let creds = getLogin();
+    let creds = getCredentials();
 
     if (!creds.login)
         throw Error("Vous n'êtes pas connecté");

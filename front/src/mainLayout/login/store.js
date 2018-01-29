@@ -19,18 +19,18 @@ export const unregister = (fct) => {
 };
 
 export const displatch = () => {
-    let creds = getLogin();
+    let creds = getCredentials();
 
     login_store.forEach((fct) => {
         fct(creds);
     })
 };
 
-export const setLogout = () => {
-    setLogin("", "", "")
+export const logout = () => {
+    login("", "", "")
 };
 
-export const setLogin = (login, api_token, refresh_token) => {
+export const login = (login, api_token, refresh_token) => {
     credentials.login = login;
     credentials.api_token = api_token;
     credentials.refresh_token = refresh_token;
@@ -38,6 +38,6 @@ export const setLogin = (login, api_token, refresh_token) => {
     displatch();
 };
 
-export const getLogin = () => {
+export const getCredentials = () => {
     return credentials
 };

@@ -5,7 +5,7 @@ import {isNil} from "lodash/fp";
 import Block from "../../../utils/basics/Block/index";
 import Text from "../../../utils/basics/Text/index";
 import Wrapper from "../../../utils/basics/Wrapper/index";
-import {getLogin, setLogout, register, unregister} from "../store"
+import {getCredentials, logout, register, unregister} from "../store"
 import Button from "../../../utils/basics/Button/index";
 
 
@@ -25,7 +25,7 @@ class WhoAmI extends React.Component {
 
     componentWillMount() {
         register(this.changing_creds);
-        this.changing_creds(getLogin());
+        this.changing_creds(getCredentials());
     }
 
     componentWillUnmount() {
@@ -55,7 +55,7 @@ class WhoAmI extends React.Component {
                             <Text weight="bold">Name: </Text>
                             <Text>{this.state.login}</Text>
                         </Block>
-                        <Button onClick={setLogout}>Logout</Button>
+                        <Button onClick={logout}>Logout</Button>
                     </Block>
                 </Wrapper>
             );

@@ -5,7 +5,7 @@ import Button from "../../../utils/basics/Button/index";
 import Block from "../../../utils/basics/Block/index";
 import TextBlock from "../../../utils/basics/TextBlock/index";
 import Wrapper from "../../../utils/basics/Wrapper/index";
-import {setLogin} from "../store"
+import {login} from "../store"
 import {LOGIN_URL} from "../constants"
 import {genPostParams, genGetParams} from "../../../utils/misc_fct";
 // Should be only post, get is only for testing now
@@ -33,7 +33,7 @@ class logIn extends React.Component {
             })
             .then((response) => response.json())
             .then((jsonData) => {
-                setLogin(jsonData.username, jsonData.token, jsonData.refresh_token);
+                login(jsonData.username, jsonData.token, jsonData.refresh_token);
                 alert("Login successfull " + jsonData.username + " !");
             })
             .catch(error => alert(error))
