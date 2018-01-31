@@ -120,7 +120,7 @@ export const villaLesGenets = {
         },
         {
             name: "Deuxième Etage",
-            size: {width: 3.54, height: 7.73},
+            size: {width: 20, height: 30},
             gridTemplate: {rows: "23.5% 10.5% 26% 40%", columns: "21% 79%"},
             rooms: [
                 {
@@ -157,6 +157,7 @@ export const villaLesGenets = {
         },
         {
             name: "Extérieur",
+            size: {width: 3.54, height: 7.73},
             gridTemplate: {rows: "30% 70%", columns: "45% 55%"},
             rooms: [
                 {
