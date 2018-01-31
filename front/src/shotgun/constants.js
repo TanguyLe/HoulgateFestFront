@@ -1,4 +1,5 @@
 export const ROOM_GRID_STRUCT_INDEX_PREFIX = "RoomGridStruct";
+export const FLOOR_GRID_STRUCT_INDEX_PREFIX = "FloorGridStruct";
 
 export const PASSING_TYPE = "passing";
 export const BATHROOM_TYPE = "bathroom";
