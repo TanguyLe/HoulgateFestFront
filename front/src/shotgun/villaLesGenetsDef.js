@@ -157,7 +157,7 @@ export const villaLesGenets = {
         },
         {
             name: "Extérieur",
-            gridTemplate: {rows: "30% 70%", columns: "35% 65%"},
+            gridTemplate: {rows: "30% 70%", columns: "45% 55%"},
             rooms: [
                 {
                     name: "Plat",

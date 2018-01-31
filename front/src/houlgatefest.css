@@ -1,7 +1,7 @@
 html,
 body {
 	height: calc(100% - 4px);
-	margin: 0 2px 0 2px;
+	margin: 2px;
 	width: calc(100% - 4px);
 	font-size: 14px;
 	min-width: 715px;
