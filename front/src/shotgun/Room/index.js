@@ -22,7 +22,7 @@ class Room extends React.Component {
 					gridColumnStart: this.props.position.columnStart,
 					gridColumnEnd: this.props.position.columnEnd,
 					gridRowStart: this.props.position.rowStart,
-					gridRowEnd: this.props.position.row
+					gridRowEnd: this.props.position.rowEnd
 				}}
 			>
 				{this.props.children}
