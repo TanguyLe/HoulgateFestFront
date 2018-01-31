@@ -1,11 +1,11 @@
 import React from "react";
 
-import {getGridStruct} from "./roomUtils";
+import {FloorGridStruct} from "./roomUtils";
 import {villaLesGenets} from "./villaLesGenetsDef";
 import {FLOOR_GRID_STRUCT_INDEX_PREFIX} from "./constants"
 
 
-class Dummy extends React.Component {
+class ShotgunContainer extends React.Component {
     render() {
         let floorContainerStyle = {
             margin: "0 10px 0 10px",
@@ -25,11 +25,11 @@ class Dummy extends React.Component {
                 {villaLesGenets.floors.map((floor, index) => {
                     return(
                         <div key={FLOOR_GRID_STRUCT_INDEX_PREFIX + index} style={floorContainerStyle}>
-                            {getGridStruct(floor)}
+                            <FloorGridStruct floor={floor}/>
                         </div>);
                 })}
             </div>);
     }
 }
 
-export default Dummy;
+export default ShotgunContainer;

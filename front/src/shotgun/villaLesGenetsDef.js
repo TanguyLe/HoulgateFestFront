@@ -3,7 +3,7 @@ import * as constants from "./constants"
 export const villaLesGenets = {
     floors: [
         {
-            name: "ground",
+            name: "Rdc",
             size: {width: 13.14, height: 10.41},
             gridTemplate: {rows: "19% 20% 18% 43%", columns: "12% 18.5% 6% 30% 33.5%"},
             rooms: [
@@ -52,7 +52,7 @@ export const villaLesGenets = {
             ]
         },
         {
-            name: "first",
+            name: "Premier Etage",
             size: {width: 13.39, height: 9.26},
             gridTemplate: {rows: "23.5% 16.5% 44% 16%", columns: "10.5% 7.7% 6.7% 10.5% 26.30% 9.1% 29.2%"},
             rooms: [
@@ -119,7 +119,7 @@ export const villaLesGenets = {
             ]
         },
         {
-            name: "second",
+            name: "Deuxième Etage",
             size: {width: 3.54, height: 7.73},
             gridTemplate: {rows: "23.5% 10.5% 26% 40%", columns: "21% 79%"},
             rooms: [
@@ -156,7 +156,7 @@ export const villaLesGenets = {
             ]
         },
         {
-            name: "outside",
+            name: "Extérieur",
             gridTemplate: {rows: "30% 70%", columns: "35% 65%"},
             rooms: [
                 {
