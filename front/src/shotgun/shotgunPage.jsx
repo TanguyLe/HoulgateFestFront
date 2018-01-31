@@ -1,6 +1,6 @@
 import React from "react";
 
-import {FloorGridStruct} from "./roomUtils";
+import Floor from "./Floor";
 import {villaLesGenets} from "./villaLesGenetsDef";
 import {FLOOR_GRID_STRUCT_INDEX_PREFIX} from "./constants"
 
@@ -8,11 +8,11 @@ import {FLOOR_GRID_STRUCT_INDEX_PREFIX} from "./constants"
 class ShotgunContainer extends React.Component {
     render() {
         let floorContainerStyle = {
-            margin: "0 10px 0 10px",
+            margin: "0 5px 0 5px",
             display: "float",
             position: "relative",
-            height: "40%",
-            width: "40%"
+            height: "50%",
+            width: "calc(50% - 10px)"
         };
         return (
             <div style={{
@@ -25,7 +25,7 @@ class ShotgunContainer extends React.Component {
                 {villaLesGenets.floors.map((floor, index) => {
                     return(
                         <div key={FLOOR_GRID_STRUCT_INDEX_PREFIX + index} style={floorContainerStyle}>
-                            <FloorGridStruct floor={floor}/>
+                            <Floor floorData={floor}/>
                         </div>);
                 })}
             </div>);
