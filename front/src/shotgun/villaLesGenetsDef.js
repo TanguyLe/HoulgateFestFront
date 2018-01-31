@@ -1,3 +1,5 @@
+import * as constants from "./constants"
+
 export const villaLesGenets = {
     floors: [
         {
@@ -6,43 +8,43 @@ export const villaLesGenets = {
             rooms: [
                 {
                     name: "Entrée",
-                    type: "passing",
+                    type: constants.PASSING_TYPE,
                     gridPosition: {rows: {start: 3, end: 4}, columns: {start: 2, end: 4}},
                     seats: 0
                 },
                 {
                     name: "W.C",
-                    type: "restrooms",
+                    type: constants.RESTROOMS_TYPE,
                     gridPosition: {rows: {start: 2, end: 3}, columns: {start: 3, end: 4}},
                     seats: 0
                 },
                 {
                     name: "Escaliers",
-                    type: "stairs",
+                    type: constants.STAIRS_TYPE,
                     gridPosition: {rows: {start: 2, end: 3}, columns: {start: 2, end: 3}},
                     seats: 0
                 },
                 {
                     name: "Cuisine",
-                    type: "kitchen",
+                    type: constants.KITCHEN_TYPE,
                     gridPosition: {rows: {start: 2, end: 4}, columns: {start: 4, end: 6}},
                     seats: 0
                 },
                 {
                     name: "Salle de Bain",
-                    type: "bathroom",
+                    type: constants.BATHROOM_TYPE,
                     gridPosition: {rows: {start: 1, end: 2}, columns: {start: 4, end: 5}},
                     seats: 0
                 },
                 {
                     name: "Petit Salon",
-                    type: "livingRoom",
+                    type: constants.LIVING_ROOM_TYPE,
                     gridPosition: {rows: {start: 4, end: 5}, columns: {start: 5, end: 6}},
                     seats: 4
                 },
                 {
                     name: "Salle à Manger",
-                    type: "livingRoom",
+                    type: constants.LIVING_ROOM_TYPE,
                     gridPosition: {rows: {start: 4, end: 5}, columns: {start: 1, end: 5}},
                     seats: 4
                 }
@@ -54,61 +56,61 @@ export const villaLesGenets = {
             rooms: [
                 {
                     name: "Escalier",
-                    type: "passing",
+                    type: constants.PASSING_TYPE,
                     gridPosition: {rows: {start: 1, end: 2}, columns: {start: 2, end: 4}},
                     seats: 0
                 },
                 {
                     name: "W.C",
-                    type: "restrooms",
+                    type: constants.RESTROOMS_TYPE,
                     gridPosition: {rows: {start: 1, end: 2}, columns: {start: 4, end: 5}},
                     seats: 0
                 },
                 {
                     name: "Salle de Bains",
-                    type: "bathroom",
+                    type: constants.BATHROOM_TYPE,
                     gridPosition: {rows: {start: 1, end: 2}, columns: {start: 5, end: 6}},
                     seats: 0
                 },
                 {
                     name: "Escalier",
-                    type: "stairs",
+                    type: constants.STAIRS_TYPE,
                     gridPosition: {rows: {start: 1, end: 2}, columns: {start: 6, end: 7}},
                     seats: 0
                 },
                 {
                     name: "Placard",
-                    type: "passing",
+                    type: constants.PASSING_TYPE,
                     gridPosition: {rows: {start: 2, end: 3}, columns: {start: 2, end: 3}},
                     seats: 0
                 },
                 {
                     name: "Couloir",
-                    type: "passing",
+                    type: constants.PASSING_TYPE,
                     gridPosition: {rows: {start: 2, end: 3}, columns: {start: 3, end: 7}},
                     seats: 0
                 },
                 {
                     name: "Chambre des Filles",
-                    type: "bedroom",
+                    type: constants.BEDROOM_TYPE,
                     gridPosition: {rows: {start: 1, end: 3}, columns: {start: 7, end: 8}},
                     seats: 3
                 },
                 {
                     name: "Chambre de Mita",
-                    type: "bedroom",
+                    type: constants.BEDROOM_TYPE,
                     gridPosition: {rows: {start: 3, end: 4}, columns: {start: 1, end: 4}},
                     seats: 3
                 },
                 {
                     name: "Chambre Verte",
-                    type: "bedroom",
+                    type: constants.BEDROOM_TYPE,
                     gridPosition: {rows: {start: 3, end: 4}, columns: {start: 4, end: 6}},
                     seats: 4
                 },
                 {
                     name: "Chambre de Nanny",
-                    type: "bedroom",
+                    type: constants.BEDROOM_TYPE,
                     gridPosition: {rows: {start: 3, end: 5}, columns: {start: 6, end: 8}},
                     seats: 4
                 },
@@ -120,31 +122,31 @@ export const villaLesGenets = {
             rooms: [
                 {
                     name: "Escalier",
-                    type: "stairs",
+                    type: constants.STAIRS_TYPE,
                     gridPosition: {rows: {start: 1, end: 2}, columns: {start: 1, end: 2}},
                     seats: 0
                 },
                 {
                     name: "Couloir",
-                    type: "passing",
+                    type: constants.PASSING_TYPE,
                     gridPosition: {rows: {start: 2, end: 4}, columns: {start: 1, end: 2}},
                     seats: 0
                 },
                 {
                     name: "Chambre de Mapie",
-                    type: "bedroom",
+                    type: constants.BEDROOM_TYPE,
                     gridPosition: {rows: {start: 1, end: 3}, columns: {start: 2, end: 3}},
                     seats: 2
                 },
                 {
                     name: "Petite Chambre",
-                    type: "bedroom",
+                    type: constants.BEDROOM_TYPE,
                     gridPosition: {rows: {start: 3, end: 4}, columns: {start: 2, end: 3}},
                     seats: 2
                 },
                 {
                     name: "Chambre Parentale",
-                    type: "bedroom",
+                    type: constants.BEDROOM_TYPE,
                     gridPosition: {rows: {start: 4, end: 5}, columns: {start: 1, end: 3}},
                     seats: 3
                 }
@@ -156,19 +158,19 @@ export const villaLesGenets = {
             rooms: [
                 {
                     name: "Plat",
-                    type: "garden",
+                    type: constants.GARDEN_TYPE,
                     gridPosition: {rows: {start: 1, end: 2}, columns: {start: 1, end: 2}},
                     seats: 10
                 },
                 {
                     name: "Incliné",
-                    type: "garden",
+                    type: constants.GARDEN_TYPE,
                     gridPosition: {rows: {start: 2, end: 3}, columns: {start: 1, end: 2}},
                     seats: 0
                 },
                 {
                     name: "Chemin",
-                    type: "garden",
+                    type: constants.GARDEN_TYPE,
                     gridPosition: {rows: {start: 1, end: 3}, columns: {start: 2, end: 3}},
                     seats: 0
                 }

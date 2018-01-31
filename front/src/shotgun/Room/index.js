@@ -25,8 +25,8 @@ class Room extends React.Component {
 					gridRowEnd: this.props.position.rowEnd
 				}}
 			>
-				{this.props.children}
-				<Button>Shotgun !</Button>
+				{this.props.name}
+				{this.props.seats ? <Button>Shotgun !</Button> : ""}
 			</div>
 		);
 	}

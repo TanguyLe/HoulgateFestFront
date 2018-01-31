@@ -38,7 +38,10 @@ export const getGridStruct = (floor) => {
                 };
 
                 return(
-                    <Room key={ROOM_GRID_STRUCT_INDEX_PREFIX + floor.name + index} position={position}>{room.name}</Room>
+                    <Room name={room.name}
+                          seats={room.seats}
+                          key={ROOM_GRID_STRUCT_INDEX_PREFIX + floor.name + index}
+                          position={position}/>
                 );
             })}
         </div>
