@@ -3,6 +3,7 @@ import React from "react";
 import FirstFloor from "./Floors/FirstFloor"
 import GroundFloor from "./Floors/GroundFloor"
 import SecondFloor from "./Floors/SecondFloor"
+import GardenFloor from "./Floors/Garden.jsx"
 import {villaLesGenets} from "./villaLesGenetsDef"
 import {getNbSeats} from "./roomUtils"
 
@@ -16,6 +17,7 @@ class Dummy extends React.Component {
 				<GroundFloor/>
 				<FirstFloor/>
 				<SecondFloor/>
+				<GardenFloor/>
 			</div>);
 	}
 }

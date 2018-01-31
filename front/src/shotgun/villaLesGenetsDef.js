@@ -2,7 +2,7 @@ export const villaLesGenets = {
     floors: [
         {
             name: "ground",
-            gridTemplate: {rows: "12% 18.5% 6% 30% 33.5%", columns: "19% 20% 18% 43%"},
+            gridTemplate: {rows: "19% 20% 18% 43%", columns: "12% 18.5% 6% 30% 33.5%"},
             rooms: [
                 {
                     name: "Entrée",

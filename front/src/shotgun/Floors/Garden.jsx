@@ -6,9 +6,9 @@ import {villaLesGenets} from "../villaLesGenetsDef";
 
 
 class Floor extends React.Component {
-	render() {
-        return getGridStruct(villaLesGenets.floors[0]);
-	}
+    render() {
+        return getGridStruct(villaLesGenets.floors[3]);
+    }
 }
 
 export default Floor;
