@@ -11,7 +11,7 @@ import UserLogin from "./mainLayout/login/UserLogin"
 class App extends React.Component {
     render() {
         return <BrowserRouter>
-            <div><Header/>
+            <div className="fullWidth fullHeight"><Header/>
                 <Switch>
                     <Route path="/" exact component={Home}/>
                     <Route path="/shotgun" component={Dummy}/>

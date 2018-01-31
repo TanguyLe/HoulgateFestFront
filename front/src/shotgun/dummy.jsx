@@ -12,12 +12,19 @@ console.log(getNbSeats(villaLesGenets));
 class Dummy extends React.Component {
 	render() {
 		return(
-			<div>
-				J'ai jamais aimé les abricots de toute façon.
-				<GroundFloor/>
-				<FirstFloor/>
-				<SecondFloor/>
-				<GardenFloor/>
+			<div style={{height: "calc(100% - 50px)", width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+                <div style={{margin: "0 10px 0 10px", display: "float", position: "relative", height: "40%", width: "40%"}}>
+                    <GroundFloor/>
+                </div>
+                <div style={{margin: "0 10px 0 10px", display: "float", position: "relative", height: "40%", width: "40%"}}>
+                    <FirstFloor/>
+                </div>
+                <div style={{margin: "0 10px 0 10px", display: "floatLeft", position: "relative", height: "40%", width: "40%"}}>
+                    <SecondFloor/>
+                </div>
+                <div style={{margin: "0 10px 0 10px", display: "floatLeft", position: "relative", height: "40%", width: "40%"}}>
+                    <GardenFloor/>
+                </div>
 			</div>);
 	}
 }

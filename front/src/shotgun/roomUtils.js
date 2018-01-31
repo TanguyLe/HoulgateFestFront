@@ -23,8 +23,8 @@ export const getGridStruct = (floor) => {
         gridTemplateColumns: floor.gridTemplate.columns,
         justifyItems: "stretch",
         alignItems: "center",
-        justifyContent: "start",
-        alignContent: "start"
+        justifyContent: "stretch",
+        alignContent: "center"
     };
 
     return (
