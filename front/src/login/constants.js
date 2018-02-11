@@ -1,5 +1,4 @@
 export const LOGIN_URL = "https://jsonplaceholder.typicode.com/users/3";
-export const REFRESH_LOGIN_URL = "https://jsonplaceholder.typicode.com/users/20";
 
 export const STYLED_TAB_INDEX_PREFIX = "styledTab";
 export const TAB_LABELS = ["My account", "Log In", "Sign Up"];

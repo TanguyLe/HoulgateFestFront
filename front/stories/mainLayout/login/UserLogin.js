@@ -1,7 +1,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 
-import UserLogin from "../../../src/mainLayout/login/components";
+import UserLogin from "../../../src/login/components";
 
 storiesOf("UserLogin", module).add("not logged UserLogin", () => <UserLogin />);
 storiesOf("UserLogin", module).add("logged test UserLogin", () => (

@@ -1,16 +1,16 @@
 /* @flow */
 import React from "react";
 
-import Button from "../../../utils/basics/Button/index";
-import Block from "../../../utils/basics/Block/index";
-import TextBlock from "../../../utils/basics/TextBlock/index";
-import Wrapper from "../../../utils/basics/Wrapper/index";
+import Button from "../../utils/basics/Button/index";
+import Block from "../../utils/basics/Block/index";
+import TextBlock from "../../utils/basics/TextBlock/index";
+import Wrapper from "../../utils/basics/Wrapper/index";
 import {login} from "../store"
 import {LOGIN_URL} from "../constants"
-import {genPostParams, genGetParams} from "../../../utils/misc_fct";
-// Should be only post, get is only for testing now
+import {postCallApi, getCallApi} from "../../utils/api/fetchMiddleware";
+// Should be only post, get is for testing now
 
-class logIn extends React.Component {
+class LogIn extends React.Component {
     constructor() {
         super();
         this.state = {email: "", password: ""};
@@ -22,10 +22,8 @@ class logIn extends React.Component {
     }
 
     onClickLogin() {
-        // let params = genPostParams(this.state);
-        let params = genGetParams();
-
-        fetch(LOGIN_URL, params)
+        // postCallApi(LOGIN_URL, this.state, false)
+        getCallApi(LOGIN_URL, false)
             .then((response) => {
                 if (!response.ok)
                     throw Error("requête");
@@ -33,7 +31,7 @@ class logIn extends React.Component {
             })
             .then((response) => response.json())
             .then((jsonData) => {
-                login(jsonData.username, jsonData.token, jsonData.refresh_token);
+                login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
                 alert("Login successfull " + jsonData.username + " !");
             })
             .catch(error => alert(error))
@@ -76,4 +74,4 @@ class logIn extends React.Component {
     }
 }
 
-export default logIn;
+export default LogIn;

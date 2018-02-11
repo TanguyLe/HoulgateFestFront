@@ -1,12 +1,12 @@
 /* @flow */
 import React from "react";
 
-import Button from "../../../utils/basics/Button/index";
-import Block from "../../../utils/basics/Block/index";
-import TextBlock from "../../../utils/basics/TextBlock/index";
-import Wrapper from "../../../utils/basics/Wrapper/index";
+import Button from "../../utils/basics/Button/index";
+import Block from "../../utils/basics/Block/index";
+import TextBlock from "../../utils/basics/TextBlock/index";
+import Wrapper from "../../utils/basics/Wrapper/index";
 import {NAME, TYPE, SIGN_UP_FORM_BLOCK_INDEX_PREFIX, signUpDef} from "../constants";
-import {upCaseFirstLetter} from "../../../utils/misc_fct"
+import {upCaseFirstLetter} from "../../utils/miscFcts"
 
 
 class SignUpForm extends React.Component {

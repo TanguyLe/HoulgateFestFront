@@ -5,7 +5,7 @@ import glamorous from "glamorous";
 import LogInForm from "./LogInForm";
 import SignUpForm from "./SignUpForm";
 import WhoAmI from "./WhoAmI";
-import Card from "../../../utils/Card/index";
+import Card from "../../utils/Card/index";
 import {STYLED_TAB_INDEX_PREFIX, TAB_LABELS} from "../constants";
 
 const StyledTab = glamorous.div(

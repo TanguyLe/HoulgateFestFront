@@ -2,11 +2,11 @@
 import React from "react";
 import {isNil} from "lodash/fp";
 
-import Block from "../../../utils/basics/Block/index";
-import Text from "../../../utils/basics/Text/index";
-import Wrapper from "../../../utils/basics/Wrapper/index";
+import Block from "../../utils/basics/Block/index";
+import Text from "../../utils/basics/Text/index";
+import Wrapper from "../../utils/basics/Wrapper/index";
 import {getCredentials, logout, register, unregister} from "../store"
-import Button from "../../../utils/basics/Button/index";
+import Button from "../../utils/basics/Button/index";
 
 
 class WhoAmI extends React.Component {
@@ -15,21 +15,21 @@ class WhoAmI extends React.Component {
 
         this.state = {login: ""};
 
-        this.changing_creds = this.changing_creds.bind(this);
+        this.changingCreds = this.changingCreds.bind(this);
     }
 
-    changing_creds(creds) {
+    changingCreds(creds) {
         if (creds.login !== this.state.login)
             this.setState({login: creds.login})
     }
 
     componentWillMount() {
-        register(this.changing_creds);
-        this.changing_creds(getCredentials());
+        register(this.changingCreds);
+        this.changingCreds(getCredentials());
     }
 
     componentWillUnmount() {
-        unregister(this.changing_creds);
+        unregister(this.changingCreds);
     }
 
     render() {

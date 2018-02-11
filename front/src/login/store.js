@@ -1,27 +1,27 @@
 let credentials = {
     login: "",
-    api_token: "",
-    refresh_token: ""
+    accessToken: "",
+    refreshToken: ""
 };
 
-let login_store = [];
+let loginStore = [];
 
 export const register = (fct) => {
-    login_store.push(fct)
+    loginStore.push(fct)
 };
 
 export const unregister = (fct) => {
-    let index = login_store.indexOf(fct);
+    let index = loginStore.indexOf(fct);
 
     if (index > -1) {
-        login_store.splice(index, 1);
+        loginStore.splice(index, 1);
     }
 };
 
 export const displatch = () => {
     let creds = getCredentials();
 
-    login_store.forEach((fct) => {
+    loginStore.forEach((fct) => {
         fct(creds);
     })
 };
@@ -30,10 +30,10 @@ export const logout = () => {
     login("", "", "")
 };
 
-export const login = (login, api_token, refresh_token) => {
+export const login = (login, accessToken, refreshToken) => {
     credentials.login = login;
-    credentials.api_token = api_token;
-    credentials.refresh_token = refresh_token;
+    credentials.accessToken = accessToken;
+    credentials.refreshToken = refreshToken;
 
     displatch();
 };

@@ -5,7 +5,7 @@ import Home from "./mainLayout/home"
 import Header from "./mainLayout/menu"
 import Dummy from "./shotgun/dummy"
 import NotFound from "./mainLayout/notFound"
-import UserLogin from "./mainLayout/login/components"
+import UserLogin from "./login/components"
 
 
 class App extends React.Component {
