@@ -12,7 +12,6 @@ body {
 .HoulgateFest {
 }
 
-/* LOoove <3 */
 
 .layout {
     display: block;
@@ -25,18 +24,4 @@ body {
 
 .fullWidth {
     width: 100%;
-}
-
-.shadowMenu {
-    position: fixed;
-    box-shadow: 0 0 20px rgba(0,0,0,.15) !important;
-    border-bottom: 1px solid #DDDDDD !important;
-    padding: 0em 0em;
-    top: 0px;
-    z-index: 500;
-    background: #ffffff !important;
-}
-
-.mast {
-    padding: 2rem 0.5rem;
 }
