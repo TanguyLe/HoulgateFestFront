@@ -4,11 +4,11 @@ import {Icon, Responsive, Sidebar, Menu, Container} from 'semantic-ui-react';
 
 
 export const leftItems = [
-    { as: 'div', children: <Link to='/'>Home</Link>, key: "home" },
-    { as: 'div', children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun" }
+    {children: <Link to='/'>Home</Link>, key: "home"},
+    {children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun"}
 ];
 export const rightItems = [
-    { as: 'div', children: <Link to='/login'>User</Link>, key: "user"}
+    {children: <Link to='/login'>User</Link>, key: "user"}
 ];
 
 const NavBarMobile = ({
@@ -35,14 +35,18 @@ const NavBarMobile = ({
             style={{minHeight: "100vh"}}
         >
             <Menu fixed="top" inverted>
-                <Menu.Item>
-                    Houlgate Fest
-                </Menu.Item>
+
                 <Menu.Item onClick={onToggle}>
                     <Icon name="sidebar"/>
                 </Menu.Item>
+                <Menu.Item>
+                    Houlgate Fest
+                </Menu.Item>
                 <Menu.Menu position="right">
-                    {_.map(rightItems, item => <Menu.Item {...item} />)}
+                    {rightItems.map(item => {
+                        item['as'] = 'div';
+                        return <Menu.Item {...item} />
+                    })}
                 </Menu.Menu>
             </Menu>
             {children}
@@ -55,9 +59,15 @@ const NavBarDesktop = ({leftItems, rightItems}) => (
         <Menu.Item>
             Houlgate Fest
         </Menu.Item>
-        {_.map(leftItems, item => <Menu.Item {...item} />)}
+        {leftItems.map(item => {
+            item['as'] = 'div';
+            return <Menu.Item {...item} />
+        })}
         <Menu.Menu position="right">
-            {_.map(rightItems, item => <Menu.Item {...item} />)}
+            {rightItems.map(item => {
+                item['as'] = 'div';
+                return <Menu.Item {...item} />
+            })}
         </Menu.Menu>
     </Menu>
 );
