@@ -38,13 +38,13 @@ class ContactForm extends React.Component {
     render() {
         return (
             <Form onSubmit={this.handleSubmit}>
-                <Form.Input type='text' fluid label='First name' name='firstname' value={this.state.firstname}
+                <Form.Input type='text' fluid label='First name' name='firstname'
                             onChange={this.handleChange}/>
-                <Form.Input type='text' fluid label='Last name' name='surname' value={this.state.surname}
+                <Form.Input type='text' fluid label='Last name' name='surname'
                             onChange={this.handleChange}/>
-                <Form.Input type='text' fluid label='Phone number' name='phone' value={this.state.phone}
+                <Form.Input type='text' fluid label='Phone number' name='phone'
                             onChange={this.handleChange}/>
-                <Form.Input type='text' fluid label='Mail' name='mail' value={this.state.mail}
+                <Form.Input type='text' fluid label='Mail' name='mail'
                             onChange={this.handleChange}/>
                 <Form.Group inline>
                     <Form.Button onClick={this.handleSubmit}>Submit</Form.Button>
