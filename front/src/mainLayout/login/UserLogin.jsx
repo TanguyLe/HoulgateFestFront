@@ -8,7 +8,6 @@ import UserLogin from "./index";
 class WrappedUserLogin extends React.Component {
     render() {
         return <div className="fullHeight fullWidth">
-            Test
             <UserLogin name={this.props.name || null} email={this.props.email || null}/>
         </div>;
     }
