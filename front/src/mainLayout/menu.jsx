@@ -8,7 +8,8 @@ export const leftItems = [
     {children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun"}
 ];
 export const rightItems = [
-    {children: <Link to='/login'>User</Link>, key: "user"}
+    {children: <Link to='/login'>User</Link>, key: "user"},
+    {children: <Link to='/contact'>Contact</Link>, key: "contact"}
 ];
 
 const NavBarMobile = ({
