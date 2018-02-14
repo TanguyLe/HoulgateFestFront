@@ -4,9 +4,9 @@ import React from "react";
 class Home extends React.Component {
 	render() {
 		return (
-			<div className="fullHeight fullWidth">
-				Salut c'est moi, la reine des mouettes!
-			</div>
+			<div>
+                Salut à tous c'est Julien, et bienvenue sur mon site !
+            </div>
 		);
 	}
 }
