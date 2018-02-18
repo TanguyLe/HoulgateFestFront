@@ -73,9 +73,13 @@ const NavBarDesktop = ({leftItems, rightItems}) => (
     </Menu>
 );
 
-const NavBarChildren = ({children}) => (
-    <Container style={{marginTop: "5em"}}>{children}</Container>
-);
+const NavBarChildren = ({children, fluid = true}) => {
+    if (fluid)
+        return <Container fluid style={{marginTop: "5em"}}>{children}</Container>;
+    else
+        return <Container style={{marginTop: "5em"}}>{children}</Container>
+};
+
 
 class NavBar extends React.Component {
     state = {
