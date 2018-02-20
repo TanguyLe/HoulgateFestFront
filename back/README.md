@@ -8,6 +8,7 @@ cd HoulgateFest/back
 npm install
 ```
 2. Install mongodb by the following steps:
+
 a. Import the public key:
 ```shell
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
@@ -22,7 +23,7 @@ sudo apt-get update
 ```
 d. Install the latest stable version:
 ```shell
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
+sudo apt-get install -y mongodb-org
 ```
 ## Usage
 ### Development
