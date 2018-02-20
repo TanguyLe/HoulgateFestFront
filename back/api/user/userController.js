@@ -5,7 +5,7 @@ let mongoose = require('mongoose'),
 exports.login = (req, res) => {
     User.findOne({email: req.body.email}, (err, user) => {
         if (err) res.send(err);
-        if (!user) return res.status(401).json({ message: 'Authentication failed. Invalid user or password.' });
+        if (!user) return res.status(401).json({ message: 'Authentication failed. Invalid user.' });
         if (user.password !== req.body.password)
             return res.status(401).json({ message: 'Authentication failed. Invalid password.' });
 
