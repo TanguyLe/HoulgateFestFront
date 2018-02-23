@@ -5,8 +5,10 @@ import Button from "../../utils/basics/Button/index";
 import Block from "../../utils/basics/Block/index";
 import TextBlock from "../../utils/basics/TextBlock/index";
 import Wrapper from "../../utils/basics/Wrapper/index";
-import {NAME, TYPE, SIGN_UP_FORM_BLOCK_INDEX_PREFIX, signUpDef} from "../constants";
+import {NAME, TYPE, SIGN_UP_FORM_BLOCK_INDEX_PREFIX, REGISTER_URL, LOGIN_URL, signUpDef} from "../constants";
+import {login} from "../store"
 import {upCaseFirstLetter} from "../../utils/miscFcts"
+import {postCallApi} from "../../utils/api/fetchMiddleware";
 
 
 class SignUpForm extends React.Component {
@@ -20,6 +22,7 @@ class SignUpForm extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.onClickReset = this.onClickReset.bind(this);
+        this.onClickSubmit = this.onClickSubmit.bind(this);
     }
 
     onClickReset() {
@@ -29,6 +32,32 @@ class SignUpForm extends React.Component {
             password: "",
             confirm: ""
         });
+    }
+
+    onClickSubmit() {
+        postCallApi(REGISTER_URL, this.state, false)
+            .then((response) => {
+                if (!response.ok)
+                    throw Error("requête");
+                return response;
+            })
+            .then((response) => response.json())
+            .then((jsonData) => {
+                postCallApi(LOGIN_URL, jsonData, false)
+                    .then((response) => {
+                        if (!response.ok)
+                            throw Error("requête");
+                        return response;
+                    })
+                    .then((response) => response.json())
+                    .then((jsonData) => {
+                        login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
+                        alert("Login successfull " + jsonData.username + " !");
+                    })
+                    .catch(error => alert(error))
+            })
+            .catch(error => alert(error))
+            .then(() => this.onClickReset());
     }
 
     handleChange(event) {
@@ -66,7 +95,7 @@ class SignUpForm extends React.Component {
                                 " confirm: ",
                                 this.state.confirm
                             ]);
-                            /* Call something from props here*/
+                            this.onClickSubmit();
                         }}
                     >
                         Send

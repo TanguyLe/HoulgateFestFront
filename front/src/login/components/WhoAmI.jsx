@@ -1,6 +1,5 @@
 /* @flow */
 import React from "react";
-import {isNil} from "lodash/fp";
 
 import Block from "../../utils/basics/Block/index";
 import Text from "../../utils/basics/Text/index";

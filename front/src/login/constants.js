@@ -1,11 +1,12 @@
-export const LOGIN_URL = "https://jsonplaceholder.typicode.com/users/3";
+export const LOGIN_URL = "http://localhost:3000/login";
+export const REGISTER_URL = "http://localhost:3000/users";
 
 export const STYLED_TAB_INDEX_PREFIX = "styledTab";
 export const TAB_LABELS = ["My account", "Log In", "Sign Up"];
 
 export const SIGN_UP_FORM_BLOCK_INDEX_PREFIX = "signUpFormBlock";
 
-export const NAME = "name";
+export const NAME = "username";
 export const TYPE = "type";
 
 export const TEXT = "text";
