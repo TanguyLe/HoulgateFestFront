@@ -33,9 +33,15 @@ export const autoRefreshFetch = (requestUrl, params) => {
 };
 
 export const getCallApi = (endpoint, auth = true) => {
-    return autoRefreshFetch(endpoint, genGetParams(auth))
+    if (auth)
+        return autoRefreshFetch(endpoint, genGetParams(auth));
+
+    return fetch(endpoint, genGetParams(auth))
 };
 
 export const postCallApi = (endpoint, body, auth = true) => {
-    return autoRefreshFetch(endpoint, genPostParams(body, auth))
+    if (auth)
+        return autoRefreshFetch(endpoint, genPostParams(body, auth));
+
+    return fetch(endpoint, genPostParams(body, auth))
 };
