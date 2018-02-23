@@ -1,6 +1,7 @@
 let express = require('express'),
     app = express(),
     port = process.env.PORT || 3000,
+    cors = require('cors'),
     mongoose = require('mongoose'),
     User = require('./api/user/userModel'),
     middleware = require('./api/utils/middleware'),
@@ -11,6 +12,7 @@ let express = require('express'),
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/Userdb');
 
+app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

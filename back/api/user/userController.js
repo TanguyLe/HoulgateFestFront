@@ -11,7 +11,9 @@ exports.login = (req, res) => {
 
         let accessToken = tokenUtils.generateAccessToken({username: user.username, email: user.email});
 
-        res.json({"accessToken": accessToken, "refreshToken": tokenUtils.generateRefreshToken(accessToken)});
+        res.json({"username": user.username,
+            "accessToken": accessToken,
+            "refreshToken": tokenUtils.generateRefreshToken(accessToken)});
     });
 };
 
