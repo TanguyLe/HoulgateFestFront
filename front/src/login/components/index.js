@@ -5,6 +5,7 @@ import glamorous from "glamorous";
 import LogInForm from "./LogInForm";
 import SignUpForm from "./SignUpForm";
 import WhoAmI from "./WhoAmI";
+import ReadUser from "./ReadUser"
 import Card from "../../utils/Card/index";
 import {STYLED_TAB_INDEX_PREFIX, TAB_LABELS} from "../constants";
 
@@ -75,7 +76,9 @@ class UserLogin extends React.Component {
                 ? <LogInForm style={style}/>
                 : this.state.tabIndex === 2
                     ? <SignUpForm style={style}/>
-                    : <WhoAmI name={this.props.name} email={this.props.email}/>;
+                    : this.state.tabIndex === 3
+                        ? <WhoAmI name={this.props.name} email={this.props.email}/>
+                        : <ReadUser style={style}/>;
 
         return (
 
