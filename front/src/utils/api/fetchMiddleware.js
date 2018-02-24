@@ -5,7 +5,7 @@ import {genGetParams, genPostParams, getAuthUpdatedParams} from "./paramsFcts";
 export const refreshLogin = () => {
     let creds = getCredentials();
 
-    let params = genPostParams(creds, false);
+    let params = genPostParams({refreshToken: creds.refreshToken});
 
     return fetch(REFRESH_LOGIN_URL, params)
         .then((response) => {
@@ -24,11 +24,11 @@ export const refreshLogin = () => {
 export const autoRefreshFetch = (requestUrl, params) => {
     return fetch(requestUrl, params).then((response) => {
         if (!response.ok && (response.status === 401))
-            refreshLogin().then(() => {
+            return refreshLogin().then(() => {
                 params = getAuthUpdatedParams(params)
             }).then(() => autoRefreshFetch(requestUrl, params));
-
-        return response;
+        else
+            return response;
     });
 };
 

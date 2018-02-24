@@ -22,7 +22,7 @@ exports.getJWTToken = (headers) => {
 };
 
 exports.generateAccessToken = (info="random_shit") => {
-    return jwt.sign(info, secret, {expiresIn: "1h"});
+    return jwt.sign(info, secret, {expiresIn: "10m"});
 };
 
 exports.generateRefreshToken = (accessToken) => {
@@ -37,6 +37,10 @@ exports.generateRefreshToken = (accessToken) => {
 
 exports.checkAccessToken = (accessToken, callbackFct, ignoreExpiration) => {
     jwt.verify(accessToken, secret, {ignoreExpiration: ignoreExpiration}, callbackFct)
+};
+
+exports.checkIfAccessTokenExpired = (accessToken) => {
+    return (Date.now() / 1000) > jwt.decode(accessToken).exp;
 };
 
 exports.checkRefreshToken = (accessToken, refreshToken) => {

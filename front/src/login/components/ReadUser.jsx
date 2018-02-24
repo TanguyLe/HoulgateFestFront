@@ -32,7 +32,8 @@ class UserReader extends React.Component {
                 })
                 .then((response) => response.json())
                 .then((jsonData) => {
-                    this.setState({username: jsonData.username});
+
+                    this.setState({username: (jsonData.username || "Not Found")});
                 })
                 .catch(error => alert(error))
     }

@@ -13,7 +13,7 @@ export const genParams = (method, body, auth = true) => {
         if (!creds.login)
             throw Error("Vous n'êtes pas connecté");
 
-        header["Authorization"] = "Basic " + creds.accessToken;
+        header["authorization"] = "JWT " + creds.accessToken;
     }
 
     return (body ? {
@@ -31,7 +31,7 @@ export const getAuthUpdatedParams = (params) => {
 
     let header = {
         'Content-Type': 'application/json',
-        "Authorization": "Basic " + creds.accessToken
+        "authorization": "JWT " + creds.accessToken
     };
 
     return Object.assign(params, {"headers": new Headers(header)})
