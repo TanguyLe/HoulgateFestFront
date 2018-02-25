@@ -1,28 +1,41 @@
 let mongoose = require('mongoose'),
     User = mongoose.model('Users'),
-    tokenUtils = require('../utils/tokenUtils');
+    passwordUtils = require('../utils/password'),
+    tokenUtils = require('../utils/token');
+
+
+const fillUserAndTokens = (user, res) => {
+    let accessToken = tokenUtils.generateAccessToken({username: user.username, email: user.email});
+
+    res.json({"username": user.username,
+        "accessToken": accessToken,
+        "refreshToken": tokenUtils.generateRefreshToken(accessToken)});
+};
 
 exports.login = (req, res) => {
     User.findOne({email: req.body.email}, (err, user) => {
-        if (err) res.send(err);
         if (!user) return res.status(401).json({ message: 'Authentication failed. Invalid user.' });
-        if (user.password !== req.body.password)
-            return res.status(401).json({ message: 'Authentication failed. Invalid password.' });
 
-        let accessToken = tokenUtils.generateAccessToken({username: user.username, email: user.email});
+        passwordUtils.comparePassword(req.body.password, user.password).then((resPassword) => {
+            if (!resPassword)
+                return res.status(401).json({ message: 'Authentication failed. Invalid password.' });
 
-        res.json({"username": user.username,
-                  "accessToken": accessToken,
-                  "refreshToken": tokenUtils.generateRefreshToken(accessToken)});
+            if (err) res.send(err);
+            else fillUserAndTokens(user, res);
+        });
     });
 };
 
 exports.createUser = (req, res) => {
-    let new_user = new User(req.body);
-    new_user.save((err, user) => {
-        if (err) res.send(err);
-        else
-            res.json({"email": user.email, "username": user.username});
+    passwordUtils.cryptPassword(req.body.password).then((resPassword) => {
+        let newUserInfo = req.body;
+        newUserInfo.password = resPassword;
+
+        let newUser = new User(newUserInfo);
+        newUser.save((err, user) => {
+            if (err) res.send(err);
+            else fillUserAndTokens(user, res);
+        });
     });
 };
 

@@ -1,4 +1,4 @@
-let tokenUtils = require('./tokenUtils');
+let tokenUtils = require('./token');
 
 exports.userAuth = (req, res, next) => {
     req.user = undefined;

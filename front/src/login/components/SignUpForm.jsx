@@ -28,7 +28,7 @@ class SignUpForm extends React.Component {
     onClickReset() {
         this.setState({
             email: "",
-            name: "",
+            username: "",
             password: "",
             confirm: ""
         });
@@ -43,18 +43,8 @@ class SignUpForm extends React.Component {
             })
             .then((response) => response.json())
             .then((jsonData) => {
-                postCallApi(LOGIN_URL, jsonData, false)
-                    .then((response) => {
-                        if (!response.ok)
-                            throw Error("requête");
-                        return response;
-                    })
-                    .then((response) => response.json())
-                    .then((jsonData) => {
-                        login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
-                        alert("Login successfull " + jsonData.username + " !");
-                    })
-                    .catch(error => alert(error))
+                login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
+                alert("Login successfull " + jsonData.username + " !");
             })
             .catch(error => alert(error))
             .then(() => this.onClickReset());
@@ -89,7 +79,7 @@ class SignUpForm extends React.Component {
                                 "email: ",
                                 this.state.email,
                                 " name: ",
-                                this.state.name,
+                                this.state.username,
                                 " password: ",
                                 this.state.password,
                                 " confirm: ",
