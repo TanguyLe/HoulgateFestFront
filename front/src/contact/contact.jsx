@@ -31,6 +31,7 @@ class ContactForm extends React.Component {
 
     handleSubmit(event) {
         //Here is the function useful to check all our inputs
+
         event.preventDefault();
         console.log(this.state);
     }
@@ -38,13 +39,13 @@ class ContactForm extends React.Component {
     render() {
         return (
             <Form onSubmit={this.handleSubmit}>
-                <Form.Input type='text' fluid label='First name' name='firstname'
+                <Form.Input type='text' fluid label='First name' name='firstname' value={this.state.firstname}
                             onChange={this.handleChange}/>
-                <Form.Input type='text' fluid label='Last name' name='surname'
+                <Form.Input type='text' fluid label='Last name' name='surname' value={this.state.surname}
                             onChange={this.handleChange}/>
-                <Form.Input type='text' fluid label='Phone number' name='phone'
+                <Form.Input type='text' fluid label='Phone number' name='phone' value={this.state.phone}
                             onChange={this.handleChange}/>
-                <Form.Input type='text' fluid label='Mail' name='mail'
+                <Form.Input type='text' fluid label='Mail' name='mail' value={this.state.mail}
                             onChange={this.handleChange}/>
                 <Form.Group inline>
                     <Form.Button onClick={this.handleSubmit}>Submit</Form.Button>
