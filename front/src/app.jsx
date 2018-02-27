@@ -14,7 +14,7 @@ class App extends React.Component {
         return <BrowserRouter>
                 <Switch>
                     <DefaultLayout path="/" exact component={Home}/>
-                    <DefaultLayout path="/shotgun" component={Dummy}/>
+                    <DefaultLayout path="/shotgun" component={Dummy} bigContainer/>
                     <DefaultLayout path="/login" component={UserLogin}/>
                     <DefaultLayout path="/contact" component={ContactForm}/>
                     <DefaultLayout component={NotFound}/>
