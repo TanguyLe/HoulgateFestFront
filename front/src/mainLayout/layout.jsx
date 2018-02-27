@@ -5,16 +5,19 @@ import NavBar from './menu'
 import {leftItems, rightItems} from './menu'
 
 
-const DefaultLayout = ({component: Component, ...rest}) => {
-    return (
-        <Route {...rest} render={matchProps => (
-            <div className="DefaultLayout">
-                <NavBar leftItems={leftItems} rightItems={rightItems}>
-                    <Component {...matchProps} />
-                </NavBar>
-            </div>
-        )}/>
-    )
-};
+class DefaultLayout extends React.Component {
+    render() {
+        const {component: Component, bigContainer: bigContainer, ...rest} = this.props;
+        return (
+            <Route {...rest} render={matchProps => (
+                <div className="DefaultLayout">
+                    <NavBar leftItems={leftItems} rightItems={rightItems}
+                            bigContainer={bigContainer}>
+                        <Component {...matchProps} />
+                    </NavBar>
+                </div>
+            )}/>)
+    }
+}
 
 export default DefaultLayout;
