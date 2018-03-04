@@ -73,7 +73,7 @@ class SignUpForm extends React.Component {
                 })}
                 <Block>
                     <Button
-                        color={this.state.password === this.state.confirm ? "green" : "red"}
+                        color={this.state.password ? this.state.password === this.state.confirm ? "green" : "red" : "black"}
                         onClick={() => {
                             alert([
                                 "email: ",
