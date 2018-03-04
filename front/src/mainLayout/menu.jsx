@@ -2,13 +2,16 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {Icon, Responsive, Sidebar, Menu, Container} from 'semantic-ui-react';
 
+import WhoAmI from "../login/components/WhoAmI"
+
 
 export const leftItems = [
     {children: <Link to='/'>Home</Link>, key: "home"},
     {children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun"}
 ];
 export const rightItems = [
-    {children: <Link to='/login'>User</Link>, key: "user"}
+    {children: <Link to='/test'>ReadUserTestRoute</Link>, key: "test"},
+    {children: <WhoAmI/>, key: "user"}
 ];
 
 const NavBarMobile = ({
@@ -35,7 +38,6 @@ const NavBarMobile = ({
             style={{minHeight: "100vh"}}
         >
             <Menu fixed="top" inverted>
-
                 <Menu.Item onClick={onToggle}>
                     <Icon name="sidebar"/>
                 </Menu.Item>

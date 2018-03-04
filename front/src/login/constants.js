@@ -3,7 +3,7 @@ export const REGISTER_URL = "http://localhost:3000/users";
 export const READ_USER_URL = "http://localhost:3000/users";
 
 export const STYLED_TAB_INDEX_PREFIX = "styledTab";
-export const TAB_LABELS = ["RUser", "Log In", "Sign Up", "My account"];
+export const TAB_LABELS = ["RUser", "Log In", "Sign Up"];
 
 export const SIGN_UP_FORM_BLOCK_INDEX_PREFIX = "signUpFormBlock";
 

@@ -1,12 +1,13 @@
 /* @flow */
 import React from "react";
+import {Button} from "semantic-ui-react"
 
 import Block from "../../utils/basics/Block/index";
 import Text from "../../utils/basics/Text/index";
 import Wrapper from "../../utils/basics/Wrapper/index";
 import {getCredentials, logout, register, unregister} from "../store"
-import Button from "../../utils/basics/Button/index";
 
+import LoginModal from "./LoginModal"
 
 class WhoAmI extends React.Component {
     constructor() {
@@ -15,6 +16,7 @@ class WhoAmI extends React.Component {
         this.state = {login: ""};
 
         this.changingCreds = this.changingCreds.bind(this);
+        this.onClickConnect = this.onClickConnect.bind(this);
     }
 
     changingCreds(creds) {
@@ -31,31 +33,25 @@ class WhoAmI extends React.Component {
         unregister(this.changingCreds);
     }
 
+    onClickConnect() {
+
+    }
+
     render() {
         let ContentToDisplay;
         if (!this.state.login)
             ContentToDisplay = (
                 <Wrapper column>
-                    <Block>
-                        <Block padding="small" align="left">
-                            <Text weight="bold">T Pa Loggé Gros </Text>
-                        </Block>
-                        <Block padding="small" align="left">
-                            <Text>Moi j'aime bien les abricots</Text>
-                        </Block>
+                    <Block noPadding align="left">
+                       <LoginModal/>
                     </Block>
                 </Wrapper>
             );
         else
             ContentToDisplay = (
-                <Wrapper column>
-                    <Block>
-                        <Block padding="small" align="left">
-                            <Text weight="bold">Name: </Text>
-                            <Text>{this.state.login}</Text>
-                        </Block>
-                        <Button onClick={logout}>Logout</Button>
-                    </Block>
+                <Wrapper line>
+                    <Text style={{paddingRight: "10px", margin: "auto"}} color="white">{this.state.login}</Text>
+                    <Button onClick={logout}>Déconnection</Button>
                 </Wrapper>
             );
         return ContentToDisplay;
