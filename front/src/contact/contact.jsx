@@ -6,9 +6,8 @@ export const ErrorDisplayer = ({formErrors}) =>
     <div className='ErrorDisplayer'>
         {Object.keys(formErrors).map((fieldName, i) => {
             if (formErrors[fieldName].length > 0) {
-                console.log("Error detected");
                 return (
-                    <p key={i}>{fieldName} {formErrors[fieldName]}</p>
+                    <p key={i}>{formErrors[fieldName]}</p>
                 )
             } else {
                 return '';
@@ -17,31 +16,24 @@ export const ErrorDisplayer = ({formErrors}) =>
     </div>;
 
 class ContactForm extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             surname: '',
             firstname: '',
             phone: '',
-            mail: '',
-            formErrors: {
-                surname: '',
-                firstname: '',
-                phone: '',
-                mail: ''
-            },
-            formValid: {
-                surname: false,
-                firstname: false,
-                phone: false,
-                mail: false
-            },
-            globalValid: false
+            mail: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateField = this.validateField.bind(this);
-        this.validateForm = this.validateForm.bind(this);
+        this.formErrors = {
+            surname: '',
+            firstname: '',
+            phone: '',
+            mail: ''
+        };
+        this.formValid = true;
     }
 
     handleChange(event) {
@@ -49,42 +41,32 @@ class ContactForm extends React.Component {
         const name = target.name;
         this.setState({
             [name]: target.value
-        }, () => this.validateField(name, target.value));
+        }, this.validateField(name, target.value));
 
     }
 
-    validateField(fieldName, value) {
-        let fieldValidationErrors = this.state.formErrors;
-        let formValid = this.state.formValid;
+    validateField(fieldName, value, next) {
+        let formErrors = this.formErrors;
         switch (fieldName) {
             case 'mail':
-                formValid.mail = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-                fieldValidationErrors.mail = formValid.email ? '' : ' est invalide';
+                formErrors.mail = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? '' : 'Le mail n\'est pas correctement formé';
                 break;
             case 'surname':
-                formValid.surname = value.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u);
-                fieldValidationErrors.surname = formValid.surname ? '' : ' est invalide';
+                formErrors.surname = value.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u) ? '' : 'Le prénom est invalide';
                 break;
             case 'firstname':
-                formValid.firstname = value.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u);
-                fieldValidationErrors.firstname = formValid.firstname ? '' : ' est invalide';
+                formErrors.firstname = value.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u) ? '' : ' est invalide';
                 break;
             case 'phone':
-                formValid.phone = value.match(/^[0-9]{10}$/i);
-                fieldValidationErrors.phone = formValid.phone ? '' : ' est incorrect';
+                formErrors.phone = value.match(/^[0-9]{10}$/i) ? '' : 'Le telephone est incorrect';
                 break;
             default:
                 break;
         }
-        this.setState({
-            formErrors: fieldValidationErrors,
-            formValid: formValid
-        }, this.validateForm);
+        this.formErrors = formErrors;
+        this.formValid = _.some(this.formErrors, (val) => val !== "");
     }
 
-    validateForm() {
-        this.setState({globalValid: _.every(this.state.formValid)})
-    }
 
     reset() {
         Object.keys(this.state).map(x => this.setState({[x]: ''}));
@@ -92,14 +74,13 @@ class ContactForm extends React.Component {
 
 
     handleSubmit(event) {
-        event.preventDefault();
         console.log(this.state);
     }
 
     render() {
         return (
             <Form onSubmit={this.handleSubmit}>
-                <ErrorDisplayer formErrors={this.state.formErrors}/>
+                <ErrorDisplayer formErrors={this.formErrors}/>
                 <Form.Input required type='text' fluid label='First name' name='firstname' value={this.state.firstname}
                             onChange={this.handleChange}/>
                 <Form.Input required type='text' fluid label='Last name' name='surname' value={this.state.surname}
@@ -109,7 +90,7 @@ class ContactForm extends React.Component {
                 <Form.Input required type='text' fluid label='Mail' name='mail' value={this.state.mail}
                             onChange={this.handleChange}/>
                 <Form.Group inline>
-                    <Form.Button type="submit" disabled={!this.state.globalValid}
+                    <Form.Button type="submit" disabled={this.formValid}
                                  onClick={this.handleSubmit}>Submit</Form.Button>
                     <Form.Button onClick={this.reset.bind(this)}>Reset</Form.Button>
                 </Form.Group>
