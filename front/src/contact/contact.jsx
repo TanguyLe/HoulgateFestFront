@@ -2,19 +2,6 @@ import React from "react";
 import {Form} from 'semantic-ui-react';
 
 
-export const ErrorDisplayer = ({formErrors}) =>
-    <div className='ErrorDisplayer'>
-        {Object.keys(formErrors).map((fieldName, i) => {
-            if (formErrors[fieldName].length > 0) {
-                return (
-                    <p key={i}>{formErrors[fieldName]}</p>
-                )
-            } else {
-                return '';
-            }
-        })}
-    </div>;
-
 class ContactForm extends React.Component {
     constructor() {
         super();
@@ -45,17 +32,17 @@ class ContactForm extends React.Component {
 
     }
 
-    validateField(fieldName, value, next) {
+    validateField(fieldName, value) {
         let formErrors = this.formErrors;
         switch (fieldName) {
             case 'mail':
                 formErrors.mail = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? '' : 'Le mail n\'est pas correctement formé';
                 break;
             case 'surname':
-                formErrors.surname = value.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u) ? '' : 'Le prénom est invalide';
+                formErrors.surname = value.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u) ? '' : 'Le nom est invalide';
                 break;
             case 'firstname':
-                formErrors.firstname = value.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u) ? '' : ' est invalide';
+                formErrors.firstname = value.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u) ? '' : 'Le prénom est invalide';
                 break;
             case 'phone':
                 formErrors.phone = value.match(/^[0-9]{10}$/i) ? '' : 'Le telephone est incorrect';
@@ -80,14 +67,37 @@ class ContactForm extends React.Component {
     render() {
         return (
             <Form onSubmit={this.handleSubmit}>
-                <ErrorDisplayer formErrors={this.formErrors}/>
-                <Form.Input required type='text' fluid label='First name' name='firstname' value={this.state.firstname}
+                <Form.Input required
+                            type='text'
+                            fluid
+                            label='Prénom'
+                            error={this.formErrors.firstname !== ''}
+                            name='firstname'
+                            value={this.state.firstname}
                             onChange={this.handleChange}/>
-                <Form.Input required type='text' fluid label='Last name' name='surname' value={this.state.surname}
+                <Form.Input required
+                            type='text'
+                            fluid
+                            label='Nom de famille'
+                            error={this.formErrors.surname !== ''}
+                            name='surname'
+                            value={this.state.surname}
                             onChange={this.handleChange}/>
-                <Form.Input required type='text' fluid label='Phone number' name='phone' value={this.state.phone}
+                <Form.Input required
+                            type='text'
+                            fluid
+                            label='Numéro de téléphone'
+                            error={this.formErrors.phone !== ''}
+                            name='phone'
+                            value={this.state.phone}
                             onChange={this.handleChange}/>
-                <Form.Input required type='text' fluid label='Mail' name='mail' value={this.state.mail}
+                <Form.Input required
+                            type='text'
+                            fluid
+                            label='Mail'
+                            error={this.formErrors.mail !== ''}
+                            name='mail'
+                            value={this.state.mail}
                             onChange={this.handleChange}/>
                 <Form.Group inline>
                     <Form.Button type="submit" disabled={this.formValid}
