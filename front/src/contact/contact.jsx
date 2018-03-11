@@ -21,6 +21,16 @@ class ContactForm extends React.Component {
             mail: ''
         };
         this.formValid = true;
+        this.getInitialState = this.getInitialState.bind(this);
+    }
+
+    getInitialState() {
+        return {
+            surname: '',
+            firstname: '',
+            phone: '',
+            mail: ''
+        };
     }
 
     handleChange(event) {
@@ -50,18 +60,25 @@ class ContactForm extends React.Component {
             default:
                 break;
         }
+        if (!value) {
+            console.log(fieldName);
+            formErrors[fieldName] = '';
+        }
+
         this.formErrors = formErrors;
+        console.log(formErrors);
         this.formValid = _.some(this.formErrors, (val) => val !== "");
     }
 
 
     reset() {
-        Object.keys(this.state).map(x => this.setState({[x]: ''}));
+        this.setState(this.getInitialState());
     }
 
 
     handleSubmit(event) {
-        console.log(this.state);
+        if (this.formValid)
+            console.log(this.state);
     }
 
     render() {
@@ -100,9 +117,9 @@ class ContactForm extends React.Component {
                             value={this.state.mail}
                             onChange={this.handleChange}/>
                 <Form.Group inline>
-                    <Form.Button type="submit" disabled={this.formValid}
+                    <Form.Button type="submit" //disabled={this.formValid}
                                  onClick={this.handleSubmit}>Submit</Form.Button>
-                    <Form.Button onClick={this.reset.bind(this)}>Reset</Form.Button>
+                    <Form.Button type="reset" onClick={this.reset.bind(this)}>Reset</Form.Button>
                 </Form.Group>
             </Form>
         );
