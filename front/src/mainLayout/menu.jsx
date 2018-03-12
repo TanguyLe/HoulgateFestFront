@@ -6,7 +6,6 @@ import WhoAmI from "../login/components/WhoAmI"
 
 
 export const leftItems = [
-    {children: <Link to='/'>Home</Link>, key: "home"},
     {children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun"}
 ];
 export const rightItems = [
@@ -59,7 +58,7 @@ const NavBarMobile = ({
 const NavBarDesktop = ({leftItems, rightItems}) => (
     <Menu fixed="top" inverted>
         <Menu.Item>
-            Houlgate Fest
+            <Link to='/'>HoulgateFest</Link>
         </Menu.Item>
         {leftItems.map(item => {
             item['as'] = 'div';
