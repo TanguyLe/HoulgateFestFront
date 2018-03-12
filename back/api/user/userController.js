@@ -14,10 +14,10 @@ const fillUserAndTokens = (user, res) => {
 
 exports.login = (req, res) => {
     User.findOne({email: req.body.email}, (err, user) => {
-        if (!user) return res.status(401).json({ message: 'Authentication failed. Invalid user.' });
+        if (!user) return res.status(401).json({ message: 'Authentication failed. Invalid email.' });
 
-        passwordUtils.comparePassword(req.body.password, user.password).then((resPassword) => {
-            if (!resPassword)
+        passwordUtils.comparePassword(req.body.password, user.password).then((authenticated) => {
+            if (!authenticated)
                 return res.status(401).json({ message: 'Authentication failed. Invalid password.' });
 
             if (err) res.send(err);

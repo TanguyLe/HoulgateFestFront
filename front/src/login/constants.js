@@ -15,7 +15,7 @@ export const TEXT = "text";
 const EMAIL = "email";
 const PASSWORD = "password";
 const CONFIRM = "confirm";
-export const signUpDef = [
+export const SIGN_UP_DEF = [
     {[NAME]: EMAIL, [TYPE]: TEXT},
     {[NAME]: NAME, [TYPE]: TEXT},
     {[NAME]: PASSWORD, [TYPE]: PASSWORD},
