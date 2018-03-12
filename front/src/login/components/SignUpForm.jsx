@@ -1,11 +1,9 @@
 /* @flow */
 import React from "react";
+import {Form} from "semantic-ui-react"
 
-import Button from "../../utils/basics/Button/index";
-import Block from "../../utils/basics/Block/index";
-import TextBlock from "../../utils/basics/TextBlock/index";
-import Wrapper from "../../utils/basics/Wrapper/index";
-import {NAME, TYPE, SIGN_UP_FORM_BLOCK_INDEX_PREFIX, REGISTER_URL, LOGIN_URL, signUpDef} from "../constants";
+
+import {NAME, TYPE, SIGN_UP_FORM_BLOCK_INDEX_PREFIX, REGISTER_URL, SIGN_UP_DEF} from "../constants";
 import {login} from "../store"
 import {upCaseFirstLetter} from "../../utils/miscFcts"
 import {postCallApi} from "../../utils/api/fetchMiddleware";
@@ -16,9 +14,13 @@ class SignUpForm extends React.Component {
         super();
 
         this.state = {};
-        signUpDef.forEach((elem) => {
-            Object.assign(this.state, {[elem[NAME]]: ""})
+        this.initialState = {};
+
+        SIGN_UP_DEF.forEach((elem) => {
+            Object.assign(this.initialState, {[elem[NAME]]: ""})
         });
+
+        Object.assign(this.state, this.initialState);
 
         this.handleChange = this.handleChange.bind(this);
         this.onClickReset = this.onClickReset.bind(this);
@@ -26,12 +28,7 @@ class SignUpForm extends React.Component {
     }
 
     onClickReset() {
-        this.setState({
-            email: "",
-            username: "",
-            password: "",
-            confirm: ""
-        });
+        this.setState(this.initialState);
     }
 
     onClickSubmit() {
@@ -44,7 +41,6 @@ class SignUpForm extends React.Component {
             .then((response) => response.json())
             .then((jsonData) => {
                 login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
-                alert("Login successfull " + jsonData.username + " !");
             })
             .catch(error => alert(error))
             .then(() => this.onClickReset());
@@ -56,45 +52,25 @@ class SignUpForm extends React.Component {
 
     render() {
         return (
-            <Wrapper column style={{...this.props.style}}>
-                {signUpDef.map((elem, index) => {
+            <Form onSubmit={this.handleSubmit}>
+                {SIGN_UP_DEF.map((elem, index) => {
                     let name = elem[NAME];
                     return (
-                        <Block padding={"small"} key={SIGN_UP_FORM_BLOCK_INDEX_PREFIX + index}>
-                            <TextBlock weight={"bold"} padding={"small"}>
-                                {upCaseFirstLetter(name)}:
-                            </TextBlock>
-                            <input
-                                   type={elem[TYPE]} value={this.state[name]}
-                                   name={name}
-                                   onChange={this.handleChange}/>
-                        </Block>
+                        <Form.Input required
+                                    key={SIGN_UP_FORM_BLOCK_INDEX_PREFIX + index}
+                                    type={elem[TYPE]}
+                                    fluid
+                                    label={upCaseFirstLetter(name)}
+                                    name={name}
+                                    value={this.state[name]}
+                                    onChange={this.handleChange}/>
                     )
                 })}
-                <Block>
-                    <Button
-                        color={this.state.password ? this.state.password === this.state.confirm ? "green" : "red" : "black"}
-                        onClick={() => {
-                            alert([
-                                "email: ",
-                                this.state.email,
-                                " name: ",
-                                this.state.username,
-                                " password: ",
-                                this.state.password,
-                                " confirm: ",
-                                this.state.confirm
-                            ]);
-                            this.onClickSubmit();
-                        }}
-                    >
-                        Send
-                    </Button>
-                    <Button onClick={this.onClickReset}>
-                        Reset
-                    </Button>
-                </Block>
-            </Wrapper>
+            <Form.Group inline>
+                <Form.Button type="submit" onClick={this.onClickSubmit}>Inscription</Form.Button>
+                <Form.Button type="reset" onClick={this.onClickReset}>Reset</Form.Button>
+            </Form.Group>
+            </Form>
         );
     }
 }
