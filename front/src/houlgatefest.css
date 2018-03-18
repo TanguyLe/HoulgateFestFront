@@ -22,14 +22,9 @@ body {
     width: 100%;
 }
 
-.tableDisplay {
-    display: table;
-    vertical-align: middle;
-}
-
-.tableCell {
-    display: table-cell;
-    vertical-align: middle;
+.rowFlex {
+    display: flex;
+    align-items: center;
 }
 
 .paddingSides {

@@ -27,19 +27,15 @@ class WhoAmI extends React.Component {
 
     render() {
         return (!this.state.login ?
-                <div className="tableDisplay">
-                    <div className="tableCell">
-                        <LoginModal/>
-                    </div>
+                <div className="rowFlex">
+                    <LoginModal/>
                 </div>
                 :
-                (<div className="tableDisplay">
-                    <div className="tableCell paddingSides">
+                (<div className="rowFlex">
+                    <div className="paddingSides">
                         {this.state.login}
                     </div>
-                    <div className="tableCell">
-                        <Button content="Déconnection" onClick={logout}/>
-                    </div>
+                    <Button content="Déconnection" onClick={logout}/>
                 </div>)
         );
     }
