@@ -1,11 +1,8 @@
 /* @flow */
 import React from "react";
+import {Input, Button, Form, Grid} from "semantic-ui-react"
 
-import Block from "../../utils/basics/Block/index";
-import Text from "../../utils/basics/Text/index";
-import Wrapper from "../../utils/basics/Wrapper/index";
 import {READ_USER_URL} from "../constants";
-import Button from "../../utils/basics/Button/index";
 import {getCallApi} from "../../utils/api/fetchMiddleware";
 
 
@@ -39,22 +36,22 @@ class UserReader extends React.Component {
 
     render() {
             return (
-                <Wrapper column>
-                    <Block>
-                        <Text weight="bold">userId: </Text>
-                        <input
-                            type={"text"} value={this.state.userId}
-                            name={"userId"}
-                            onChange={this.handleChange}/>
+                <div>
+                    <h1> GetUserNameTest </h1>
+                    <Form>
+                        userId:
+                        <Input
+                            type="text"
+                            value={this.state.userId}
+                            name="userId"
+                            onChange={this.handleChange}
+                            placeholder='MongoUserId...' />
                         <Button onClick={this.onClickSearch}>
                             Search
                         </Button>
-                        <Block padding="small" align="left">
-                            <Text>Found Username: </Text>
-                            <Text>{this.state.username} </Text>
-                        </Block>
-                    </Block>
-                </Wrapper>
+                    </Form>
+                    Found Username: {this.state.username}
+                </div>
             );
     }
 }

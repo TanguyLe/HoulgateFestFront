@@ -1,10 +1,11 @@
 /* @flow */
 import React from "react";
 import {Form} from "semantic-ui-react"
+import {withRouter} from 'react-router-dom';
 
 
 import {NAME, TYPE, SIGN_UP_FORM_BLOCK_INDEX_PREFIX, REGISTER_URL, SIGN_UP_DEF} from "../constants";
-import {login} from "../store"
+import {login, register, unregister} from "../store"
 import {upCaseFirstLetter} from "../../utils/miscFcts"
 import {postCallApi} from "../../utils/api/fetchMiddleware";
 
@@ -25,10 +26,23 @@ class SignUpForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.onClickReset = this.onClickReset.bind(this);
         this.onClickSubmit = this.onClickSubmit.bind(this);
+        this.onLogin = this.onLogin.bind(this);
+    }
+
+    componentDidMount() {
+        register(this.onLogin)
+    }
+
+    componentWillUnmount() {
+        unregister(this.onLogin)
     }
 
     onClickReset() {
         this.setState(this.initialState);
+    }
+
+    onLogin() {
+        this.props.history.push('/');
     }
 
     onClickSubmit() {
@@ -40,10 +54,13 @@ class SignUpForm extends React.Component {
             })
             .then((response) => response.json())
             .then((jsonData) => {
-                login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
+                if(!jsonData.errors && !jsonData.errmsg)
+                    login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
+                else
+                    throw Error("requête")
             })
-            .catch(error => alert(error))
-            .then(() => this.onClickReset());
+            .then(() => {this.onClickReset(); this.props.history.push('/');})
+            .catch(error => console.log(error));
     }
 
     handleChange(event) {
@@ -75,4 +92,4 @@ class SignUpForm extends React.Component {
     }
 }
 
-export default SignUpForm;
+export default withRouter(SignUpForm);

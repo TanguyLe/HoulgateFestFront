@@ -25,18 +25,16 @@ export default class TransitionablePortalExamplePortal extends React.Component {
     }
 
     render() {
-        let style = {margin: "auto", maxWidth: "calc(100% - 2em)"};
-
         return (
             <TransitionablePortal
                 open={this.state.open}
                 onOpen={this.handleOpen}
                 onClose={this.handleClose}
-                trigger={(<Button content={'Connection'} disabled={this.state.open}/>)}
+                trigger={(<Button content="Connection" disabled={this.state.open}/>)}
             >
-                <Segment style={{width: '280px', right: '0', position: 'fixed', top: '62px', zIndex: 1000}}>
+                <Segment className="connectionModal">
                     <Header>T'es qui toi?!</Header>
-                    <LogInForm style={style} toClose={this.handleClose}/>
+                    <LogInForm className="loginForm" toClose={this.handleClose}/>
                 </Segment>
             </TransitionablePortal>
         )
