@@ -13,7 +13,7 @@ class LogIn extends React.Component {
         super();
         // The component is destroyed at closing by semantic-ui portal, which is not the expected behavior
         // It is consequently coded without reset
-        this.state = {email: "", password: ""};
+        this.state = {email: "", password: "", wrongField: ""};
 
         this.onClickLogin = this.onClickLogin.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -27,21 +27,28 @@ class LogIn extends React.Component {
     }
 
     onClickLogin() {
+        let failure = false;
+
         postCallApi(LOGIN_URL, this.state, false)
             .then((response) => {
                 if (!response.ok)
-                    throw Error("requête");
+                    failure = true;
                 return response;
             })
             .then((response) => response.json())
             .then((jsonData) => {
-                login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
-            })
-            .catch(error => alert(error))
+                if (failure)
+                    this.setState({wrongField: jsonData.wrongField});
+                else
+                    login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
+            }).catch(error => alert("Unusual error, please check your internet connection."))
     }
 
     handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
+        if (event.target.name === this.state.wrongField && this.state.wrongField)
+            this.setState({[event.target.name]: event.target.value, wrongField: ""});
+        else
+            this.setState({[event.target.name]: event.target.value});
     }
 
     handleKeyPress(event) {
@@ -58,6 +65,7 @@ class LogIn extends React.Component {
         return (
             <Form>
                 <Form.Input type='text'
+                            error={this.state.wrongField === "email"}
                             fluid
                             id="emailInput"
                             label='Email'
@@ -68,6 +76,7 @@ class LogIn extends React.Component {
 
 
                 <Form.Input type='password'
+                            error={this.state.wrongField === "password"}
                             fluid
                             label='Password'
                             name='password'
