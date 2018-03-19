@@ -4,6 +4,8 @@ import glamorous from "glamorous";
 import Button from "../../utils/basics/Button";
 import { ROOM_SEATS_DISPLAY_INDEX_PREFIX } from "../constants";
 
+import MultipleDropdown from "./multipleDropdown";
+
 class Room extends React.Component {
 	constructor() {
 		super();
@@ -19,7 +21,7 @@ class Room extends React.Component {
 	onClickShotgun() {
 		this.setState({
 			status: "preShotgun",
-			persons: ["Jean", "Mi", "Chelle"]
+			persons: ["Tanguy", "Gautier", "Nicolas", "Hugo"]
 		});
 	}
 
@@ -34,7 +36,13 @@ class Room extends React.Component {
 				display = (
 					<Button onClick={this.onClickShotgun}>Shotgun !</Button>
 				);
-			else display = "Habitants: " + this.state.persons.join(", ");
+			else
+				display = (
+					<MultipleDropdown
+						numberOfBeds={3}
+						availablePersonIds={this.state.persons}
+					/>
+				);
 		}
 
 		return (
@@ -44,7 +52,7 @@ class Room extends React.Component {
 					flexDirection: "column",
 					justifyContent: "center",
 					alignItems: "center",
-					border: "1px solid #353535", //TODO choose color (don't change this syntaxe, it's used in my pluggin)
+					border: "1px solid #353535",
 					gridColumnStart: this.props.position.columnStart,
 					gridColumnEnd: this.props.position.columnEnd,
 					gridRowStart: this.props.position.rowStart,
