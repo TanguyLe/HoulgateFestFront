@@ -1,5 +1,6 @@
 import React from "react";
 import glamorous from "glamorous";
+import { isNil } from "lodash/fp";
 
 import Button from "../../utils/basics/Button";
 import { ROOM_SEATS_DISPLAY_INDEX_PREFIX } from "../constants";
@@ -7,18 +8,26 @@ import { ROOM_SEATS_DISPLAY_INDEX_PREFIX } from "../constants";
 import MultipleDropdown from "./multipleDropdown";
 
 class Room extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
-		this.state = {
-			status: "shotgun",
-			persons: []
-		};
+		if (isNil(props.shotgunState)) {
+			this.state = {
+				status: "readyForShotgun"
+			};
+		} else {
+			this.state = { status: props.shotgunState };
+		}
 
 		this.onClickShotgun = this.onClickShotgun.bind(this);
 	}
 
 	onClickShotgun() {
+		var wait = ms => new Promise((r, j) => setTimeout(r, ms));
+
+		this.props.shotgunFunction();
+		this.setState({ status: "loading" });
+		wait(5000);
 		this.setState({
 			status: "preShotgun",
 			persons: ["Tanguy", "Gautier", "Nicolas", "Hugo"]
@@ -31,21 +40,9 @@ class Room extends React.Component {
 
 		if (this.props.seats) {
 			preDisplay = [<br />, this.props.seats + " places", <br />];
-
-			if (this.state.status === "shotgun")
-				display = (
-					<Button onClick={this.onClickShotgun}>Shotgun !</Button>
-				);
-			else
-				display = (
-					<MultipleDropdown
-						numberOfBeds={3}
-						availablePersonIds={this.state.persons}
-					/>
-				);
 		}
 
-		return (
+		const RoomBasis = props => (
 			<div
 				style={{
 					display: "flex",
@@ -73,9 +70,50 @@ class Room extends React.Component {
 						</div>
 					);
 				})}
-				{display}
+				{props.children}
 			</div>
 		);
+
+		const RoomReadyForShotgun = () => (
+			<RoomBasis>
+				<Button onClick={this.onClickShotgun}>Shotgun !</Button>
+			</RoomBasis>
+		);
+
+		const RoomDisabled = () => (
+			<RoomBasis>
+				<div>DISABLED</div>
+			</RoomBasis>
+		);
+
+		const RoomLoading = () => (
+			<RoomBasis>
+				<div>LOADING</div>
+			</RoomBasis>
+		);
+
+		const RoomAttributingBeds = () => (
+			<RoomBasis>
+				<MultipleDropdown
+					numberOfBeds={3}
+					availablePersonIds={this.props.availablePersonIds}
+				/>
+			</RoomBasis>
+		);
+
+		switch (this.state.status) {
+			case "disabled":
+				return <RoomDisabled />;
+			case "readyForShotgun":
+				return <RoomReadyForShotgun />;
+			case "loading":
+				return <RoomLoading />;
+			case "attributingBeds":
+				return <RoomAttributingBeds />;
+
+			default:
+				return <RoomReadyForShotgun />;
+		}
 	}
 }
 
