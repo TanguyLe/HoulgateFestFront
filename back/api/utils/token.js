@@ -1,4 +1,4 @@
-let jwt = require('jsonwebtoken');
+let jwt = require("jsonwebtoken");
 
 let secret = "whodoyouthinkyouarehackingme";
 let refreshTokens = {};
