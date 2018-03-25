@@ -22,7 +22,7 @@ class LogIn extends React.Component {
     }
 
     componentDidMount() {
-        const emailInput = document.querySelector('#emailInput');
+        const emailInput = document.querySelector("#emailInput");
         setTimeout(() => emailInput.focus(), 0);
     }
 
@@ -52,34 +52,34 @@ class LogIn extends React.Component {
     }
 
     handleKeyPress(event) {
-        if(event.key === 'Enter')
+        if(event.key === "Enter")
             this.onClickLogin();
     }
 
     onClickRegister() {
-        this.props.history.push('/register');
+        this.props.history.push("/register");
         this.props.toClose()
     }
 
     render() {
         return (
             <Form>
-                <Form.Input type='text'
+                <Form.Input type="text"
                             error={this.state.wrongField === "email"}
                             fluid
                             id="emailInput"
-                            label='Email'
-                            name='email'
+                            label="Email"
+                            name="email"
                             value={this.state.email}
                             onKeyPress={this.handleKeyPress}
                             onChange={this.handleChange}/>
 
 
-                <Form.Input type='password'
+                <Form.Input type="password"
                             error={this.state.wrongField === "password"}
                             fluid
-                            label='Password'
-                            name='password'
+                            label="Mot de passe"
+                            name="password"
                             value={this.state.password}
                             onKeyPress={this.handleKeyPress}
                             onChange={this.handleChange}/>
