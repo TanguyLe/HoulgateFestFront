@@ -8,7 +8,8 @@ const enhanceText = (text) => {
     return '<b>' + text + '</b>'
 };
 
-exports.mailSender = (req, res) => {
+
+exports.mailSender = (mailContent, res) => {
     let transporter = nodemailer.createTransport(emailConfig.ACCOUNT_CONFIG);
     let mailOptions = {
         to: "houlgatefest@gmail.com",
@@ -20,12 +21,10 @@ exports.mailSender = (req, res) => {
     let newMail = new Mail(mailOptions);
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            return res.status(500).send(error);
+            return error;
         }
         console.log('Message sent: %s', info.messageId);
         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
     });
-    res.status(200).json({
-        message: 'mail sent'
-    });
+    return 0;
 };

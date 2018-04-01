@@ -4,10 +4,10 @@ let express = require('express'),
     cors = require('cors'),
     mongoose = require('mongoose'),
     User = require('./api/user/userModel'),
-    Mail = require('./api/email/mailModel'),
+    Mail = require('./api/utils/mailModel'),
     middleware = require('./api/utils/middleware'),
     userRoutes = require('./api/user/userRoutes'),
-    mailRoutes = require('./api/email/mailRoutes');
+    contactRoutes = require('./api/contact/contactRoutes');
     bodyParser = require('body-parser');
 
 // mongoose instance connection url connection
@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 
 app.use(middleware.userAuth);
 userRoutes(app);
-mailRoutes(app);
+contactRoutes(app);
 app.use(middleware.notFound);
 
 app.listen(port);
