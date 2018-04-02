@@ -41,7 +41,7 @@ class LogIn extends React.Component {
                     this.setState({wrongField: jsonData.wrongField});
                 else
                     login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
-            }).catch(error => alert("Unusual error, please check your internet connection."))
+            }).catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connection internet."))
     }
 
     handleChange(event) {

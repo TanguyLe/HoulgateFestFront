@@ -113,7 +113,7 @@ class SignUpForm extends React.Component {
                 if (!failure)
                     this.props.history.push('/');
             })
-            .catch(error => alert("Unusual error, please check your internet connection. " + error))
+            .catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connection internet. " + error))
     }
 
     validateField(name, value) {

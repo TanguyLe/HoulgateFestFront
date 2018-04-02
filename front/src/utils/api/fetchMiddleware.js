@@ -17,7 +17,7 @@ export const refreshLogin = () => {
         .then((jsonData) => {
             login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
         })
-        .catch(error => alert(error))
+        .catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connection internet. " + error))
 };
 
 export const autoRefreshFetch = (requestUrl, params) => {
