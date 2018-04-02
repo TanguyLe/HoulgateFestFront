@@ -3,5 +3,5 @@ module.exports = (app) => {
     let middleware = require('./../utils/middleware');
 
     app.route('/contact')
-        .post(middleware.userAuth, contact.send);
+        .post(contact.send);
 };

@@ -1,5 +1,7 @@
 import React from "react";
 import {Form} from 'semantic-ui-react';
+import {CONTACT_URL} from "../contact/constants";
+import {postCallApi} from "../utils/api/fetchMiddleware";
 
 
 class ContactForm extends React.Component {
@@ -79,6 +81,15 @@ class ContactForm extends React.Component {
     handleSubmit(event) {
         if (this.formValid)
             console.log(this.state);
+
+        postCallApi(CONTACT_URL, this.state, false)
+            .then((response) => {
+                if (!response.ok)
+                    throw Error("requête");
+                return response;
+            })
+            .then((response) => response.json())
+            .catch(error => alert(error))
     }
 
     render() {

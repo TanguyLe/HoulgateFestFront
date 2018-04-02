@@ -9,22 +9,21 @@ const enhanceText = (text) => {
 };
 
 
-exports.mailSender = (mailContent, res) => {
+exports.mailSender = (mailContent, cb) => {
     let transporter = nodemailer.createTransport(emailConfig.ACCOUNT_CONFIG);
     let mailOptions = {
-        to: "houlgatefest@gmail.com",
+        to: mailContent.to || "houlgatefest@gmail.com",
         from: "houlgatefest@gmail.com",
-        subject: req.body.mailContent.subject || "Titre standard",
-        text: req.body.mailContent.text || "Pas de contenu",
-        html: enhanceText(req.body.mailContent.text) || "Pas de contenu"
+        subject: mailContent.subject || "Titre standard",
+        text: mailContent.text || "Pas de contenu",
+        html: enhanceText(mailContent.text) || "Pas de contenu"
     };
     let newMail = new Mail(mailOptions);
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            return error;
+            return cb(error);
         }
         console.log('Message sent: %s', info.messageId);
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        return cb(false);
     });
-    return 0;
 };

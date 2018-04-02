@@ -1,0 +1,1 @@
+export const CONTACT_URL = "http://localhost:3000/contact";

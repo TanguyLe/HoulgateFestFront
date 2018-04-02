@@ -1,20 +1,31 @@
-let mailSender = require('../utils/mailController');
+let mail = require('../utils/mailController');
 
 
 exports.send = (req, res) => {
+
+    let title = `Mail de ${req.body.mailContent.firstname} ${req.body.mailContent.surname}`
+    let content = `Joignable au ${req.body.mailContent.phone}, ou par mel au ${req.body.mailContent.mail}.
+        Contenu de la demande : ...`;
     let mailContent = {
-        subject: req.body.mailContent.subject || "Titre standard",
-        text: req.body.mailContent.text || "Pas de contenu",
+        subject: title,
+        text: content
     };
 
-    mailSender(mailContent, (err) => {
-        if (err)
-            res.status(500).send(err);
+    mail.mailSender(mailContent, (err) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
         let contactAnswer = {
+            to: req.body.mailContent.mail,
             subject: "Demande de contact reçue",
             text: "Mail bien reçu ! Cimer frero"
         };
 
-        res.status(200).send('Message envoyé')
+        mail.mailSender(contactAnswer, (err) => {
+            if (err)
+                return res.status(500).send(err);
+            return res.status(200).send('Message envoyé')
+        })
+
     });
 };
