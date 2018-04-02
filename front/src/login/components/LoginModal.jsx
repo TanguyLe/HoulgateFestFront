@@ -30,7 +30,7 @@ export default class TransitionablePortalExamplePortal extends React.Component {
                 open={this.state.open}
                 onOpen={this.handleOpen}
                 onClose={this.handleClose}
-                trigger={(<Button content="Connection" disabled={this.state.open}/>)}
+                trigger={(<Button content="Connexion" disabled={this.state.open}/>)}
             >
                 <Segment className="connectionModal">
                     <Header>T'es qui toi?!</Header>

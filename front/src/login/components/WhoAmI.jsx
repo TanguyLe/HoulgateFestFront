@@ -35,7 +35,7 @@ class WhoAmI extends React.Component {
                     <div className="paddingSides">
                         {this.state.login}
                     </div>
-                    <Button content="Déconnection" onClick={logout}/>
+                    <Button content="Déconnexion" onClick={logout}/>
                 </div>)
         );
     }
