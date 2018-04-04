@@ -10,53 +10,87 @@ class MultipleDropdown extends React.Component {
 		super(props);
 
 		this.state = {
-			beds: []
+			beds: [],
+			personsImages: []
 		};
 
-		map(i => {
-			this.state.beds[i] = {};
-			this.state.beds[i]["selected"] = "";
-			this.state.beds[i][
-				"personAvailable"
-			] = this.props.availablePersonIds;
-		}, range(0, this.props.numberOfBeds));
+		map(bedIndex => {
+			this.state.beds[bedIndex] = {};
+			this.state.beds[bedIndex]["selected"] = "";
+			this.state.beds[bedIndex]["availablePersons"] =
+				props.availablePersonIds;
+		}, range(0, props.numberOfBeds));
+
+		map(person => {
+			this.state.personsImages[person] = (
+				<Gravatar
+					email={`${person}@houlgatefest.com`}
+					rating="pg"
+					default="retro"
+				/>
+			);
+		}, props.availablePersonIds);
 
 		this.handleChange = this.handleChange.bind(this);
 		this.submit = this.submit.bind(this);
 	}
 
-	handleChange(event, i, value) {
+	handleChange(event, updatedBedIndex, value) {
 		const oldBeds = this.state.beds;
-		const previousSelection = this.state.beds[i].selected;
+		const oldSelection = this.state.beds[updatedBedIndex].selected;
 		const newSelection = value;
 
-		let newBeds;
-		if (newSelection !== previousSelection) {
-			newBeds = mapUncapped((bed, index) => {
-				if (index !== i) {
-					return {
-						selected: bed.selected,
-						personAvailable:
-							previousSelection !== ""
-								? [
-										...filter(
-											person => newSelection !== person,
-											bed.personAvailable
-										),
-										previousSelection
-									]
-								: filter(
-										person => newSelection !== person,
-										bed.personAvailable
-									)
-					};
+		function updateBed(bed, index) {
+			let selected;
+			let availablePersons;
+
+			if (index !== updatedBedIndex) {
+				// it means the current bed isn't the one we updated
+				// we dont need to change the bed.selected value
+				// However, we need to remove the newly selected person
+				// from the list of available persons. And we also need to add
+				// the previously selected person back as avaible.
+
+				selected = bed.selected;
+				if (oldSelection !== "") {
+					// We take the previous list available persons without
+					// the newly selected person. And we set the previously
+					// selected person as available.
+					availablePersons = [
+						...filter(
+							person => newSelection !== person,
+							bed.availablePersons
+						),
+						oldSelection
+					];
 				} else {
-					return {
-						selected: newSelection,
-						personAvailable: bed.personAvailable
-					};
+					// We take the previous list available persons without
+					// the newly selected person. But we don't set the
+					// previously selected person as available because it was
+					// the default value.
+					availablePersons = filter(
+						person => newSelection !== person,
+						bed.availablePersons
+					);
 				}
-			}, oldBeds);
+			} else {
+				// this bed is the one to update :
+				// we only change the selected person
+				selected = newSelection;
+				availablePersons = bed.availablePersons;
+			}
+
+			//we return the new state of the bed
+			return {
+				selected: selected,
+				availablePersons: availablePersons
+			};
+		}
+
+		let newBeds;
+		if (newSelection !== oldSelection) {
+			// only update if there is a change
+			newBeds = mapUncapped(updateBed, oldBeds);
 			this.setState({ beds: newBeds });
 		}
 	}
@@ -66,18 +100,16 @@ class MultipleDropdown extends React.Component {
 		event.preventDefault();
 	}
 	render() {
-		const generateDropdownOption = person => ({
+		/**
+		 * Format a list of persons to match Semantic-UI-Dropdown entries
+		 * (it's a curried function, lodash/fp's map is autocurried)
+		 */
+		const generateDropdownOption = map(person => ({
 			key: person,
 			value: person,
 			text: person,
-			image: (
-				<Gravatar
-					email={`${person}@houlgatefest.com`}
-					rating="pg"
-					default="retro"
-				/>
-			)
-		});
+			image: this.state.personsImages[person]
+		}));
 
 		const submitDisabled = includes(
 			"",
@@ -91,25 +123,26 @@ class MultipleDropdown extends React.Component {
 					margin: "auto"
 				}}
 			>
+				{/* this import is only for dev, this has to be done higher */}
 				<link
 					rel="stylesheet"
 					href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css"
 				/>
 				<div>
 					{map(
-						i => (
+						bedIndex => (
 							<Dropdown
-								placeholder={`bed n°${i + 1}`}
+								key={`bed_${bedIndex}`}
+								placeholder={`emplacement n°${bedIndex + 1}`}
 								fluid
 								selection
 								search
 								onChange={(event, { value }) =>
-									this.handleChange(event, i, value)
+									this.handleChange(event, bedIndex, value)
 								}
-								value={this.state.beds[i].selected}
-								options={map(
-									generateDropdownOption,
-									this.state.beds[i].personAvailable
+								value={this.state.beds[bedIndex].selected}
+								options={generateDropdownOption(
+									this.state.beds[bedIndex].availablePersons
 								)}
 							/>
 						),
@@ -119,7 +152,7 @@ class MultipleDropdown extends React.Component {
 				<div style={{ margin: "auto", display: "flex" }}>
 					<Button
 						disabled={submitDisabled}
-						color={submitDisabled ? false : "green"}
+						color={submitDisabled === true ? null : "green"}
 						style={{ margin: "auto" }}
 						onClick={this.submit}
 					>
