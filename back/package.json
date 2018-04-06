@@ -1,0 +1,48 @@
+{
+  "name": "houlgatefestback",
+  "version": "1.0.0",
+  "description": "Back of the website for the HoulgateFest project",
+  "license": "UNLICENSED",
+  "authors": [
+    {
+      "name": "Tanguy Le Floch",
+      "email": "lefloch.ta@gmail.com"
+    },
+    {
+      "name": "Gautier Barbereau",
+      "email": "gautier.barbereau@gmail.com"
+    },
+    {
+      "name": "Hugo Raynal",
+      "email": "raynalhugo@gmail.com"
+    },
+    {
+      "name": "Alexandre Vaast",
+      "email": "alex.vaast@gmail.com"
+    },
+    {
+      "name": "Nicolas Dejon",
+      "email": "dejon.nicolas@gmail.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TanguyLe/HoulgateFest.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.12"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.1.1",
+    "mongoose": "^5.0.12"
+  }
+}
