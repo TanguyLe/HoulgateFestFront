@@ -2,6 +2,7 @@ import React from "react";
 import { map } from "lodash/fp";
 
 import Floor from "./Floor";
+import DisplayAllFloors from "./Floor/DisplayAllFloors";
 import { villaLesGenets } from "./villaLesGenetsDef";
 import { FLOOR_GRID_STRUCT_INDEX_PREFIX } from "./constants";
 
@@ -24,7 +25,6 @@ class ShotgunContainer extends React.Component {
 		this.state = {
 			villaLesGenets: {
 				floors: map(floor => {
-					console.log(floor);
 					return map(room => {
 						room["state"] = "readyForShotgun";
 						return room;
@@ -38,8 +38,13 @@ class ShotgunContainer extends React.Component {
 
 	shotgunRoom(event, room, floor) {
 		//	const wait = ms => new Promise((r, j) => setTimeout(r, ms));
-		console.log("ShotGun");
-		console.log(room, floor);
+
+		////////////////////////////////////////////////////////////////////////
+		////// set state as loading while waiting for query results ////////////
+		////////////////////////////////////////////////////////////////////////
+
+		// const preShotgunConfirmed = query(...)
+		// const availablePersonIds = query(...)
 
 		room["state"] = "loading";
 		floor["rooms"] = [
@@ -47,7 +52,7 @@ class ShotgunContainer extends React.Component {
 				room["state"] = "disabled";
 				return room;
 			}, floor.rooms),
-			room
+			...room
 		];
 		this.setState({
 			shotgunPhase: "waitingForConfirm",
@@ -55,68 +60,55 @@ class ShotgunContainer extends React.Component {
 			floor: floor
 		});
 
-		// await availablePersonIds
-		const availablePersonIds = ["Tanguy", "Gautier", "Nicolas", "Hugo"];
-		room["state"] = "attributingBeds";
-		room["availablePersonIds"] = availablePersonIds;
-		floor["rooms"] = [...floor.rooms, room];
-		console.log(floor);
-		this.setState({
-			shotgunPhase: "attributingBeds",
-			room: room,
-			floor: floor
-		});
+		////////////////////////////////////////////////////////////////////////
+		////// waiting for server answer ///////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////
+
+		// await preShotgunConfirmed
+
+		const preShotgunConfirmed = true; //hardcoded temporary
+
+		if (preShotgunConfirmed === true) {
+			////////////////////////////////////////////////////////////////////
+			////// preShotgunConfirmed /////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////
+
+			// await availablePersonIds
+			const availablePersonIds = ["Tanguy", "Gautier", "Nicolas", "Hugo"]; //hardcoded temporary
+
+			room["state"] = "attributingBeds";
+			room["availablePersonIds"] = availablePersonIds;
+			floor["rooms"] = [...floor.rooms, ...room];
+
+			this.setState({
+				shotgunPhase: "attributingBeds",
+				room: room,
+				floor: floor
+			});
+		} else {
+			////////////////////////////////////////////////////////////////////
+			////// preShotgun denined //////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////
+		}
 	}
 	render() {
-		let floorContainerStyle = {
-			margin: "0 5px 0 5px",
-			display: "float",
-			position: "relative",
-			height: "50%",
-			width: "calc(50% - 10px)"
-		};
-
-		const DisplayAllRooms = () => (
-			<div
-				style={{
-					height: "calc(100% - 50px)",
-					width: "100%",
-					display: "flex",
-					flexDirection: "row",
-					flexWrap: "wrap"
-				}}
-			>
-				{villaLesGenets.floors.map((floor, index) => {
-					return (
-						<div
-							key={FLOOR_GRID_STRUCT_INDEX_PREFIX + index}
-							style={floorContainerStyle}
-						>
-							<Floor
-								floorData={floor}
-								shotgunFunction={(event, room) =>
-									this.shotgunRoom(event, room, floor)
-								}
-							/>
-						</div>
-					);
-				})}
-			</div>
-		);
-
 		switch (this.state.shotgunPhase) {
 			case "preShotgun":
-				return <DisplayAllRooms />;
+				return <DisplayAllFloors />;
 
 			case "waitingForConfirm":
-				console.log("1", this.state.floor);
 				return <Floor floorData={this.state.floor} />;
 
 			case "attributingBeds":
-				console.log("2", this.state.floor);
 				return <Floor floorData={this.state.floor} />;
+
 			default:
-				return <DisplayAllRooms />;
+				return (
+					<DisplayAllFloors
+						floors={this.state.villaLesGenets.floors}
+						shotgunFunction={this.shotgunRoom}
+					/>
+				);
 		}
 	}
 }
