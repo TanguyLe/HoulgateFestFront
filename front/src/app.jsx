@@ -4,7 +4,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom"
 import Home from "./mainLayout/home"
 import Dummy from "./shotgun/shotgunPage"
 import NotFound from "./mainLayout/notFound"
-import UserLogin from "./mainLayout/login/UserLogin"
+import UserLogin from "./login/components"
 import DefaultLayout from './mainLayout/layout'
 
 
