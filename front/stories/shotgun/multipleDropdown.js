@@ -1,7 +1,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 
-import MultipleDropdown from "../../src/shotgun/Room/multipleDropdown";
+import MultipleDropdown from "../../src/shotgun/MultipleDropdown";
 
 storiesOf("MultipleDropdown", module).add("MultipleDropdown 3 persons", () => (
 	<MultipleDropdown
