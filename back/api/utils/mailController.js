@@ -24,6 +24,7 @@ exports.mailSender = (mailContent, cb) => {
             return cb(error);
         }
         console.log('Message sent: %s', info.messageId);
+        transporter.close();
         return cb(false);
     });
 };

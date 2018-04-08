@@ -11,7 +11,8 @@ class ContactForm extends React.Component {
             surname: '',
             firstname: '',
             phone: '',
-            mail: ''
+            mail: '',
+            content: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,7 +23,7 @@ class ContactForm extends React.Component {
             phone: '',
             mail: ''
         };
-        this.formValid = true;
+        this.formValid = false;
         this.getInitialState = this.getInitialState.bind(this);
     }
 
@@ -31,7 +32,8 @@ class ContactForm extends React.Component {
             surname: '',
             firstname: '',
             phone: '',
-            mail: ''
+            mail: '',
+            content: ''
         };
     }
 
@@ -57,7 +59,7 @@ class ContactForm extends React.Component {
                 formErrors.firstname = value.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u) ? '' : 'Le prénom est invalide';
                 break;
             case 'phone':
-                formErrors.phone = value.match(/^[0-9]{10}$/i) ? '' : 'Le telephone est incorrect';
+                formErrors.phone = value.match(/^[0-9]{10}$/i) ? '' : 'Le téléphone est incorrect';
                 break;
             default:
                 break;
@@ -66,10 +68,8 @@ class ContactForm extends React.Component {
             console.log(fieldName);
             formErrors[fieldName] = '';
         }
-
         this.formErrors = formErrors;
-        console.log(formErrors);
-        this.formValid = _.some(this.formErrors, (val) => val !== "");
+        this.formValid = !(_.some(this.formErrors, (val) => val !== ""));
     }
 
 
@@ -77,19 +77,20 @@ class ContactForm extends React.Component {
         this.setState(this.getInitialState());
     }
 
-
     handleSubmit(event) {
-        if (this.formValid)
-            console.log(this.state);
-
-        postCallApi(CONTACT_URL, this.state, false)
-            .then((response) => {
-                if (!response.ok)
-                    throw Error("requête");
-                return response;
-            })
-            .then((response) => response.json())
-            .catch(error => alert(error))
+        event.preventDefault();
+        if (this.formValid) {
+            let mailContent = this.state;
+            postCallApi(CONTACT_URL, {mailContent}, false)
+                .then((response) => {
+                    this.reset();
+                    alert('Mail envoyé')
+                })
+                .catch(error => console.log(error))
+        }
+        else {
+            alert('Le formulaire n\'est pas valide')
+        }
     }
 
     render() {
@@ -127,6 +128,12 @@ class ContactForm extends React.Component {
                             name='mail'
                             value={this.state.mail}
                             onChange={this.handleChange}/>
+                <Form.TextArea
+                    type='text'
+                    name='content'
+                    label='Contenu de la demande'
+                    value={this.state.content}
+                    onChange={this.handleChange}/>
                 <Form.Group inline>
                     <Form.Button type="submit" //disabled={this.formValid}
                                  onClick={this.handleSubmit}>Submit</Form.Button>
