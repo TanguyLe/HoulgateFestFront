@@ -9,10 +9,6 @@ body {
     background: white;
 }
 
-.HoulgateFest {
-}
-
-
 .layout {
     display: block;
     min-height: 0;
@@ -24,4 +20,29 @@ body {
 
 .fullWidth {
     width: 100%;
+}
+
+.rowFlex {
+    display: flex;
+    align-items: center;
+}
+
+.paddingSides {
+    padding: 0 15px;
+}
+
+.HoulgateFest {
+}
+
+.HoulgateFest .connectionModal {
+    width: 280px;
+    right: 0;
+    position: fixed;
+    top: 62px;
+    z-index: 1000;
+}
+
+.HoulgateFest .connectionModal .loginForm {
+    margin: auto;
+    max-width: calc(100% - 2em);
 }

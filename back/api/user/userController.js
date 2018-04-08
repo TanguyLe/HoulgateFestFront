@@ -1,24 +1,26 @@
-let mongoose = require('mongoose'),
-    User = mongoose.model('Users'),
-    passwordUtils = require('../utils/password'),
-    tokenUtils = require('../utils/token');
+let mongoose = require("mongoose"),
+    User = mongoose.model("Users"),
+    passwordUtils = require("../utils/password"),
+    tokenUtils = require("../utils/token");
 
 
 const fillUserAndTokens = (user, res) => {
     let accessToken = tokenUtils.generateAccessToken({username: user.username, email: user.email});
 
     res.json({"username": user.username,
-        "accessToken": accessToken,
-        "refreshToken": tokenUtils.generateRefreshToken(accessToken)});
+              "accessToken": accessToken,
+              "refreshToken": tokenUtils.generateRefreshToken(accessToken)});
 };
 
 exports.login = (req, res) => {
     User.findOne({email: req.body.email}, (err, user) => {
-        if (!user) return res.status(401).json({ message: 'Authentication failed. Invalid user.' });
+        if (!user) return res.status(401).json({ wrongField: "email",
+                                                 message: "Authentication failed. User doesn't exist." });
 
-        passwordUtils.comparePassword(req.body.password, user.password).then((resPassword) => {
-            if (!resPassword)
-                return res.status(401).json({ message: 'Authentication failed. Invalid password.' });
+        passwordUtils.comparePassword(req.body.password, user.password).then((authenticated) => {
+            if (!authenticated)
+                return res.status(401).json({ wrongField: "password",
+                                              message: "Authentication failed. Invalid password." });
 
             if (err) res.send(err);
             else fillUserAndTokens(user, res);
@@ -53,11 +55,9 @@ exports.refreshLogin = (req, res) => {
 
     tokenUtils.checkAccessToken(accessToken, (err, decode) => {user = decode;}, true);
 
-    if (!user) return res.status(401).json({ message: 'Authentication failed. Invalid accessToken.' });
-    if (!tokenUtils.checkRefreshToken(accessToken, req.body.refreshToken))
-        return res.status(401).json({ message: 'Authentication failed. Invalid refreshToken.' });
-    if (!tokenUtils.checkIfAccessTokenExpired(accessToken))
-        return res.status(401).json({ message: 'Authentication failed. Invalid accessToken(not expired).' });
+    if (!user || !tokenUtils.checkRefreshToken(accessToken, req.body.refreshToken)
+              || !tokenUtils.checkIfAccessTokenExpired(accessToken))
+        return res.status(401).json({ message: "Authentication failed. Invalid credentials."});
 
     let newAccessToken = tokenUtils.generateAccessToken({username: user.username, email: user.email});
 
@@ -69,5 +69,5 @@ exports.loginRequired = (req, res, next) => {
     if (req.user)
         next();
     else
-        return res.status(401).json({ message: 'Authentication failed. Invalid accessToken.' });
+        return res.status(401).json({ message: "Authentication failed. Invalid credentials." });
 };

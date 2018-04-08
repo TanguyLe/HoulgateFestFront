@@ -40,6 +40,7 @@
     "express": "^4.16.2",
     "jsonwebtoken": "^8.1.1",
     "mongoose": "^5.0.5",
-    "nodemailer": "^4.6.4"
+    "nodemailer": "^4.6.4",
+    "mongoose-beautiful-unique-validation": "^7.1.1"
   }
 }

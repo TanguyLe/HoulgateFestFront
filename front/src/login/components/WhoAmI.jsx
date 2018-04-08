@@ -1,17 +1,11 @@
 /* @flow */
 import React from "react";
+import {Button} from "semantic-ui-react"
 
-import Block from "../../utils/basics/Block/index";
-import Text from "../../utils/basics/Text/index";
-import Wrapper from "../../utils/basics/Wrapper/index";
 import {getCredentials, logout, register, unregister} from "../store"
-import Button from "../../utils/basics/Button/index";
-
-
 class WhoAmI extends React.Component {
     constructor() {
         super();
-
         this.state = {login: ""};
 
         this.changingCreds = this.changingCreds.bind(this);
@@ -32,34 +26,22 @@ class WhoAmI extends React.Component {
     }
 
     render() {
-        let ContentToDisplay;
-        if (!this.state.login)
-            ContentToDisplay = (
-                <Wrapper column>
-                    <Block>
-                        <Block padding="small" align="left">
-                            <Text weight="bold">T Pa Loggé Gros </Text>
-                        </Block>
-                        <Block padding="small" align="left">
-                            <Text>Moi j'aime bien les abricots</Text>
-                        </Block>
-                    </Block>
-                </Wrapper>
-            );
-        else
-            ContentToDisplay = (
-                <Wrapper column>
-                    <Block>
-                        <Block padding="small" align="left">
-                            <Text weight="bold">Name: </Text>
-                            <Text>{this.state.login}</Text>
-                        </Block>
-                        <Button onClick={logout}>Logout</Button>
-                    </Block>
-                </Wrapper>
-            );
-        return ContentToDisplay;
+        return (!this.state.login ?
+                <div className="rowFlex">
+                    <LoginModal/>
+                </div>
+                :
+                (<div className="rowFlex">
+                    <div className="paddingSides">
+                        {this.state.login}
+                    </div>
+                    <Button content="Déconnection" onClick={logout}/>
+                </div>)
+        );
     }
 }
+
+
+import LoginModal from "./LoginModal"
 
 export default WhoAmI;

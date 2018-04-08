@@ -1,4 +1,4 @@
-let bcrypt = require('bcrypt');
+let bcrypt = require("bcrypt");
 
 exports.cryptPassword = (password) => {
     return bcrypt.hash(password, 10)
