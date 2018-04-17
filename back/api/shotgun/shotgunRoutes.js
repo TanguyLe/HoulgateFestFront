@@ -10,6 +10,6 @@ module.exports = (app) => {
     app.route('/shotgun/rooms/:roomId')
         .delete(shotgun_controller.shotgun_delete);
 
-    app.route('/shotgun/rooms/:roomId/roommates')
-        .post(shotgun_controller.roommates_add);
+    app.route('/shotgun/rooms/:roomId')
+        .put(shotgun_controller.roommates_add);
 };

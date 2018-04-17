@@ -12,4 +12,7 @@ module.exports = (app) => {
 
     app.route('/users/:userId')
         .get(user.loginRequired, user.readUser);
+
+    app.route('/users')
+        .get(user.user_list);
 };

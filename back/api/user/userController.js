@@ -71,3 +71,40 @@ exports.loginRequired = (req, res, next) => {
     else
         return res.status(401).json({ message: 'Authentication failed. Invalid accessToken.' });
 };
+
+// Display list of all users.
+exports.user_list = function(req, res) {
+    res.status(200).json(
+      {
+      "meta": {
+          "code": 200
+      },
+      "data":
+      [
+        {
+            "created_at": "Tue Sep 04 15:55:52 +0000 2012",
+            "id": "14500363",
+            "username": "Joe le Taxi",
+            "has_shotgun": true,
+            "is_shotgun": false
+       
+        },
+        {
+            "created_at": "Tue Sep 04 15:55:52 +0000 2012",
+            "id": "14500363",
+            "username": "Bob l’éponge",
+            "has_shotgun": true,
+            "is_shotgun": true
+       
+        },
+        {
+            "created_at": "Tue Sep 04 15:55:52 +0000 2012",
+            "id": "14500363",
+            "username": "Batman",
+            "has_shotgun": true,
+            "is_shotgun": false
+        }
+          
+      ]
+    });
+  };
