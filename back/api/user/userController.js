@@ -14,6 +14,8 @@ const fillUserAndTokens = (user, res) => {
 };
 
 exports.login = (req, res) => {
+    // TODO Make this more generic, the use of "wrongField" is specific to loginForm
+    // TODO Make the messages constants, in french so that they can be used directly if necessary, or even better, error constants
     User.findOne({email: req.body.email}, (err, user) => {
         if (!user) return res.status(401).json({ wrongField: "email",
                                                  message: "Authentication failed. User doesn't exist." });
@@ -79,6 +81,7 @@ exports.beforeCreatePasswordReset = (req, res, next) => {
     });
 };
 
+// TODO This and the above is silly and should be handled by a middleware for JSON responses
 exports.afterCreateResetPassword = (req, res) => {
     res.status(200).json({})
 };

@@ -17,17 +17,20 @@ class activateAccount extends React.Component {
     }
 
     componentWillMount(){
+        // TODO Add something so that ending up on the page without id and code doesn't make it load forever
         const parsed = parse(this.props.location.search);
 
         this.id = parsed.id;
         this.code = parsed.code;
 
         if (this.id  && this.code){
+            // TODO Add a bunch of constants, that url tho
             this.setState({status: "activating"});
 
             getCallApi(("http://localhost:3000/users/" + this.id + "/activate" + "?authorization=" + this.code), false)
                         .then((response) => {
                             if (!response.ok)
+                                // TODO Generalize those errors
                                 throw Error("requête");
                             return response;
                         })

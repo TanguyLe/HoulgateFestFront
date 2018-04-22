@@ -20,6 +20,7 @@ class resetPasswordPage extends React.Component {
         this.id = parsed.id;
         this.code = parsed.code;
 
+        // TODO Constants again
         if (this.id  && this.code)
             this.resetUrl = "http://localhost:3000/users/" + this.id + "/passwordreset" + "?authorization=" + this.code;
     }
@@ -29,6 +30,7 @@ class resetPasswordPage extends React.Component {
     }
 
     render() {
+        // TODO On this part it's a bit slow, one needs to disable the button before the response comes back
         let display = "";
         if (this.state.status === "form")
             display = <ResetPasswordForm resetUrl={this.resetUrl} onPasswordChanged={this.onPasswordChanged}/>;
