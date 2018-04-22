@@ -34,12 +34,14 @@
     "nodemon": "^1.14.12"
   },
   "dependencies": {
+    "activator": "^3.0.2",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.1.1",
     "mongoose": "^5.0.5",
-    "mongoose-beautiful-unique-validation": "^7.1.1"
+    "mongoose-beautiful-unique-validation": "^7.1.1",
+    "nodemailer": "^4.6.4"
   }
 }
