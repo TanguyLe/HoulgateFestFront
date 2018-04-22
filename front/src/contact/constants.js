@@ -21,21 +21,34 @@ export const CONTACT_DEF = {
     mail: {
         label: "Email",
         type: "text",
-        regex: regexes.mail
+        regex: regexes.mail,
+        htmlElem: 'Input'
     },
     firstname: {
         label: "Prénom",
         type: "text",
-        regex: regexes.word
+        regex: regexes.word,
+        htmlElem: 'Input'
+
     },
     lastname: {
         label: "Nom",
         type: "text",
-        regex: regexes.word
+        regex: regexes.word,
+        htmlElem: 'Input'
+
     },
     phone: {
         label: "Téléphone",
         type: "text",
-        regex: regexes.phone
+        regex: regexes.phone,
+        htmlElem: 'Input'
+
+    },
+    content: {
+        label: 'Contenu de la demande',
+        type: "text",
+        htmlElem: 'TextArea'
+
     }
 };

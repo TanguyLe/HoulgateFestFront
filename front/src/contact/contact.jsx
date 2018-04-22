@@ -114,20 +114,36 @@ class ContactForm extends React.Component {
         return (
             <Form error={!isFormValid} onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}>
                 {Object.keys(CONTACT_DEF).map((name, index) => {
-                    return (
-                        <Form.Input required
-                                    error={!this.state[name].valid}
-                                    type={CONTACT_DEF[name].type}
-                                    key={index}
-                                    fluid
-                                    label={upCaseFirstLetter(CONTACT_DEF[name].label)}
-                                    name={name}
-                                    value={this.state[name].value}
-                                    onBlur={this.handleBlur}
-                                    onKeyUp={this.handleKeyUp}
-                                    onKeyDown={this.handleKeyDown}
-                                    onChange={this.handleChange}/>
-                    )
+                    if (CONTACT_DEF[name].htmlElem == 'Input')
+                        return (
+                            <Form.Input required
+                                        error={!this.state[name].valid}
+                                        type={CONTACT_DEF[name].type}
+                                        key={index}
+                                        fluid
+                                        label={upCaseFirstLetter(CONTACT_DEF[name].label)}
+                                        name={name}
+                                        value={this.state[name].value}
+                                        onBlur={this.handleBlur}
+                                        onKeyUp={this.handleKeyUp}
+                                        onKeyDown={this.handleKeyDown}
+                                        onChange={this.handleChange}/>
+                        );
+                    else if (CONTACT_DEF[name].htmlElem == 'TextArea')
+                        return (
+                            <Form.TextArea required
+                                           error={!this.state[name].valid}
+                                           type={CONTACT_DEF[name].type}
+                                           key={index}
+                                           label={upCaseFirstLetter(CONTACT_DEF[name].label)}
+                                           name={name}
+                                           value={this.state[name].value}
+                                           onBlur={this.handleBlur}
+                                           onKeyUp={this.handleKeyUp}
+                                           onKeyDown={this.handleKeyDown}
+                                           onChange={this.handleChange}/>
+                        );
+
                 })}
                 <Form.Group inline>
                     <Form.Button type="submit" disabled={!this.isFormValid()}

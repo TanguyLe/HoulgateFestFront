@@ -2,7 +2,7 @@ let mail = require('../utils/mailController');
 
 
 exports.send = (req, res) => {
-    let title = `Mail de ${req.body.mailContent.firstname} ${req.body.mailContent.surname}`
+    let title = `Mail de ${req.body.mailContent.firstname} ${req.body.mailContent.lastname}`;
     let content = `Joignable au ${req.body.mailContent.phone}, ou par mel au ${req.body.mailContent.mail}.
         Contenu de la demande : ${req.body.mailContent.content}`;
     let mailContent = {
