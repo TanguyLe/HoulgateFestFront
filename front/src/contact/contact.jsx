@@ -1,144 +1,148 @@
 import React from "react";
-import {Form} from 'semantic-ui-react';
-import {CONTACT_URL} from "../contact/constants";
+import {Form, Message, List} from 'semantic-ui-react';
+import {CONTACT_URL, CONTACT_DEF} from "./constants";
 import {postCallApi} from "../utils/api/fetchMiddleware";
-
+import {upCaseFirstLetter} from "../utils/miscFcts";
 
 class ContactForm extends React.Component {
     constructor() {
         super();
-        this.state = {
-            surname: '',
-            firstname: '',
-            phone: '',
-            mail: '',
-            content: ''
-        };
+        this.initialState = {};
+        Object.keys(CONTACT_DEF).forEach((elem) => {
+            this.initialState[elem] = {
+                value: "",
+                valid: true,
+                errorMsg: ""
+            }
+        });
+        this.state = JSON.parse(JSON.stringify(this.initialState));
+        this.isFormValid = this.isFormValid.bind(this);
+        this.isFieldValid = this.isFieldValid.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateField = this.validateField.bind(this);
-        this.formErrors = {
-            surname: '',
-            firstname: '',
-            phone: '',
-            mail: ''
-        };
-        this.formValid = false;
-        this.getInitialState = this.getInitialState.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleKeyUp = this.handleKeyUp.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.reset = this.reset.bind(this);
     }
 
-    getInitialState() {
-        return {
-            surname: '',
-            firstname: '',
-            phone: '',
-            mail: '',
-            content: ''
-        };
+    handleBlur(event) {
+        const name = event.target.name;
+        const value = event.target.value;
+
+        this.validateField(name, value)
     }
+
+    handleKeyPress(event) {
+        if (this.isFormValid() && event.key === "Enter")
+            this.handleClickSubmit();
+    }
+
+    handleKeyUp(event) {
+        const name = event.target.name;
+        const value = event.target.value;
+
+        clearTimeout(this.typing);
+        if (event.key !== "Tab") {
+            const validateThisField = () => this.validateField(name, value);
+            this.typing = setTimeout(validateThisField, 200)
+        }
+    }
+
+    handleKeyDown() {
+        clearTimeout(this.typing);
+    }
+
+
+    validateField(name, value) {
+        const valid = this.isFieldValid(name, value);
+        const newField = {
+            valid: valid,
+            errorMsg: valid ? "" : CONTACT_DEF[name].regex.error
+        };
+        this.setState({[name]: Object.assign({}, this.state[name], newField)});
+    }
+
+
+    isFieldValid(name, value) {
+        if (CONTACT_DEF[name].hasOwnProperty('regex')) {
+            return value.match(CONTACT_DEF[name].regex.def);
+        }
+        return true;
+    }
+
 
     handleChange(event) {
-        const target = event.target;
-        const name = target.name;
-        this.setState({
-            [name]: target.value
-        }, this.validateField(name, target.value));
-
+        const name = event.target.name;
+        const value = event.target.value;
+        this.setState({[name]: Object.assign({}, this.state[name], {value: value})});
     }
-
-    validateField(fieldName, value) {
-        let formErrors = this.formErrors;
-        switch (fieldName) {
-            case 'mail':
-                formErrors.mail = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? '' : 'Le mail n\'est pas correctement formé';
-                break;
-            case 'surname':
-                formErrors.surname = value.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u) ? '' : 'Le nom est invalide';
-                break;
-            case 'firstname':
-                formErrors.firstname = value.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u) ? '' : 'Le prénom est invalide';
-                break;
-            case 'phone':
-                formErrors.phone = value.match(/^[0-9]{10}$/i) ? '' : 'Le téléphone est incorrect';
-                break;
-            default:
-                break;
-        }
-        if (!value) {
-            console.log(fieldName);
-            formErrors[fieldName] = '';
-        }
-        this.formErrors = formErrors;
-        this.formValid = !(_.some(this.formErrors, (val) => val !== ""));
-    }
-
 
     reset() {
-        this.setState(this.getInitialState());
+        this.setState(JSON.parse(JSON.stringify(this.initialState)))
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-        if (this.formValid) {
-            let mailContent = this.state;
-            postCallApi(CONTACT_URL, {mailContent}, false)
-                .then((response) => {
-                    this.reset();
-                    alert('Mail envoyé')
-                })
-                .catch(error => console.log(error))
-        }
-        else {
-            alert('Le formulaire n\'est pas valide')
-        }
+    isFormValid(emptyValuesOk = false) {
+        for (let property in this.state)
+            if (this.state.hasOwnProperty(property))
+                if (!this.state[property].valid || (!emptyValuesOk && !this.state[property].value))
+                    return false;
+        return true;
+    }
+
+    handleSubmit() {
+        let mailContent = {};
+        Object.keys(this.state).forEach((elem) => {
+            mailContent[elem] = this.state[elem].value
+        });
+        postCallApi(CONTACT_URL, {mailContent}, false)
+            .then((response) => {
+                if (!response.ok)
+                    throw Error();
+                this.reset();
+                return response;
+            })
+            .catch(error => alert("Une erreur est survenue, veuillez réessayer :  " + error))
     }
 
     render() {
+        const isFormValid = this.isFormValid(true);
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Input required
-                            type='text'
-                            fluid
-                            label='Prénom'
-                            error={this.formErrors.firstname !== ''}
-                            name='firstname'
-                            value={this.state.firstname}
-                            onChange={this.handleChange}/>
-                <Form.Input required
-                            type='text'
-                            fluid
-                            label='Nom de famille'
-                            error={this.formErrors.surname !== ''}
-                            name='surname'
-                            value={this.state.surname}
-                            onChange={this.handleChange}/>
-                <Form.Input required
-                            type='text'
-                            fluid
-                            label='Numéro de téléphone'
-                            error={this.formErrors.phone !== ''}
-                            name='phone'
-                            value={this.state.phone}
-                            onChange={this.handleChange}/>
-                <Form.Input required
-                            type='text'
-                            fluid
-                            label='Mail'
-                            error={this.formErrors.mail !== ''}
-                            name='mail'
-                            value={this.state.mail}
-                            onChange={this.handleChange}/>
-                <Form.TextArea
-                    type='text'
-                    name='content'
-                    label='Contenu de la demande'
-                    value={this.state.content}
-                    onChange={this.handleChange}/>
+            <Form error={!isFormValid} onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}>
+                {Object.keys(CONTACT_DEF).map((name, index) => {
+                    return (
+                        <Form.Input required
+                                    error={!this.state[name].valid}
+                                    type={CONTACT_DEF[name].type}
+                                    key={index}
+                                    fluid
+                                    label={upCaseFirstLetter(CONTACT_DEF[name].label)}
+                                    name={name}
+                                    value={this.state[name].value}
+                                    onBlur={this.handleBlur}
+                                    onKeyUp={this.handleKeyUp}
+                                    onKeyDown={this.handleKeyDown}
+                                    onChange={this.handleChange}/>
+                    )
+                })}
                 <Form.Group inline>
-                    <Form.Button type="submit" //disabled={this.formValid}
-                                 onClick={this.handleSubmit}>Submit</Form.Button>
-                    <Form.Button type="reset" onClick={this.reset.bind(this)}>Reset</Form.Button>
+                    <Form.Button type="submit" disabled={!this.isFormValid()}
+                                 onClick={this.handleClickSubmit}>Envoyer</Form.Button>
+                    <Form.Button type="reset" onClick={this.reset}>Réinitialiser</Form.Button>
                 </Form.Group>
+                <Message error>
+                    <List bulleted>
+                        {Object.keys(this.state).map(key => {
+                            const errorMsg = this.state[key].errorMsg;
+                            if (errorMsg)
+                                return <List.Item key={key}>{errorMsg}</List.Item>
+
+                        })}
+                    </List>
+                </Message>
             </Form>
         );
     }
