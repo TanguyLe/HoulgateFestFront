@@ -7,7 +7,7 @@ import NotFound from "./mainLayout/notFound"
 import SignUpPage from "./login/components/signUpPage"
 import ReadUser from "./login/components/ReadUser"
 import DefaultLayout from './mainLayout/layout'
-import ContactForm from './contact/contact'
+import ContactPage from './contact/contactPage'
 
 
 class App extends React.Component {
@@ -16,7 +16,7 @@ class App extends React.Component {
                 <Switch>
                     <DefaultLayout path="/" exact component={Home}/>
                     <DefaultLayout path="/shotgun" component={Dummy} bigContainer/>
-                    <DefaultLayout path="/contact" component={ContactForm}/>
+                    <DefaultLayout path="/contact" component={ContactPage}/>
                     <DefaultLayout path="/register" component={SignUpPage}/>
                     <DefaultLayout path="/test" component={ReadUser}/>
                     <DefaultLayout component={NotFound}/>
