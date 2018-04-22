@@ -2,7 +2,7 @@
 import React from "react";
 import {Button} from "semantic-ui-react"
 
-import {getCredentials, logout, register, unregister} from "../store"
+import {getCredentials, login, logout, register, unregister} from "../store"
 class WhoAmI extends React.Component {
     constructor() {
         super();
@@ -17,6 +17,14 @@ class WhoAmI extends React.Component {
     }
 
     componentWillMount() {
+        if (window.localStorage.getItem("session")) {
+            const username = window.localStorage.getItem("username");
+            const accessToken = window.localStorage.getItem("accessToken");
+            const refreshToken = window.localStorage.getItem("refreshToken");
+
+            login(username, accessToken, refreshToken)
+        }
+
         register(this.changingCreds);
         this.changingCreds(getCredentials());
     }
