@@ -1,23 +1,21 @@
 /* @flow */
 import React from "react";
-import {Form, Message, List} from "semantic-ui-react"
-import {withRouter} from 'react-router-dom';
+import {Form, Message, List} from "semantic-ui-react";
 
 
-import {NAME, TYPE, SIGN_UP_FORM_BLOCK_INDEX_PREFIX, REGISTER_URL, LABEL,
-        SIGN_UP_DEF, REGEXES, ERROR_MSG, REGISTRATION_ERROR_MSG_PREFIX} from "../constants";
-import {login, register, unregister} from "../store"
-import {upCaseFirstLetter} from "../../utils/miscFcts"
-import {postCallApi} from "../../utils/api/fetchMiddleware";
+import {NAME, TYPE, RESET_PSWRD_BLOCK_INDEX_PREFIX,  LABEL,
+    RESET_PSWRD_DEF, REGEXES, ERROR_MSG, RESET_PSWRD_ERROR_MSG_PREFIX, CONFIRM} from "../../constants";
+import {upCaseFirstLetter} from "../../../utils/miscFcts"
+import {putCallApi} from "../../../utils/api/fetchMiddleware";
 
 
-class SignUpForm extends React.Component {
+class resetPasswordForm extends React.Component {
     constructor() {
         super();
 
         this.initialState = {};
 
-        SIGN_UP_DEF.forEach((elem) => {
+        RESET_PSWRD_DEF.forEach((elem) => {
             this.initialState[elem[NAME]] = {
                 value: "",
                 valid: true,
@@ -36,7 +34,6 @@ class SignUpForm extends React.Component {
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleClickReset = this.handleClickReset.bind(this);
         this.handleClickSubmit = this.handleClickSubmit.bind(this);
-        this.onLogin = this.onLogin.bind(this);
         this.validateField = this.validateField.bind(this);
         this.isFormValid = this.isFormValid.bind(this);
         this.isFieldValid = this.isFieldValid.bind(this);
@@ -46,24 +43,12 @@ class SignUpForm extends React.Component {
         this.setState(JSON.parse(JSON.stringify(this.initialState)))
     }
 
-    componentDidMount() {
-        register(this.onLogin)
-    }
-
-    componentWillUnmount() {
-        unregister(this.onLogin)
-    }
-
     handleClickReset() {
         this.resetState();
     }
 
-    onLogin() {
-        this.props.history.push('/');
-    }
-
     isFieldValid(name, value) {
-        if (name === "confirm")
+        if (name === CONFIRM)
             return value === this.state.password.value;
 
         if (name in REGEXES)
@@ -82,14 +67,13 @@ class SignUpForm extends React.Component {
     }
 
     handleClickSubmit() {
-        let failure = false;
         const formValues = {};
 
         Object.keys(this.state).map(key => {
             formValues[key] = this.state[key].value
         });
 
-        postCallApi(REGISTER_URL, formValues, false)
+        putCallApi(this.props.resetUrl, formValues, false)
             .then((response) => {
                 if (!response.ok)
                     throw Error();
@@ -97,28 +81,24 @@ class SignUpForm extends React.Component {
             })
             .then((response) => response.json())
             .then((jsonData) => {
-                if(!jsonData.errors && !jsonData.errmsg)
-                    login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
+                if(!jsonData.errors && !jsonData.errmsg) {
+                    this.props.onPasswordChanged();
+                }
                 else {
                     let newState = {};
                     Object.keys(jsonData.errors).map(key => {
                         Object.assign(newState,
                             {[key]:
-                        Object.assign({}, this.state[key], {valid: false, errorMsg: jsonData.errors[key].message})})
+                                Object.assign({}, this.state[key], {valid: false, errorMsg: jsonData.errors[key].message})})
                     });
                     this.setState(newState);
-                    failure = true;
                 }
-            }).then(() => {
-                if (!failure)
-                    this.props.history.push('/');
-            })
-            .catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connection internet. " + error))
+            }).catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connection internet. " + error))
     }
 
     validateField(name, value) {
         const valid = this.isFieldValid(name, value);
-        const newField = {valid: valid, errorMsg: valid ? "" : SIGN_UP_DEF.find(elem => elem[NAME] === name)[ERROR_MSG]};
+        const newField = {valid: valid, errorMsg: valid ? "" : RESET_PSWRD_DEF.find(elem => elem[NAME] === name)[ERROR_MSG]};
 
         this.setState({[name]: Object.assign({}, this.state[name], newField)});
     }
@@ -162,12 +142,12 @@ class SignUpForm extends React.Component {
 
         return (
             <Form error={!isFormValid} onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}>
-                {SIGN_UP_DEF.map((elem, index) => {
+                {RESET_PSWRD_DEF.map((elem, index) => {
                     let name = elem[NAME];
                     return (
                         <Form.Input required
                                     error={!this.state[name].valid}
-                                    key={SIGN_UP_FORM_BLOCK_INDEX_PREFIX + index}
+                                    key={RESET_PSWRD_BLOCK_INDEX_PREFIX+ index}
                                     type={elem[TYPE]}
                                     fluid
                                     label={upCaseFirstLetter(elem[LABEL])}
@@ -180,8 +160,7 @@ class SignUpForm extends React.Component {
                     )
                 })}
                 <Form.Group inline>
-                    <Form.Button type="submit" disabled={!this.isFormValid()} onClick={this.handleClickSubmit}>Inscription</Form.Button>
-                    <Form.Button type="reset" onClick={this.handleClickReset}>Reset</Form.Button>
+                    <Form.Button type="submit" disabled={!this.isFormValid()} onClick={this.handleClickSubmit}>Changement de mot de passe</Form.Button>
                 </Form.Group>
                 <Message error>
                     <List bulleted>
@@ -189,7 +168,7 @@ class SignUpForm extends React.Component {
                             const errorMsg = this.state[key].errorMsg;
 
                             if (errorMsg)
-                                return <List.Item key={REGISTRATION_ERROR_MSG_PREFIX + key}>{errorMsg}</List.Item>
+                                return <List.Item key={RESET_PSWRD_ERROR_MSG_PREFIX + key}>{errorMsg}</List.Item>
                         })}
                     </List>
                 </Message>
@@ -198,4 +177,4 @@ class SignUpForm extends React.Component {
     }
 }
 
-export default withRouter(SignUpForm);
+export default resetPasswordForm;

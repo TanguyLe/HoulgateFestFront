@@ -1,6 +1,6 @@
 /* @flow */
 import React from "react";
-import {Input, Button, Form, Grid} from "semantic-ui-react"
+import {Input, Button, Form} from "semantic-ui-react"
 
 import {READ_USER_URL} from "../constants";
 import {getCallApi} from "../../utils/api/fetchMiddleware";
@@ -10,7 +10,7 @@ class UserReader extends React.Component {
     constructor() {
         super();
 
-        this.state = {userId: "", username: ""};
+        this.state = {userId: "", username: "", activated: null};
         this.handleChange = this.handleChange.bind(this);
         this.onClickSearch = this.onClickSearch.bind(this);
     }
@@ -29,7 +29,7 @@ class UserReader extends React.Component {
                 })
                 .then((response) => response.json())
                 .then((jsonData) => {
-                    this.setState({username: (jsonData.username || "Not Found")});
+                    this.setState({username: (jsonData.username || "Not Found"), activated: jsonData.activated || null});
                 })
                 .catch(error => alert(error))
     }
@@ -50,7 +50,7 @@ class UserReader extends React.Component {
                             Search
                         </Button>
                     </Form>
-                    Found Username: {this.state.username}
+                   Username trouvé: {this.state.username}, actif: {this.state.activated ? "Oui": "/"}
                 </div>
             );
     }

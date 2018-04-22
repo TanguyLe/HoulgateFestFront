@@ -2,7 +2,7 @@ import React from "react";
 import {Button, Header, Segment, TransitionablePortal} from 'semantic-ui-react'
 
 
-import LogInForm from "./LogInForm"
+import LogInForm from "./forms/LogInForm"
 
 export default class TransitionablePortalExamplePortal extends React.Component {
     constructor() {
