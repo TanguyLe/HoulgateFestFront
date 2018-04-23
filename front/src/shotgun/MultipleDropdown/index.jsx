@@ -2,8 +2,25 @@ import React from "react";
 import glamorous from "glamorous";
 import { map, range, clone, filter, includes } from "lodash/fp";
 const mapUncapped = map.convert({ cap: false });
-import { Dropdown, Button } from "semantic-ui-react";
+import { Dropdown, Button, Form } from "semantic-ui-react";
 import Gravatar from "react-gravatar";
+
+const FormExampleForm = () => (
+	<Form>
+		<Form.Field>
+			<label>First Name</label>
+			<input placeholder="First Name" />
+		</Form.Field>
+		<Form.Field>
+			<label>Last Name</label>
+			<input placeholder="Last Name" />
+		</Form.Field>
+		<Form.Field>
+			<Checkbox label="I agree to the Terms and Conditions" />
+		</Form.Field>
+		<Button type="submit">Submit</Button>
+	</Form>
+);
 
 class MultipleDropdown extends React.Component {
 	constructor(props) {
@@ -134,51 +151,49 @@ class MultipleDropdown extends React.Component {
 					rel="stylesheet"
 					href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css"
 				/>
-				<div>
-					{map(
-						bedIndex => (
-							console.log(
-								this.state.beds[bedIndex].availablePersons,
-								generateDropdownOption(
-									this.state.beds[bedIndex].availablePersons
-								)
+				<Form>
+					{[
+						...map(
+							bedIndex => (
+								<Form.Field key={`bed_${bedIndex}`}>
+									<Dropdown
+										placeholder={`emplacement n°${bedIndex +
+											1}`}
+										fluid
+										selection
+										search
+										onChange={(event, { value }) =>
+											this.handleChange(
+												event,
+												bedIndex,
+												value
+											)
+										}
+										value={
+											this.state.beds[bedIndex].selected
+										}
+										options={generateDropdownOption(
+											this.state.beds[bedIndex]
+												.availablePersons
+										)}
+									/>
+								</Form.Field>
 							),
-							(
-								<Dropdown
-									key={`bed_${bedIndex}`}
-									placeholder={`emplacement n°${bedIndex +
-										1}`}
-									fluid
-									selection
-									search
-									onChange={(event, { value }) =>
-										this.handleChange(
-											event,
-											bedIndex,
-											value
-										)
-									}
-									value={this.state.beds[bedIndex].selected}
-									options={generateDropdownOption(
-										this.state.beds[bedIndex]
-											.availablePersons
-									)}
-								/>
-							)
+							range(0, this.props.numberOfBeds)
 						),
-						range(0, this.props.numberOfBeds)
-					)}
-				</div>
-				<div style={{ margin: "auto", display: "flex" }}>
-					<Button
-						disabled={submitDisabled}
-						color={submitDisabled === true ? null : "green"}
-						style={{ margin: "auto" }}
-						onClick={this.submit}
-					>
-						Validate
-					</Button>
-				</div>
+						// <div style={{ margin: "auto", display: "flex" }}>
+						<Button
+							key={"validationButton"}
+							disabled={submitDisabled}
+							color={submitDisabled === true ? null : "green"}
+							style={{ margin: "auto", display: "flex" }}
+							onClick={this.submit}
+						>
+							Validate
+						</Button>
+						// </div>
+					]}
+				</Form>
 			</div>
 		);
 	}
