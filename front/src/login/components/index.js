@@ -76,7 +76,7 @@ class UserLogin extends React.Component {
                 ? <LogInForm style={style}/>
                 : this.state.tabIndex === 2
                     ? <SignUpForm style={style}/>
-                    :  <ReadUser style={style}/>;
+                : <ReadUser style={style}/>;
 
         return (
 

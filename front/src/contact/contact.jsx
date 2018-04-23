@@ -1,5 +1,5 @@
 import React from "react";
-import {Form, Message, List} from 'semantic-ui-react';
+import {Form, Message, List, Icon} from 'semantic-ui-react';
 import {CONTACT_URL, CONTACT_DEF} from "./constants";
 import {postCallApi} from "../utils/api/fetchMiddleware";
 import {upCaseFirstLetter} from "../utils/miscFcts";
@@ -17,6 +17,8 @@ class ContactForm extends React.Component {
             }
         });
         this.state = JSON.parse(JSON.stringify(this.initialState));
+        this.state.isMessageSent = false;
+        this.state.isMessagePending = false;
         this.isFormValid = this.isFormValid.bind(this);
         this.isFieldValid = this.isFieldValid.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -83,14 +85,16 @@ class ContactForm extends React.Component {
     }
 
     reset() {
-        this.setState(JSON.parse(JSON.stringify(this.initialState)))
+        this.setState(JSON.parse(JSON.stringify(this.initialState)));
     }
 
     isFormValid(emptyValuesOk = false) {
         for (let property in this.state)
-            if (this.state.hasOwnProperty(property))
-                if (!this.state[property].valid || (!emptyValuesOk && !this.state[property].value))
-                    return false;
+            if ((property !== 'isMessageSent') && (property !== 'isMessagePending'))
+                if (this.state.hasOwnProperty(property))
+                    if (!this.state[property].valid || (!emptyValuesOk && !this.state[property].value)) {
+                        return false;
+                    }
         return true;
     }
 
@@ -99,22 +103,26 @@ class ContactForm extends React.Component {
         Object.keys(this.state).forEach((elem) => {
             mailContent[elem] = this.state[elem].value
         });
+        this.setState({isMessagePending: true});
         postCallApi(CONTACT_URL, {mailContent}, false)
             .then((response) => {
                 if (!response.ok)
                     throw Error();
-                this.reset();
+                this.setState({isMessagePending: false, isMessageSent: true});
+                setTimeout(this.reset());
                 return response;
             })
             .catch(error => alert("Une erreur est survenue, veuillez réessayer :  " + error))
     }
 
+
     render() {
         const isFormValid = this.isFormValid(true);
         return (
-            <Form error={!isFormValid} onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}>
+            <Form error={!isFormValid} onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}
+                  success={this.state.isMessageSent}>
                 {Object.keys(CONTACT_DEF).map((name, index) => {
-                    if (CONTACT_DEF[name].htmlElem == 'Input')
+                    if (CONTACT_DEF[name].htmlElem === 'Input')
                         return (
                             <Form.Input required
                                         error={!this.state[name].valid}
@@ -129,7 +137,7 @@ class ContactForm extends React.Component {
                                         onKeyDown={this.handleKeyDown}
                                         onChange={this.handleChange}/>
                         );
-                    else if (CONTACT_DEF[name].htmlElem == 'TextArea')
+                    else if (CONTACT_DEF[name].htmlElem === 'TextArea')
                         return (
                             <Form.TextArea required
                                            error={!this.state[name].valid}
@@ -147,7 +155,7 @@ class ContactForm extends React.Component {
                 })}
                 <Form.Group inline>
                     <Form.Button type="submit" disabled={!this.isFormValid()}
-                                 onClick={this.handleClickSubmit}>Envoyer</Form.Button>
+                                 onClick={this.handleSubmit}>Envoyer</Form.Button>
                     <Form.Button type="reset" onClick={this.reset}>Réinitialiser</Form.Button>
                 </Form.Group>
                 <Message error>
@@ -160,6 +168,16 @@ class ContactForm extends React.Component {
                         })}
                     </List>
                 </Message>
+                <Message success>
+                    Ton message a bien été transmis !
+                </Message>
+                <Message info icon hidden={!this.state.isMessagePending}>
+                    <Icon name='circle notched' loading/>
+                    <Message.Content>
+                        Envoi du message en cours..
+                    </Message.Content>
+                </Message>
+
             </Form>
         );
     }

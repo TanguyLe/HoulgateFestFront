@@ -45,7 +45,7 @@ class UserReader extends React.Component {
                             value={this.state.userId}
                             name="userId"
                             onChange={this.handleChange}
-                            placeholder='MongoUserId...' />
+                            placeholder='MongoUserId...'/>
                         <Button onClick={this.onClickSearch}>
                             Search
                         </Button>
