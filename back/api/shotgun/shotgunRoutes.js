@@ -4,12 +4,12 @@ module.exports = (app) => {
     app.route('/shotgun/rooms')
         .get(shotgun_controller.room_list);
 
-    app.route('/shotgun/rooms')
+    app.route('/shotgun/rooms/:roomId')
         .post(shotgun_controller.shotgun_create_post);
 
     app.route('/shotgun/rooms/:roomId')
         .delete(shotgun_controller.shotgun_delete);
 
-    app.route('/shotgun/rooms/:roomId/roommates')
-        .post(shotgun_controller.roommates_add);
+    app.route('/shotgun/rooms/:roomId')
+        .put(shotgun_controller.roommates_add);
 };

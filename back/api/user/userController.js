@@ -71,3 +71,20 @@ exports.loginRequired = (req, res, next) => {
     else
         return res.status(401).json({ message: 'Authentication failed. Invalid accessToken.' });
 };
+
+// Display list of all rooms.
+exports.user_list = (req, res) => {
+    User.find({},{password: 0})
+    .then(users => {
+        res.status(200).send({
+            meta: {
+                code: "200"
+            },
+            data: users
+        });
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving users."
+        });
+    });
+};

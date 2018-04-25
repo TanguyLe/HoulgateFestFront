@@ -1,21 +1,18 @@
-/*let mongoose = require('mongoose');
+// Room model
 
+let mongoose = require('mongoose');
 
-let UserSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        unique: true
-    },
-    email: {
-        type: String,
-        lowercase: true,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-});
+var Schema = mongoose.Schema;
 
-module.exports = mongoose.model('Users', UserSchema);*/
+let roomSchema = new Schema(
+    {
+        type: {type:String, required: true, default: 'rooms'},
+        text: {type: String},
+        nb_places: {type: Number, min: [0, 'No places'], required: true}
+    },
+    {
+        timestamps: true
+    }
+);
+
+module.exports = mongoose.model('Rooms', roomSchema);

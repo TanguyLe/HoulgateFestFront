@@ -16,6 +16,9 @@ let UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    type: {type:String, required: true, default: 'users'},
+    has_shotgun: {type: Boolean, default: false},
+    is_shotgun: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('Users', UserSchema);

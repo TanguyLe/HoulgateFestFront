@@ -1,21 +1,20 @@
-/*let mongoose = require('mongoose');
+// Shotgun model
 
+let mongoose = require('mongoose');
 
-let UserSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        unique: true
-    },
-    email: {
-        type: String,
-        lowercase: true,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-});
+var Schema = mongoose.Schema;
 
-module.exports = mongoose.model('Users', UserSchema);*/
+let shotgunSchema = new Schema(
+    {
+        type: {type:String, required: true, default: 'shotguns'},
+        status: {type: String, enum: ['created', 'done'], required: true, default: 'created'},
+        room: {type: Schema.Types.ObjectId, ref: 'Rooms', required: true},
+        user: {type: Schema.Types.ObjectId, ref: 'Users', required: true},
+        roommates: [{ type: Schema.Types.ObjectId, ref: 'Users' }]
+    },
+    {
+        timestamps: true
+    }
+);
+
+module.exports = mongoose.model('Shotguns', shotgunSchema);
