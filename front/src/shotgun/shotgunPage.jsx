@@ -6,6 +6,8 @@ import DisplayAllFloors from "./Floor/DisplayAllFloors";
 import { villaLesGenets } from "./villaLesGenetsDef";
 import { FLOOR_GRID_STRUCT_INDEX_PREFIX } from "./constants";
 
+import { getCallApi } from "../utils/api/fetchMiddleware";
+
 /*
  * shotgun phases :
  * preShotgun - display all rooms
@@ -18,9 +20,6 @@ import { FLOOR_GRID_STRUCT_INDEX_PREFIX } from "./constants";
 class ShotgunContainer extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			shotgunPhase: "preShotgun"
-		};
 
 		this.state = {
 			villaLesGenets: {
@@ -36,7 +35,7 @@ class ShotgunContainer extends React.Component {
 		this.shotgunRoom = this.shotgunRoom.bind(this);
 	}
 
-	shotgunRoom(event, room, floor) {
+	async shotgunRoom(event, room, floor) {
 		//	const wait = ms => new Promise((r, j) => setTimeout(r, ms));
 
 		////////////////////////////////////////////////////////////////////////
@@ -45,6 +44,10 @@ class ShotgunContainer extends React.Component {
 
 		// const preShotgunConfirmed = query(...)
 		// const availablePersonIds = query(...)
+
+		const SERVER_ENDPOINT = "http://localhost:3000";
+		const apiCallUsersRoute = SERVER_ENDPOINT + "/users";
+		const serverRequestUsers = getCallApi(apiCallUsersRoute, false);
 
 		room["state"] = "loading";
 		floor["rooms"] = [
@@ -73,8 +76,13 @@ class ShotgunContainer extends React.Component {
 			////// preShotgunConfirmed /////////////////////////////////////////
 			////////////////////////////////////////////////////////////////////
 
-			// await availablePersonIds
-			const availablePersonIds = ["Tanguy", "Gautier", "Nicolas", "Hugo"]; //hardcoded temporary
+			const UsersServerAnswer = await serverRequestUsers;
+			console.log(UsersServerAnswer);
+			const availablePersonIds = (await UsersServerAnswer.json()).data;
+			console.log(availablePersonIds);
+
+			console.log(availablePersonIds);
+			//const availablePersonIds = ["Tanguy", "Gautier", "Nicolas", "Hugo"]; //hardcoded temporary
 
 			room["state"] = "attributingBeds";
 			room["availablePersonIds"] = availablePersonIds;

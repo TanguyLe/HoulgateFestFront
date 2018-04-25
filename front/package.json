@@ -27,6 +27,7 @@
   },
   "main": "index.js",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "glamorous": "^4.11.4",
     "lodash": "^4.17.4",
     "react": "^16.2.0",

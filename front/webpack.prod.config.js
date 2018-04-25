@@ -1,36 +1,36 @@
-let webpack = require('webpack');
+let webpack = require("webpack");
 
 module.exports = {
-    entry: "./src/houlgatefest.js",
-    resolve: {
-        extensions: ['.js', '.jsx']
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(jsx|js)?$/,
-                exclude: /node_modules/,
-                use: 'babel-loader?presets[]=react'
-            },
-            {
-                test: /\.css$/,
-                exclude: [/node_modules/, /bin/],
-                use: ["style-loader", "css-loader"]
-            }
-        ]
-    },
-    output: {
-        path: __dirname + "/web",
-        filename: 'houlgatefest.min.js'
-    },
-    plugins: [
-        new webpack.DefinePlugin({
-            'process.env':{
-                'NODE_ENV': JSON.stringify('production')
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true
-        })
-    ]
+	entry: ["babel-polyfill", "./src/houlgatefest.js"],
+	resolve: {
+		extensions: [".js", ".jsx"]
+	},
+	module: {
+		rules: [
+			{
+				test: /\.(jsx|js)?$/,
+				exclude: /node_modules/,
+				use: "babel-loader?presets[]=react"
+			},
+			{
+				test: /\.css$/,
+				exclude: [/node_modules/, /bin/],
+				use: ["style-loader", "css-loader"]
+			}
+		]
+	},
+	output: {
+		path: __dirname + "/web",
+		filename: "houlgatefest.min.js"
+	},
+	plugins: [
+		new webpack.DefinePlugin({
+			"process.env": {
+				NODE_ENV: JSON.stringify("production")
+			}
+		}),
+		new webpack.optimize.UglifyJsPlugin({
+			sourceMap: true
+		})
+	]
 };

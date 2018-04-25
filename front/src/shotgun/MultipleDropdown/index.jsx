@@ -11,25 +11,34 @@ class MultipleDropdown extends React.Component {
 
 		this.state = {
 			beds: [],
-			personsImages: []
+			personsImages: [],
+			listOfIds: [],
+			optionsPerUserId: {}
 		};
+
+		map(person => {
+			this.state.listOfIds.push(person.id);
+			this.state.optionsPerUserId[person.id] = {
+				key: person.id,
+				value: person.id,
+				text: person.username,
+				image: (
+					<Gravatar
+						email={`${person.username}@houlgatefest.com`}
+						rating="pg"
+						default="retro"
+					/>
+				)
+			};
+		}, props.availablePersonIds);
 
 		map(bedIndex => {
 			this.state.beds[bedIndex] = {};
 			this.state.beds[bedIndex]["selected"] = "";
-			this.state.beds[bedIndex]["availablePersons"] =
-				props.availablePersonIds;
+			this.state.beds[bedIndex][
+				"availablePersons"
+			] = this.state.listOfIds;
 		}, range(0, props.numberOfBeds));
-
-		map(person => {
-			this.state.personsImages[person] = (
-				<Gravatar
-					email={`${person}@houlgatefest.com`}
-					rating="pg"
-					default="retro"
-				/>
-			);
-		}, props.availablePersonIds);
 
 		this.handleChange = this.handleChange.bind(this);
 		this.submit = this.submit.bind(this);
@@ -104,12 +113,9 @@ class MultipleDropdown extends React.Component {
 		 * Format a list of persons to match Semantic-UI-Dropdown entries
 		 * (it's a curried function, lodash/fp's map is autocurried)
 		 */
-		const generateDropdownOption = map(person => ({
-			key: person,
-			value: person,
-			text: person,
-			image: this.state.personsImages[person]
-		}));
+		const generateDropdownOption = map(
+			id => this.state.optionsPerUserId[id]
+		);
 
 		const submitDisabled = includes(
 			"",
@@ -131,20 +137,34 @@ class MultipleDropdown extends React.Component {
 				<div>
 					{map(
 						bedIndex => (
-							<Dropdown
-								key={`bed_${bedIndex}`}
-								placeholder={`emplacement n°${bedIndex + 1}`}
-								fluid
-								selection
-								search
-								onChange={(event, { value }) =>
-									this.handleChange(event, bedIndex, value)
-								}
-								value={this.state.beds[bedIndex].selected}
-								options={generateDropdownOption(
+							console.log(
+								this.state.beds[bedIndex].availablePersons,
+								generateDropdownOption(
 									this.state.beds[bedIndex].availablePersons
-								)}
-							/>
+								)
+							),
+							(
+								<Dropdown
+									key={`bed_${bedIndex}`}
+									placeholder={`emplacement n°${bedIndex +
+										1}`}
+									fluid
+									selection
+									search
+									onChange={(event, { value }) =>
+										this.handleChange(
+											event,
+											bedIndex,
+											value
+										)
+									}
+									value={this.state.beds[bedIndex].selected}
+									options={generateDropdownOption(
+										this.state.beds[bedIndex]
+											.availablePersons
+									)}
+								/>
+							)
 						),
 						range(0, this.props.numberOfBeds)
 					)}
