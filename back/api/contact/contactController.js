@@ -6,6 +6,7 @@ exports.send = (req, res) => {
     let content = `Joignable au ${req.body.mailContent.phone}, ou par mel au ${req.body.mailContent.mail}.
         Contenu de la demande : ${req.body.mailContent.content}`;
     let mailContent = {
+        to: 'houlgatefest@gmail.com',
         subject: title,
         text: content
     };
@@ -16,7 +17,8 @@ exports.send = (req, res) => {
         let contactAnswer = {
             to: req.body.mailContent.mail,
             subject: "Demande de contact reçue",
-            text: "Mail bien reçu ! Cimer frero"
+            text: `Nous avons bien reçu votre demande. Ci-joint une copie du message envoyé : 
+            "${req.body.mailContent.content}"`
         };
 
         mail.mailSender(contactAnswer, (err) => {

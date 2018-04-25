@@ -11,19 +11,13 @@ const enhanceText = (text) => {
 
 exports.mailSender = (mailContent, cb) => {
     let transporter = nodemailer.createTransport(emailConfig.ACCOUNT_CONFIG);
-    let mailOptions = {
-        to: mailContent.to || "houlgatefest@gmail.com",
-        from: "houlgatefest@gmail.com",
-        subject: mailContent.subject || "Titre standard",
-        text: mailContent.text || "Pas de contenu",
-        html: enhanceText(mailContent.text) || "Pas de contenu"
-    };
+    mailContent.html = enhanceText(mailContent.text);
+    let mailOptions = Object.assign(emailConfig.STANDARD_VALUES, mailContent);
     let newMail = new Mail(mailOptions);
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             return cb(error);
         }
-        console.log('Message sent: %s', info.messageId);
         transporter.close();
         return cb(false);
     });

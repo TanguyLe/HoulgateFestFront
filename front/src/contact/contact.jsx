@@ -17,8 +17,7 @@ class ContactForm extends React.Component {
             }
         });
         this.state = JSON.parse(JSON.stringify(this.initialState));
-        this.state.isMessageSent = false;
-        this.state.isMessagePending = false;
+        this.state.status = 'input';
         this.isFormValid = this.isFormValid.bind(this);
         this.isFieldValid = this.isFieldValid.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -90,7 +89,7 @@ class ContactForm extends React.Component {
 
     isFormValid(emptyValuesOk = false) {
         for (let property in this.state)
-            if ((property !== 'isMessageSent') && (property !== 'isMessagePending'))
+            if (property !== 'status')
                 if (this.state.hasOwnProperty(property))
                     if (!this.state[property].valid || (!emptyValuesOk && !this.state[property].value)) {
                         return false;
@@ -103,12 +102,12 @@ class ContactForm extends React.Component {
         Object.keys(this.state).forEach((elem) => {
             mailContent[elem] = this.state[elem].value
         });
-        this.setState({isMessagePending: true});
+        this.setState({status: 'loading'});
         postCallApi(CONTACT_URL, {mailContent}, false)
             .then((response) => {
                 if (!response.ok)
                     throw Error();
-                this.setState({isMessagePending: false, isMessageSent: true});
+                this.setState({status: 'sent'});
                 setTimeout(this.reset());
                 return response;
             })
@@ -120,14 +119,14 @@ class ContactForm extends React.Component {
         const isFormValid = this.isFormValid(true);
         return (
             <Form error={!isFormValid} onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}
-                  success={this.state.isMessageSent}>
+                  success={(this.state.status === 'sent')}>
                 {Object.keys(CONTACT_DEF).map((name, index) => {
                     if (CONTACT_DEF[name].htmlElem === 'Input')
                         return (
                             <Form.Input required
                                         error={!this.state[name].valid}
                                         type={CONTACT_DEF[name].type}
-                                        key={index}
+                                        key={'formKey' + index}
                                         fluid
                                         label={upCaseFirstLetter(CONTACT_DEF[name].label)}
                                         name={name}
@@ -142,7 +141,7 @@ class ContactForm extends React.Component {
                             <Form.TextArea required
                                            error={!this.state[name].valid}
                                            type={CONTACT_DEF[name].type}
-                                           key={index}
+                                           key={'formKey' + index}
                                            label={upCaseFirstLetter(CONTACT_DEF[name].label)}
                                            name={name}
                                            value={this.state[name].value}
@@ -154,7 +153,7 @@ class ContactForm extends React.Component {
 
                 })}
                 <Form.Group inline>
-                    <Form.Button type="submit" disabled={!this.isFormValid() || this.state.isMessagePending}
+                    <Form.Button type="submit" disabled={!this.isFormValid() || (this.state.status !== 'input')}
                                  onClick={this.handleSubmit}>Envoyer</Form.Button>
                     <Form.Button type="reset" onClick={this.reset}>Réinitialiser</Form.Button>
                 </Form.Group>
@@ -163,15 +162,14 @@ class ContactForm extends React.Component {
                         {Object.keys(this.state).map(key => {
                             const errorMsg = this.state[key].errorMsg;
                             if (errorMsg)
-                                return <List.Item key={key}>{errorMsg}</List.Item>
-
+                                return <List.Item key={'messageKey' + key}>{errorMsg}</List.Item>
                         })}
                     </List>
                 </Message>
                 <Message success>
                     Ton message a bien été transmis !
                 </Message>
-                <Message info icon hidden={!this.state.isMessagePending}>
+                <Message info icon hidden={this.state.status !== 'loading'}>
                     <Icon name='circle notched' loading/>
                     <Message.Content>
                         Envoi du message en cours..

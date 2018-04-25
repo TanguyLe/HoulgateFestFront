@@ -1,5 +1,3 @@
-import {ERROR_MSG, LABEL, NAME, TEXT, TYPE} from "../login/constants";
-
 export const CONTACT_URL = "http://localhost:3000/contact";
 
 export const regexes = {
