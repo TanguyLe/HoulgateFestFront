@@ -19,7 +19,7 @@ function checkUserOK(userEmail, callback) {
       }
       /* Check user hasn't shotgun or is not owner of another shotgun */
       if(foundUser.has_shotgun || foundUser.is_shotgun){
-        var error = new Error('User with email '+foundUser.username+' has already shotgun.');
+        var error = new Error('User with email '+foundUser.username+' has already shotgun or owns a shotgun.');
         error.name = "Error 409 : Conflict";
         error.httpStatusCode = "409";
         return callback(error);
@@ -245,6 +245,7 @@ exports.shotgun_create_post = function(req, res) {
 
 // Handle Shotgun delete.
 exports.shotgun_delete = function(req, res) {
+  console.log("Deleting Shotgun...");
   async.waterfall([
     // Delete shotgun
     function(callback){
@@ -277,7 +278,9 @@ exports.shotgun_delete = function(req, res) {
       });
     },
     function(shotgun, callback){
-      rollBackUsers(shotgun.roommates, shotgun.room, function(err, users) {
+      var users = shotgun.roommates;
+      users.push(shotgun.user);
+      rollBackUsers(users, shotgun.room, function(err, users) {
         if (err) {
           console.error("-> Error while rolling back the users.");
           return callback(err);
@@ -427,19 +430,43 @@ exports.roommates_add = function(req, res) {
         callback();
       })
     },
-    // Check and update the roommates and the owner
+    // find the shotgun
     function(callback){
+        console.log("Find shotgun...")
+        // Find shotgun and update it with the request query
+        Shotgun.findOne({room : req.params.roomId}, function(err, shotgun){
+          if(err) return callback(err);
+          if(!shotgun) {
+            var error = new Error("Shotgun not found with roomId " + req.params.roomId);
+            error.name = "Error 404 : Not found";
+            error.httpStatusCode = "404";
+            return callback(error); 
+          }
+          console.log("... Shotgun OK.");
+          callback(null, shotgun);
+        })
+    },
+    // Check and update the roommates and the owner
+    function(shotgun, callback){
       console.log("Shotgun all users  ...");
       async.waterfall([
+        // check the owner user
         function(callback){
           User.findOne({email: req.body.email}, function(err, user){
             if(err) return callback(err);
             if(!user){
-            console.error("-> User with email "+item+ " not found");
-            var error = new Error('User with email '+item+' not found.');
+            console.error("-> User with email "+req.body.email+ " not found");
+            var error = new Error('User with email '+req.body.email+' not found.');
             error.name = "Error 404 : Not found";
             error.httpStatusCode = "404";
             return callback(error);  
+            }
+            if(!user._id.equals(shotgun.user)){
+              console.error("-> User " + user.username +" doesn't own the shotgun");
+              var error = new Error("User "+user.username+" doesn't own the shotgun.");
+              error.name = "Error 403 : Forbidden";
+              error.httpStatusCode = "403";
+              return callback(error);
             }
             if(user.has_shotgun){
               console.error("-> User " + user.username +" has already shotgun");
@@ -459,15 +486,17 @@ exports.roommates_add = function(req, res) {
                 return callback(error);
               }
             });
-            console.log("User owner " + user.username + " has shotgun.")
-            callback();
+            console.log("User owner" + user.username + " has shotgun.")
+            callback(null, user);
           })
-        }, function(callback) {
+        }, function(owner,callback) {
           async.series(stackUpdateUsers, function(err, foundRoommatesId) {  
             if(err) {
               console.error("-> Error before shotgun users");
               // rolling back the users
-              rollBackUsers(updateUsers, req.params.roomId, function(err, shotgun){
+              var users = updateUsers;
+              users.push(owner);
+              rollBackUsers(users, req.params.roomId, function(err, shotgun){
                 if(err){
                   var error = new Error("Error during the roll back.");
                   error.name = "Error 500 : Internal Server Error";
@@ -487,7 +516,7 @@ exports.roommates_add = function(req, res) {
   }
 )}, function(roommatesId, callback){
     console.log("Confirming shotgun...")
-    // Find shotgun and update it with the request query
+    // Find shotgun and update it with the request query -> TODO : faire descendre le shotgun et juste save
     Shotgun.findOneAndUpdate({room : req.params.roomId}, {
       roommates: roommatesId,
       status: 'done'
@@ -560,7 +589,7 @@ let rollBackUsers = function(users, roomIdStr, callback) {
   users.forEach(
     function(item){
       console.log("This is item " + item);
-      if(item instanceof mongoose.Schema.Types.ObjectId){
+      if(item instanceof mongoose.Schema.Types.ObjectId) {
         console.log("First updateUser with item" + item + "of type "+ typeof item);
         var updateUser = function(callback) {
           User.findById(item, function(err, user){
