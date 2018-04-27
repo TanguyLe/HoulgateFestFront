@@ -1,10 +1,8 @@
 /* @flow */
 import React from "react";
+import {withRouter} from 'react-router-dom';
+import {Segment, Form, Button, Divider} from 'semantic-ui-react'
 
-import Button from "../../utils/basics/Button/index";
-import Block from "../../utils/basics/Block/index";
-import TextBlock from "../../utils/basics/TextBlock/index";
-import Wrapper from "../../utils/basics/Wrapper/index";
 import {login} from "../store"
 import {LOGIN_URL} from "../constants"
 import {postCallApi} from "../../utils/api/fetchMiddleware";
@@ -13,64 +11,86 @@ import {postCallApi} from "../../utils/api/fetchMiddleware";
 class LogIn extends React.Component {
     constructor() {
         super();
-        this.state = {email: "", password: ""};
+        // The component is destroyed at closing by semantic-ui portal, which is not the expected behavior
+        // It is consequently coded without reset
+        this.state = {email: "", password: "", wrongField: ""};
 
         this.onClickLogin = this.onClickLogin.bind(this);
-        this.onClickReset = this.onClickReset.bind(this);
-
         this.handleChange = this.handleChange.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.onClickRegister = this.onClickRegister.bind(this);
+    }
+
+    componentDidMount() {
+        const emailInput = document.querySelector("#emailInput");
+        setTimeout(() => emailInput.focus(), 0);
     }
 
     onClickLogin() {
+        let failure = false;
+
         postCallApi(LOGIN_URL, this.state, false)
             .then((response) => {
                 if (!response.ok)
-                    throw Error("requête");
+                    failure = true;
                 return response;
             })
             .then((response) => response.json())
             .then((jsonData) => {
-                login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
-                alert("Login successfull " + jsonData.username + " !");
-            })
-            .catch(error => alert(error))
-            .then(() => this.onClickReset());
-    }
-
-    onClickReset() {
-        this.setState({email: "", password: ""});
+                if (failure)
+                    this.setState({wrongField: jsonData.wrongField});
+                else
+                    login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
+            }).catch(error => alert("Unusual error, please check your internet connection."))
     }
 
     handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
+        if (event.target.name === this.state.wrongField && this.state.wrongField)
+            this.setState({[event.target.name]: event.target.value, wrongField: ""});
+        else
+            this.setState({[event.target.name]: event.target.value});
+    }
+
+    handleKeyPress(event) {
+        if (event.key === "Enter")
+            this.onClickLogin();
+    }
+
+    onClickRegister() {
+        this.props.history.push("/register");
+        this.props.toClose()
     }
 
     render() {
         return (
-            <Wrapper column style={{...this.props.style}}>
-                <Block padding="small">
-                    <TextBlock weight="bold" padding="small">
-                        Email:
-                    </TextBlock>
-                    <input name="email" value={this.state.email} onChange={this.handleChange}/>
-                </Block>
-                <Block padding="small">
-                    <TextBlock weight="bold" padding="small">
-                        Password:
-                    </TextBlock>
-                    <input name="password" type="password" value={this.state.password} onChange={this.handleChange}/>
-                </Block>
-                <Block>
-                    <Button onClick={this.onClickLogin}>
-                        Send
-                    </Button>
-                    <Button onClick={this.onClickReset}>
-                        Reset
-                    </Button>
-                </Block>
-            </Wrapper>
+            <Form>
+                <Form.Input type="text"
+                            error={this.state.wrongField === "email"}
+                            fluid
+                            id="emailInput"
+                            label="Email"
+                            name="email"
+                            value={this.state.email}
+                            onKeyPress={this.handleKeyPress}
+                            onChange={this.handleChange}/>
+
+
+                <Form.Input type="password"
+                            error={this.state.wrongField === "password"}
+                            fluid
+                            label="Mot de passe"
+                            name="password"
+                            value={this.state.password}
+                            onKeyPress={this.handleKeyPress}
+                            onChange={this.handleChange}/>
+                <Segment>
+                    <Button primary fluid onClick={this.onClickLogin}>Je me connecte</Button>
+                    <Divider horizontal>Ou</Divider>
+                    <Button secondary fluid onClick={this.onClickRegister}>Je m'inscris</Button>
+                </Segment>
+            </Form>
         );
     }
 }
 
-export default LogIn;
+export default withRouter(LogIn);

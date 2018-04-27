@@ -16,7 +16,6 @@ export const refreshLogin = () => {
         .then((response) => response.json())
         .then((jsonData) => {
             login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
-            alert("Login successfull " + jsonData.username + " !");
         })
         .catch(error => alert(error))
 };
@@ -26,7 +25,7 @@ export const autoRefreshFetch = (requestUrl, params) => {
         if (!response.ok && (response.status === 401))
             return refreshLogin().then(() => {
                 params = getAuthUpdatedParams(params)
-            }).then(() => autoRefreshFetch(requestUrl, params));
+            }).then(() => fetch(requestUrl, params));
         else
             return response;
     });

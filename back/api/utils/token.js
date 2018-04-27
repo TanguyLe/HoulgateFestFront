@@ -1,4 +1,4 @@
-let jwt = require('jsonwebtoken');
+let jwt = require("jsonwebtoken");
 
 let secret = "whodoyouthinkyouarehackingme";
 let refreshTokens = {};
@@ -22,7 +22,7 @@ exports.getJWTToken = (headers) => {
 };
 
 exports.generateAccessToken = (info="random_shit") => {
-    return jwt.sign(info, secret, {expiresIn: "10m"});
+    return jwt.sign(info, secret, {expiresIn: "20m"});
 };
 
 exports.generateRefreshToken = (accessToken) => {

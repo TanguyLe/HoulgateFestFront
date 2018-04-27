@@ -1,15 +1,15 @@
 module.exports = (app) => {
-    let user = require('./userController');
+    let user = require("./userController");
 
-    app.route('/users')
+    app.route("/users")
         .post(user.createUser);
 
-    app.route('/login')
+    app.route("/login")
         .post(user.login);
 
-    app.route('/refreshLogin')
+    app.route("/refreshLogin")
         .post(user.refreshLogin);
 
-    app.route('/users/:userId')
+    app.route("/users/:userId")
         .get(user.loginRequired, user.readUser);
 };

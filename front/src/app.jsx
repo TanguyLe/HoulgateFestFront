@@ -1,11 +1,13 @@
 import React from "react"
-import {BrowserRouter, Route, Switch} from "react-router-dom"
+import {BrowserRouter, Switch} from "react-router-dom"
 
 import Home from "./mainLayout/home"
 import Dummy from "./shotgun/dummy"
 import NotFound from "./mainLayout/notFound"
-import UserLogin from "./login/components"
+import SignUpPage from "./login/components/signUpPage"
+import ReadUser from "./login/components/ReadUser"
 import DefaultLayout from './mainLayout/layout'
+import ContactPage from './contact/contactPage'
 
 
 class App extends React.Component {
@@ -13,8 +15,10 @@ class App extends React.Component {
         return <BrowserRouter>
                 <Switch>
                     <DefaultLayout path="/" exact component={Home}/>
-                    <DefaultLayout path="/shotgun" component={Dummy}/>
-                    <DefaultLayout path="/login" component={UserLogin}/>
+                    <DefaultLayout path="/shotgun" component={Dummy} bigContainer/>
+                    <DefaultLayout path="/contact" component={ContactPage}/>
+                    <DefaultLayout path="/register" component={SignUpPage}/>
+                    <DefaultLayout path="/test" component={ReadUser}/>
                     <DefaultLayout component={NotFound}/>
                 </Switch>
         </BrowserRouter>

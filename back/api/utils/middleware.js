@@ -1,4 +1,4 @@
-let tokenUtils = require('./token');
+let tokenUtils = require("./token");
 
 exports.userAuth = (req, res, next) => {
     req.user = undefined;
@@ -13,5 +13,5 @@ exports.userAuth = (req, res, next) => {
 };
 
 exports.notFound = (req, res) => {
-    res.status(404).send({url: req.originalUrl + ' not found'});
+    res.status(404).send({url: req.originalUrl + " not found"});
 };
