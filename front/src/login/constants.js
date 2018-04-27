@@ -1,13 +1,13 @@
-export const LOGIN_URL = "http://localhost:3000/login";
-export const REGISTER_URL = "http://localhost:3000/users";
-export const READ_USER_URL = "http://localhost:3000/users";
-
-export const STYLED_TAB_INDEX_PREFIX = "styledTab";
-export const TAB_LABELS = ["RUser", "Log In", "Sign Up"];
+export const BACK_URL = "http://localhost:3000/";
+export const LOGIN_URL = BACK_URL + "login";
+export const USERS_URL = BACK_URL + "users";
+export const PSWD_RESET_URL = BACK_URL + "passwordReset";
+export const getPasswordResetUrl = (id, code) => (USERS_URL + '/' + id + "/passwordReset?authorization=" + code);
+export const getActivateUserUrl = (id, code) => (USERS_URL + '/' + id + "/activate?authorization=" + code);
 
 export const SIGN_UP_FORM_BLOCK_INDEX_PREFIX = "signUpFormBlock";
-export const RESET_PSWRD_BLOCK_INDEX_PREFIX = "resetPasswordFormBlock";
-export const CREATE_PSWRD_RESET_BLOCK_INDEX_PREFIX = "createResetPasswordBlock";
+export const PSWRD_RESET_BLOCK_INDEX_PREFIX = "passwordResetFormBlock";
+export const CREATE_PSWRD_RESET_BLOCK_INDEX_PREFIX = "createPasswordResetBlock";
 
 export const NAME = "username";
 export const TYPE = "type";
@@ -28,8 +28,8 @@ const CONFIRM_FR = "confirmation mot de passe";
 
 export const ERROR_MSG_INDEX_PREFIX = "ErrorMsg";
 export const REGISTRATION_ERROR_MSG_PREFIX = "registration" + ERROR_MSG_INDEX_PREFIX;
-export const RESET_PSWRD_ERROR_MSG_PREFIX = "resetPassword" + ERROR_MSG_INDEX_PREFIX;
-export const CREATE_PSWRD_RESET_ERROR_MSG_PREFIX = "createResetPassword" + ERROR_MSG_INDEX_PREFIX;
+export const PSWRD_RESET_ERROR_MSG_PREFIX = "passwordReset" + ERROR_MSG_INDEX_PREFIX;
+export const CREATE_PSWRD_RESET_ERROR_MSG_PREFIX = "createPasswordReset" + ERROR_MSG_INDEX_PREFIX;
 
 const INVALID_EMAIL = "L'adresse email doit être valide.";
 const INVALID_CONFIRM = "Les deux mots de passe doivent être identiques.";

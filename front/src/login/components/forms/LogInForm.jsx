@@ -19,7 +19,7 @@ class LogIn extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.onClickRegister = this.onClickRegister.bind(this);
-        this.onClickResetPassword = this.onClickResetPassword.bind(this);
+        this.onClickPasswordReset = this.onClickPasswordReset.bind(this);
     }
 
     componentDidMount() {
@@ -27,7 +27,7 @@ class LogIn extends React.Component {
         setTimeout(() => emailInput.focus(), 0);
     }
 
-    onClickResetPassword() {
+    onClickPasswordReset() {
         this.props.history.push("/createPasswordReset");
         this.props.toClose();
     }
@@ -37,6 +37,7 @@ class LogIn extends React.Component {
 
         postCallApi(LOGIN_URL, this.state, false)
             .then((response) => {
+
                 if (!response.ok)
                     failure = true;
                 return response;
@@ -94,7 +95,7 @@ class LogIn extends React.Component {
                             value={this.state.password}
                             onKeyPress={this.handleKeyPress}
                             onChange={this.handleChange}/>
-                <a onClick={this.onClickResetPassword}> Mot de passe oublié? </a>
+                <a onClick={this.onClickPasswordReset}> Mot de passe oublié? </a>
                 <Segment>
                     <Button primary fluid onClick={this.onClickLogin}>Je me connecte</Button>
                     <Divider horizontal>Ou</Divider>

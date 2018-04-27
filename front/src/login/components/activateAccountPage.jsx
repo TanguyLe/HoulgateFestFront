@@ -4,6 +4,7 @@ import {parse} from "query-string";
 
 import {getCallApi} from "../../utils/api/fetchMiddleware";
 import {login} from "../store"
+import {getActivateUserUrl} from "../constants"
 
 
 class activateAccount extends React.Component {
@@ -17,20 +18,18 @@ class activateAccount extends React.Component {
     }
 
     componentWillMount(){
-        // TODO Add something so that ending up on the page without id and code doesn't make it load forever
         const parsed = parse(this.props.location.search);
 
         this.id = parsed.id;
         this.code = parsed.code;
 
         if (this.id  && this.code){
-            // TODO Add a bunch of constants, that url tho
+            this.activateUrl = getActivateUserUrl(this.id, this.code);
             this.setState({status: "activating"});
 
-            getCallApi(("http://localhost:3000/users/" + this.id + "/activate" + "?authorization=" + this.code), false)
+            getCallApi(this.activateUrl, false)
                         .then((response) => {
                             if (!response.ok)
-                                // TODO Generalize those errors
                                 throw Error("requête");
                             return response;
                         })
@@ -43,6 +42,8 @@ class activateAccount extends React.Component {
                         })
                         .catch(error => alert(error))
         }
+        else
+            this.setState({status: "failed"})
     }
 
     render() {
@@ -51,7 +52,7 @@ class activateAccount extends React.Component {
             display = "Activation en cours...";
         else
             display = "Ton compte est " + (this.state.activated ? "activé!"
-                                                                : "désactivé. (Vérifie le lien)");
+                                                                : "désactivé. (Il y a une erreur, vérifie le lien)");
 
         return (
             <div>

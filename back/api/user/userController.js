@@ -1,33 +1,32 @@
 let mongoose = require("mongoose"),
     User = mongoose.model("Users"),
     passwordUtils = require("../utils/password"),
+    labels = require("../../labels"),
     tokenUtils = require("../utils/token");
 
 
-const fillUserAndTokens = (user, res) => {
+const fillUserAndTokens = (user, res) => {
     let accessToken = tokenUtils.generateAccessToken({username: user.username, email: user.email});
 
-    res.json({"username": user.username,
-              "activated" : user.activated,
-              "accessToken": accessToken,
-              "refreshToken": tokenUtils.generateRefreshToken(accessToken)});
+    res.json({
+        "username": user.username,
+        "activated": user.activated,
+        "accessToken": accessToken,
+        "refreshToken": tokenUtils.generateRefreshToken(accessToken)
+    });
 };
 
 exports.login = (req, res) => {
-    // TODO Make this more generic, the use of "wrongField" is specific to loginForm
-    // TODO Make the messages constants, in french so that they can be used directly if necessary, or even better, error constants
     User.findOne({email: req.body.email}, (err, user) => {
-        if (!user) return res.status(401).json({ wrongField: "email",
-                                                 message: "Authentication failed. User doesn't exist." });
+        if (!user) return res.status(401).json({wrongField: "email", message: labels.FAILED_AUTH_NO_USER_MSG});
 
         if (!user.activated) return res.status(401).json({
-           wrongField: "activation"
+            wrongField: "activation"
         });
 
         passwordUtils.comparePassword(req.body.password, user.password).then((authenticated) => {
             if (!authenticated)
-                return res.status(401).json({ wrongField: "password",
-                                              message: "Authentication failed. Invalid password." });
+                return res.status(401).json({wrongField: "password", message: labels.FAILED_AUTH_WRONG_PSWD_MSG});
 
             if (err) res.send(err);
             else fillUserAndTokens(user, res);
@@ -72,17 +71,19 @@ exports.beforeCreatePasswordReset = (req, res, next) => {
     User.findOne({email: req.body.email}, (err, user) => {
         if (err) res.json(err);
         else if (!user)
-            return res.status(401).json({ wrongField: "email", message: "Cette adresse email n'est pas associée à un compte." });
+            return res.status(401).json({wrongField: "email", message: labels.FAILED_AUTH_NO_USER_MSG});
         else if (user && (!user.activated))
-            return res.status(401).json({wrongField: "activation"});
+            return res.status(401).json({
+                wrongField: "activation",
+                message: labels.FAILED_AUTH_ACCOUNT_UNACTIVATED_MSG
+            });
 
         req.params.user = user;
         next();
     });
 };
 
-// TODO This and the above is silly and should be handled by a middleware for JSON responses
-exports.afterCreateResetPassword = (req, res) => {
+exports.afterCreatePasswordReset = (req, res) => {
     res.status(200).json({})
 };
 
@@ -94,15 +95,21 @@ exports.refreshLogin = (req, res) => {
     let user = undefined;
     let accessToken = tokenUtils.getJWTToken(req.headers);
 
-    tokenUtils.checkAccessToken(accessToken, (err, decode) => {user = decode;}, true);
+    tokenUtils.checkAccessToken(accessToken, (err, decode) => {
+        user = decode;
+    }, true);
 
     if (!user || !tokenUtils.checkRefreshToken(accessToken, req.body.refreshToken)
-              || !tokenUtils.checkIfAccessTokenExpired(accessToken))
-        return res.status(401).json({ message: "Authentication failed. Invalid credentials."});
+        || !tokenUtils.checkIfAccessTokenExpired(accessToken))
+        return res.status(401).json({message: labels.FAILED_AUTH_INVALID_CRED_MSG});
 
     let newAccessToken = tokenUtils.generateAccessToken({username: user.username, email: user.email});
 
-    res.json({"username": user.username, "accessToken": newAccessToken, "refreshToken": tokenUtils.generateRefreshToken(newAccessToken)});
+    res.json({
+        "username": user.username,
+        "accessToken": newAccessToken,
+        "refreshToken": tokenUtils.generateRefreshToken(newAccessToken)
+    });
 
 };
 
@@ -110,5 +117,5 @@ exports.loginRequired = (req, res, next) => {
     if (req.user)
         next();
     else
-        return res.status(401).json({ message: "Authentication failed. Invalid credentials." });
+        return res.status(401).json({message: labels.FAILED_AUTH_INVALID_CRED_MSG});
 };

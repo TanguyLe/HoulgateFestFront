@@ -1,11 +1,12 @@
 import React from "react"
 import {parse} from "query-string";
 
-import ResetPasswordForm from "./forms/ResetPasswordForm"
+import PasswordResetForm from "./forms/PasswordResetForm"
 import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenConnectedWrapper"
+import {getPasswordResetUrl} from "../constants"
 
 
-class resetPasswordPage extends React.Component {
+class passwordResetPage extends React.Component {
     constructor() {
         super();
 
@@ -20,9 +21,8 @@ class resetPasswordPage extends React.Component {
         this.id = parsed.id;
         this.code = parsed.code;
 
-        // TODO Constants again
         if (this.id  && this.code)
-            this.resetUrl = "http://localhost:3000/users/" + this.id + "/passwordreset" + "?authorization=" + this.code;
+            this.resetUrl = getPasswordResetUrl(this.id, this.code);
     }
 
     onPasswordChanged(){
@@ -30,10 +30,9 @@ class resetPasswordPage extends React.Component {
     }
 
     render() {
-        // TODO On this part it's a bit slow, one needs to disable the button before the response comes back
         let display = "";
         if (this.state.status === "form")
-            display = <ResetPasswordForm resetUrl={this.resetUrl} onPasswordChanged={this.onPasswordChanged}/>;
+            display = <PasswordResetForm resetUrl={this.resetUrl} onPasswordChanged={this.onPasswordChanged}/>;
         else
             display = "Ton mot de passe a été changé!";
 
@@ -45,4 +44,4 @@ class resetPasswordPage extends React.Component {
     }
 }
 
-export default resetPasswordPage
+export default passwordResetPage

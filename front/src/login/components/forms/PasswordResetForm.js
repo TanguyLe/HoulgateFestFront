@@ -3,13 +3,13 @@ import React from "react";
 import {Form, Message, List} from "semantic-ui-react";
 
 
-import {NAME, TYPE, RESET_PSWRD_BLOCK_INDEX_PREFIX,  LABEL,
-    RESET_PSWRD_DEF, REGEXES, ERROR_MSG, RESET_PSWRD_ERROR_MSG_PREFIX, CONFIRM} from "../../constants";
+import {NAME, TYPE, PSWRD_RESET_BLOCK_INDEX_PREFIX,  LABEL,
+    RESET_PSWRD_DEF, REGEXES, ERROR_MSG, PSWRD_RESET_ERROR_MSG_PREFIX, CONFIRM} from "../../constants";
 import {upCaseFirstLetter} from "../../../utils/miscFcts"
 import {putCallApi} from "../../../utils/api/fetchMiddleware";
 
 
-class resetPasswordForm extends React.Component {
+class PasswordResetForm extends React.Component {
     constructor() {
         super();
 
@@ -147,7 +147,7 @@ class resetPasswordForm extends React.Component {
                     return (
                         <Form.Input required
                                     error={!this.state[name].valid}
-                                    key={RESET_PSWRD_BLOCK_INDEX_PREFIX+ index}
+                                    key={PSWRD_RESET_BLOCK_INDEX_PREFIX + index}
                                     type={elem[TYPE]}
                                     fluid
                                     label={upCaseFirstLetter(elem[LABEL])}
@@ -160,7 +160,8 @@ class resetPasswordForm extends React.Component {
                     )
                 })}
                 <Form.Group inline>
-                    <Form.Button type="submit" disabled={!this.isFormValid()} onClick={this.handleClickSubmit}>Changement de mot de passe</Form.Button>
+                    <Form.Button type="submit" disabled={!this.isFormValid()}
+                                 onClick={this.handleClickSubmit}>Changement de mot de passe</Form.Button>
                 </Form.Group>
                 <Message error>
                     <List bulleted>
@@ -168,7 +169,7 @@ class resetPasswordForm extends React.Component {
                             const errorMsg = this.state[key].errorMsg;
 
                             if (errorMsg)
-                                return <List.Item key={RESET_PSWRD_ERROR_MSG_PREFIX + key}>{errorMsg}</List.Item>
+                                return <List.Item key={PSWRD_RESET_ERROR_MSG_PREFIX + key}>{errorMsg}</List.Item>
                         })}
                     </List>
                 </Message>
@@ -177,4 +178,4 @@ class resetPasswordForm extends React.Component {
     }
 }
 
-export default resetPasswordForm;
+export default PasswordResetForm;

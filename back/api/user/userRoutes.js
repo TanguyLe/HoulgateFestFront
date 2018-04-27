@@ -10,10 +10,10 @@ module.exports = (app) => {
     app.route("/users/:user/activate")
         .get(userActivator.activator.completeActivateNext, user.afterCompleteActivation);
 
-    app.route("/createPasswordReset")
-        .post(user.beforeCreatePasswordReset, userActivator.activator.createPasswordResetNext, user.afterCreateResetPassword);
+    app.route("/passwordReset")
+        .post(user.beforeCreatePasswordReset, userActivator.activator.createPasswordResetNext, user.afterCreatePasswordReset);
 
-    app.route("/users/:user/passwordreset")
+    app.route("/users/:user/passwordReset")
         .put(userActivator.activator.completePasswordResetNext, user.afterCompletePasswordReset);
 
     app.route("/login")

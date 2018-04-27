@@ -9,7 +9,6 @@ export const leftItems = [
     {children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun"}
 ];
 export const rightItems = [
-    {children: <Link to='/test'>ReadUserTestRoute</Link>, key: "test"},
     {children: <WhoAmI/>, key: "user"}
 ];
 
