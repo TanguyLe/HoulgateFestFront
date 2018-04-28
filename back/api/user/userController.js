@@ -8,11 +8,10 @@ let mongoose = require("mongoose"),
 const fillUserAndTokens = (user, res) => {
     let accessToken = tokenUtils.generateAccessToken({username: user.username, email: user.email});
 
-    res.json({
-        "username": user.username,
-        "activated": user.activated,
-        "accessToken": accessToken,
-        "refreshToken": tokenUtils.generateRefreshToken(accessToken)
+    res.json({"username": user.username,
+              "activated": user.activated,
+              "accessToken": accessToken,
+              "refreshToken": tokenUtils.generateRefreshToken(accessToken)
     });
 };
 
@@ -20,9 +19,7 @@ exports.login = (req, res) => {
     User.findOne({email: req.body.email}, (err, user) => {
         if (!user) return res.status(401).json({wrongField: "email", message: labels.FAILED_AUTH_NO_USER_MSG});
 
-        if (!user.activated) return res.status(401).json({
-            wrongField: "activation"
-        });
+        if (!user.activated) return res.status(401).json({wrongField: "activation"});
 
         passwordUtils.comparePassword(req.body.password, user.password).then((authenticated) => {
             if (!authenticated)

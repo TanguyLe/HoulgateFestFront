@@ -9,6 +9,7 @@ import activateAccount from "./login/components/activateAccountPage"
 import passwordResetPage from "./login/components/passwordResetPage"
 import createPasswordResetPage from "./login/components/createPasswordResetPage"
 import DefaultLayout from './mainLayout/layout'
+import ContactPage from './contact/contactPage'
 
 
 class App extends React.Component {
@@ -16,7 +17,8 @@ class App extends React.Component {
         return <BrowserRouter>
                 <Switch>
                     <DefaultLayout path="/" exact component={Home}/>
-                    <DefaultLayout path="/shotgun" component={Dummy}/>
+                    <DefaultLayout path="/shotgun" component={Dummy} bigContainer/>
+                    <DefaultLayout path="/contact" component={ContactPage}/>
                     <DefaultLayout path="/register" component={SignUpPage}/>
                     <DefaultLayout path="/activateUser" component={activateAccount}/>
                     <DefaultLayout path="/passwordReset" component={passwordResetPage}/>

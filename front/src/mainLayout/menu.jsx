@@ -6,7 +6,8 @@ import WhoAmI from "../login/components/WhoAmI"
 
 
 export const leftItems = [
-    {children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun"}
+    {children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun"},
+    {children: <Link to='/contact'>Contact</Link>, key: "contact"}
 ];
 export const rightItems = [
     {children: <WhoAmI/>, key: "user"}
@@ -72,9 +73,16 @@ const NavBarDesktop = ({leftItems, rightItems}) => (
     </Menu>
 );
 
-const NavBarChildren = ({children}) => (
-    <Container style={{marginTop: "5em"}}>{children}</Container>
-);
+class NavBarChildren extends React.Component {
+    render() {
+        const {children, bigContainer} = this.props;
+        if (bigContainer)
+            return <Container fluid style={{marginTop: "5em"}}>{children}</Container>;
+        else
+            return <Container style={{marginTop: "5em"}}>{children}</Container>
+    }
+}
+
 
 class NavBar extends React.Component {
     state = {
@@ -90,9 +98,8 @@ class NavBar extends React.Component {
     handleToggle = () => this.setState({visible: !this.state.visible});
 
     render() {
-        const {children, leftItems, rightItems} = this.props;
+        const {children, leftItems, rightItems, bigContainer} = this.props;
         const {visible} = this.state;
-
         return (
             <div>
                 <Responsive {...Responsive.onlyMobile}>
@@ -103,12 +110,12 @@ class NavBar extends React.Component {
                         rightItems={rightItems}
                         visible={visible}
                     >
-                        <NavBarChildren>{children}</NavBarChildren>
+                        <NavBarChildren bigContainer={bigContainer}>{children}</NavBarChildren>
                     </NavBarMobile>
                 </Responsive>
                 <Responsive minWidth={Responsive.onlyTablet.minWidth}>
                     <NavBarDesktop leftItems={leftItems} rightItems={rightItems}/>
-                    <NavBarChildren>{children}</NavBarChildren>
+                    <NavBarChildren bigContainer={bigContainer}>{children}</NavBarChildren>
                 </Responsive>
             </div>
         );
