@@ -3,7 +3,61 @@ let mongoose = require('mongoose'),
     User = mongoose.model('Users'),
     Room = mongoose.model('Rooms');
 
-let async = require('async')
+let async = require('async');
+
+/* Delete shotgun not completed after a timeout */
+function timeoutTriggered(shotgun) {
+  console.log("Timeout triggered for shotgun on room " + shotgun.room._id);
+  // check if shotgun exists
+  Shotgun.findById(shotgun._id, function(err, shotgun){
+    if(err) console.error(err);
+    if(!shotgun) return;
+    if(shotgun.status !== 'done'){
+      console.log("Deleting Shotgun on room " + shotgun.room + "...");
+      // Delete shotgun
+      let deleteShotgun = function(shotgun, callback){
+        Shotgun.findByIdAndRemove(shotgun._id, function(err, deletedShotgun) {
+          if (err) {
+            console.error("-> Shotgun deleting error.");
+            let error = new Error('Shotgun with roomId '+shotgun.room+' could not be deleted.');
+            error.name = "Error 500 : Internal Server Error";
+            error.httpStatusCode = "500";
+            return callback(error); 
+          }
+          if(!deletedShotgun){
+            console.error("-> Error : No shotgun to delete.");
+            let error = new Error('Shotgun with roomId '+shotgun.room+' not found.');
+              error.name = "Error 404 : Not found";
+              error.httpStatusCode = "404";
+              return callback(error); 
+          }
+          callback(null, deletedShotgun)
+        });
+      }
+
+      let updateUserOwner = function(shotgun, callback){
+        // special tratment for user owner
+        User.findByIdAndUpdate(shotgun.user, {hasShotgun : false, isShotgun: false }, function(err, user){
+          if(err) return callback(err);
+          callback();
+        })
+      }
+
+      async.parallel({
+        delete : deleteShotgun.bind(null, shotgun),
+        update : updateUserOwner.bind(null, shotgun)
+      }, function(err) {
+        if (err) {
+          console.error("-> Error while deleting from DB.");
+          return;
+        }
+        console.log("...Shotgun on room " + shotgun.room  + " deleted.")
+      })
+    }
+    else console.log("... nothing to be done after timeout.")
+    return;
+  })
+}
 
 function checkUserOK(userEmail, callback) {
   console.log("Check user OK...");
@@ -322,6 +376,7 @@ exports.shotgunCreatePost = function(req, res) {
         });
       }
       console.log("... Shotgun is created.");
+      setTimeout(timeoutTriggered.bind(null, shotgun), 300000);
       return res.status(200).send({
         meta : {
           code: "200",
@@ -329,7 +384,6 @@ exports.shotgunCreatePost = function(req, res) {
         }, 
         data: shotgun
       });
-
     });
 };
 
