@@ -14,5 +14,5 @@ module.exports = (app) => {
         .get(user.loginRequired, user.readUser);
 
     app.route('/users')
-        .get(user.user_list);
+        .get(user.userList);
 };

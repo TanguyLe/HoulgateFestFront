@@ -17,8 +17,8 @@ let UserSchema = new mongoose.Schema({
         required: true
     },
     type: {type:String, required: true, default: 'users'},
-    has_shotgun: {type: Boolean, default: false},
-    is_shotgun: {type: Boolean, default: false},
+    hasShotgun: {type: Boolean, default: false},
+    isShotgun: {type: Boolean, default: false},
     room: {type: mongoose.Schema.Types.ObjectId, ref: 'Rooms'},
 });
 

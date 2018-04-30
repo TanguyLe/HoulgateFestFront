@@ -8,7 +8,7 @@ let roomSchema = new Schema(
     {
         type: {type:String, required: true, default: 'rooms'},
         text: {type: String},
-        nb_places: {type: Number, min: [0, 'No places'], required: true}
+        nbBeds: {type: Number, min: [0, 'No places'], required: true}
     },
     {
         timestamps: true

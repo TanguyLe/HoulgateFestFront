@@ -2,8 +2,8 @@ let mongoose = require('mongoose'),
     Room = mongoose.model('Rooms');
 
 // Display list of all rooms.
-exports.room_list = (req, res) => {
-    Room.find()
+exports.roomList = (req, res) => {
+    Room.find({}, {__v: 0})
     .then(rooms => {
         res.status(200).send({
             meta: {

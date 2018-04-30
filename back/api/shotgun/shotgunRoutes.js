@@ -1,15 +1,15 @@
 module.exports = (app) => {
-    let shotgun_controller = require('./shotgunController');
+    let shotgunController = require('./shotgunController');
 
     app.route('/shotgun/rooms')
-        .get(shotgun_controller.room_list);
+        .get(shotgunController.roomList);
 
     app.route('/shotgun/rooms/:roomId')
-        .post(shotgun_controller.shotgun_create_post);
+        .post(shotgunController.shotgunCreatePost);
 
     app.route('/shotgun/rooms/:roomId')
-        .delete(shotgun_controller.shotgun_delete);
+        .delete(shotgunController.shotgunDelete);
 
     app.route('/shotgun/rooms/:roomId')
-        .put(shotgun_controller.roommates_add);
+        .put(shotgunController.roommatesAdd);
 };

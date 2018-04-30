@@ -24,10 +24,10 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 var rooms = []
 var users = []
 
-function roomCreate(text, nb_places, cb) {
+function roomCreate(text, nbBeds, cb) {
   roomDetail = {
     text: text, 
-    nb_places: nb_places
+    nbBeds: nbBeds
   } 
   
   var room = new Room(roomDetail);
