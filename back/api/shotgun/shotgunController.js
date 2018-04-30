@@ -335,26 +335,78 @@ exports.shotgunCreatePost = function(req, res) {
 
 // Handle Shotgun delete.
 exports.shotgunDelete = function(req, res) {
+  // Validate Request
+  if(!req.body.email) {
+    return res.status(400).send({
+      meta: {
+        error_type: "Error 400 : Query parameter error",
+        code: "400",
+        error_message: "User query parameter can not be empty"
+      }
+    });
+  }
+
+  if (!req.params.roomId){
+    return res.status(400).send({
+        meta: {
+          error_type: "Error 400 : Query parameter error",
+          code: "400",
+          error_message: "RoomId query parameter can not be empty"
+        }
+    });
+  }
+
   console.log("Deleting Shotgun...");
   async.waterfall([
+    // find the shotgun
+    function(callback){
+      console.log("Find shotgun...")
+      // Find shotgun
+      Shotgun.findOne({room : req.params.roomId}, function(err, shotgun){
+        if(err) return callback(err);
+        if(!shotgun) {
+          console.error("-> Error : No shotgun to delete.");
+          let error = new Error("Shotgun not found with roomId " + req.params.roomId);
+          error.name = "Error 404 : Not found";
+          error.httpStatusCode = "404";
+          return callback(error); 
+        }
+        console.log("... Shotgun found.");
+        callback(null, shotgun);
+      })
+  },
+    // check user owner
+    function(shotgun, callback){
+      console.log("Check user owner...");
+      User.findOne({email: req.body.email}, function(err, user){
+        if(err) return callback(err);
+        if(!user){
+        console.error("-> User with email "+req.body.email+ " not found.");
+        let error = new Error('User with email '+req.body.email+' not found.');
+        error.name = "Error 404 : Not found";
+        error.httpStatusCode = "404";
+        return callback(error);  
+        }
+        // check that only the user owner can update his room
+        if(!(String(user._id) === String(shotgun.user))){
+          console.error("-> User " + user.username +" doesn't own the shotgun. Can't delete the shotgun.");
+          let error = new Error("User "+user.username+" doesn't own the shotgun. Delete forbidden");
+          error.name = "Error 403 : Forbidden";
+          error.httpStatusCode = "403";
+          return callback(error);
+        }
+        callback();
+      })
+    },
     // Delete shotgun
     function(callback){
       Shotgun.findOneAndRemove({room: req.params.roomId}, function(err, deletedShotgun) {
         if (err) {
           console.error("-> Shotgun deleting error.");
-          if(err.kind === 'ObjectId') {
-            let error = new Error("Shotgun with id " + req.params.roomId + " not found with id " );
-            error.name = "Error 404 : Not found";
-            error.httpStatusCode = "404";
-            return callback(error);         
-          }
-          else {
-            let error = new Error('Shotgun with roomId '+req.params.roomId+' could not be deleted.');
-            error.name = "Error 500 : Internal Server Error";
-            error.httpStatusCode = "500";
-            return callback(error); 
-          }
-
+          let error = new Error('Shotgun with roomId '+req.params.roomId+' could not be deleted.');
+          error.name = "Error 500 : Internal Server Error";
+          error.httpStatusCode = "500";
+          return callback(error); 
         }
         if(!deletedShotgun){
           console.error("-> Error : No shotgun to delete.");
@@ -368,7 +420,6 @@ exports.shotgunDelete = function(req, res) {
       });
     },
     function(shotgun, callback){
-
       let rollBackRoommates = function(shotgun, callback){
         let users = shotgun.roommates;
         if(!users) {
@@ -456,7 +507,7 @@ exports.roommatesAdd = function(req, res) {
         error_message: "User query parameter can not be empty"
       }
     });
-    }
+  }
 
   if(!req.query.roommates) {
       return res.status(400).send({
@@ -561,7 +612,7 @@ exports.roommatesAdd = function(req, res) {
           callback(null, shotgun);
         })
     },
-    // Check and update the roommates and the owner
+    // Check and update the owner user and the roommates
     function(shotgun, callback){
       console.log("Shotgun all users  ...");
       async.waterfall([
@@ -695,7 +746,7 @@ let rollBackUsers = function(users, roomId, callback) {
     function(item){
       // depending on the type of item we call findById or findOne
       if(item instanceof mongoose.Types.ObjectId) {
-        let updateUser = function(callback) {
+        var updateUser = function(callback) {
           User.findById(item, function(err, user){
             if(err) return callback(err);
           
@@ -733,7 +784,7 @@ let rollBackUsers = function(users, roomId, callback) {
         }
       }
       else {
-        let updateUser = function(callback) {
+        var updateUser = function(callback) {
           User.findOne({email: item}, function(err, user){
             if(err) return callback(err);
           
