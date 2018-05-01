@@ -52,3 +52,5 @@ exports.checkRefreshToken = (accessToken, refreshToken) => {
 
     return false;
 };
+
+exports.secret = secret;

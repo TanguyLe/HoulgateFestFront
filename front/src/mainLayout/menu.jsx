@@ -6,11 +6,10 @@ import WhoAmI from "../login/components/WhoAmI"
 
 
 export const leftItems = [
-    {children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun"}
+    {children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun"},
+    {children: <Link to='/contact'>Contact</Link>, key: "contact"}
 ];
 export const rightItems = [
-    {children: <Link to='/contact'>Contact</Link>, key: "contact"},
-    {children: <Link to='/test'>ReadUserTestRoute</Link>, key: "test"},
     {children: <WhoAmI/>, key: "user"}
 ];
 

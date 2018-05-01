@@ -3,9 +3,9 @@ import React from "react";
 import {withRouter} from 'react-router-dom';
 import {Segment, Form, Button, Divider} from 'semantic-ui-react'
 
-import {login} from "../store"
-import {LOGIN_URL} from "../constants"
-import {postCallApi} from "../../utils/api/fetchMiddleware";
+import {login} from "../../store"
+import {LOGIN_URL} from "../../constants"
+import {postCallApi} from "../../../utils/api/fetchMiddleware";
 
 
 class LogIn extends React.Component {
@@ -19,6 +19,7 @@ class LogIn extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.onClickRegister = this.onClickRegister.bind(this);
+        this.onClickPasswordReset = this.onClickPasswordReset.bind(this);
     }
 
     componentDidMount() {
@@ -26,22 +27,33 @@ class LogIn extends React.Component {
         setTimeout(() => emailInput.focus(), 0);
     }
 
+    onClickPasswordReset() {
+        this.props.history.push("/createPasswordReset");
+        this.props.toClose();
+    }
+
     onClickLogin() {
         let failure = false;
 
         postCallApi(LOGIN_URL, this.state, false)
             .then((response) => {
+
                 if (!response.ok)
                     failure = true;
                 return response;
             })
             .then((response) => response.json())
             .then((jsonData) => {
-                if (failure)
+                if (failure) {
                     this.setState({wrongField: jsonData.wrongField});
+
+                    if (jsonData.wrongField === "activation")
+                        alert("Le compte n'est pas activé! Veuillez utiliser le lien que vous avez reçu par mail.")
+                }
+
                 else
                     login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
-            }).catch(error => alert("Unusual error, please check your internet connection."))
+            }).catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connection internet."))
     }
 
     handleChange(event) {
@@ -58,7 +70,7 @@ class LogIn extends React.Component {
 
     onClickRegister() {
         this.props.history.push("/register");
-        this.props.toClose()
+        this.props.toClose();
     }
 
     render() {
@@ -83,6 +95,7 @@ class LogIn extends React.Component {
                             value={this.state.password}
                             onKeyPress={this.handleKeyPress}
                             onChange={this.handleChange}/>
+                <a onClick={this.onClickPasswordReset}> Mot de passe oublié? </a>
                 <Segment>
                     <Button primary fluid onClick={this.onClickLogin}>Je me connecte</Button>
                     <Divider horizontal>Ou</Divider>

@@ -5,7 +5,9 @@ import Home from "./mainLayout/home"
 import Dummy from "./shotgun/dummy"
 import NotFound from "./mainLayout/notFound"
 import SignUpPage from "./login/components/signUpPage"
-import ReadUser from "./login/components/ReadUser"
+import activateAccount from "./login/components/activateAccountPage"
+import passwordResetPage from "./login/components/passwordResetPage"
+import createPasswordResetPage from "./login/components/createPasswordResetPage"
 import DefaultLayout from './mainLayout/layout'
 import ContactPage from './contact/contactPage'
 
@@ -18,7 +20,9 @@ class App extends React.Component {
                     <DefaultLayout path="/shotgun" component={Dummy} bigContainer/>
                     <DefaultLayout path="/contact" component={ContactPage}/>
                     <DefaultLayout path="/register" component={SignUpPage}/>
-                    <DefaultLayout path="/test" component={ReadUser}/>
+                    <DefaultLayout path="/activateUser" component={activateAccount}/>
+                    <DefaultLayout path="/passwordReset" component={passwordResetPage}/>
+                    <DefaultLayout path="/createPasswordReset" component={createPasswordResetPage}/>
                     <DefaultLayout component={NotFound}/>
                 </Switch>
         </BrowserRouter>

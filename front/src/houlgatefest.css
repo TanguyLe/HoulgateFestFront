@@ -9,6 +9,10 @@ body {
     background: white;
 }
 
+a {
+    cursor: pointer;
+}
+
 .layout {
     display: block;
     min-height: 0;

@@ -1,6 +1,6 @@
 import {getCredentials, login} from "../../login/store";
 import {REFRESH_LOGIN_URL} from "./constants";
-import {genGetParams, genPostParams, getAuthUpdatedParams} from "./paramsFcts";
+import {genGetParams, genPostParams, genPutParams, getAuthUpdatedParams} from "./paramsFcts";
 
 export const refreshLogin = () => {
     let creds = getCredentials();
@@ -17,7 +17,7 @@ export const refreshLogin = () => {
         .then((jsonData) => {
             login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
         })
-        .catch(error => alert(error))
+        .catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connection internet. " + error))
 };
 
 export const autoRefreshFetch = (requestUrl, params) => {
@@ -43,4 +43,11 @@ export const postCallApi = (endpoint, body, auth = true) => {
         return autoRefreshFetch(endpoint, genPostParams(body, auth));
 
     return fetch(endpoint, genPostParams(body, auth))
+};
+
+export const putCallApi = (endpoint, body, auth = true) => {
+    if (auth)
+        return autoRefreshFetch(endpoint, genPutParams(body, auth));
+
+    return fetch(endpoint, genPutParams(body, auth))
 };
