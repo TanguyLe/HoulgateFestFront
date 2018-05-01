@@ -12,6 +12,12 @@ exports.userAuth = (req, res, next) => {
     next();
 };
 
+exports.hasStarted = (req, res, next) => {if (process.env.HAS_STARTED !== "1")
+        res.status(200).send({message: "Shotgun has not started yet"});
+    else
+        next();
+};
+
 exports.notFound = (req, res) => {
     res.status(404).send({url: req.originalUrl + " not found"});
 };

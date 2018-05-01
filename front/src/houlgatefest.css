@@ -50,3 +50,30 @@ a {
     margin: auto;
     max-width: calc(100% - 2em);
 }
+
+/* Countdown */
+
+.HoulgateFest .Countdown {
+    text-align: center;
+    margin: 10px auto;
+    padding-bottom: 20px;
+    font-size: 20px;
+}
+
+.HoulgateFest .CountdownCol {
+    display: inline-block;
+}
+
+.HoulgateFest .CountdownColElement {
+    display: inline-block;
+    margin: 0 20px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
