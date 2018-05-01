@@ -55,7 +55,7 @@ class activateAccount extends React.Component {
                                                                 : "désactivé. (Il y a une erreur, vérifie le lien)");
 
         return (
-            <div>
+            <div className="activateAccountPage">
                 <h1> Activation de compte </h1>
                     {display}
             </div>

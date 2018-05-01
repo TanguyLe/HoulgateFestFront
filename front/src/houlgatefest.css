@@ -1,9 +1,9 @@
 html {
     box-sizing: border-box;
+    font-size: 17px;
 }
 
 body {
-    font-family: 'Open Sans', sans-serif;
     margin: 0;
     height: 100%;
     background: white;
@@ -36,19 +36,23 @@ a {
 }
 
 .HoulgateFest {
+    font-family: Copperplate, Alegreya SC, serif;
 }
 
-.HoulgateFest .connectionModal {
+.HoulgateFest .ConnectionModal {
     width: 280px;
     right: 0;
     position: fixed;
-    top: 62px;
+    top: 75px;
     z-index: 1000;
 }
 
-.HoulgateFest .connectionModal .loginForm {
+.HoulgateFest .ConnectionModal .loginForm {
     margin: auto;
     max-width: calc(100% - 2em);
+}
+
+.HoulgateFest .BannerContainer {
 }
 
 /* Countdown */
@@ -76,4 +80,20 @@ a {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
+}
+
+.HoulgateFest .viewerText {
+    padding-left: 30px;
+    font-size: 20px;
+}
+
+/* Semantic ui fixes */
+
+.ui.inverted.menu .item a {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
