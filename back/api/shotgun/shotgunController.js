@@ -1,9 +1,9 @@
 let mongoose = require('mongoose'),
     Shotgun = mongoose.model('Shotguns'),
     User = mongoose.model('Users'),
-    Room = mongoose.model('Rooms');
-
-let async = require('async');
+    Room = mongoose.model('Rooms'),
+    tokenUtils = require("../utils/token"),
+    async = require('async');
 
 /* Delete shotgun not completed after a timeout */
 function timeoutTriggered(shotgun) {
@@ -73,7 +73,7 @@ function checkUserOK(userEmail, callback) {
       }
       /* Check user hasn't shotgun or is not owner of another shotgun */
       if(foundUser.hasShotgun || foundUser.isShotgun){
-        let error = new Error('User with email '+foundUser.username+' has already shotgun or owns a shotgun.');
+        let error = new Error('User '+foundUser.username+' has already shotgun or owns a shotgun.');
         error.name = "Error 409 : Conflict";
         error.httpStatusCode = "409";
         return callback(error);
@@ -275,18 +275,27 @@ function saveShotgun(userId, room, callback) {
 // Handle Shotgun create on POST.
 exports.shotgunCreatePost = function(req, res) {
 
- // Validate Request
- if(!req.body.email) {
-  console.error("-> User body parameter is empty.");
-  return res.status(400).send({
-    meta: {
-      error_type: "Error 400 : Body parameter error",
-      code: "400",
-      error_message: "User body parameter can not be empty"
-    }
-  });
+   /* Validate Request */
+  let user = undefined;
+	let accessToken = tokenUtils.getJWTToken(req.headers);
+
+  // check user is authenticated
+	tokenUtils.checkAccessToken(
+		accessToken,
+		(err, decode) => {
+			user = decode;
+		},
+		false
+	);
+
+  if (!user){
+    console.error("-> Shotgun create aborted. Invalid token.");
+    return res
+			.status(401)
+			.json({ message: "Authentication failed. Invalid accessToken." });
   }
 
+  // check room query parameter
   if(!req.params.roomId) {
     console.error("-> Room query parameter is empty.");
     return res.status(400).send({
@@ -298,6 +307,7 @@ exports.shotgunCreatePost = function(req, res) {
     });
   }
 
+  // check roomId is an ObjectId
   if (!req.params.roomId.match(/^[0-9a-fA-F]{24}$/)) {
     console.error("-> Room query parameter not ObjectID.");
     return res.status(400).send({
@@ -309,12 +319,13 @@ exports.shotgunCreatePost = function(req, res) {
     });
   }
 
+  /* Create shotgun */
   async.waterfall([
     function(callback){
       async.parallel([
         // check that user exists and hasn't already shotgun
         function(callback) {
-          checkUserOK(req.body.email, function(err, user) {
+          checkUserOK(user.email, function(err, user) {
               if (err) {
                 console.error("-> Error check user.")
                 return callback(err);
@@ -389,16 +400,25 @@ exports.shotgunCreatePost = function(req, res) {
 
 // Handle Shotgun delete.
 exports.shotgunDelete = function(req, res) {
-  // Validate Request
-  if(!req.body.email) {
-    return res.status(400).send({
-      meta: {
-        error_type: "Error 400 : Query parameter error",
-        code: "400",
-        error_message: "User query parameter can not be empty"
-      }
-    });
-  }
+   /* Validate Request */
+   let user = undefined;
+   let accessToken = tokenUtils.getJWTToken(req.headers);
+ 
+   // check user is authenticated
+   tokenUtils.checkAccessToken(
+     accessToken,
+     (err, decode) => {
+       user = decode;
+     },
+     false
+   );
+ 
+   if (!user){
+     console.error("-> Shotgun delete aborted. Invalid token.");
+     return res
+       .status(401)
+       .json({ message: "Authentication failed. Invalid accessToken." });
+   }
 
   if (!req.params.roomId){
     return res.status(400).send({
@@ -432,11 +452,11 @@ exports.shotgunDelete = function(req, res) {
     // check user owner
     function(shotgun, callback){
       console.log("Check user owner...");
-      User.findOne({email: req.body.email}, function(err, user){
+      User.findOne({email: user.email}, function(err, user){
         if(err) return callback(err);
         if(!user){
-        console.error("-> User with email "+req.body.email+ " not found.");
-        let error = new Error('User with email '+req.body.email+' not found.');
+        console.error("-> User with email "+user.email+ " not found.");
+        let error = new Error('User with email '+user.email+' not found.');
         error.name = "Error 404 : Not found";
         error.httpStatusCode = "404";
         return callback(error);  
@@ -552,16 +572,25 @@ exports.roomList = function(req, res) {
 // Handle roommates addition to shotgun on PUT.
 exports.roommatesAdd = function(req, res) {
 
-  // Validate Request
-  if(!req.body.email) {
-    return res.status(400).send({
-      meta: {
-        error_type: "Error 400 : Query parameter error",
-        code: "400",
-        error_message: "User query parameter can not be empty"
-      }
-    });
-  }
+   /* Validate Request */
+   let user = undefined;
+   let accessToken = tokenUtils.getJWTToken(req.headers);
+ 
+   // check user is authenticated
+   tokenUtils.checkAccessToken(
+     accessToken,
+     (err, decode) => {
+       user = decode;
+     },
+     false
+   );
+ 
+   if (!user){
+     console.error("-> Shotgun add roommates aborted. Invalid token.");
+     return res
+       .status(401)
+       .json({ message: "Authentication failed. Invalid accessToken." });
+   }
 
   if(!req.query.roommates) {
       return res.status(400).send({
@@ -672,11 +701,11 @@ exports.roommatesAdd = function(req, res) {
       async.waterfall([
         // check and shotgun the owner user
         function(callback){
-          User.findOne({email: req.body.email}, function(err, user){
+          User.findOne({email: user.email}, function(err, user){
             if(err) return callback(err);
             if(!user){
-            console.error("-> User with email "+req.body.email+ " not found.");
-            let error = new Error('User with email '+req.body.email+' not found.');
+            console.error("-> User with email "+user.email+ " not found.");
+            let error = new Error('User with email '+user.email+' not found.');
             error.name = "Error 404 : Not found";
             error.httpStatusCode = "404";
             return callback(error);  

@@ -84,16 +84,16 @@ function createUsers(cb) {
 function createRooms(cb) {
     async.parallel([
         function(callback) {
-          roomCreate('The Name of the Wind (The Kingkiller Chronicle, #1)', 1, callback);
+          roomCreate('Room 1', 1, callback);
         },
         function(callback) {
-          roomCreate("The Wise Man's Fear (The Kingkiller Chronicle, #2)", 2,callback);
+          roomCreate("Room 2", 2,callback);
         },
         function(callback) {
-          roomCreate("The Slow Regard of Silent Things (Kingkiller Chronicle)", 3, callback);
+          roomCreate("Room 3", 3, callback);
         },
         function(callback) {
-          roomCreate("Apes and Angels", 4, callback);
+          roomCreate("Room 4", 4, callback);
         }
         ],
         // optional callback
