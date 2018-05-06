@@ -45,7 +45,7 @@ body {
     width: 280px;
     height: calc(100% - 75px);
     right: 0;
-    position: fixed;
+    position: fixed !important;
     top: 75px;
     z-index: 1000;
 }
