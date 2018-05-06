@@ -1,4 +1,4 @@
-let express = require('express'),
+let express = require("express"),
     app = express(),
     port = process.env.PORT || 3000,
     cors = require('cors'),
@@ -10,6 +10,8 @@ let express = require('express'),
     userRoutes = require('./api/user/userRoutes'),
     roomRoutes = require('./api/room/roomRoutes'),
     shotgunRoutes = require('./api/shotgun/shotgunRoutes'),
+    Mail = require('./api/utils/mailModel'),
+    contactRoutes = require('./api/contact/contactRoutes');
     bodyParser = require('body-parser');
 
 // mongoose instance connection url connection
@@ -28,6 +30,7 @@ userRoutes(app);
 roomRoutes(app);
 shotgunRoutes(app);
 //app.use(middleware.notFound);
+contactRoutes(app);
 
 app.listen(port);
 

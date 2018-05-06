@@ -9,9 +9,9 @@ body {
     background: white;
 }
 
-.HoulgateFest {
+a {
+    cursor: pointer;
 }
-
 
 .layout {
     display: block;

@@ -9,10 +9,17 @@ if (!userArgs[0].startsWith('mongodb://')) {
     return
 }
 
-var async = require('async')
-var Room = require('./api/room/roomModel')
-var User = require('./api/user/userModel')
 
+
+let async = require('async')
+let Room = require('./api/room/roomModel')
+let User = require('./api/user/userModel')
+let passwordUtils = require("./api/utils/password"),
+    userActivator = require("./api/user/userActivator");
+
+let babelCore = require('babel-core/register'),
+    bableFill = require('babel-polyfill'),
+    villaLesGenets = require("../front/src/shotgun/villaLesGenetsDef.js");
 
 var mongoose = require('mongoose');
 var mongoDB = userArgs[0];
@@ -24,8 +31,9 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 var rooms = []
 var users = []
 
-function roomCreate(text, nbBeds, cb) {
+function roomCreate(roomType, text, nbBeds, cb) {
   roomDetail = {
+    roomType: roomType,
     text: text, 
     nbBeds: nbBeds
   } 
@@ -44,36 +52,39 @@ function roomCreate(text, nbBeds, cb) {
   }  );
 }
 
-function userCreate(username, email, password, cb) {
-  var user = new User({ username: username, email: email, password: password });
+function userCreate(username, email, password, activated, cb) {
+  passwordUtils.cryptPassword(password).then((resPassword) => {
+
+    let user = new User({ username: username, email: email, password: resPassword, activated: activated });
        
-  user.save(function (err) {
-    if (err) {
-      cb(err, null);
-      return;
-    }
-    console.log('New User: ' + user);
-    users.push(user)
-    cb(null, user);
-  }   );
+    user.save(function (err) {
+      if (err) {
+        cb(err, null);
+        return;
+      }
+      console.log('New User: ' + user);
+      users.push(user)
+      cb(null, user);
+    });
+  }); 
 }
 
 function createUsers(cb) {
     async.parallel([
         function(callback) {
-          userCreate('Patrick', 'Rothfuss', '1973-06-06', callback);
+          userCreate('Patrick', 'Rothfuss', '1973-06-06', true, callback);
         },
         function(callback) {
-          userCreate('Ben', 'Bova', '1932-11-8', callback);
+          userCreate('Ben', 'Bova', '1932-11-8',true, callback);
         },
         function(callback) {
-          userCreate('Isaac', 'Asimov', '1920-01-02', callback);
+          userCreate('Isaac', 'Asimov', '1920-01-02',true, callback);
         },
         function(callback) {
-          userCreate('Bob', 'Billings', '1920-01-02', callback);
+          userCreate('Bob', 'Billings', '1920-01-02',true, callback);
         },
         function(callback) {
-          userCreate('Jim', 'Jones', '1971-12-16', callback);
+          userCreate('Jim', 'Jones', '1971-12-16',true,  callback);
         },
         ],
         // optional callback
@@ -82,7 +93,24 @@ function createUsers(cb) {
 
 
 function createRooms(cb) {
-    async.parallel([
+  let stackcreateRooms = []
+
+  villaLesGenets.villaLesGenets.floors.forEach(
+    function(floor){
+      floor.rooms.forEach(
+        function(room){
+          let createRoom = function(callback) {
+            roomCreate(room.type, room.name, room.seats, callback);
+          }
+          stackcreateRooms.push(createRoom);
+        }
+      )
+    }
+  )
+
+
+
+    /*async.parallel([
         function(callback) {
           roomCreate('Room 1', 1, callback);
         },
@@ -98,6 +126,8 @@ function createRooms(cb) {
         ],
         // optional callback
         cb);
+        */
+       async.parallel(stackcreateRooms, cb);
 }
 
 
