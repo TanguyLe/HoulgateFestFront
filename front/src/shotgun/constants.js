@@ -10,3 +10,5 @@ export const BEDROOM_TYPE = "bedroom";
 export const STAIRS_TYPE = "stairs";
 export const LIVING_ROOM_TYPE = "livingRoom";
 export const GARDEN_TYPE = "garden";
+
+export const shotgunDate = "May 05, 2018 17:26:00";

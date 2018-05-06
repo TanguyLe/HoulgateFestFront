@@ -25,3 +25,85 @@ body {
 .fullWidth {
     width: 100%;
 }
+
+.rowFlex {
+    display: flex;
+    align-items: center;
+}
+
+.paddingSides {
+    padding: 0 15px;
+}
+
+.HoulgateFest {
+    font-family: Copperplate, Alegreya SC, serif;
+}
+
+/* Shotgun Modal */
+
+.HoulgateFest .ShotgunModal {
+    width: 280px;
+    height: calc(100% - 75px);
+    right: 0;
+    position: fixed;
+    top: 75px;
+    z-index: 1000;
+}
+
+/* Connection Modal */
+
+.HoulgateFest .ConnectionModal {
+    width: 280px;
+    right: 0;
+    position: fixed;
+    top: 75px;
+    z-index: 1000;
+}
+
+.HoulgateFest .ConnectionModal .loginForm {
+    margin: auto;
+    max-width: calc(100% - 2em);
+}
+
+/* Countdown */
+
+.HoulgateFest .Countdown {
+    text-align: center;
+    margin: 10px auto;
+    padding-bottom: 20px;
+    font-size: 20px;
+}
+
+.HoulgateFest .CountdownCol {
+    display: inline-block;
+}
+
+.HoulgateFest .CountdownColElement {
+    display: inline-block;
+    margin: 0 20px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.HoulgateFest .viewerText {
+    padding-left: 30px;
+    font-size: 20px;
+}
+
+/* Semantic ui fixes */
+
+.ui.inverted.menu .item a {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
