@@ -9,7 +9,7 @@ class RoomAttributingBeds extends React.Component {
                 <MultipleDropdown
                     numberOfBeds={this.props.seats}
                     availablePersonIds={this.props.availablePersonIds}
-                    //validationFunction={this.props.addPersonsInRoomsFunction}
+                    validationFunction={this.props.addPersonsInShotgunFunction}
                 />
             </RoomBasis>
         );

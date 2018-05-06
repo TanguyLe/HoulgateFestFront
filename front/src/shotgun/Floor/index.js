@@ -48,30 +48,30 @@ export class Floor extends React.Component {
         this.calcSizes();
     }
 
-	render() {
-		let gridStyle = {
-			display: "grid",
-			gridTemplateRows: this.props.floorData.gridTemplate.rows,
-			gridTemplateColumns: this.props.floorData.gridTemplate.columns,
-			maxWidth: "100%",
-			maxHeight: "calc(100% - 60px)",
-			margin: "auto",
-			height: this.state.gridHeight,
-			width: this.state.gridWidth
-		};
-		return (
-			<div className="fullHeight fullWidth" id={this.floorId}>
-				<div style={{ textAlign: "center" }}>
-					<b>{this.props.floorData.name}</b>
-				</div>
-				<div style={gridStyle}>
-					{this.props.floorData.rooms.map((room, index) => {
-						let position = {
-							rowStart: room.gridPosition.rows.start,
-							rowEnd: room.gridPosition.rows.end,
-							columnStart: room.gridPosition.columns.start,
-							columnEnd: room.gridPosition.columns.end
-						};
+    render() {
+        let gridStyle = {
+            display: "grid",
+            gridTemplateRows: this.props.floorData.gridTemplate.rows,
+            gridTemplateColumns: this.props.floorData.gridTemplate.columns,
+            maxWidth: "100%",
+            maxHeight: "calc(100% - 60px)",
+            margin: "auto",
+            height: this.state.gridHeight,
+            width: this.state.gridWidth
+        };
+        return (
+            <div className="fullHeight fullWidth" id={this.floorId}>
+                <div style={{ textAlign: "center" }}>
+                    <b>{this.props.floorData.name}</b>
+                </div>
+                <div style={gridStyle}>
+                    {this.props.floorData.rooms.map((room, index) => {
+                        let position = {
+                            rowStart: room.gridPosition.rows.start,
+                            rowEnd: room.gridPosition.rows.end,
+                            columnStart: room.gridPosition.columns.start,
+                            columnEnd: room.gridPosition.columns.end
+                        };
 
                         return (
                             <Room
@@ -82,6 +82,7 @@ export class Floor extends React.Component {
                                 shotgunState={room.state}
                                 availablePersonIds={room.availablePersonIds}
                                 createShotgunFunction={event => this.props.createShotgunFunction(event, room)}
+                                addPersonsInShotgunFunction={this.props.addPersonsInShotgunFunction}
                             />
                         );
                     })}

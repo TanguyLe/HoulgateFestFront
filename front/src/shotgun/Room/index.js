@@ -30,6 +30,9 @@ class Room extends React.Component {
                         position={this.props.position}
                         name={this.props.name}
                         availablePersonIds={this.props.availablePersonIds}
+                        addPersonsInShotgunFunction={roommatesIds =>
+                            this.props.addPersonsInShotgunFunction(this.props.name, roommatesIds)
+                        }
                     />
                 );
 
