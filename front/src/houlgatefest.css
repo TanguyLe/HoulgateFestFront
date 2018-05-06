@@ -55,7 +55,7 @@ a {
 .HoulgateFest .ConnectionModal {
     width: 280px;
     right: 0;
-    position: fixed;
+    position: fixed !important;
     top: 75px;
     z-index: 1000;
 }
