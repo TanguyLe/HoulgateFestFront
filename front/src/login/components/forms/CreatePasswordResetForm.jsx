@@ -29,7 +29,7 @@ class CreatePasswordResetForm extends React.Component {
         };
 
         this.state = JSON.parse(JSON.stringify(this.initialState));
-        this.state.status = 'input';
+        this.state.status = "input";
 
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
@@ -90,7 +90,7 @@ class CreatePasswordResetForm extends React.Component {
             .then((response) => response.json())
             .then((jsonData) => {
                 if (failure) {
-                    this.setState(Object.assign({}, this.state,
+                    this.setState(Object.assign({}, this.state, {status: "input"},
                         {
                             [jsonData.wrongField]: Object.assign({}, this.state[jsonData.wrongField], {
                                 valid: false,
@@ -103,7 +103,10 @@ class CreatePasswordResetForm extends React.Component {
                 }
                 else
                     this.setState({status: "sent"});
-            }).catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connexion internet. " + error))
+            }).catch(error => {
+            this.setState({status: "input"});
+            alert("Erreur inattendue, veuillez vérifier l'état de votre connexion internet. " + error)
+        })
     }
 
     validateField(name, value) {
