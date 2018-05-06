@@ -4,7 +4,7 @@ import {Button, Header, Segment, TransitionablePortal} from 'semantic-ui-react'
 
 import LogInForm from "./forms/LogInForm"
 
-export default class TransitionablePortalExamplePortal extends React.Component {
+export default class LoginPortal extends React.Component {
     constructor() {
         super();
 
@@ -33,7 +33,7 @@ export default class TransitionablePortalExamplePortal extends React.Component {
                 trigger={(<Button content="Connexion" disabled={this.state.open}/>)}
             >
                 <Segment className="ConnectionModal">
-                    <Header>T'es qui toi?!</Header>
+                    <Header>Connecte-toi</Header>
                     <LogInForm className="loginForm" toClose={this.handleClose}/>
                 </Segment>
             </TransitionablePortal>
