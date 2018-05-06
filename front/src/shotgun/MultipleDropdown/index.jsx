@@ -34,10 +34,10 @@ class MultipleDropdown extends React.Component {
 		};
 
 		map(person => {
-			this.state.listOfIds.push(person.id);
-			this.state.optionsPerUserId[person.id] = {
-				key: person.id,
-				value: person.id,
+			this.state.listOfIds.push(person._id);
+			this.state.optionsPerUserId[person._id] = {
+				key: person._id,
+				value: person._id,
 				text: person.username,
 				image: (
 					<Gravatar
