@@ -1,110 +1,120 @@
 let mongoose = require("mongoose"),
-	User = mongoose.model("Users"),
-	passwordUtils = require("../utils/password"),
-	tokenUtils = require("../utils/token");
+    User = mongoose.model("Users"),
+    passwordUtils = require("../utils/password"),
+    labels = require("../../labels"),
+    tokenUtils = require("../utils/token");
+
 
 const fillUserAndTokens = (user, res) => {
-	let accessToken = tokenUtils.generateAccessToken({
-		username: user.username,
-		email: user.email
-	});
+    let accessToken = tokenUtils.generateAccessToken({username: user.username, email: user.email});
 
-	res.json({
-		username: user.username,
-		accessToken: accessToken,
-		refreshToken: tokenUtils.generateRefreshToken(accessToken)
-	});
+    res.json({"username": user.username,
+              "activated": user.activated,
+              "accessToken": accessToken,
+              "refreshToken": tokenUtils.generateRefreshToken(accessToken)
+    });
 };
 
 exports.login = (req, res) => {
-	User.findOne({ email: req.body.email }, (err, user) => {
-		if (!user)
-			return res
-				.status(401)
-				.json({ message: "Authentication failed. Invalid user." });
+    User.findOne({email: req.body.email}, (err, user) => {
+        if (!user) return res.status(401).json({wrongField: "email", message: labels.FAILED_AUTH_NO_USER_MSG});
 
-		passwordUtils
-			.comparePassword(req.body.password, user.password)
-			.then(resPassword => {
-				if (!resPassword)
-					return res
-						.status(401)
-						.json({
-							message: "Authentication failed. Invalid password."
-						});
+        if (!user.activated) return res.status(401).json({wrongField: "activation"});
 
-				if (err) res.send(err);
-				else fillUserAndTokens(user, res);
-			});
-	});
+        passwordUtils.comparePassword(req.body.password, user.password).then((authenticated) => {
+            if (!authenticated)
+                return res.status(401).json({wrongField: "password", message: labels.FAILED_AUTH_WRONG_PSWD_MSG});
+
+            if (err) res.send(err);
+            else fillUserAndTokens(user, res);
+        });
+    });
 };
 
-exports.createUser = (req, res) => {
-	passwordUtils.cryptPassword(req.body.password).then(resPassword => {
-		let newUserInfo = req.body;
-		newUserInfo.password = resPassword;
+exports.createUser = (req, res, next) => {
+    passwordUtils.cryptPassword(req.body.password).then((resPassword) => {
+        let newUserInfo = req.body;
+        newUserInfo.password = resPassword;
 
-		let newUser = new User(newUserInfo);
-		newUser.save((err, user) => {
-			if (err) res.send(err);
-			else fillUserAndTokens(user, res);
-		});
-	});
+        let newUser = new User(newUserInfo);
+        newUser.save((err, user) => {
+
+            if (err) res.send(err);
+            else {
+                fillUserAndTokens(user, res);
+                req.activator = {id: user.id};
+                next();
+            }
+        });
+    });
+};
+
+exports.afterCompleteActivation = (req, res) => {
+    User.findById(req.params.user, (err, user) => {
+        if (err) res.send(err);
+        else fillUserAndTokens(user, res);
+    });
 };
 
 exports.readUser = (req, res) => {
-	User.findById(req.params.userId, (err, user) => {
-		if (err) res.send(err);
-		else res.json({ email: user.email, username: user.username });
-	});
+    User.findById(req.params.userId, (err, user) => {
+        if (err) res.send(err);
+        else
+            res.json({"email": user.email, "username": user.username, "activated": user.activated});
+    });
+};
+
+exports.beforeCreatePasswordReset = (req, res, next) => {
+    User.findOne({email: req.body.email}, (err, user) => {
+        if (err) res.json(err);
+        else if (!user)
+            return res.status(401).json({wrongField: "email", message: labels.FAILED_AUTH_NO_USER_MSG});
+        else if (user && (!user.activated))
+            return res.status(401).json({
+                wrongField: "activation",
+                message: labels.FAILED_AUTH_ACCOUNT_UNACTIVATED_MSG
+            });
+
+        req.params.user = user;
+        next();
+    });
+};
+
+exports.afterCreatePasswordReset = (req, res) => {
+    res.status(200).json({})
+};
+
+exports.afterCompletePasswordReset = (req, res) => {
+    res.status(200).json({});
 };
 
 exports.refreshLogin = (req, res) => {
-	let user = undefined;
-	let accessToken = tokenUtils.getJWTToken(req.headers);
+    let user = undefined;
+    let accessToken = tokenUtils.getJWTToken(req.headers);
 
-	tokenUtils.checkAccessToken(
-		accessToken,
-		(err, decode) => {
-			user = decode;
-		},
-		true
-	);
+    tokenUtils.checkAccessToken(accessToken, (err, decode) => {
+        user = decode;
+    }, true);
 
-	if (!user)
-		return res
-			.status(401)
-			.json({ message: "Authentication failed. Invalid accessToken." });
-	if (!tokenUtils.checkRefreshToken(accessToken, req.body.refreshToken))
-		return res
-			.status(401)
-			.json({ message: "Authentication failed. Invalid refreshToken." });
-	if (!tokenUtils.checkIfAccessTokenExpired(accessToken))
-		return res
-			.status(401)
-			.json({
-				message:
-					"Authentication failed. Invalid accessToken(not expired)."
-			});
+    if (!user || !tokenUtils.checkRefreshToken(accessToken, req.body.refreshToken)
+        || !tokenUtils.checkIfAccessTokenExpired(accessToken))
+        return res.status(401).json({message: labels.FAILED_AUTH_INVALID_CRED_MSG});
 
-	let newAccessToken = tokenUtils.generateAccessToken({
-		username: user.username,
-		email: user.email
-	});
+    let newAccessToken = tokenUtils.generateAccessToken({username: user.username, email: user.email});
 
-	res.json({
-		username: user.username,
-		accessToken: newAccessToken,
-		refreshToken: tokenUtils.generateRefreshToken(newAccessToken)
-	});
+    res.json({
+        "username": user.username,
+        "accessToken": newAccessToken,
+        "refreshToken": tokenUtils.generateRefreshToken(newAccessToken)
+    });
+
 };
 
 exports.loginRequired = (req, res, next) => {
-	if (req.user) next();
-	else
-		return res
-			.status(401)
-			.json({ message: "Authentication failed. Invalid accessToken." });
+    if (req.user)
+        next();
+    else
+        return res.status(401).json({message: labels.FAILED_AUTH_INVALID_CRED_MSG});
 };
 
 // Display list of all users.

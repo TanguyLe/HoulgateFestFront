@@ -28,12 +28,18 @@ export const displatch = () => {
 
 export const logout = () => {
     login("", "", "")
+    window.localStorage.setItem("session", false);
 };
 
-export const login = (login, accessToken, refreshToken) => {
-    credentials.login = login;
+export const login = (username, accessToken, refreshToken) => {
+    credentials.login = username;
     credentials.accessToken = accessToken;
     credentials.refreshToken = refreshToken;
+
+    window.localStorage.setItem("username", username);
+    window.localStorage.setItem("accessToken", accessToken);
+    window.localStorage.setItem("refreshToken", refreshToken);
+    window.localStorage.setItem("session", true);
 
     displatch();
 };
