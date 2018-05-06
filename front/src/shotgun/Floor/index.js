@@ -2,7 +2,6 @@ import React from "react";
 
 import Room from "../Room";
 import { ROOM_GRID_STRUCT_INDEX_PREFIX } from "../constants";
-import TextBlock from "../../utils/basics/TextBlock";
 
 export class Floor extends React.Component {
 	constructor(props) {
@@ -66,9 +65,9 @@ export class Floor extends React.Component {
 		};
 		return (
 			<div className="fullHeight fullWidth" id={this.floorId}>
-				<TextBlock style={{ textAlign: "center" }}>
+				<div style={{ textAlign: "center" }}>
 					<b>{this.props.floorData.name}</b>
-				</TextBlock>
+				</div>
 				<div style={gridStyle}>
 					{this.props.floorData.rooms.map((room, index) => {
 						let position = {

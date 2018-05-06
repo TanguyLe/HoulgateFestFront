@@ -1,6 +1,7 @@
 import React from "react";
+import {Button} from "semantic-ui-react"
+
 import RoomBasis from "./RoomBasis";
-import Button from "../../utils/basics/Button";
 
 class RoomReadyForShotgun extends React.Component {
 	render() {
