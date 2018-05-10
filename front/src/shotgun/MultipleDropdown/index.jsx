@@ -1,6 +1,6 @@
 import React from "react";
 import glamorous from "glamorous";
-import { map, range, clone, filter, includes } from "lodash/fp";
+import { map, range, clone, filter, includes, get, find, slice } from "lodash/fp";
 const mapUncapped = map.convert({ cap: false });
 import { Dropdown, Button, Form } from "semantic-ui-react";
 import Gravatar from "react-gravatar";
@@ -110,9 +110,28 @@ class MultipleDropdown extends React.Component {
     submit(event) {
         alert("selected :" + map(bed => bed.selected, this.state.beds));
         console.log(this.props.validationFunction);
+<<<<<<< HEAD
         this.props.onSubmit(map(bed => bed.selected, this.state.beds));
+=======
+        this.props.validationFunction(slice(1, this.state.beds.length, map(bed => bed.selected, this.state.beds)));
+>>>>>>> shotgun
         event.preventDefault();
     }
+
+    componentDidMount() {
+        this.handleChange(
+            "",
+            0,
+            get(
+                "_id",
+                find(
+                    person => person.username === window.localStorage.getItem("username"),
+                    this.props.availablePersonIds
+                )
+            )
+        );
+    }
+
     render() {
         /**
          * Format a list of persons to match Semantic-UI-Dropdown entries
@@ -133,22 +152,37 @@ class MultipleDropdown extends React.Component {
                 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css" />
                 <Form>
                     {[
-                        ...map(
-                            bedIndex => (
-                                <Form.Field key={`bed_${bedIndex}`}>
-                                    <Dropdown
-                                        placeholder={`emplacement n°${bedIndex + 1}`}
-                                        fluid
-                                        selection
-                                        search
-                                        onChange={(event, { value }) => this.handleChange(event, bedIndex, value)}
-                                        value={this.state.beds[bedIndex].selected}
-                                        options={generateDropdownOption(this.state.beds[bedIndex].availablePersons)}
-                                    />
-                                </Form.Field>
-                            ),
-                            range(0, this.props.numberOfBeds)
-                        ),
+                        ...map(bedIndex => {
+                            if (bedIndex === 0) {
+                                return (
+                                    <Form.Field key={`bed_${bedIndex}`}>
+                                        <Dropdown
+                                            placeholder={`emplacement n°${bedIndex + 1}`}
+                                            fluid
+                                            selection
+                                            disabled
+                                            //onChange={(event, { value }) => this.handleChange(event, bedIndex, value)}
+                                            value={this.state.beds[bedIndex].selected}
+                                            options={generateDropdownOption(this.state.beds[bedIndex].availablePersons)}
+                                        />
+                                    </Form.Field>
+                                );
+                            } else {
+                                return (
+                                    <Form.Field key={`bed_${bedIndex}`}>
+                                        <Dropdown
+                                            placeholder={`emplacement n°${bedIndex + 1}`}
+                                            fluid
+                                            selection
+                                            search
+                                            onChange={(event, { value }) => this.handleChange(event, bedIndex, value)}
+                                            value={this.state.beds[bedIndex].selected}
+                                            options={generateDropdownOption(this.state.beds[bedIndex].availablePersons)}
+                                        />
+                                    </Form.Field>
+                                );
+                            }
+                        }, range(0, this.props.numberOfBeds)),
                         // <div style={{ margin: "auto", display: "flex" }}>
                         <Button
                             key={"validationButton"}

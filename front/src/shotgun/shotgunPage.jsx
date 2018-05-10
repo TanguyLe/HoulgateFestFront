@@ -13,6 +13,7 @@ class ShotgunContainer extends React.Component {
         super(props);
 
         this.state = {
+            shotgunPhase: "readyForShotgun",
             villaLesGenets: {
                 floors: map(floor => {
                     return map(room => {
@@ -60,7 +61,7 @@ class ShotgunContainer extends React.Component {
         const roomId = this.getRoomIdFromRoomName(room.name);
 
         const apiPostCreateShotgunRoute = SERVER_ENDPOINT + "/shotgun/rooms/" + roomId;
-        const createShotgun = postCallApi(apiPostCreateShotgunRoute, { roomId: roomId }, true);
+        const createShotgunQuery = postCallApi(apiPostCreateShotgunRoute, { roomId: roomId }, true);
 
         room["state"] = "loading";
         floor["rooms"] = [
@@ -82,17 +83,17 @@ class ShotgunContainer extends React.Component {
 
         // await preShotgunConfirmed
 
-        const shotgunServerUpdate = await createShotgun;
+        const shotgunServerUpdate = await createShotgunQuery;
+
         console.log("shotgunServerUpdate", shotgunServerUpdate);
-        const shotgunResult = (await shotgunServerUpdate.json()).data;
-        console.log("shotgunResult", shotgunResult);
 
-        const preShotgunConfirmed = true; //hardcoded temporary
-
-        if (preShotgunConfirmed === true) {
+        if (shotgunServerUpdate.status === 200) {
             ////////////////////////////////////////////////////////////////////
             ////// preShotgunConfirmed /////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////
+
+            const shotgunResult = (await shotgunServerUpdate.json()).data;
+            console.log("shotgunResult", shotgunResult);
 
             const UsersServerAnswer = await serverRequestUsers;
             const availablePersonIds = (await UsersServerAnswer.json()).data;
@@ -113,12 +114,25 @@ class ShotgunContainer extends React.Component {
             ////////////////////////////////////////////////////////////////////
             ////// preShotgun denined //////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////
+
+            alert("this room is not available anymore or you already shotgun a room");
+            room["state"] = "disabled";
+            floor["rooms"] = [
+                ...map(room => {
+                    room["state"] = "readyForShotgun";
+                    return room;
+                }, floor.rooms),
+                ...room
+            ];
+            this.setState({
+                shotgunPhase: "preShotgun",
+                room: room,
+                floor: floor
+            });
         }
     }
 
-    async addPersonsInShotgun(a, roomName, roommatesIds = []) {
-        console.log(a, roomName, roommatesIds);
-
+    async addPersonsInShotgun(roomName, roommatesIds = []) {
         const shotgunId = this.state.shotgunId;
 
         const roomId = this.getRoomIdFromRoomName(roomName);
@@ -129,38 +143,36 @@ class ShotgunContainer extends React.Component {
             console.log(roommatesEmails);
             const SERVER_ENDPOINT = "http://localhost:3000";
             const apiPutPersoninShotgunRoute = SERVER_ENDPOINT + "/shotgun/rooms/" + roomId;
-            const addUserTo = putCallApi(
+            const addUserToShotgun = putCallApi(
                 apiPutPersoninShotgunRoute,
                 { roomId: roomId, roommates: roommatesEmails, shotgunId },
                 true
             );
+            const addUserToShotgunResult = await addUserToShotgun;
+            console.log(addUserToShotgunResult);
+            if (addUserToShotgunResult.status === 200) {
+                alert("Sucess");
+            } else {
+                alert("failed ! Maybe some you added has already shotgunned!");
+            }
         }
     }
 
     render() {
         switch (this.state.shotgunPhase) {
-            case "preShotgun":
-                return <DisplayAllFloors />;
+            case "readyForShotgun":
+                return (
+                    <DisplayAllFloors
+                        floors={this.state.villaLesGenets.floors}
+                        createShotgunFunction={this.createShotgun}
+                    />
+                );
 
             case "waitingForConfirm":
-                return (
-                    <Floor
-                        addPersonsInShotgunFunction={(roomName, roommatesIds) =>
-                            this.addPersonsInShotgun(this.state.shotgunId, roomName, roommatesIds)
-                        }
-                        floorData={this.state.floor}
-                    />
-                );
+                return <Floor addPersonsInShotgunFunction={this.addPersonsInShotgun} floorData={this.state.floor} />;
 
             case "attributingBeds":
-                return (
-                    <Floor
-                        addPersonsInShotgunFunction={(roomName, roommatesIds) =>
-                            this.addPersonsInShotgun(this.state.shotgunId, roomName, roommatesIds)
-                        }
-                        floorData={this.state.floor}
-                    />
-                );
+                return <Floor addPersonsInShotgunFunction={this.addPersonsInShotgun} floorData={this.state.floor} />;
 
             default:
                 return (
