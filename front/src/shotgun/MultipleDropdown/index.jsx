@@ -110,7 +110,7 @@ class MultipleDropdown extends React.Component {
     submit(event) {
         alert("selected :" + map(bed => bed.selected, this.state.beds));
         console.log(this.props.validationFunction);
-        this.props.validationFunction(map(bed => bed.selected, this.state.beds));
+        this.props.onSubmit(map(bed => bed.selected, this.state.beds));
         event.preventDefault();
     }
     render() {
