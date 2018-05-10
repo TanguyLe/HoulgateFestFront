@@ -692,7 +692,7 @@ exports.roommatesAdd = function(req, res) {
                         error.httpStatusCode = "404";
                         return callback(error);
                     }
-                    if (room.nbBeds < updateUsers.length) {
+                    if (room.nbBeds < updateUsers.length + 1) {
                         console.error("-> Not enough space in selected room");
                         let error = new Error(
                             "Too many roommates for room with id " + req.params.roomId + " : not enough beds"
