@@ -11,15 +11,20 @@ class Room extends React.Component {
             case "disabled":
                 return <div>DISABLED</div>;
             case "readyForShotgun":
-                return (
-                    <ShotgunPortal
-                        seats={this.props.seats}
-                        name={this.props.name}
-                        status={"readyForShotgun"}
-                        availablePersonIds={this.props.availablePersonIds}
-                        createShotgunFunction={this.props.createShotgunFunction}
-                    />
-                );
+                if (this.props.seats > 0) {
+                    return (
+                        <ShotgunPortal
+                            seats={this.props.seats}
+                            name={this.props.name}
+                            status={"readyForShotgun"}
+                            availablePersonIds={this.props.availablePersonIds}
+                            createShotgunFunction={this.props.createShotgunFunction}
+                        />
+                    );
+                } else {
+                    return;
+                }
+
             case "loading":
                 return (
                     <ShotgunPortal
@@ -49,7 +54,7 @@ class Room extends React.Component {
     render() {
         return (
             <RoomBasis {...this.props} seats={this.props.seats} position={this.props.position} name={this.props.name}>
-                <ShotgunPortal
+                {/* <ShotgunPortal
                     seats={this.props.seats}
                     name={this.props.name}
                     status={this.props.shotgunState}
@@ -58,8 +63,8 @@ class Room extends React.Component {
                     addPersonsInShotgunFunction={roommatesIds =>
                         this.props.addPersonsInShotgunFunction(this.props.name, roommatesIds)
                     }
-                />
-                {/*this.getRoomContent()*/}
+                /> */}
+                {this.getRoomContent()}
             </RoomBasis>
         );
     }
