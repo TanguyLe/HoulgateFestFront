@@ -26,6 +26,7 @@ class ShotgunContainer extends React.Component {
         this.addPersonsInShotgun = this.addPersonsInShotgun.bind(this);
         this.createShotgun = this.createShotgun.bind(this);
         this.getRoomIdFromRoomName = this.getRoomIdFromRoomName.bind(this);
+        this.getUserMailFromUserId = this.getUserMailFromUserId.bind(this);
     }
 
     async componentDidMount() {
@@ -38,6 +39,11 @@ class ShotgunContainer extends React.Component {
     }
     getRoomIdFromRoomName(roomName) {
         return get("_id", find(room => room.text === roomName, this.state.queriedRooms));
+    }
+
+    getUserMailFromUserId(userId) {
+        console.log(this.state.availablePersons);
+        return get("email", find(user => user._id === userId, this.state.availablePersons));
     }
 
     async createShotgun(event, room, floor) {
@@ -77,7 +83,9 @@ class ShotgunContainer extends React.Component {
         // await preShotgunConfirmed
 
         const shotgunServerUpdate = await createShotgun;
+        console.log("shotgunServerUpdate", shotgunServerUpdate);
         const shotgunResult = (await shotgunServerUpdate.json()).data;
+        console.log("shotgunResult", shotgunResult);
 
         const preShotgunConfirmed = true; //hardcoded temporary
 
@@ -93,7 +101,9 @@ class ShotgunContainer extends React.Component {
             room["availablePersonIds"] = availablePersonIds;
             floor["rooms"] = [...floor.rooms, ...room];
 
+            console.log(availablePersonIds);
             this.setState({
+                availablePersons: availablePersonIds,
                 shotgunId: shotgunResult._id,
                 shotgunPhase: "attributingBeds",
                 room: room,
@@ -106,15 +116,24 @@ class ShotgunContainer extends React.Component {
         }
     }
 
-    async addPersonsInShotgun(shotgunId, roomName, roommatesIds = []) {
+    async addPersonsInShotgun(a, roomName, roommatesIds = []) {
+        console.log(a, roomName, roommatesIds);
+
+        const shotgunId = this.state.shotgunId;
+
         const roomId = this.getRoomIdFromRoomName(roomName);
         if (roommatesIds.length < 1) {
             throw new Error("no roommates to add");
         } else {
-            // const roomatesEmails = map(  id=>get("email",find(person=>personId===id),availablePersonIds)  ,roommatesIds)
+            const roommatesEmails = map(id => this.getUserMailFromUserId(id), roommatesIds);
+            console.log(roommatesEmails);
             const SERVER_ENDPOINT = "http://localhost:3000";
             const apiPutPersoninShotgunRoute = SERVER_ENDPOINT + "/shotgun/rooms/" + roomId;
-            const addUserTo = putCallApi(apiPutPersoninShotgunRoute, { roomId: roomId, roomates: roommatesIds }, true);
+            const addUserTo = putCallApi(
+                apiPutPersoninShotgunRoute,
+                { roomId: roomId, roommates: roommatesEmails, shotgunId },
+                true
+            );
         }
     }
 
