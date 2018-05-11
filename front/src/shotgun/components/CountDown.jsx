@@ -58,7 +58,8 @@ export default class Countdown extends React.Component {
 
     stop() {
         clearInterval(this.interval);
-        this.props.onTime();
+        if (this.props.onTime)
+            this.props.onTime();
     }
 
     addLeadingZeros(value) {
