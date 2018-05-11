@@ -1,1 +1,1 @@
-export const shotgunDate = "May 29, 2018 17:26:00";
+export const shotgunDate = "June 1, 2018 20:00:00";
