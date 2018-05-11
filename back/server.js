@@ -22,6 +22,7 @@ app.use(bodyParser.json());
 app.use(middleware.userAuth);
 userRoutes(app);
 contactRoutes(app);
+app.use(middleware.hasStarted);
 app.use(middleware.notFound);
 
 app.listen(port);

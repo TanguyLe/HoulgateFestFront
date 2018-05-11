@@ -37,7 +37,7 @@ class passwordResetPage extends React.Component {
             display = "Ton mot de passe a été changé!";
 
         return(
-            <OnlyWhenConnectedWrapper>
+            <OnlyWhenConnectedWrapper className="passwordResetPage">>
                 <h1> Changement de Mot de Passe </h1>
                 {display}
             </OnlyWhenConnectedWrapper>);

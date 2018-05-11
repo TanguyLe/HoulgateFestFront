@@ -2,7 +2,7 @@ import React from "react"
 import {BrowserRouter, Switch} from "react-router-dom"
 
 import Home from "./mainLayout/home"
-import Dummy from "./shotgun/dummy"
+import Dummy from "./shotgun/components/dummy"
 import NotFound from "./mainLayout/notFound"
 import SignUpPage from "./login/components/signUpPage"
 import activateAccount from "./login/components/activateAccountPage"

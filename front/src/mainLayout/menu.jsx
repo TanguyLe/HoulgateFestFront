@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {Icon, Responsive, Sidebar, Menu, Container} from 'semantic-ui-react';
+import {Icon, Responsive, Sidebar, Menu, Container, Image} from 'semantic-ui-react';
 
 import WhoAmI from "../login/components/WhoAmI"
 
@@ -41,7 +41,7 @@ const NavBarMobile = ({
                     <Icon name="sidebar"/>
                 </Menu.Item>
                 <Menu.Item>
-                    Houlgate Fest
+                    <Image src="./logov3.png" size="small"/>
                 </Menu.Item>
                 <Menu.Menu position="right">
                     {rightItems.map(item => {
@@ -58,7 +58,7 @@ const NavBarMobile = ({
 const NavBarDesktop = ({leftItems, rightItems}) => (
     <Menu fixed="top" inverted>
         <Menu.Item>
-            <Link to='/'>HoulgateFest</Link>
+            <Link to='/'> <Image src="./logov3.png" size="small"/></Link>
         </Menu.Item>
         {leftItems.map(item => {
             item['as'] = 'div';
@@ -77,9 +77,9 @@ class NavBarChildren extends React.Component {
     render() {
         const {children, bigContainer} = this.props;
         if (bigContainer)
-            return <Container fluid style={{marginTop: "5em"}}>{children}</Container>;
+            return <Container fluid style={{paddingTop: "6.2rem"}}>{children}</Container>;
         else
-            return <Container style={{marginTop: "5em"}}>{children}</Container>
+            return <Container style={{paddingTop: "6.2rem"}}>{children}</Container>
     }
 }
 

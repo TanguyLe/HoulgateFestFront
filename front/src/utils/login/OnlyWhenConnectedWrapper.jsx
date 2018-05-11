@@ -25,7 +25,7 @@ class OnlyWhenConnectedWrapper extends React.Component {
     }
 
     render() {
-        return this.props.children;
+        return <div className={this.props.className || ""}> {this.props.children} </div>;
     }
 }
 
