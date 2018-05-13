@@ -3,8 +3,10 @@ let mongoose = require('mongoose'),
     User = mongoose.model('Users'),
     Room = mongoose.model('Rooms'),
     tokenUtils = require("../utils/token"),
+    shotgunComplete = require("./shotgunController/shotgunCompleteController"),
     async = require('async');
 
+    // TODO : add comparison with created value or find a way to remove the trigger when the shotgun is deleted
 /* Delete shotgun not completed after a timeout */
 function timeoutTriggered(shotgun) {
   console.log("Timeout triggered for shotgun on room " + shotgun.room._id);
@@ -54,7 +56,10 @@ function timeoutTriggered(shotgun) {
         console.log("...Shotgun on room " + shotgun.room  + " deleted.")
       })
     }
-    else console.log("... nothing to be done after timeout.")
+    else {
+      console.log("... shotgun is done after timeout.");
+      shotgunComplete.afterCompleteShotgun(shotgun);
+    }
     return;
   })
 }
@@ -133,9 +138,11 @@ function deleteShotguns(usersId, callback) {
     function(item){
       // delete shotgun
       let deleteShotgun = function(callback) {
-          Shotgun.deleteMany({user: item}, function(err, shotgun){
+          Shotgun.deleteMany({user: item}, function(err, result){
             if(err) return callback(err);
-            console.log("Shotgun associated to user with id" + item + " has been deleted.");
+            if(result) {
+              console.log("Shotgun associated to user with id " + item + " has been deleted."); // TODO : display line only if shotguns have been really found, here ,it just says the operation was made
+            }
             return callback();
         })
       }
@@ -159,7 +166,7 @@ function deleteShotguns(usersId, callback) {
       error.httpStatusCode = "500";
       return callback(error);
     }
-    console.log("... All shotguns deleted successfully.");
+    console.log("... All shotguns associated to roommates, if any, deleted successfully.");
     return callback();
   })
 }
@@ -277,7 +284,7 @@ exports.shotgunCreatePost = function(req, res) {
 
    /* Validate Request */
   let user = undefined;
-	let accessToken = tokenUtils.getJWTToken(req.headers);
+  let accessToken = tokenUtils.getJWTToken(req.headers);
 
   // check user is authenticated
 	tokenUtils.checkAccessToken(
@@ -334,8 +341,8 @@ exports.shotgunCreatePost = function(req, res) {
               callback(null, user._id);
           });
         },
-
-        //Check room exists, is available and not already associated to a shotgun
+// TODO : check nbBeds > 0
+        //Check room exists, has space available and not already associated to a shotgun
         function(callback) {
           async.series([
             function(callback) {
@@ -507,17 +514,17 @@ exports.shotgunDelete = function(req, res) {
           }
           console.log("... Users successfully rolled back.");
           callback();
-        }
-      )
-    }
+        })
+      }
 
-    let updateUserOwner = function(shotgun, callback){
-      // special tratment for user owner
-      User.findByIdAndUpdate(shotgun.user, {hasShotgun : false, isShotgun: false }, function(err, user){
-        if(err) return callback(err);
-        callback();
-      })
-    }
+      let updateUserOwner = function(shotgun, callback){
+        // special tratment for user owner
+        User.findByIdAndUpdate(shotgun.user, {hasShotgun : false, isShotgun: false, room: null }, function(err, user){
+          if(err) return callback(err);
+          console.log("User " + user.username + " rolled back.");
+          callback();
+        })
+      }
 
       async.parallel({
         rollBack : rollBackRoommates.bind(null, shotgun),
@@ -570,7 +577,7 @@ exports.roomList = function(req, res) {
 };
 
 // Handle roommates addition to shotgun on PUT.
-exports.roommatesAdd = function(req, res) {
+exports.roommatesAdd = function(req, res, next) {
 
    /* Validate Request */
    let user = undefined;
@@ -787,10 +794,15 @@ exports.roommatesAdd = function(req, res) {
         populate('user', {password: 0, __v: 0}).
         populate('roommates', {password: 0, __v: 0}).
         exec(function (err, populatedShotgun) {
-          if (err) return callback(err);
+          if (err) {
+            let error = new Error("Couldn't populate shotgun " + shotgun._id + ".");
+            error.name = "Error 500 : Internal Server error";
+            error.httpStatusCode = "500";
+            return callback(error);
+          }
           callback(null, populatedShotgun);
         });
-      }
+    }
     ], function(err, shotgun) {
       if (err) {
         if(err.kind === 'ObjectId') {
