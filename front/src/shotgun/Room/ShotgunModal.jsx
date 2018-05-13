@@ -79,6 +79,9 @@ export default class ShotgunPortal extends React.Component {
     }
 
     render() {
+        if (this.props.disabled)
+            return "";
+
         return (
             <TransitionablePortal
                 open={this.state.open}

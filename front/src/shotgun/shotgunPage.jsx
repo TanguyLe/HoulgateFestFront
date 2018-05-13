@@ -151,37 +151,25 @@ class ShotgunContainer extends React.Component {
             const addUserToShotgunResult = await addUserToShotgun;
             console.log(addUserToShotgunResult);
             if (addUserToShotgunResult.status === 200) {
-                alert("Sucess");
+                this.setState({
+                    // Work in progress there, the state doesn't go down
+                    shotgunPhase: "shotgunSuccessful"
+                });
+                console.log("shotgun successful")
             } else {
-                alert("failed ! Maybe some you added has already shotgunned!");
+                console.log("shotgun failed")
             }
         }
     }
 
     render() {
-        switch (this.state.shotgunPhase) {
-            case "readyForShotgun":
-                return (
-                    <DisplayAllFloors
-                        floors={this.state.villaLesGenets.floors}
-                        createShotgunFunction={this.createShotgun}
-                    />
-                );
-
-            case "waitingForConfirm":
-                return <Floor addPersonsInShotgunFunction={this.addPersonsInShotgun} floorData={this.state.floor} />;
-
-            case "attributingBeds":
-                return <Floor addPersonsInShotgunFunction={this.addPersonsInShotgun} floorData={this.state.floor} />;
-
-            default:
-                return (
-                    <DisplayAllFloors
-                        floors={this.state.villaLesGenets.floors}
-                        createShotgunFunction={this.createShotgun}
-                    />
-                );
-        }
+        return (
+            <DisplayAllFloors
+                floors={this.state.villaLesGenets.floors}
+                createShotgunFunction={this.createShotgun}
+                addPersonsInShotgunFunction={this.addPersonsInShotgun}
+            />
+        );
     }
 }
 
