@@ -3,6 +3,8 @@ import React from "react";
 import {shotgunDate} from "../constants"
 import Countdown from "./CountDown"
 
+import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenConnectedWrapper"
+
 
 class Dummy extends React.Component {
     constructor(){
@@ -12,10 +14,10 @@ class Dummy extends React.Component {
     }
 	render() {
 		return Date.now() < Date.parse(shotgunDate) ?
-            <div>
+            <OnlyWhenConnectedWrapper>
                 <div className="Countdown">Ouverture du Shotgun des chambres: </div>
                 <Countdown onTime={this.forceUpdate} date={shotgunDate}/>
-            </div>
+            </OnlyWhenConnectedWrapper>
             : <div>Shotgun time!</div>;
 	}
 }

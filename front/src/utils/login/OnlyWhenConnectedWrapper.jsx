@@ -1,32 +1,32 @@
 import React from "react";
-import {withRouter} from 'react-router-dom';
 
-import {register, unregister} from "../../login/store";
+import {register, unregister, getCredentials} from "../../login/store";
 
 
 class OnlyWhenConnectedWrapper extends React.Component {
     constructor(){
-        super()
+        super();
 
+        this.state = {};
         this.onLogin = this.onLogin.bind(this);
     }
     componentDidMount() {
         register(this.onLogin);
+        this.setState(getCredentials(), console.log(this.state));
     }
 
     componentWillUnmount() {
         unregister(this.onLogin);
     }
 
-    onLogin() {
-        this.props.history.push('/');
-        if (this.props.onLogin)
-            this.props.onLogin()
+    onLogin(creds) {
+        this.setState(creds);
     }
 
     render() {
-        return <div className={this.props.className || ""}> {this.props.children} </div>;
+        return this.state.login ? <div className={this.props.className || ""}> {this.props.children} </div>
+            : <div className="Countdown">Cette page n'est accessible qu'une fois connecté !</div>;
     }
 }
 
-export default withRouter(OnlyWhenConnectedWrapper);
+export default OnlyWhenConnectedWrapper;

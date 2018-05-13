@@ -2,7 +2,7 @@ import React from "react"
 import {parse} from "query-string";
 
 import PasswordResetForm from "./forms/PasswordResetForm"
-import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenConnectedWrapper"
+import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenNotConnectedWrapper"
 import {getPasswordResetUrl} from "../constants"
 
 
