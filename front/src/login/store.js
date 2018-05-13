@@ -27,7 +27,7 @@ export const displatch = () => {
 };
 
 export const logout = () => {
-    login("", "", "")
+    login("", "", "");
     window.localStorage.setItem("session", false);
 };
 
