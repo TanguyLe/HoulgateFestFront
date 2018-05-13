@@ -11,7 +11,7 @@ class Room extends React.Component {
                 {this.props.shotgunState === "disabled" ? "DISABLED": ""}
                 <ShotgunPortal
                     disabled={this.props.shotgunState === "disabled" || !this.props.seats}
-                    numberOfBeds={this.props.seats}
+                    seats={this.props.seats}
                     name={this.props.name}
                     status={this.props.shotgunState}
                     availablePersonIds={this.props.availablePersonIds}
