@@ -79,15 +79,17 @@ export default class ShotgunPortal extends React.Component {
     }
 
     render() {
+        let trigger = <Button content="Shotgun" disabled={this.state.open} />;
+
         if (this.props.disabled)
-            return "";
+            trigger = "";
 
         return (
             <TransitionablePortal
                 open={this.state.open}
                 onOpen={this.handleOpen}
                 onClose={this.handleClose}
-                trigger={<Button content="Shotgun" disabled={this.state.open} />}
+                trigger={trigger}
             >
                 <Segment className="ShotgunModal">
                     <h3>
