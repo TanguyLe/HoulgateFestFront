@@ -45,7 +45,7 @@ class MultipleDropdown extends React.Component {
 
         map(bedIndex => {
             this.state.beds[bedIndex] = {};
-            this.state.beds[bedIndex]["selected"] = "";
+            this.state.beds[bedIndex].selected = "";
             this.state.beds[bedIndex]["availablePersons"] = this.state.listOfIds;
         }, range(0, props.numberOfBeds));
 
@@ -144,8 +144,6 @@ class MultipleDropdown extends React.Component {
                     margin: "auto"
                 }}
             >
-                {/* this import is only for dev, this has to be done higher */}
-                <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css" />
                 <Form>
                     {[
                         ...map(bedIndex => {

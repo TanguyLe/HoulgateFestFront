@@ -1,25 +1,31 @@
 import React from "react";
 
-import {shotgunDate} from "../constants"
-import Countdown from "./CountDown"
+import {shotgunDate} from "./constants"
+import Countdown from "./components/CountDown"
+import ShotgunController from "./ShotgunController"
 
-import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenConnectedWrapper"
+import OnlyWhenConnectedWrapper from "../utils/login/OnlyWhenConnectedWrapper"
 
 
-class Dummy extends React.Component {
+class ShotgunPage extends React.Component {
     constructor(){
         super();
 
         this.forceUpdate = this.forceUpdate.bind(this);
     }
 	render() {
-		return Date.now() < Date.parse(shotgunDate) ?
-            <OnlyWhenConnectedWrapper>
+        let display = Date.now() < Date.parse(shotgunDate) ?
+            <div>
                 <div className="Countdown">Ouverture du Shotgun des chambres: </div>
                 <Countdown onTime={this.forceUpdate} date={shotgunDate}/>
-            </OnlyWhenConnectedWrapper>
-            : <div>Shotgun time!</div>;
+            </div>
+            :
+            <ShotgunController/>;
+
+		return(<OnlyWhenConnectedWrapper>
+                {display}
+                </OnlyWhenConnectedWrapper>);
 	}
 }
 
-export default Dummy;
+export default ShotgunPage;

@@ -12,7 +12,7 @@ class OnlyWhenConnectedWrapper extends React.Component {
     }
     componentDidMount() {
         register(this.onLogin);
-        this.setState(getCredentials(), console.log(this.state));
+        this.setState(getCredentials());
     }
 
     componentWillUnmount() {

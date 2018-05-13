@@ -12,7 +12,8 @@ exports.userAuth = (req, res, next) => {
     next();
 };
 
-exports.hasStarted = (req, res, next) => {if (process.env.HAS_STARTED !== "1")
+exports.hasStarted = (req, res, next) => {
+    if (process.env.HAS_STARTED !== "1")
         res.status(200).send({message: "Shotgun has not started yet"});
     else
         next();
