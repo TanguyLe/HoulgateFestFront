@@ -2,7 +2,7 @@ import React from "react"
 import {parse} from "query-string";
 
 import PasswordResetForm from "./forms/PasswordResetForm"
-import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenConnectedWrapper"
+import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenNotConnectedWrapper"
 import {getPasswordResetUrl} from "../constants"
 
 
@@ -37,7 +37,7 @@ class passwordResetPage extends React.Component {
             display = "Ton mot de passe a été changé!";
 
         return(
-            <OnlyWhenConnectedWrapper>
+            <OnlyWhenConnectedWrapper className="passwordResetPage">>
                 <h1> Changement de Mot de Passe </h1>
                 {display}
             </OnlyWhenConnectedWrapper>);

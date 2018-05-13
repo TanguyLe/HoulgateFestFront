@@ -2,7 +2,8 @@ import React from "react"
 import {BrowserRouter, Switch} from "react-router-dom"
 
 import Home from "./mainLayout/home"
-import Dummy from "./shotgun/shotgunPage"
+
+import ShotgunPage from "./shotgun/shotgunPage"
 import NotFound from "./mainLayout/notFound"
 import SignUpPage from "./login/components/signUpPage"
 import activateAccount from "./login/components/activateAccountPage"
@@ -17,7 +18,7 @@ class App extends React.Component {
         return <BrowserRouter>
                 <Switch>
                     <DefaultLayout path="/" exact component={Home}/>
-                    <DefaultLayout path="/shotgun" component={Dummy} bigContainer/>
+                    <DefaultLayout path="/shotgun" component={ShotgunPage} bigContainer/>
                     <DefaultLayout path="/contact" component={ContactPage}/>
                     <DefaultLayout path="/register" component={SignUpPage}/>
                     <DefaultLayout path="/activateUser" component={activateAccount}/>

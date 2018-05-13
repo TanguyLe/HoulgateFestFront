@@ -40,7 +40,7 @@ class ContactForm extends React.Component {
 
     handleKeyPress(event) {
         if (this.isFormValid() && event.key === "Enter")
-            this.handleClickSubmit();
+            this.handleSubmit();
     }
 
     handleKeyUp(event) {

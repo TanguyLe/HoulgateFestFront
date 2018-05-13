@@ -27,10 +27,11 @@ app.use(bodyParser.json());
 
 app.use(middleware.userAuth);
 userRoutes(app);
+contactRoutes(app);
+app.use(middleware.hasStarted);
 roomRoutes(app);
 shotgunRoutes(app);
-//app.use(middleware.notFound);
-contactRoutes(app);
+app.use(middleware.notFound);
 
 app.listen(port);
 

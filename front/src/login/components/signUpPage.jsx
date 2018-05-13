@@ -1,7 +1,7 @@
 import React from "react"
 
 import SignUpForm from "./forms/SignUpForm"
-import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenConnectedWrapper"
+import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenNotConnectedWrapper"
 
 class SignUpPage extends React.Component {
     constructor() {
@@ -30,7 +30,7 @@ class SignUpPage extends React.Component {
                           :
                           "Il y a eu une erreur lors de ton inscription, tu nous en vois désolés...n'hésites pas à nous contacter à houlgatefest@gmail.com";
         return(
-            <OnlyWhenConnectedWrapper>
+            <OnlyWhenConnectedWrapper className="signUpPage">
                 <h1> Inscription </h1>
                 {display}
             </OnlyWhenConnectedWrapper>);

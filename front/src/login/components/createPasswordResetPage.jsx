@@ -1,12 +1,12 @@
 import React from "react"
 
 import CreatePasswordResetForm from "./forms/CreatePasswordResetForm";
-import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenConnectedWrapper"
+import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenNotConnectedWrapper"
 
 class createPasswordResetPage extends React.Component {
     render() {
         return(
-            <OnlyWhenConnectedWrapper>
+            <OnlyWhenConnectedWrapper className="createPasswordresetPage">
                 <h1> Changement de Mot de Passe </h1>
                 <CreatePasswordResetForm/>
             </OnlyWhenConnectedWrapper>);
