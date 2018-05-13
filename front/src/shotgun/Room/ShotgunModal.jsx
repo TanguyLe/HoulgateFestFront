@@ -29,7 +29,7 @@ export default class ShotgunPortal extends React.Component {
             case "readyForShotgun":
                 return (
                     <Message info icon>
-                        <Button content="Validate Shotgun" onClick={this.props.createShotgunFunction} />
+                        <Button content="Shotgun!" onClick={this.props.createShotgunFunction} />
                     </Message>
                 );
             case "attributingBeds":
@@ -68,7 +68,7 @@ export default class ShotgunPortal extends React.Component {
                 return (
                     <Message error>
                         <Message.Content>
-                            Ton shotgun a échoué :/ Dépêche toi de tenter une autre chambre!
+                            Ton shotgun a échoué :/ Dépêche-toi de tenter une autre chambre!
                         </Message.Content>
                     </Message>
                 );
@@ -77,7 +77,7 @@ export default class ShotgunPortal extends React.Component {
     }
 
     render() {
-        let trigger = <Button content="Shotgun" disabled={this.state.open} />;
+        let trigger = <Button content="I'm in!" disabled={this.state.open} />;
 
         if (this.props.disabled)
             trigger = "";
