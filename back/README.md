@@ -33,4 +33,4 @@ To run a hot-reloading web server for development use  `npm run dev`. To access 
 
 Your db server will be on localhost, the node server on the port displayed by your console!
 #### Prod
-Probably changes in the future:)
+`npm run start` will start a regular server, `npm run startShotgun` will start one which enables the shotguns!

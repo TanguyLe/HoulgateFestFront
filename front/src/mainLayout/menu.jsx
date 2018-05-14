@@ -41,7 +41,7 @@ const NavBarMobile = ({
                     <Icon name="sidebar"/>
                 </Menu.Item>
                 <Menu.Item>
-                    <Image src="./logov3.png" size="small"/>
+                    <Link to='/'> <Image src="./logov3.png" size="small"/></Link>
                 </Menu.Item>
                 <Menu.Menu position="right">
                     {rightItems.map(item => {

@@ -32,7 +32,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "startShotgun": "HAS_STARTED=1 node server.js"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
