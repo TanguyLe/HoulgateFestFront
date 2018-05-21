@@ -8,53 +8,44 @@ import RoomDisabled from "./RoomDisabled";
 import RoomAttributingBeds from "./RoomAttributingBeds";
 
 class Room extends React.Component {
-	render() {
-		switch (this.props.shotgunState) {
-			case "disabled":
-				return (
-					<RoomDisabled
-						seats={this.props.seats}
-						position={this.props.position}
-						name={this.props.name}
-					/>
-				);
-			case "readyForShotgun":
-				return (
-					<RoomReadyForShotgun
-						seats={this.props.seats}
-						position={this.props.position}
-						name={this.props.name}
-						onClickShotgun={this.props.shotgunFunction}
-					/>
-				);
-			case "loading":
-				return (
-					<RoomLoading
-						seats={this.props.seats}
-						position={this.props.position}
-						name={this.props.name}
-					/>
-				);
-			case "attributingBeds":
-				return (
-					<RoomAttributingBeds
-						seats={this.props.seats}
-						position={this.props.position}
-						name={this.props.name}
-						availablePersonIds={this.props.availablePersonIds}
-					/>
-				);
+    render() {
+        switch (this.props.shotgunState) {
+            case "disabled":
+                return <RoomDisabled seats={this.props.seats} position={this.props.position} name={this.props.name} />;
+            case "readyForShotgun":
+                return (
+                    <RoomReadyForShotgun
+                        seats={this.props.seats}
+                        position={this.props.position}
+                        name={this.props.name}
+                        createShotgunFunction={this.props.createShotgunFunction}
+                    />
+                );
+            case "loading":
+                return <RoomLoading seats={this.props.seats} position={this.props.position} name={this.props.name} />;
+            case "attributingBeds":
+                return (
+                    <RoomAttributingBeds
+                        seats={this.props.seats}
+                        position={this.props.position}
+                        name={this.props.name}
+                        availablePersonIds={this.props.availablePersonIds}
+                        addPersonsInShotgunFunction={roommatesIds =>
+                            this.props.addPersonsInShotgunFunction(this.props.name, roommatesIds)
+                        }
+                    />
+                );
 
-			default:
-				return (
-					<RoomReadyForShotgun
-						seats={this.props.seats}
-						position={this.props.position}
-						name={this.props.name}
-					/>
-				);
-		}
-	}
+            default:
+                return (
+                    <RoomReadyForShotgun
+                        seats={this.props.seats}
+                        position={this.props.position}
+                        name={this.props.name}
+                    />
+                );
+        }
+    }
 }
 
 export default Room;

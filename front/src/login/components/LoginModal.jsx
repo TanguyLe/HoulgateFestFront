@@ -32,7 +32,7 @@ export default class TransitionablePortalExamplePortal extends React.Component {
                 onClose={this.handleClose}
                 trigger={(<Button content="Connexion" disabled={this.state.open}/>)}
             >
-                <Segment className="connectionModal">
+                <Segment className="ConnectionModal">
                     <Header>T'es qui toi?!</Header>
                     <LogInForm className="loginForm" toClose={this.handleClose}/>
                 </Segment>
