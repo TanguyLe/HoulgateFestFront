@@ -8,7 +8,7 @@ class Room extends React.Component {
     render() {
         return (
             <RoomBasis {...this.props} seats={this.props.seats} position={this.props.position} name={this.props.name}>
-                {this.props.shotgunState === "disabled" ? "DISABLED": ""}
+                {this.props.shotgunState === "disabled" && this.props.seats > 0 ? "DISABLED": ""}
                 <ShotgunPortal
                     disabled={this.props.shotgunState === "disabled" || !this.props.seats}
                     seats={this.props.seats}
