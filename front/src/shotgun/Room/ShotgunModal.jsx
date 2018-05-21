@@ -77,7 +77,7 @@ export default class ShotgunPortal extends React.Component {
     }
 
     render() {
-        let trigger = <Button content="I'm in!" disabled={this.state.open} />;
+        let trigger = <Button compact content="I'm in!" disabled={this.state.open} />;
 
         if (this.props.disabled)
             trigger = "";
