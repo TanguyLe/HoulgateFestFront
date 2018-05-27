@@ -47,7 +47,9 @@ class ShotgunContainer extends React.Component {
 			false
 		)).json()).data;
 		this.setState({ queriedRooms });
+
 		this.updateFloors();
+		this.updateUserState();
 	}
 	getRoomIdFromRoomName(roomName) {
 		return get(
@@ -72,8 +74,6 @@ class ShotgunContainer extends React.Component {
 		);
 		const shotgunsOnDb = (await roomsServerState.json()).data;
 
-		console.log("shotgunsOnDb", shotgunsOnDb);
-
 		const alreadyShotgunedRoomsIds = map(
 			shotgun => shotgun.room._id,
 			shotgunsOnDb
@@ -89,12 +89,15 @@ class ShotgunContainer extends React.Component {
 						alreadyShotgunedRoomsIds
 					)
 				) {
-					state = "disabled";
+					state = "shotguned";
 				} else {
 					state = "readyForShotgun";
 				}
-				console.log({ ...room, state });
-				return { ...room, state };
+				return {
+					...room,
+					state,
+					id: this.getRoomIdFromRoomName(room.name)
+				};
 			}, floor.rooms)
 		});
 
@@ -106,7 +109,28 @@ class ShotgunContainer extends React.Component {
 		this.setState({
 			villaLesGenets: { ...villaLesGenets, floors: newFloors }
 		});
-		console.log("newFloors", newFloors);
+	}
+
+	async updateUserState() {
+		const apiCallUsersRoute = SERVER_ENDPOINT + "/users";
+
+		const usersStates = await getCallApi(apiCallUsersRoute, false);
+		const usersStatesOnDb = (await usersStates.json()).data;
+
+		const currentUserUsername = window.localStorage.getItem("username");
+
+		const user = find(
+			user => user.username === currentUserUsername,
+			usersStatesOnDb
+		);
+
+		this.setState({
+			userState: {
+				hasShotgun: user.hasShotgun,
+				isShotgun: user.isShotgun,
+				room: user.room
+			}
+		});
 	}
 
 	async createShotgun(event, room, floor) {
@@ -155,8 +179,6 @@ class ShotgunContainer extends React.Component {
 			////////////////////////////////////////////////////////////////////
 
 			const shotgunResult = (await shotgunServerUpdate.json()).data;
-			console.log("shotgunResult", shotgunResult);
-
 			const UsersServerAnswer = await serverRequestUsers;
 			const availablePersonIds = (await UsersServerAnswer.json()).data;
 
@@ -164,7 +186,6 @@ class ShotgunContainer extends React.Component {
 			room["availablePersonIds"] = availablePersonIds;
 			floor["rooms"] = [...floor.rooms, ...room];
 
-			console.log(availablePersonIds);
 			this.setState({
 				availablePersons: availablePersonIds,
 				shotgunId: shotgunResult._id,
@@ -232,6 +253,7 @@ class ShotgunContainer extends React.Component {
 		return (
 			<DisplayAllFloors
 				floors={this.state.villaLesGenets.floors}
+				userState={this.state.userState}
 				createShotgunFunction={this.createShotgun}
 				addPersonsInShotgunFunction={this.addPersonsInShotgun}
 			/>

@@ -85,6 +85,8 @@ export class Floor extends React.Component {
                                 key={ROOM_GRID_STRUCT_INDEX_PREFIX + this.props.floorData.name + index}
                                 position={position}
                                 roomState={room.state}
+                                roomId={room.id}
+                                userState={this.props.userState}
                                 availablePersonIds={room.availablePersonIds}
                                 createShotgunFunction={event => this.props.createShotgunFunction(event, room)}
                                 addPersonsInShotgunFunction={this.props.addPersonsInShotgunFunction}
