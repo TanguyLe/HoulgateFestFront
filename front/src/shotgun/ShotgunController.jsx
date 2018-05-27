@@ -19,7 +19,6 @@ class ShotgunContainer extends React.Component {
 		super(props);
 
 		this.state = {
-			shotgunPhase: "readyForShotgun",
 			villaLesGenets: {
 				floors: map(floor => {
 					return {
@@ -31,7 +30,7 @@ class ShotgunContainer extends React.Component {
 					};
 				}, villaLesGenets.floors)
 			},
-			userState: "readyForShotgun"
+			userState: ""
 		};
 
 		this.addPersonsInShotgun = this.addPersonsInShotgun.bind(this);
@@ -48,6 +47,8 @@ class ShotgunContainer extends React.Component {
 		)).json()).data;
 		this.setState({ queriedRooms });
 
+		console.log(queriedRooms);
+
 		this.updateFloors();
 		this.updateUserState();
 	}
@@ -63,6 +64,24 @@ class ShotgunContainer extends React.Component {
 			"email",
 			find(user => user._id === userId, this.state.availablePersons)
 		);
+	}
+
+	updateState(room, floor) {
+		const villaLesGenets = {
+			floors: map(oldFloor => {
+				if (oldFloor.name === floor.name) {
+					return floor;
+				} else {
+					return oldFloor;
+				}
+			}, this.state.villaLesGenets.floors)
+		};
+
+		this.setState({
+			villaLesGenets: villaLesGenets,
+			room: room,
+			floor: floor
+		});
 	}
 
 	async updateFloors() {
@@ -151,19 +170,13 @@ class ShotgunContainer extends React.Component {
 			true
 		);
 
+		this.updateFloors();
+		this.updateUserState();
+
 		room["state"] = "loading";
-		floor["rooms"] = [
-			...map(room => {
-				room["state"] = "disabled";
-				return room;
-			}, floor.rooms),
-			...room
-		];
-		this.setState({
-			shotgunPhase: "waitingForConfirm",
-			room: room,
-			floor: floor
-		});
+		floor["rooms"] = [...floor.rooms, room];
+
+		this.updateState(room, floor);
 
 		////////////////////////////////////////////////////////////////////////
 		////// waiting for server answer ///////////////////////////////////////
@@ -182,16 +195,17 @@ class ShotgunContainer extends React.Component {
 			const UsersServerAnswer = await serverRequestUsers;
 			const availablePersonIds = (await UsersServerAnswer.json()).data;
 
+			console.log(availablePersonIds);
+
 			room["state"] = "attributingBeds";
 			room["availablePersonIds"] = availablePersonIds;
-			floor["rooms"] = [...floor.rooms, ...room];
+			floor["rooms"] = [...floor.rooms, room];
+
+			this.updateState(room, floor);
 
 			this.setState({
 				availablePersons: availablePersonIds,
-				shotgunId: shotgunResult._id,
-				shotgunPhase: "attributingBeds",
-				room: room,
-				floor: floor
+				shotgunId: shotgunResult._id
 			});
 		} else {
 			////////////////////////////////////////////////////////////////////
@@ -202,18 +216,12 @@ class ShotgunContainer extends React.Component {
 				"this room is not available anymore or you already shotgun a room"
 			);
 			room["state"] = "disabled";
-			floor["rooms"] = [
-				...map(room => {
-					room["state"] = "readyForShotgun";
-					return room;
-				}, floor.rooms),
-				...room
-			];
-			this.setState({
-				shotgunPhase: "preShotgun",
-				room: room,
-				floor: floor
-			});
+			floor["rooms"] = [...floor.rooms, room];
+
+			this.updateState(room, floor);
+
+			this.updateFloors();
+			this.updateUserState();
 		}
 	}
 
@@ -240,7 +248,6 @@ class ShotgunContainer extends React.Component {
 			if (addUserToShotgunResult.status === 200) {
 				this.setState({
 					// Work in progress there, the state doesn't go down
-					shotgunPhase: "shotgunSuccessful"
 				});
 				console.log("shotgun successful");
 			} else {
