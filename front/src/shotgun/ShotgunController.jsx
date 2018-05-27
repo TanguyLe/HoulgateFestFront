@@ -12,6 +12,8 @@ import {
 	putCallApi
 } from "../utils/api/fetchMiddleware";
 
+const SERVER_ENDPOINT = "http://localhost:3000";
+
 class ShotgunContainer extends React.Component {
 	constructor(props) {
 		super(props);
@@ -20,10 +22,13 @@ class ShotgunContainer extends React.Component {
 			shotgunPhase: "readyForShotgun",
 			villaLesGenets: {
 				floors: map(floor => {
-					return map(room => {
-						room["state"] = "readyForShotgun";
-						return room;
-					}, floor.rooms);
+					return {
+						...floor,
+						rooms: map(room => {
+							room["state"] = "readyForShotgun";
+							return room;
+						}, floor.rooms)
+					};
 				}, villaLesGenets.floors)
 			},
 			userState: "readyForShotgun"
@@ -36,7 +41,6 @@ class ShotgunContainer extends React.Component {
 	}
 
 	async componentDidMount() {
-		const SERVER_ENDPOINT = "http://localhost:3000";
 		const apiCallRoutesUser = SERVER_ENDPOINT + "/rooms";
 		const queriedRooms = (await (await getCallApi(
 			apiCallRoutesUser,
@@ -53,7 +57,6 @@ class ShotgunContainer extends React.Component {
 	}
 
 	getUserMailFromUserId(userId) {
-		console.log(this.state.availablePersons);
 		return get(
 			"email",
 			find(user => user._id === userId, this.state.availablePersons)
@@ -61,7 +64,6 @@ class ShotgunContainer extends React.Component {
 	}
 
 	async updateFloors() {
-		const SERVER_ENDPOINT = "http://localhost:3000";
 		const apiCallShotgunRoomsRoute = SERVER_ENDPOINT + "/shotgun/rooms/";
 
 		const roomsServerState = await getCallApi(
@@ -77,10 +79,9 @@ class ShotgunContainer extends React.Component {
 			shotgunsOnDb
 		);
 
-		console.log(this.state.villaLesGenets);
-
-		const updateFloorRooms = floor =>
-			map(room => {
+		const updateFloorRooms = floor => ({
+			...floor,
+			rooms: map(room => {
 				let state;
 				if (
 					includes(
@@ -88,13 +89,14 @@ class ShotgunContainer extends React.Component {
 						alreadyShotgunedRoomsIds
 					)
 				) {
-					console.log(true);
 					state = "disabled";
 				} else {
 					state = "readyForShotgun";
 				}
+				console.log({ ...room, state });
 				return { ...room, state };
-			}, floor);
+			}, floor.rooms)
+		});
 
 		const newFloors = map(
 			updateFloorRooms,
@@ -108,13 +110,10 @@ class ShotgunContainer extends React.Component {
 	}
 
 	async createShotgun(event, room, floor) {
-		//	const wait = ms => new Promise((r, j) => setTimeout(r, ms));
-
 		////////////////////////////////////////////////////////////////////////
 		////// set state as loading while waiting for query results ////////////
 		////////////////////////////////////////////////////////////////////////
 
-		const SERVER_ENDPOINT = "http://localhost:3000";
 		const apiCallUsersRoute = SERVER_ENDPOINT + "/users";
 		const serverRequestUsers = getCallApi(apiCallUsersRoute, false);
 
@@ -149,8 +148,6 @@ class ShotgunContainer extends React.Component {
 		// await preShotgunConfirmed
 
 		const shotgunServerUpdate = await createShotgunQuery;
-
-		console.log("shotgunServerUpdate", shotgunServerUpdate);
 
 		if (shotgunServerUpdate.status === 200) {
 			////////////////////////////////////////////////////////////////////
@@ -211,7 +208,6 @@ class ShotgunContainer extends React.Component {
 				roommatesIds
 			);
 
-			const SERVER_ENDPOINT = "http://localhost:3000";
 			const apiPutPersoninShotgunRoute =
 				SERVER_ENDPOINT + "/shotgun/rooms/" + roomId;
 			const addUserToShotgun = putCallApi(
