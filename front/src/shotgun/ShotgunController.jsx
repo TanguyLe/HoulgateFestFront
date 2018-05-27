@@ -1,176 +1,246 @@
 import React from "react";
-import { map, find, get } from "lodash/fp";
+import { map, find, get, includes } from "lodash/fp";
 
 import Floor from "./Floor";
 import DisplayAllFloors from "./Floor/DisplayAllFloors";
 import { villaLesGenets } from "./villaLesGenetsDef";
 import { FLOOR_GRID_STRUCT_INDEX_PREFIX } from "./constants";
 
-import { getCallApi, postCallApi, putCallApi } from "../utils/api/fetchMiddleware";
+import {
+	getCallApi,
+	postCallApi,
+	putCallApi
+} from "../utils/api/fetchMiddleware";
 
 class ShotgunContainer extends React.Component {
-    constructor(props) {
-        super(props);
+	constructor(props) {
+		super(props);
 
-        this.state = {
-            shotgunPhase: "readyForShotgun",
-            villaLesGenets: {
-                floors: map(floor => {
-                    return map(room => {
-                        room["state"] = "readyForShotgun";
-                        return room;
-                    }, floor.rooms);
-                }, villaLesGenets.floors)
-            }
-        };
+		this.state = {
+			shotgunPhase: "readyForShotgun",
+			villaLesGenets: {
+				floors: map(floor => {
+					return map(room => {
+						room["state"] = "readyForShotgun";
+						return room;
+					}, floor.rooms);
+				}, villaLesGenets.floors)
+			},
+			userState: "readyForShotgun"
+		};
 
-        this.addPersonsInShotgun = this.addPersonsInShotgun.bind(this);
-        this.createShotgun = this.createShotgun.bind(this);
-        this.getRoomIdFromRoomName = this.getRoomIdFromRoomName.bind(this);
-        this.getUserMailFromUserId = this.getUserMailFromUserId.bind(this);
-    }
+		this.addPersonsInShotgun = this.addPersonsInShotgun.bind(this);
+		this.createShotgun = this.createShotgun.bind(this);
+		this.getRoomIdFromRoomName = this.getRoomIdFromRoomName.bind(this);
+		this.getUserMailFromUserId = this.getUserMailFromUserId.bind(this);
+	}
 
-    async componentDidMount() {
-        const SERVER_ENDPOINT = "http://localhost:3000";
-        const apiCallRoutesUser = SERVER_ENDPOINT + "/rooms";
-        const queriedRooms = (await (await getCallApi(apiCallRoutesUser, false)).json()).data;
-        console.log(queriedRooms);
+	async componentDidMount() {
+		const SERVER_ENDPOINT = "http://localhost:3000";
+		const apiCallRoutesUser = SERVER_ENDPOINT + "/rooms";
+		const queriedRooms = (await (await getCallApi(
+			apiCallRoutesUser,
+			false
+		)).json()).data;
+		this.setState({ queriedRooms });
+		this.updateFloors();
+	}
+	getRoomIdFromRoomName(roomName) {
+		return get(
+			"_id",
+			find(room => room.text === roomName, this.state.queriedRooms)
+		);
+	}
 
-        this.setState({ queriedRooms });
-    }
-    getRoomIdFromRoomName(roomName) {
-        return get("_id", find(room => room.text === roomName, this.state.queriedRooms));
-    }
+	getUserMailFromUserId(userId) {
+		console.log(this.state.availablePersons);
+		return get(
+			"email",
+			find(user => user._id === userId, this.state.availablePersons)
+		);
+	}
 
-    getUserMailFromUserId(userId) {
-        console.log(this.state.availablePersons);
-        return get("email", find(user => user._id === userId, this.state.availablePersons));
-    }
+	async updateFloors() {
+		const SERVER_ENDPOINT = "http://localhost:3000";
+		const apiCallShotgunRoomsRoute = SERVER_ENDPOINT + "/shotgun/rooms/";
 
-    async createShotgun(event, room, floor) {
-        //	const wait = ms => new Promise((r, j) => setTimeout(r, ms));
+		const roomsServerState = await getCallApi(
+			apiCallShotgunRoomsRoute,
+			false
+		);
+		const shotgunsOnDb = (await roomsServerState.json()).data;
 
-        ////////////////////////////////////////////////////////////////////////
-        ////// set state as loading while waiting for query results ////////////
-        ////////////////////////////////////////////////////////////////////////
+		console.log("shotgunsOnDb", shotgunsOnDb);
 
-        const SERVER_ENDPOINT = "http://localhost:3000";
-        const apiCallUsersRoute = SERVER_ENDPOINT + "/users";
-        const serverRequestUsers = getCallApi(apiCallUsersRoute, false);
+		const alreadyShotgunedRoomsIds = map(
+			shotgun => shotgun.room._id,
+			shotgunsOnDb
+		);
 
-        const roomId = this.getRoomIdFromRoomName(room.name);
+		console.log(this.state.villaLesGenets);
 
-        const apiPostCreateShotgunRoute = SERVER_ENDPOINT + "/shotgun/rooms/" + roomId;
-        const createShotgunQuery = postCallApi(apiPostCreateShotgunRoute, { roomId: roomId }, true);
+		const updateFloorRooms = floor =>
+			map(room => {
+				let state;
+				if (
+					includes(
+						this.getRoomIdFromRoomName(room.name),
+						alreadyShotgunedRoomsIds
+					)
+				) {
+					console.log(true);
+					state = "disabled";
+				} else {
+					state = "readyForShotgun";
+				}
+				return { ...room, state };
+			}, floor);
 
-        room["state"] = "loading";
-        floor["rooms"] = [
-            ...map(room => {
-                room["state"] = "disabled";
-                return room;
-            }, floor.rooms),
-            ...room
-        ];
-        this.setState({
-            shotgunPhase: "waitingForConfirm",
-            room: room,
-            floor: floor
-        });
+		const newFloors = map(
+			updateFloorRooms,
+			this.state.villaLesGenets.floors
+		);
 
-        ////////////////////////////////////////////////////////////////////////
-        ////// waiting for server answer ///////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////
+		this.setState({
+			villaLesGenets: { ...villaLesGenets, floors: newFloors }
+		});
+		console.log("newFloors", newFloors);
+	}
 
-        // await preShotgunConfirmed
+	async createShotgun(event, room, floor) {
+		//	const wait = ms => new Promise((r, j) => setTimeout(r, ms));
 
-        const shotgunServerUpdate = await createShotgunQuery;
+		////////////////////////////////////////////////////////////////////////
+		////// set state as loading while waiting for query results ////////////
+		////////////////////////////////////////////////////////////////////////
 
-        console.log("shotgunServerUpdate", shotgunServerUpdate);
+		const SERVER_ENDPOINT = "http://localhost:3000";
+		const apiCallUsersRoute = SERVER_ENDPOINT + "/users";
+		const serverRequestUsers = getCallApi(apiCallUsersRoute, false);
 
-        if (shotgunServerUpdate.status === 200) {
-            ////////////////////////////////////////////////////////////////////
-            ////// preShotgunConfirmed /////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////
+		const roomId = this.getRoomIdFromRoomName(room.name);
 
-            const shotgunResult = (await shotgunServerUpdate.json()).data;
-            console.log("shotgunResult", shotgunResult);
+		const apiPostCreateShotgunRoute =
+			SERVER_ENDPOINT + "/shotgun/rooms/" + roomId;
+		const createShotgunQuery = postCallApi(
+			apiPostCreateShotgunRoute,
+			{ roomId: roomId },
+			true
+		);
 
-            const UsersServerAnswer = await serverRequestUsers;
-            const availablePersonIds = (await UsersServerAnswer.json()).data;
+		room["state"] = "loading";
+		floor["rooms"] = [
+			...map(room => {
+				room["state"] = "disabled";
+				return room;
+			}, floor.rooms),
+			...room
+		];
+		this.setState({
+			shotgunPhase: "waitingForConfirm",
+			room: room,
+			floor: floor
+		});
 
-            room["state"] = "attributingBeds";
-            room["availablePersonIds"] = availablePersonIds;
-            floor["rooms"] = [...floor.rooms, ...room];
+		////////////////////////////////////////////////////////////////////////
+		////// waiting for server answer ///////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////
 
-            console.log(availablePersonIds);
-            this.setState({
-                availablePersons: availablePersonIds,
-                shotgunId: shotgunResult._id,
-                shotgunPhase: "attributingBeds",
-                room: room,
-                floor: floor
-            });
-        } else {
-            ////////////////////////////////////////////////////////////////////
-            ////// preShotgun denined //////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////
+		// await preShotgunConfirmed
 
-            alert("this room is not available anymore or you already shotgun a room");
-            room["state"] = "disabled";
-            floor["rooms"] = [
-                ...map(room => {
-                    room["state"] = "readyForShotgun";
-                    return room;
-                }, floor.rooms),
-                ...room
-            ];
-            this.setState({
-                shotgunPhase: "preShotgun",
-                room: room,
-                floor: floor
-            });
-        }
-    }
+		const shotgunServerUpdate = await createShotgunQuery;
 
-    async addPersonsInShotgun(roomName, roommatesIds = []) {
-        const shotgunId = this.state.shotgunId;
+		console.log("shotgunServerUpdate", shotgunServerUpdate);
 
-        const roomId = this.getRoomIdFromRoomName(roomName);
-        if (roommatesIds.length < 1) {
-            throw new Error("no roommates to add");
-        } else {
-            const roommatesEmails = map(id => this.getUserMailFromUserId(id), roommatesIds);
-            console.log(roommatesEmails);
-            const SERVER_ENDPOINT = "http://localhost:3000";
-            const apiPutPersoninShotgunRoute = SERVER_ENDPOINT + "/shotgun/rooms/" + roomId;
-            const addUserToShotgun = putCallApi(
-                apiPutPersoninShotgunRoute,
-                { roomId: roomId, roommates: roommatesEmails, shotgunId },
-                true
-            );
-            const addUserToShotgunResult = await addUserToShotgun;
-            console.log(addUserToShotgunResult);
-            if (addUserToShotgunResult.status === 200) {
-                this.setState({
-                    // Work in progress there, the state doesn't go down
-                    shotgunPhase: "shotgunSuccessful"
-                });
-                console.log("shotgun successful")
-            } else {
-                console.log("shotgun failed")
-            }
-        }
-    }
+		if (shotgunServerUpdate.status === 200) {
+			////////////////////////////////////////////////////////////////////
+			////// preShotgunConfirmed /////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////
 
-    render() {
-        return (
-            <DisplayAllFloors
-                floors={this.state.villaLesGenets.floors}
-                createShotgunFunction={this.createShotgun}
-                addPersonsInShotgunFunction={this.addPersonsInShotgun}
-            />
-        );
-    }
+			const shotgunResult = (await shotgunServerUpdate.json()).data;
+			console.log("shotgunResult", shotgunResult);
+
+			const UsersServerAnswer = await serverRequestUsers;
+			const availablePersonIds = (await UsersServerAnswer.json()).data;
+
+			room["state"] = "attributingBeds";
+			room["availablePersonIds"] = availablePersonIds;
+			floor["rooms"] = [...floor.rooms, ...room];
+
+			console.log(availablePersonIds);
+			this.setState({
+				availablePersons: availablePersonIds,
+				shotgunId: shotgunResult._id,
+				shotgunPhase: "attributingBeds",
+				room: room,
+				floor: floor
+			});
+		} else {
+			////////////////////////////////////////////////////////////////////
+			////// preShotgun denined //////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////
+
+			alert(
+				"this room is not available anymore or you already shotgun a room"
+			);
+			room["state"] = "disabled";
+			floor["rooms"] = [
+				...map(room => {
+					room["state"] = "readyForShotgun";
+					return room;
+				}, floor.rooms),
+				...room
+			];
+			this.setState({
+				shotgunPhase: "preShotgun",
+				room: room,
+				floor: floor
+			});
+		}
+	}
+
+	async addPersonsInShotgun(roomName, roommatesIds = []) {
+		const shotgunId = this.state.shotgunId;
+
+		const roomId = this.getRoomIdFromRoomName(roomName);
+		if (roommatesIds.length < 1) {
+			throw new Error("no roommates to add");
+		} else {
+			const roommatesEmails = map(
+				id => this.getUserMailFromUserId(id),
+				roommatesIds
+			);
+
+			const SERVER_ENDPOINT = "http://localhost:3000";
+			const apiPutPersoninShotgunRoute =
+				SERVER_ENDPOINT + "/shotgun/rooms/" + roomId;
+			const addUserToShotgun = putCallApi(
+				apiPutPersoninShotgunRoute,
+				{ roomId: roomId, roommates: roommatesEmails, shotgunId },
+				true
+			);
+			const addUserToShotgunResult = await addUserToShotgun;
+			if (addUserToShotgunResult.status === 200) {
+				this.setState({
+					// Work in progress there, the state doesn't go down
+					shotgunPhase: "shotgunSuccessful"
+				});
+				console.log("shotgun successful");
+			} else {
+				console.log("shotgun failed");
+			}
+		}
+	}
+
+	render() {
+		return (
+			<DisplayAllFloors
+				floors={this.state.villaLesGenets.floors}
+				createShotgunFunction={this.createShotgun}
+				addPersonsInShotgunFunction={this.addPersonsInShotgun}
+			/>
+		);
+	}
 }
 
 export default ShotgunContainer;
