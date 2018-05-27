@@ -17,6 +17,7 @@ export class Floor extends React.Component {
         this.onResize = this.onResize.bind(this);
 
         this.resizing = false;
+        this.widthHeightRatio = props.floorData.size.width / props.floorData.size.height
     }
 
     onResize() {
@@ -31,13 +32,11 @@ export class Floor extends React.Component {
     }
 
     calcSizes() {
-        let currentFullWidth = document.getElementById(this.floorId).clientWidth;
-        let currentFullHeight = document.getElementById(this.floorId).clientHeight - 60;
+        let currentFullWidth = this.floor.clientWidth;
+        let currentFullHeight = this.floor.clientHeight - 60;
 
-        let widthHeightRatio = this.props.floorData.size.width / this.props.floorData.size.height;
-
-        let associatedHeight = currentFullWidth / widthHeightRatio;
-        let associatedWidth = widthHeightRatio * currentFullHeight;
+        let associatedHeight = currentFullWidth / this.widthHeightRatio;
+        let associatedWidth = currentFullHeight * this.widthHeightRatio;
 
         if (associatedHeight > currentFullHeight) this.setState({ gridWidth: associatedWidth });
         else this.setState({ gridHeight: associatedHeight });
@@ -45,23 +44,29 @@ export class Floor extends React.Component {
 
     componentDidMount() {
         window.addEventListener("resize", this.onResize);
+        this.floor = document.getElementById(this.floorId);
         this.calcSizes();
     }
 
     render() {
         let gridStyle = {
-            display: "grid",
-            gridTemplateRows: this.props.floorData.gridTemplate.rows,
-            gridTemplateColumns: this.props.floorData.gridTemplate.columns,
-            maxWidth: "100%",
-            maxHeight: "calc(100% - 60px)",
-            margin: "auto",
-            height: this.state.gridHeight,
-            width: this.state.gridWidth
-        };
+                display: "grid",
+                gridTemplateRows: this.props.floorData.gridTemplate.rows,
+                gridTemplateColumns: this.props.floorData.gridTemplate.columns,
+                maxWidth: "100%",
+                maxHeight: "calc(100% - 60px)",
+                margin: "auto",
+                height: this.state.gridHeight,
+                width:  this.state.gridWidth
+            };
+
+        let isBigFloor = this.props.floorData.name === "Rdc" || this.props.floorData.name === "Premier Etage";
+
+
         return (
-            <div className="fullHeight fullWidth" id={this.floorId}>
-                <div style={{ textAlign: "center" }}>
+            <div className={isBigFloor ? "bigFloorContainer" : "smallFloorContainer"}
+                 id={this.floorId}>
+                <div className="floorTitle">
                     <b>{this.props.floorData.name}</b>
                 </div>
                 <div style={gridStyle}>
