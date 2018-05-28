@@ -1,5 +1,5 @@
 import React from "react";
-import { map, find, get, includes } from "lodash/fp";
+import { map, filter, find, get, includes } from "lodash/fp";
 
 import Floor from "./Floor";
 import DisplayAllFloors from "./Floor/DisplayAllFloors";
@@ -152,13 +152,31 @@ class ShotgunContainer extends React.Component {
 		});
 	}
 
+	async updateAvailableUsers() {
+		const apiCallUsersRoute = SERVER_ENDPOINT + "/users";
+		const serverRequestUsers = getCallApi(apiCallUsersRoute, false);
+
+		const UsersServerAnswer = await serverRequestUsers;
+		const listOfUsers = (await UsersServerAnswer.json()).data;
+
+		const availablePersonIds = filter(
+			person => person.hasShotgun === false && person.isShotgun === false,
+			listOfUsers
+		);
+
+		this.setState({
+			availablePersons: availablePersonIds
+		});
+
+		return availablePersonIds;
+	}
+
 	async createShotgun(event, room, floor) {
 		////////////////////////////////////////////////////////////////////////
 		////// set state as loading while waiting for query results ////////////
 		////////////////////////////////////////////////////////////////////////
 
-		const apiCallUsersRoute = SERVER_ENDPOINT + "/users";
-		const serverRequestUsers = getCallApi(apiCallUsersRoute, false);
+		const availablePersonIdsQuery = this.updateAvailableUsers();
 
 		const roomId = this.getRoomIdFromRoomName(room.name);
 
@@ -182,8 +200,6 @@ class ShotgunContainer extends React.Component {
 		////// waiting for server answer ///////////////////////////////////////
 		////////////////////////////////////////////////////////////////////////
 
-		// await preShotgunConfirmed
-
 		const shotgunServerUpdate = await createShotgunQuery;
 
 		if (shotgunServerUpdate.status === 200) {
@@ -192,10 +208,8 @@ class ShotgunContainer extends React.Component {
 			////////////////////////////////////////////////////////////////////
 
 			const shotgunResult = (await shotgunServerUpdate.json()).data;
-			const UsersServerAnswer = await serverRequestUsers;
-			const availablePersonIds = (await UsersServerAnswer.json()).data;
 
-			console.log(availablePersonIds);
+			const availablePersonIds = await availablePersonIdsQuery;
 
 			room["state"] = "attributingBeds";
 			room["availablePersonIds"] = availablePersonIds;
