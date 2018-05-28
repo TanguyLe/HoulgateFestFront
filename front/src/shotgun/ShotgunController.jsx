@@ -13,6 +13,7 @@ import {
 } from "../utils/api/fetchMiddleware";
 
 const SERVER_ENDPOINT = "http://localhost:3000";
+const INTERVAL_DURATION = 15000;
 
 class ShotgunContainer extends React.Component {
 	constructor(props) {
@@ -47,10 +48,13 @@ class ShotgunContainer extends React.Component {
 		)).json()).data;
 		this.setState({ queriedRooms });
 
-		console.log(queriedRooms);
-
 		this.updateFloors();
 		this.updateUserState();
+
+		this.refrechInterval = setInterval(() => {
+			this.updateFloors();
+			this.updateUserState();
+		}, INTERVAL_DURATION);
 	}
 	getRoomIdFromRoomName(roomName) {
 		return get(
@@ -279,6 +283,10 @@ class ShotgunContainer extends React.Component {
 				addPersonsInShotgunFunction={this.addPersonsInShotgun}
 			/>
 		);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.refrechInterval);
 	}
 }
 
