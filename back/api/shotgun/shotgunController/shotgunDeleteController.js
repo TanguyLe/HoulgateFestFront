@@ -16,22 +16,44 @@ exports.deleteShotguns = (usersId, callback) => {
 			let deleteShotgun = function (callback) {
 				Shotgun.findOneAndRemove({ user: item }, function (err, deletedShotgun) {
 					if (err) return callback(err);
-					if (deletedShotgun) {
-						console.log("Shotgun associated to user with id " + item + " has been deleted."); // TODO : display line only if shotguns have been really found, here ,it just says the operation was made
-						timeout.clearTimeout(deletedShotgun);
-					}
-					return callback();
+
+					if (!deletedShotgun) return callback();
+
+					// The user owned a room before
+					console.log("Shotgun associated to user with id " + item + " has been deleted.");
+					timeout.clearTimeout(deletedShotgun);
+					User.findById(item, function (err, user) {
+						if (err) return callback(err);
+
+						// if the user is still linked to the deleted shotgun's room
+						if(String(user.room) === String(deletedShotgun.roomId)){
+							user.room = null;
+						}
+						user.isShotgun =  false;
+
+						user.save()
+						.then(user => {
+							console.log("User " + user.username + " doesn't own a room anymore.");
+							return callback();
+						}).catch(err => {
+							console.error("-> User " + user.username + " could not be updated.")
+							let error = new Error("Couldn't save " + user.username);
+							error.name = "Error 500 : Internal Server Error";
+							error.httpStatusCode = "500";
+							return callback(error);
+						});
+					})
 				})
 			}
 			stackDeleteShotguns.push(deleteShotgun);
 			// update the isShotgun field of the users
-			let updateUser = function (callback) {
-				User.findByIdAndUpdate(item, { isShotgun: false }, function (err, shotgun) {
+			/*let updateUser = function (callback) {
+				User.findByIdAndUpdate(item, { isShotgun: false, room: null }, function (err, user) {
 					if (err) return callback(err);
 					return callback();
 				})
 			}
-			stackDeleteShotguns.push(updateUser);
+			stackDeleteShotguns.push(updateUser);*/
 		});
 
 

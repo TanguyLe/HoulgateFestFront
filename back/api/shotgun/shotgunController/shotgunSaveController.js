@@ -1,7 +1,7 @@
 let mongoose = require('mongoose'),
 	Room = mongoose.model('Rooms'),
 	Shotgun = mongoose.model('Shotguns');
-User = mongoose.model('Users'),
+	User = mongoose.model('Users'),
 	shotgunComplete = require("./shotgunCompleteController"),
 	async = require('async');
 
@@ -33,7 +33,8 @@ exports.saveShotgun = (userId, room, callback) => {
 					User.findByIdAndUpdate(shotgun.user,
 						{
 							hasShotgun: true,
-							isShotgun: true
+							isShotgun: true,
+							room : roomId
 						}, { new: true }, function (err, foundUser) {
 							if (err) return callback(err);
 
@@ -53,7 +54,8 @@ exports.saveShotgun = (userId, room, callback) => {
 			else {
 				User.findByIdAndUpdate(shotgun.user,
 					{
-						isShotgun: true
+						isShotgun: true,
+						room: roomId
 					}, { new: true }, function (err, foundUser) {
 						if (err) return callback(err);
 

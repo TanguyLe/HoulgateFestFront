@@ -25,7 +25,9 @@ exports.rollBackUsers = (users, roomId, callback) => {
                             if (String(roomId) === String(user.room)) {
                                 // the user has shotgun for the specified room, we free him
                                 user.hasShotgun = false;
-                                user.room = null;
+                                // don't erase link to room if user owner
+                                if(!user.isShotgun) user.room = null;
+
                                 user.save()
                                     .then(user => {
                                         console.log("User " + user.username + " rolled back.");
@@ -63,8 +65,9 @@ exports.rollBackUsers = (users, roomId, callback) => {
                             if (String(roomId) === String(user.room)) {
                                 // the user has shotgun for the specified room, we free him
                                 user.hasShotgun = false;
-                                user.room = null;
-                                // then
+                                // don't erase link to room if user owner
+                                if(!user.isShotgun) user.room = null;
+
                                 user.save()
                                     .then(user => {
                                         console.log("User " + user.username + " rolled back.");

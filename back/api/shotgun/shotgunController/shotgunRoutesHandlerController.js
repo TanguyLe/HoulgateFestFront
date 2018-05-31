@@ -244,7 +244,6 @@ exports.shotgunDelete = function (req, res) {
 						console.error("-> Error while rolling back the users.");
 						return callback(err);
 					}
-					console.log("... Users successfully rolled back.");
 					callback();
 				})
 			}
