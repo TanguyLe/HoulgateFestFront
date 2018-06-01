@@ -72,19 +72,19 @@ function userCreate(username, email, password, activated, cb) {
 function createUsers(cb) {
     async.parallel([
         function(callback) {
-          userCreate('Patrick', 'Rothfuss', '1973-06-06', true, callback);
+          userCreate('Patrick', 'Rothfuss@rothfuss.je', '1973-06-06', true, callback);
         },
         function(callback) {
-          userCreate('Ben', 'Bova', '1932-11-8',true, callback);
+          userCreate('Ben', 'Bova@bova.je', '1932-11-8',true, callback);
         },
         function(callback) {
-          userCreate('Isaac', 'Asimov', '1920-01-02',true, callback);
+          userCreate('Isaac', 'Asimov@asimov.je', '1920-01-02',true, callback);
         },
         function(callback) {
-          userCreate('Bob', 'Billings', '1920-01-02',true, callback);
+          userCreate('Bob', 'Billings@billings.je', '1920-01-02',true, callback);
         },
         function(callback) {
-          userCreate('Jim', 'Jones', '1971-12-16',true,  callback);
+          userCreate('Jim', 'Jones@jones.je', '1971-12-16',true,  callback);
         },
         ],
         // optional callback
@@ -107,27 +107,7 @@ function createRooms(cb) {
       )
     }
   )
-
-
-
-    /*async.parallel([
-        function(callback) {
-          roomCreate('Room 1', 1, callback);
-        },
-        function(callback) {
-          roomCreate("Room 2", 2,callback);
-        },
-        function(callback) {
-          roomCreate("Room 3", 3, callback);
-        },
-        function(callback) {
-          roomCreate("Room 4", 4, callback);
-        }
-        ],
-        // optional callback
-        cb);
-        */
-       async.parallel(stackcreateRooms, cb);
+  async.parallel(stackcreateRooms, cb);
 }
 
 
