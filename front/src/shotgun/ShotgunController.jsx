@@ -13,7 +13,7 @@ import {
 } from "../utils/api/fetchMiddleware";
 
 const SERVER_ENDPOINT = "http://localhost:3000";
-const INTERVAL_DURATION = 15000;
+const INTERVAL_DURATION = 1000;
 
 class ShotgunContainer extends React.Component {
   constructor(props) {
@@ -31,7 +31,8 @@ class ShotgunContainer extends React.Component {
           };
         }, villaLesGenets.floors)
       },
-      userState: ""
+      userState: "",
+      availablePersons: []
     };
 
     this.addPersonsInShotgun = this.addPersonsInShotgun.bind(this);
@@ -50,10 +51,12 @@ class ShotgunContainer extends React.Component {
 
     this.updateFloors();
     this.updateUserState();
+    this.updateAvailableUsers();
 
     this.refrechInterval = setInterval(() => {
       this.updateFloors();
       this.updateUserState();
+      this.updateAvailableUsers();
     }, INTERVAL_DURATION);
   }
   getRoomIdFromRoomName(roomName) {
@@ -110,13 +113,13 @@ class ShotgunContainer extends React.Component {
           )
         ) {
           if (!isNil(this.state.shotgunId)) {
-            if (
-              this.getRoomIdFromRoomName(room.name) ===
-              find(shotgun => shotgun._id === this.state.shotgunId).room._id
-            ) {
-              state = "shotgunSuccessful";
-            }
-          } else {
+            //   if (
+            //     this.getRoomIdFromRoomName(room.name) ===
+            //     find(shotgun => shotgun._id === this.state.shotgunId).room._id
+            //   ) {
+            //     state = "shotgunSuccessful";
+            //   }
+            // } else {
             state = "shotguned";
           }
         } else {
@@ -305,6 +308,7 @@ class ShotgunContainer extends React.Component {
         floors={this.state.villaLesGenets.floors}
         userState={this.state.userState}
         createShotgunFunction={this.createShotgun}
+        availablePersonsIds={this.state.availablePersons}
         addPersonsInShotgunFunction={this.addPersonsInShotgun}
       />
     );

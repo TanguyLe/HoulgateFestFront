@@ -23,7 +23,6 @@ class Room extends React.Component {
           disable = true;
         }
       } else if (this.props.userState.isShotgun === true) {
-        console.log(get("roomId", this.props), this.props.userState.room);
         if (get("roomId", this.props) === this.props.userState.room) {
           status = "attributingBeds";
           content =
@@ -40,6 +39,8 @@ class Room extends React.Component {
       }
     }
 
+    console.log(this.props.availablePersonIds);
+
     return (
       <RoomBasis
         {...this.props}
@@ -53,7 +54,7 @@ class Room extends React.Component {
           seats={this.props.seats}
           name={this.props.name}
           status={status}
-          availablePersonIds={this.props.availablePersonIds}
+          availablePersonsIds={this.props.availablePersonsIds}
           createShotgunFunction={this.props.createShotgunFunction || null}
           addPersonsInShotgunFunction={roommatesIds =>
             this.props.addPersonsInShotgunFunction(
