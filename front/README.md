@@ -26,4 +26,6 @@ Then you can go to http://localhost:8080/ and have fun!
 #### Prod
 For a production-ready build, use `npm run build`.
 
-It will create a minified and uglified min.js file in the /web directory. Then you can directly open the index.html file to see the website.
+It will create a minified and uglified min.js file in the /web directory.
+For a production use, launch the server `node server.js`, and browse to the url.
+The default is `localhost:3000`
