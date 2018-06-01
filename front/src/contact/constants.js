@@ -1,4 +1,4 @@
-export const CONTACT_URL = "http://localhost:3000/api/contact";
+export const CONTACT_URL = "./api/contact";
 
 export const regexes = {
     mail: {

@@ -22,7 +22,6 @@ exports.isFront = (req, res, next) => {
     else if (req.originalUrl === '/houlgatefest.min.js')
         res.sendFile(pth + '/houlgatefest.min.js');
     else if (req.originalUrl.split('/')[1] === 'api') {
-        console.log(req.originalUrl);
         next();
     }
     else
