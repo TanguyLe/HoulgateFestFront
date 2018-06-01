@@ -8,7 +8,7 @@ let express = require("express"),
     middleware = require('./api/utils/middleware'),
     userRoutes = require('./api/user/userRoutes'),
     contactRoutes = require('./api/contact/contactRoutes');
-    bodyParser = require('body-parser');
+bodyParser = require('body-parser');
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
@@ -16,16 +16,16 @@ mongoose.connect("mongodb://localhost/Userdb");
 
 app.use(cors());
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
 app.use(middleware.userAuth);
 userRoutes(app);
 contactRoutes(app);
-app.use(middleware.hasStarted);
+app.use(middleware.isFront);
 app.use(middleware.notFound);
+app.use(middleware.hasStarted);
 
 app.listen(port);
 
 
-console.log("HouglateFest server started on: " + port);
+console.log("HoulgateFest server started on: " + port);
