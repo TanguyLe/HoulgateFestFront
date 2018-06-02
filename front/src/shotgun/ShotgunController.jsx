@@ -13,7 +13,7 @@ import {
 } from "../utils/api/fetchMiddleware";
 
 const SERVER_ENDPOINT = "http://localhost:3000";
-const INTERVAL_DURATION = 1000;
+const INTERVAL_DURATION = 15000;
 
 class ShotgunContainer extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class ShotgunContainer extends React.Component {
         }, villaLesGenets.floors)
       },
       userState: "",
-      availablePersons: []
+      availablePersonsIds: []
     };
 
     this.addPersonsInShotgun = this.addPersonsInShotgun.bind(this);
@@ -67,9 +67,10 @@ class ShotgunContainer extends React.Component {
   }
 
   getUserMailFromUserId(userId) {
+		console.log(this.state.availablePersonsIds)
     return get(
       "email",
-      find(user => user._id === userId, this.state.availablePersons)
+      find(user => user._id === userId, this.state.availablePersonsIds)
     );
   }
 
@@ -113,13 +114,13 @@ class ShotgunContainer extends React.Component {
           )
         ) {
           if (!isNil(this.state.shotgunId)) {
-            //   if (
-            //     this.getRoomIdFromRoomName(room.name) ===
-            //     find(shotgun => shotgun._id === this.state.shotgunId).room._id
-            //   ) {
-            //     state = "shotgunSuccessful";
-            //   }
-            // } else {
+              if (
+                this.getRoomIdFromRoomName(room.name) ===
+                find(shotgun => shotgun._id === this.state.shotgunId).room._id
+              ) {
+                state = "shotgunSuccessful";
+              }
+            } else {
             state = "shotguned";
           }
         } else {
@@ -169,16 +170,20 @@ class ShotgunContainer extends React.Component {
     const UsersServerAnswer = await serverRequestUsers;
     const listOfUsers = (await UsersServerAnswer.json()).data;
 
-    const availablePersonIds = filter(
-      person => person.hasShotgun === false && person.isShotgun === false,
+    const currentUserUsername = window.localStorage.getItem("username");
+
+    const availablePersonsIds = filter(
+      person =>
+        (person.hasShotgun === false && person.isShotgun === false) ||
+        currentUserUsername === person.username,
       listOfUsers
     );
 
     this.setState({
-      availablePersons: availablePersonIds
+      availablePersonsIds: availablePersonsIds
     });
 
-    return availablePersonIds;
+    return availablePersonsIds;
   }
 
   async createShotgun(event, room, floor) {
@@ -186,7 +191,7 @@ class ShotgunContainer extends React.Component {
     ////// set state as loading while waiting for query results ////////////
     ////////////////////////////////////////////////////////////////////////
 
-    const availablePersonIdsQuery = this.updateAvailableUsers();
+    const availablePersonsIdsQuery = this.updateAvailableUsers();
 
     const roomId = this.getRoomIdFromRoomName(room.name);
 
@@ -219,16 +224,16 @@ class ShotgunContainer extends React.Component {
 
       const shotgunResult = (await shotgunServerUpdate.json()).data;
 
-      const availablePersonIds = await availablePersonIdsQuery;
+      const availablePersonsIds = await availablePersonsIdsQuery;
 
       room["state"] = "attributingBeds";
-      room["availablePersonIds"] = availablePersonIds;
+      room["availablePersonsIds"] = availablePersonsIds;
       floor["rooms"] = [...floor.rooms, room];
 
       this.updateState(room, floor);
 
       this.setState({
-        availablePersons: availablePersonIds,
+        availablePersonsIds: availablePersonsIds,
         shotgunId: shotgunResult._id
       });
     } else {
@@ -250,6 +255,8 @@ class ShotgunContainer extends React.Component {
   async addPersonsInShotgun(roomName, roommatesIds = []) {
     const shotgunId = this.state.shotgunId;
 
+    console.log(roommatesIds);
+
     const roomId = this.getRoomIdFromRoomName(roomName);
     if (roommatesIds.length < 1) {
       throw new Error("no roommates to add");
@@ -259,6 +266,7 @@ class ShotgunContainer extends React.Component {
         roommatesIds
       );
 
+      console.log(roommatesEmails);
       const apiPutPersoninShotgunRoute =
         SERVER_ENDPOINT + "/shotgun/rooms/" + roomId;
       const addUserToShotgun = putCallApi(
@@ -308,7 +316,7 @@ class ShotgunContainer extends React.Component {
         floors={this.state.villaLesGenets.floors}
         userState={this.state.userState}
         createShotgunFunction={this.createShotgun}
-        availablePersonsIds={this.state.availablePersons}
+        availablePersonsIds={this.state.availablePersonsIds}
         addPersonsInShotgunFunction={this.addPersonsInShotgun}
       />
     );

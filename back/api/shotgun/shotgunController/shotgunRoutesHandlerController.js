@@ -309,10 +309,11 @@ exports.roomList = function (req, res) {
 
 // Handle roommates addition to shotgun on PUT.
 exports.roommatesAdd = function (req, res, next) {
-
 	/* Validate Request */
 	let user = undefined;
 	let accessToken = tokenUtils.getJWTToken(req.headers);
+
+console.log(req.body)
 
 	// check user is authenticated
 	tokenUtils.checkAccessToken(
@@ -330,7 +331,7 @@ exports.roommatesAdd = function (req, res, next) {
 			.json({ message: "Authentication failed. Invalid accessToken." });
 	}
 
-	if (!req.query.roommates) {
+	if (!req.body.roommates) {
 		return res.status(400).send({
 			meta: {
 				error_type: "Error 400 : Query parameter error",
@@ -351,7 +352,8 @@ exports.roommatesAdd = function (req, res, next) {
 	}
 
 	/* Add roommates */
-	let updateUsers = req.query.roommates.split(',');
+	let updateUsers = req.body.roommates;
+
 	async.waterfall([
 		function (callback) {
 			// find room and check that the number of users (roommates + user owner) isn't exceeding the number of beds

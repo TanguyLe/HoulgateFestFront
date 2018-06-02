@@ -8,7 +8,7 @@ class Room extends React.Component {
   render() {
     let content = "";
     let disable = false;
-    let status = undefined;
+    let status = this.props.roomState;
 
     if (this.props.seats > 0) {
       if (this.props.roomState === "disabled") {
@@ -38,8 +38,6 @@ class Room extends React.Component {
         status = this.props.roomState;
       }
     }
-
-    console.log(this.props.availablePersonIds);
 
     return (
       <RoomBasis
