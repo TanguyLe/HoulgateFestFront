@@ -1,5 +1,8 @@
 let webpack = require("webpack");
 
+const env = process.env.NODE_ENV || 'development'
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
 module.exports = {
 	entry: ["babel-polyfill", "./src/houlgatefest.js"],
 	resolve: {
@@ -29,8 +32,6 @@ module.exports = {
 				NODE_ENV: JSON.stringify("production")
 			}
 		}),
-		new webpack.optimize.UglifyJsPlugin({
-			sourceMap: true
-		})
+		new UglifyJsPlugin()
 	]
 };
