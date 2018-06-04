@@ -1,4 +1,4 @@
-export const BACK_URL = "http://localhost:3000/";
+export const BACK_URL = "./api/";
 export const LOGIN_URL = BACK_URL + "login";
 export const USERS_URL = BACK_URL + "users";
 export const PSWD_RESET_URL = BACK_URL + "passwordReset";

@@ -22,9 +22,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));//get n
 
 app.use(cors());
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
+app.use(middleware.isFront);
 app.use(middleware.userAuth);
 userRoutes(app);
 contactRoutes(app);
@@ -35,5 +35,4 @@ app.use(middleware.notFound);
 
 app.listen(port);
 
-
-console.log('HoulgateFest server started on: ' + port);
+console.log("HoulgateFest server started on: " + port);
