@@ -8,8 +8,8 @@
 Bonjour, félicitations pour ton inscription sur www.houlgateFest.fr!
 <br/> <br/> <br/>
 Pour activer ton compte, clique sur le lien suivant:
-<a class="my-class" href="<%= request.protocol %>://localhost:8080/activateUser?id=<%= id %>&code=<%= code %>">
-    <%= request.protocol %>://localhost:8080//activateUser?id=<%= id %>&code=<%= code %>
+<a class="my-class" href="<%= request.protocol %>://<%= request.headers.host %>/activateUser?id=<%= id %>&code=<%= code %>">
+    <%= request.protocol %>://<%= request.headers.host %>/activateUser?id=<%= id %>&code=<%= code %>
 </a>
 <br/> <br/> <br/>
 <b>Merci et à bientôt!</b>

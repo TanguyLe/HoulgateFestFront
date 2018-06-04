@@ -18,7 +18,7 @@ exports.userAuth = (req, res, next) => {
 
 
 exports.isFront = (req, res, next) => {
-    if (path.extname(req.originalUrl))
+    if ([".png", ".js", ".jpg"].includes(path.extname(req.originalUrl)))
         res.sendFile(pth + req.originalUrl);
     else if (req.originalUrl === '/houlgatefest.min.js')
         res.sendFile(pth + '/houlgatefest.min.js');
