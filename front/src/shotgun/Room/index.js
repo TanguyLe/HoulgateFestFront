@@ -19,7 +19,7 @@ class Room extends React.Component {
           status = "shotgunSuccessful";
           content = "You have already shotgun this room";
         } else {
-          content = "You have already shotgun";
+          content = "You have already shotgunned";
           disable = true;
         }
       } else if (this.props.userState.isShotgun === true) {

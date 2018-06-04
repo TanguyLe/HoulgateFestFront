@@ -12,7 +12,7 @@ import {
   putCallApi
 } from "../utils/api/fetchMiddleware";
 
-const SERVER_ENDPOINT = "http://localhost:3000";
+const SERVER_ENDPOINT = "http://localhost:3000/api";
 const INTERVAL_DURATION = 15000;
 
 class ShotgunContainer extends React.Component {
@@ -241,7 +241,7 @@ class ShotgunContainer extends React.Component {
       ////// preShotgun denined //////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////
 
-      alert("this room is not available anymore or you already shotgun a room");
+      alert("this room is not available anymore or you already shotgunned a room");
       room["state"] = "disabled";
       floor["rooms"] = [...floor.rooms, room];
 

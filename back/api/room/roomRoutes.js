@@ -1,6 +1,6 @@
 module.exports = (app) => {
     let roomController = require('./roomController');
 
-    app.route('/rooms')
+    app.route('/api/rooms')
         .get(roomController.roomList);
 };
