@@ -11,4 +11,4 @@ export const STAIRS_TYPE = "stairs";
 export const LIVING_ROOM_TYPE = "livingRoom";
 export const GARDEN_TYPE = "garden";
 
-export const shotgunDate = "June 1, 2018 20:00:00";
+export const shotgunDate = "June 07, 2018 20:00:00";
