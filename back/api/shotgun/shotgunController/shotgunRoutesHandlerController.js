@@ -75,7 +75,7 @@ exports.shotgunCreatePost = function (req, res) {
 						callback(null, user._id);
 					});
 				},
-				//Check room exists, has space available (minimum 1 place) and not already associated to a shotgun
+				//Check room exists, has space available (minimum 1 place for the owner) and not already associated to a shotgun
 				function (callback) {
 					async.parallel([
 						function (callback) {
@@ -125,7 +125,10 @@ exports.shotgunCreatePost = function (req, res) {
 			});
 		}
 		console.log("... Shotgun is created.");
+
+		// set a timeout that checks after a certain time if the created shotgun has been finalised in the meantime
 		timeout.setTimeout(shotgun);
+
 		return res.status(200).send({
 			meta: {
 				code: "200",
@@ -138,7 +141,8 @@ exports.shotgunCreatePost = function (req, res) {
 
 // Handle Shotgun delete.
 exports.shotgunDelete = function (req, res) {
-	/* Validate Request */
+
+	// Validate Request
 	let user = undefined;
 	let accessToken = tokenUtils.getJWTToken(req.headers);
 
@@ -228,11 +232,12 @@ exports.shotgunDelete = function (req, res) {
 					return callback(error);
 				}
 				console.log("... Shotgun successfully deleted.");
-				timeout.clearTimeout(deletedShotgun);
+				timeout.clearTimeout(deletedShotgun); // remove timeout set when the shotgun was created
 				callback(null, deletedShotgun);
 			});
 		},
 		function (shotgun, callback) {
+			// roll back the roommates
 			let rollBackRoommates = function (shotgun, callback) {
 				let users = shotgun.roommates;
 				if (!users) {
@@ -248,6 +253,7 @@ exports.shotgunDelete = function (req, res) {
 				})
 			}
 
+			// roll back the user owner
 			let updateUserOwner = function (shotgun, callback) {
 				// special tratment for user owner
 				User.findByIdAndUpdate(shotgun.user, { hasShotgun: false, isShotgun: false, room: null }, function (err, user) {
@@ -310,7 +316,7 @@ exports.roomList = function (req, res) {
 // Handle roommates addition to shotgun on PUT.
 exports.roommatesAdd = function (req, res, next) {
 
-	/* Validate Request */
+	// Validate Request
 	let user = undefined;
 	let accessToken = tokenUtils.getJWTToken(req.headers);
 
@@ -350,7 +356,7 @@ exports.roommatesAdd = function (req, res, next) {
 		});
 	}
 
-	/* Add roommates */
+	// Add roommates
 	let updateUsers = req.query.roommates.split(',');
 	async.waterfall([
 		function (callback) {

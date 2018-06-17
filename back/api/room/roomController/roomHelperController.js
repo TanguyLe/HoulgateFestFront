@@ -1,7 +1,7 @@
 let mongoose = require('mongoose'),
     Room = mongoose.model('Rooms');
 
-// checks room exists
+// Check room exists
 exports.checkRoomExists = (roomId, callback) => {
     console.log("Check room " + roomId + " exists...");
 
@@ -23,10 +23,10 @@ exports.checkRoomExists = (roomId, callback) => {
     })
 }
 
-// checks that the room exists and has sufficient beds for the number of users 
+// Check that the room exists and has sufficient beds for the number of users 
 exports.checkRoomReadyForShotgun = (roomId, usersNb, callback) => {
     console.log("Checking room ready for Shotgun...");
-    
+
     Room.findById(roomId, function (err, room) {
         if (err) return callback(err);
 

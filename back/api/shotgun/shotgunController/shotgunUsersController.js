@@ -12,7 +12,7 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
     let stackUpdateUsers = [];
 
     // Create tasks for checking and updating the users
-    // Update the user Owner
+    // update the user Owner
     let updateUserOwner = function (callback) {
 
         User.findOne({ email: userOwner.email }, function (err, user) {
@@ -60,7 +60,7 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
         })
     }
 
-    // Update the roommates
+    // update the roommates
     updateRoommates.forEach(
         function (item) {
             let updateRoommate = function (callback) {

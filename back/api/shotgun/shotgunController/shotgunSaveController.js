@@ -5,7 +5,6 @@ let mongoose = require('mongoose'),
 	shotgunComplete = require("./shotgunCompleteController"),
 	async = require('async');
 
-
 // Save shotgun in DB
 exports.saveShotgun = (userId, room, callback) => {
 	console.log("Saving shotgun...");
@@ -23,13 +22,15 @@ exports.saveShotgun = (userId, room, callback) => {
 					return callback(err);
 				})
 		},
+		// Update the user owner of the shotgun
 		function (shotgun, callback) {
 			console.log("Update owner user...");
-			// Update the user owner of the shotgun
-			// and complete the shotgun if only one bed in the room (room full)
+			
+			// complete first the shotgun if only one bed in the room (room full with user owner)
 			if (String(room.nbBeds) == "1") {
 				shotgunComplete.completeShotgun(roomId, null, function (err, shotgun) {
 					if (err) return callback(err);
+
 					User.findByIdAndUpdate(shotgun.user,
 						{
 							hasShotgun: true,

@@ -5,13 +5,13 @@ let mongoose = require('mongoose'),
     rollback = require('./rollbackController'),
     async = require('async');
 
-// Roll back users to before shotgun state
+// Roll back all users that have shotgun the specified room
 exports.rollBackUsers = (users, roomId, callback) => {
     console.log("Rolling back users..." + users);
     let stackUpdateUsers = [];
     users.forEach(
         function (item) {
-            // depending on the type of item we call findById or findOne
+            // depending on the data type representing the user (email or id), we call findById or findOne
             if (item instanceof mongoose.Types.ObjectId) {
                 var updateUser = function (callback) {
                     User.findById(item, function (err, user) {
