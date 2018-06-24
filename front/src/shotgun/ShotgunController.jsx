@@ -12,7 +12,7 @@ import {
   putCallApi
 } from "../utils/api/fetchMiddleware";
 
-const SERVER_ENDPOINT = "http://localhost:3000/api";
+const SERVER_ENDPOINT = "./api";
 const INTERVAL_DURATION = 15000;
 
 class ShotgunContainer extends React.Component {
