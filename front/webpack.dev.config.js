@@ -36,5 +36,6 @@ module.exports = {
 		hot: true,
 		historyApiFallback: true
 	},
-	plugins: [new webpack.HotModuleReplacementPlugin()]
+	plugins: [new webpack.HotModuleReplacementPlugin(),
+			  new webpack.DefinePlugin({"API_URL": "\"http://localhost:3000\""})]
 };

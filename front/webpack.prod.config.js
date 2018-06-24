@@ -1,7 +1,6 @@
 let webpack = require("webpack");
 
-const env = process.env.NODE_ENV || 'development'
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
 	entry: ["babel-polyfill", "./src/houlgatefest.js"],
@@ -30,7 +29,8 @@ module.exports = {
 		new webpack.DefinePlugin({
 			"process.env": {
 				NODE_ENV: JSON.stringify("production")
-			}
+			},
+            "API_URL": "\"http://houlgatefest.fr\""
 		}),
 		new UglifyJsPlugin()
 	]

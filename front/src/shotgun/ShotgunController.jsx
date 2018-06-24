@@ -12,7 +12,8 @@ import {
   putCallApi
 } from "../utils/api/fetchMiddleware";
 
-const SERVER_ENDPOINT = "./api";
+// API_URL defined by webpack
+const SERVER_ENDPOINT = API_URL + "/api";
 const INTERVAL_DURATION = 15000;
 
 class ShotgunContainer extends React.Component {
