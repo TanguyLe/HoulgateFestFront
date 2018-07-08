@@ -28,29 +28,7 @@ mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var rooms = []
 var users = []
-
-function roomCreate(roomType, text, nbBeds, cb) {
-  roomDetail = {
-    roomType: roomType,
-    text: text, 
-    nbBeds: nbBeds
-  } 
-  
-  var room = new Room(roomDetail);
-
-       
-  room.save(function (err) {
-    if (err) {
-      cb(err, null)
-      return
-    }
-    console.log('New Room: ' + room);
-    rooms.push(room)
-    cb(null, room)
-  }  );
-}
 
 function userCreate(username, email, password, activated, cb) {
   passwordUtils.cryptPassword(password).then((resPassword) => {
@@ -92,27 +70,7 @@ function createUsers(cb) {
 }
 
 
-function createRooms(cb) {
-  let stackcreateRooms = []
-
-  villaLesGenets.villaLesGenets.floors.forEach(
-    function(floor){
-      floor.rooms.forEach(
-        function(room){
-          let createRoom = function(callback) {
-            roomCreate(room.type, room.name, room.seats, callback);
-          }
-          stackcreateRooms.push(createRoom);
-        }
-      )
-    }
-  )
-  async.parallel(stackcreateRooms, cb);
-}
-
-
 async.series([
-    createRooms,
     createUsers
 ],
 // Optional callback
@@ -121,7 +79,6 @@ function(err, results) {
         console.log('FINAL ERR: '+err);
     }
     else {
-        console.log('ROOM: '+ rooms);
         console.log('USERS: '+ users);
         
     }
