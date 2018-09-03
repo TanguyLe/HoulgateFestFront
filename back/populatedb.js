@@ -29,12 +29,12 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 
 let users = [];
 
-function userCreate(username, email, password, activated, cb) {
+let userCreate = (username, email, password, activated, cb) => {
     passwordUtils.cryptPassword(password).then((resPassword) => {
 
         let user = new User({username: username, email: email, password: resPassword, activated: activated});
 
-        user.save(function (err) {
+        user.save(let = (err) => {
             if (err) {
                 cb(err, null);
                 return;
@@ -44,9 +44,9 @@ function userCreate(username, email, password, activated, cb) {
             cb(null, user);
         });
     });
-}
+};
 
-function createUsers(cb) {
+let createUsers = (cb) => {
     async.parallel([
             (callback) => {
                 userCreate('Patrick', 'Rothfuss@rothfuss.je', '1973-06-06', true, callback);
@@ -66,7 +66,7 @@ function createUsers(cb) {
         ],
         // optional callback
         cb);
-}
+};
 
 
 async.series([

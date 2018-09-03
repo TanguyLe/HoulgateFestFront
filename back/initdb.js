@@ -26,7 +26,7 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 
 let rooms = [];
 
-function roomCreate(roomType, text, nbBeds, cb) {
+let roomCreate = (roomType, text, nbBeds, cb) => {
     roomDetail = {
         roomType: roomType,
         text: text,
@@ -46,9 +46,9 @@ function roomCreate(roomType, text, nbBeds, cb) {
             cb(null, room);
         }
     );
-}
+};
 
-function createRooms(cb) {
+let createRooms = (cb) => {
     let stackcreateRooms = [];
 
     villaLesGenets.villaLesGenets.floors.forEach(

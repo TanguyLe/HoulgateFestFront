@@ -23,7 +23,7 @@ let Shotgun = require('./api/shotgun/shotgunModel');
 let Room = require('./api/room/roomModel');
 let User = require('./api/user/userModel');
 
-function retrieveShotguns(cb) {
+let retrieveShotguns = (cb) => {
 
     Shotgun.find({}, {__v: 0, _id: 0, createdAt: 0, updatedAt: 0}).populate('room', {
         __v: 0,
@@ -57,9 +57,9 @@ function retrieveShotguns(cb) {
         console.log("-> Completed Shotguns retrieved.");
         return cb(null, shotguns);
     });
-}
+};
 
-function retrieveStandaloneUsers(shotguns, cb) {
+let retrieveStandaloneUsers = (shotguns, cb) => {
     User.find({hasShotgun: false, activated: true}, {
         password: 0,
         __v: 0,
@@ -76,9 +76,9 @@ function retrieveStandaloneUsers(shotguns, cb) {
             return cb(null, shotguns, users);
         }
     );
-}
+};
 
-function createRecapFile(shotguns, users, cb) {
+let createRecapFile = (shotguns, users, cb) => {
 
     fs.writeFile("/tmp/HoulgateFestRecap", "This is the list of the completed shotgun(s) :\n" + shotguns + "\n\nThese users haven't shotgun yet:\n" + users, (err) => {
         if (err) {
@@ -89,7 +89,7 @@ function createRecapFile(shotguns, users, cb) {
         return cb();
     });
 
-}
+};
 
 async.waterfall([
         retrieveShotguns,
@@ -105,5 +105,3 @@ async.waterfall([
         // All done, disconnect from database
         mongoose.connection.close();
     });
-
-
