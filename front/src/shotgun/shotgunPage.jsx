@@ -8,24 +8,25 @@ import OnlyWhenConnectedWrapper from "../utils/login/OnlyWhenConnectedWrapper"
 
 
 class ShotgunPage extends React.Component {
-    constructor(){
+    constructor() {
         super();
 
         this.forceUpdate = this.forceUpdate.bind(this);
     }
-	render() {
+
+    render() {
         let display = Date.now() < Date.parse(shotgunDate) ?
             <div>
-                <div className="Countdown">Ouverture du Shotgun des chambres: </div>
+                <div className="Countdown">Ouverture du Shotgun des chambres:</div>
                 <Countdown onTime={this.forceUpdate} date={shotgunDate}/>
             </div>
             :
             <ShotgunController/>;
 
-		return(<OnlyWhenConnectedWrapper>
-                {display}
-                </OnlyWhenConnectedWrapper>);
-	}
+        return (<OnlyWhenConnectedWrapper>
+            {display}
+        </OnlyWhenConnectedWrapper>);
+    }
 }
 
 export default ShotgunPage;
