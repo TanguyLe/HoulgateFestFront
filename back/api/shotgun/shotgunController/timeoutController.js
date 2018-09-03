@@ -29,7 +29,7 @@ exports.timeoutTriggered = (shotgun) => {
 		}
 		if (shotgun.status !== 'done') {
 			console.log("Deleting Shotgun on room " + shotgun.room + "...");
-			// Delete shotgun
+			// delete shotgun
 			let deleteShotgun = function (shotgun, callback) {
 				Shotgun.findByIdAndRemove(shotgun._id, function (err, deletedShotgun) {
 					if (err) {

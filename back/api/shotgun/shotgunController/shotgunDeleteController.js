@@ -6,7 +6,7 @@ let mongoose = require('mongoose'),
 	async = require('async');
 
 
-/* Delete all shotguns own by the users */
+// Delete all shotguns own by the specified users
 exports.deleteShotguns = (usersId, callback) => {
 	console.log("Deleting shotguns own by the roommates...")
 	let stackDeleteShotguns = []
@@ -21,7 +21,9 @@ exports.deleteShotguns = (usersId, callback) => {
 
 					// The user owned a room before
 					console.log("Shotgun associated to user with id " + item + " has been deleted.");
-					timeout.clearTimeout(deletedShotgun);
+					
+					timeout.clearTimeout(deletedShotgun); // remove the timeout that checks if the shotgun has been finalised
+					
 					User.findById(item, function (err, user) {
 						if (err) return callback(err);
 
@@ -29,7 +31,7 @@ exports.deleteShotguns = (usersId, callback) => {
 						if(String(user.room) === String(deletedShotgun.roomId)){
 							user.room = null;
 						}
-						user.isShotgun =  false;
+						user.isShotgun =  false; // the user doesn't own a room anymore
 
 						user.save()
 						.then(user => {
@@ -46,14 +48,6 @@ exports.deleteShotguns = (usersId, callback) => {
 				})
 			}
 			stackDeleteShotguns.push(deleteShotgun);
-			// update the isShotgun field of the users
-			/*let updateUser = function (callback) {
-				User.findByIdAndUpdate(item, { isShotgun: false, room: null }, function (err, user) {
-					if (err) return callback(err);
-					return callback();
-				})
-			}
-			stackDeleteShotguns.push(updateUser);*/
 		});
 
 

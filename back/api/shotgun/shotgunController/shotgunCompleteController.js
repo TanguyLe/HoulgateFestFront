@@ -5,8 +5,9 @@ let mongoose = require('mongoose'),
 	mail = require('../../utils/mailController'),
 	async = require('async');
 
-// update roommates and status fields 
-// and delete all shotguns own by the roommates to free the rooms
+// Compelete the shotgun by
+// adding the roommates and
+// deleting all the shotguns own by the roommates to free the associated rooms
 exports.completeShotgun = (roomId, roommatesId, callback) => {
 	console.log("Completing shotgun...");
 	Shotgun.findOneAndUpdate({ room: roomId }, {
@@ -46,7 +47,7 @@ exports.completeShotgun = (roomId, roommatesId, callback) => {
 		})
 }
 
-// handler after a complete shotgun
+// Handler after a complete shotgun
 exports.afterCompleteShotgun = (shotgun) => {
 
 	// retrieve the complete shotgun and populate the users' fields
@@ -68,7 +69,7 @@ exports.afterCompleteShotgun = (shotgun) => {
 	}
 
 
-	// create and send a recap mail to all users
+	// create a shotgun recap mail to all users
 	let sendMails = function (populatedShotgun, callback) {
 
 		let userOwner = populatedShotgun.user;
@@ -106,7 +107,7 @@ exports.afterCompleteShotgun = (shotgun) => {
 		users.forEach(
 			function (item) {
 				let mailContent = {
-					to: item.email,
+					to: item.email, // this field also accepts the complete list of the users' email
 					subject: title,
 					text: content
 				};
