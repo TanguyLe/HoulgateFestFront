@@ -13,9 +13,9 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
 
     // Create tasks for checking and updating the users
     // update the user Owner
-    let updateUserOwner = function (callback) {
+    let updateUserOwner = (callback) => {
 
-        User.findOne({ email: userOwner.email }, function (err, user) {
+        User.findOne({email: userOwner.email}, (err, user) => {
             if (err) return callback(err);
             if (!user) {
                 console.error("-> User with email " + userOwner.email + " not found");
@@ -51,20 +51,20 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
                     console.log("User " + user.username + " has shotgun.");
                     callback();
                 }).catch(err => {
-                    console.error("-> User " + user.username + " could not be udpated.")
-                    let error = new Error("Couldn't save " + user.username);
-                    error.name = "Error 500 : Internal Server Error";
-                    error.httpStatusCode = "500";
-                    return callback(error);
-                });
+                console.error("-> User " + user.username + " could not be udpated.")
+                let error = new Error("Couldn't save " + user.username);
+                error.name = "Error 500 : Internal Server Error";
+                error.httpStatusCode = "500";
+                return callback(error);
+            });
         })
-    }
+    };
 
     // update the roommates
     updateRoommates.forEach(
-        function (item) {
-            let updateRoommate = function (callback) {
-                User.findOne({ email: item }, function (err, user) {
+        (item) => {
+            let updateRoommate = (callback) => {
+                User.findOne({email: item}, (err, user) => {
                     if (err) return callback(err);
                     if (!user) {
                         console.error("-> User with email " + item + " not found");
@@ -90,15 +90,15 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
                         .then(user => {
                             console.log("User " + user.username + " has shotgun.");
                             callback(null, user._id);
-                        }).catch(err => {
-                            console.error("-> User " + user.username + " could not be udpated.")
-                            let error = new Error("Couldn't save " + user.username);
-                            error.name = "Error 500 : Internal Server Error";
-                            error.httpStatusCode = "500";
-                            return callback(error);
-                        });
+                        }).catch((err) => {
+                        console.error("-> User " + user.username + " could not be udpated.")
+                        let error = new Error("Couldn't save " + user.username);
+                        error.name = "Error 500 : Internal Server Error";
+                        error.httpStatusCode = "500";
+                        return callback(error);
+                    });
                 })
-            }
+            };
             stackUpdateUsers.push(updateRoommate);
         });
 
@@ -106,16 +106,16 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
     // would have been thrown and the roolback begun just after, leading to inconsistency.
     async.waterfall([
         updateUserOwner,
-        function (callback) {
+        (callback) => {
             async.series(stackUpdateUsers, callback);
         }
-    ], function (error, foundRoommatesId) {
+    ], (error, foundRoommatesId) => {
         if (error) {
             console.error("-> Error before shotgun users : " + error);
             // rolling back the users
             let updateUsers = updateRoommates;
             updateUsers.push(userOwner.email);
-            rollback.rollBackUsers(updateUsers, roomId, function (err) {
+            rollback.rollBackUsers(updateUsers, roomId, (err) => {
                 if (err) {
                     return callback(err);
                 }
@@ -126,8 +126,8 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
             });
         }
         else {
-            console.log("... All users added successfully.")
+            console.log("... All users added successfully.");
             callback(null, foundRoommatesId);
         }
     })
-}
+};

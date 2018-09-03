@@ -5,7 +5,7 @@ let mongoose = require('mongoose'),
 exports.checkRoomExists = (roomId, callback) => {
     console.log("Check room " + roomId + " exists...");
 
-    Room.findById(roomId, function (err, foundRoom) {
+    Room.findById(roomId, (err, foundRoom) => {
         if (err) return callback(err);
 
         if (foundRoom) {
@@ -27,7 +27,7 @@ exports.checkRoomExists = (roomId, callback) => {
 exports.checkRoomReadyForShotgun = (roomId, usersNb, callback) => {
     console.log("Checking room ready for Shotgun...");
 
-    Room.findById(roomId, function (err, room) {
+    Room.findById(roomId, (err, room) => {
         if (err) return callback(err);
 
         if (!room) {
@@ -47,5 +47,4 @@ exports.checkRoomReadyForShotgun = (roomId, usersNb, callback) => {
         console.log("... Room ready.");
         callback(null, room);
     })
-}
-
+};

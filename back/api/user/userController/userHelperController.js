@@ -5,7 +5,7 @@ let mongoose = require('mongoose'),
 exports.checkUserOK = (userEmail, callback) => {
     console.log("Check user OK...");
 
-    User.findOne({ email: userEmail })
+    User.findOne({email: userEmail})
         .then(foundUser => {
             // No results ... User doesn't exist
             if (!foundUser) {
@@ -15,7 +15,7 @@ exports.checkUserOK = (userEmail, callback) => {
                 error.httpStatusCode = "400";
                 return callback(error);
             }
-            
+
             if (foundUser.hasShotgun || foundUser.isShotgun) {
                 let error = new Error('User ' + foundUser.username + ' has already shotgunned or owns a shotgun.');
                 error.name = "Error 409 : Conflict";
@@ -25,6 +25,6 @@ exports.checkUserOK = (userEmail, callback) => {
             return callback(null, foundUser);
 
         }).catch(err => {
-            return callback(err);
-        })
-}
+        return callback(err);
+    })
+};

@@ -21,7 +21,7 @@ exports.getJWTToken = (headers) => {
     return split[1];
 };
 
-exports.generateAccessToken = (info="random_shit") => {
+exports.generateAccessToken = (info = "random_shit") => {
     return jwt.sign(info, secret, {expiresIn: "20m"});
 };
 
@@ -44,7 +44,7 @@ exports.checkIfAccessTokenExpired = (accessToken) => {
 };
 
 exports.checkRefreshToken = (accessToken, refreshToken) => {
-    if (refreshTokens[accessToken] && (refreshTokens[accessToken] === refreshToken)){
+    if (refreshTokens[accessToken] && (refreshTokens[accessToken] === refreshToken)) {
         delete refreshTokens[accessToken];
 
         return true;

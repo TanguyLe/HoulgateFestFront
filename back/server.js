@@ -17,7 +17,7 @@ let express = require("express"),
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/Userdb');
-var db = mongoose.connection;
+let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));//get notification of connection errors
 
 app.use(cors());

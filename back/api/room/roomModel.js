@@ -2,7 +2,7 @@
 
 let mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
 let roomSchema = new Schema(
     {

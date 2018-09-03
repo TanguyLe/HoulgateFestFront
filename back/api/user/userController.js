@@ -8,10 +8,11 @@ let mongoose = require("mongoose"),
 const fillUserAndTokens = (user, res) => {
     let accessToken = tokenUtils.generateAccessToken({username: user.username, email: user.email});
 
-    res.json({"username": user.username,
-              "activated": user.activated,
-              "accessToken": accessToken,
-              "refreshToken": tokenUtils.generateRefreshToken(accessToken)
+    res.json({
+        "username": user.username,
+        "activated": user.activated,
+        "accessToken": accessToken,
+        "refreshToken": tokenUtils.generateRefreshToken(accessToken)
     });
 };
 
@@ -119,21 +120,21 @@ exports.loginRequired = (req, res, next) => {
 
 // Display list of all users.
 exports.userList = (req, res) => {
-    User.find({},{password: 0, __v: 0})
-    .then(users => {
-        res.status(200).send({
+    User.find({}, {password: 0, __v: 0})
+        .then(users => {
+            res.status(200).send({
+                meta: {
+                    code: "200"
+                },
+                data: users
+            });
+        }).catch(err => {
+        res.status(500).send({
             meta: {
-                code: "200"
-            },
-            data: users
-        });
-    }).catch(err => {
-		res.status(500).send({
-		meta: {
-            error_type: "Error 500 : Internal Server Error",
-            code: "500",
-            error_message: err.message || "Some error occurred while retrieving users."
-		  } 
+                error_type: "Error 500 : Internal Server Error",
+                code: "500",
+                error_message: err.message || "Some error occurred while retrieving users."
+            }
         });
     });
 };

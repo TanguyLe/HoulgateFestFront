@@ -10,11 +10,11 @@ exports.rollBackUsers = (users, roomId, callback) => {
     console.log("Rolling back users..." + users);
     let stackUpdateUsers = [];
     users.forEach(
-        function (item) {
+        (item) => {
             // depending on the data type representing the user (email or id), we call findById or findOne
             if (item instanceof mongoose.Types.ObjectId) {
-                var updateUser = function (callback) {
-                    User.findById(item, function (err, user) {
+                let updateUser = (callback) => {
+                    User.findById(item, (err, user) => {
                         if (err) return callback(err);
 
                         if (!user) {
@@ -53,8 +53,8 @@ exports.rollBackUsers = (users, roomId, callback) => {
                 }
             }
             else {
-                var updateUser = function (callback) {
-                    User.findOne({ email: item }, function (err, user) {
+                let updateUser = (callback) => {
+                    User.findOne({ email: item }, (err, user) => {
                         if (err) return callback(err);
 
                         if (!user) {
@@ -86,7 +86,7 @@ exports.rollBackUsers = (users, roomId, callback) => {
                             }
                         }
                         else {
-                            console.log("User " + user.username + " hasn't shotgun yet. Not rolled back.")
+                            console.log("User " + user.username + " hasn't shotgun yet. Not rolled back.");
                             return callback(null, user._id);
                         }
                     })
@@ -95,27 +95,27 @@ exports.rollBackUsers = (users, roomId, callback) => {
             stackUpdateUsers.push(updateUser);
         });
 
-    async.parallel(stackUpdateUsers, function (err, foundRoommatesId) {
+    async.parallel(stackUpdateUsers, (err, foundRoommatesId) => {
         if (err) {
             return callback(err);
         }
         console.log("... Users successfully rolled back.");
         return callback();
     })
-}
+};
 
 // Roll back to shotgun created state
 exports.rollBackShotgun = (roomId, callback) => {
     console.log("Rolling back shotgun...");
 
     async.waterfall([
-        function (callback) {
+        (callback) => {
             shotgunHelper.findShotgun(roomId, callback);
         },
-        function (shotgun, callback) {
+        (shotgun, callback) => {
             let usersId = shotgun.roommates;
             usersId.push(shotgun.user);
-            rollback.rollBackUsers(usersId, roomId, function (err) {
+            rollback.rollBackUsers(usersId, roomId, (err) => {
                 if (err) {
                     console.error("-> Error while rolling back the users");
                     return callback(err);
@@ -124,11 +124,11 @@ exports.rollBackShotgun = (roomId, callback) => {
             }
             )
         },
-        function (shotgun, callback) {
+        (shotgun, callback) => {
             Shotgun.findByIdAndUpdate(shotgun._id, {
                 roommates: [],
                 status: 'created'
-            }, { new: true }, function (err, shotgun) {
+            }, { new: true }, (err, shotgun) => {
                 if (err) {
                     console.error("-> Error while rolling back the Shotgun.");
                     return callback(err);
@@ -136,7 +136,7 @@ exports.rollBackShotgun = (roomId, callback) => {
                 return callback(null, shotgun);
             })
         }
-    ], function (err, shotgun) {
+    ], (err, shotgun) => {
         if (err) {
             console.error("-> Some errors occured while rolling back the shotgun.");
             return callback(err);
@@ -144,4 +144,4 @@ exports.rollBackShotgun = (roomId, callback) => {
         console.log("... Shotgun successfully rolled back.");
         callback(null, shotgun);
     })
-}
+};

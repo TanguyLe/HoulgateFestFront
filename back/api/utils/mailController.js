@@ -5,12 +5,12 @@ let nodemailer = require('nodemailer'),
 
 
 const enhanceText = (text) => {
-    return '<b>' + text + '</b>'
+    return '<b>' + text + '</b>';
 };
 
 exports.mailSender = (mailContent, cb, triedOnce) => {
     try {
-        triedOnce = typeof triedOnce  !== 'undefined' ? triedOnce : false;
+        triedOnce = typeof triedOnce !== 'undefined' ? triedOnce : false;
         let transporter = nodemailer.createTransport(emailConfig.ACCOUNT_CONFIG);
         mailContent.html = enhanceText(mailContent.text);
         let mailOptions = Object.assign(emailConfig.STANDARD_VALUES, mailContent);
@@ -20,8 +20,8 @@ exports.mailSender = (mailContent, cb, triedOnce) => {
                 return cb(error);
             }
             transporter.close(); // pool is activated in emailConfig.js
-            if(info.rejected.length > 0) {
-                if(!triedOnce){
+            if (info.rejected.length > 0) {
+                if (!triedOnce) {
                     // tries sending the email again in 1 minute with the rejected users list
                     mailContent.to = info.rejected;
                     setTimeout(this.timeoutTriggered.bind(null, mailContent, cb), 1000);
@@ -29,7 +29,7 @@ exports.mailSender = (mailContent, cb, triedOnce) => {
                 else {
                     let error = new Error("Email sending to " + mailContent.to + " failed after retry.");
                     error.name = "Error 500 : Internal Server Error";
-			        error.httpStatusCode = "500";
+                    error.httpStatusCode = "500";
                     cb(error);
                 }
             }
@@ -45,11 +45,11 @@ exports.mailSender = (mailContent, cb, triedOnce) => {
 // Sending mail again after a timeout
 exports.timeoutTriggered = (mailContent, callback) => {
     this.mailSender(mailContent, (err) => {
-        if(err) {
+        if (err) {
             console.error("Email sending to " + mailContent.to + " with subject " + mailContent.subject + " failed.");
             return callback(err);
         }
         console.log("Email successfully sent to " + mailContent.to + ".");
         return callback(false);
     }, true); // set to true in order to indicate a second trial
-}
+};

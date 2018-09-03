@@ -4,7 +4,7 @@ let mongoose = require('mongoose'),
 // Check room isn't part of any shotgun already
 exports.checkRoomNotShotgun = (roomId, callback) => {
 	console.log("Check room " + roomId + " not shotgun...");
-	Shotgun.findOne({ room: roomId }, function (err, foundShotgun) {
+	Shotgun.findOne({ room: roomId }, (err, foundShotgun) => {
 		if (err) return callback(err);
 
 		if (foundShotgun) {
@@ -19,13 +19,13 @@ exports.checkRoomNotShotgun = (roomId, callback) => {
 			return callback();
 		}
 	});
-}
+};
 
 // Retrieve shotgun by roomId
 exports.findShotgun = (roomId, callback) => {
 	console.log("Find shotgun...");
 
-	Shotgun.findOne({ room: roomId }, function (err, shotgun) {
+	Shotgun.findOne({ room: roomId }, (err, shotgun) => {
 		if (err) return callback(err);
 
 		if (!shotgun) {
@@ -39,4 +39,4 @@ exports.findShotgun = (roomId, callback) => {
 		console.log("... Shotgun found.");
 		callback(null, shotgun);
 	})
-}
+};
