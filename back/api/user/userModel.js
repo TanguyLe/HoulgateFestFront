@@ -29,7 +29,7 @@ let UserSchema = new mongoose.Schema({
 });
 
 UserSchema.plugin(beautifyUnique, {
-    defaultMessage: "{PATH} existe déjà"
+    defaultMessage: "{PATH} existe déjà."
 });
 
 module.exports = mongoose.model("Users", UserSchema);

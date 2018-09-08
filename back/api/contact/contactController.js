@@ -1,4 +1,4 @@
-let mail = require('../utils/mailController');
+let mail = require('../mail/mailController');
 
 
 exports.send = (req, res) => {

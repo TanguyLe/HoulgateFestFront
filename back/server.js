@@ -10,7 +10,7 @@ let express = require("express"),
     userRoutes = require('./api/user/userRoutes'),
     roomRoutes = require('./api/room/roomRoutes'),
     shotgunRoutes = require('./api/shotgun/shotgunRoutes'),
-    Mail = require('./api/utils/mailModel'),
+    Mail = require('./api/mail/mailModel'),
     contactRoutes = require('./api/contact/contactRoutes');
     bodyParser = require('body-parser');
 
@@ -31,6 +31,7 @@ contactRoutes(app);
 app.use(middleware.hasStarted);
 roomRoutes(app);
 shotgunRoutes(app);
+
 app.use(middleware.notFound);
 
 app.listen(port);

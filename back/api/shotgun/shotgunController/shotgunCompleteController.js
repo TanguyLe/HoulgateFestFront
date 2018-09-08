@@ -2,7 +2,7 @@ let mongoose = require('mongoose'),
     Shotgun = mongoose.model('Shotguns'),
     deleteShotgun = require('./shotgunDeleteController'),
     rollback = require("./rollbackController"),
-    mail = require('../../utils/mailController'),
+    mail = require('../../mail/mailController'),
     async = require('async');
 
 // Compelete the shotgun by
