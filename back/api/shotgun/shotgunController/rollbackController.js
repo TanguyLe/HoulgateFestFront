@@ -1,12 +1,11 @@
-let mongoose = require('mongoose'),
-    User = mongoose.model('Users'),
-    Shotgun = mongoose.model('Shotguns'),
-    shotgunHelper = require('./shotgunHelperController'),
-    rollback = require('./rollbackController'),
-    async = require('async');
+let mongoose = require("mongoose"),
+    User = mongoose.model("Users"),
+    Shotgun = mongoose.model("Shotguns"),
+    shotgunHelper = require("./shotgunHelperController"),
+    async = require("async");
 
 // Roll back all users that have shotgun the specified room
-exports.rollBackUsers = (users, roomId, callback) => {
+let rollBackUsers = (users, roomId, callback) => {
     console.log("Rolling back users..." + users);
     let stackUpdateUsers = [];
     users.forEach(
@@ -25,7 +24,7 @@ exports.rollBackUsers = (users, roomId, callback) => {
                             if (String(roomId) === String(user.room)) {
                                 // the user has shotgun for the specified room, we free him
                                 user.hasShotgun = false;
-                                // don't erase link to room if user owner
+                                // don"t erase link to room if user owner
                                 if(!user.isShotgun) user.room = null;
 
                                 user.save()
@@ -34,10 +33,7 @@ exports.rollBackUsers = (users, roomId, callback) => {
                                         return callback(null, user._id);
                                     }).catch(err => {
                                         console.error("-> User " + user.username + " could not be udpated." + err);
-                                        let error = new Error("Couldn't save " + user.username);
-                                        error.name = "Error 500 : Internal Server Error";
-                                        error.httpStatusCode = "500";
-                                        return callback(error);
+                                        return callback(errors.getServerError("Couldn't save " + user.username));
                                     });
                             }
                             else {
@@ -65,7 +61,7 @@ exports.rollBackUsers = (users, roomId, callback) => {
                             if (String(roomId) === String(user.room)) {
                                 // the user has shotgun for the specified room, we free him
                                 user.hasShotgun = false;
-                                // don't erase link to room if user owner
+                                // don"t erase link to room if user owner
                                 if(!user.isShotgun) user.room = null;
 
                                 user.save()
@@ -74,10 +70,7 @@ exports.rollBackUsers = (users, roomId, callback) => {
                                         return callback(null, user._id);
                                     }).catch(err => {
                                         console.error("-> User " + user.username + " could not be udpated." + err);
-                                        let error = new Error("Couldn't save " + user.username);
-                                        error.name = "Error 500 : Internal Server Error";
-                                        error.httpStatusCode = "500";
-                                        return callback(error);
+                                        return callback(errors.getServerError("Couldn't save " + user.username));
                                     });
                             }
                             else {
@@ -105,7 +98,7 @@ exports.rollBackUsers = (users, roomId, callback) => {
 };
 
 // Roll back to shotgun created state
-exports.rollBackShotgun = (roomId, callback) => {
+let rollBackShotgun = (roomId, callback) => {
     console.log("Rolling back shotgun...");
 
     async.waterfall([
@@ -115,7 +108,7 @@ exports.rollBackShotgun = (roomId, callback) => {
         (shotgun, callback) => {
             let usersId = shotgun.roommates;
             usersId.push(shotgun.user);
-            rollback.rollBackUsers(usersId, roomId, (err) => {
+            rollBackUsers(usersId, roomId, (err) => {
                 if (err) {
                     console.error("-> Error while rolling back the users");
                     return callback(err);
@@ -127,7 +120,7 @@ exports.rollBackShotgun = (roomId, callback) => {
         (shotgun, callback) => {
             Shotgun.findByIdAndUpdate(shotgun._id, {
                 roommates: [],
-                status: 'created'
+                status: "created"
             }, { new: true }, (err, shotgun) => {
                 if (err) {
                     console.error("-> Error while rolling back the Shotgun.");
@@ -144,4 +137,9 @@ exports.rollBackShotgun = (roomId, callback) => {
         console.log("... Shotgun successfully rolled back.");
         callback(null, shotgun);
     })
+};
+
+module.exports = {
+    rollBackShotgun: rollBackShotgun,
+    rollBackUsers: rollBackUsers
 };

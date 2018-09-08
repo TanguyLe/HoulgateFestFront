@@ -1,9 +1,11 @@
-let mongoose = require('mongoose'),
-    Shotgun = mongoose.model('Shotguns'),
-    deleteShotgun = require('./shotgunDeleteController'),
+let mongoose = require("mongoose"),
+    Shotgun = mongoose.model("Shotguns"),
+    deleteShotgun = require("./shotgunDeleteController"),
     rollback = require("./rollbackController"),
-    mail = require('../../mail/mailController'),
-    async = require('async');
+    shotgunErrors = require("../shotgunErrors"),
+    shotgunNotificationTemplate = require("../templates/shotgunNotification"),
+    mail = require("../../mail/mailController"),
+    async = require("async");
 
 // Compelete the shotgun by
 // adding the roommates and
@@ -12,15 +14,11 @@ exports.completeShotgun = (roomId, roommatesId, callback) => {
     console.log("Completing shotgun...");
     Shotgun.findOneAndUpdate({room: roomId}, {
         roommates: roommatesId,
-        status: 'done'
+        status: "done"
     }, {new: true})
         .then(shotgun => {
-            if (!shotgun) {
-                let error = new Error("-> Shotgun not found with roomId " + req.params.roomId);
-                error.name = "Error 404 : Not found";
-                error.httpStatusCode = "404";
-                return callback(error);
-            }
+            if (!shotgun)
+                return callback(shotgunErrors.getShotgunNotFoundError(req.params.roomID));
 
             // delete all shotguns own by the roommates
             if (roommatesId && roommatesId.length > 0) {
@@ -50,18 +48,15 @@ exports.completeShotgun = (roomId, roommatesId, callback) => {
 // Handler after a complete shotgun
 exports.afterCompleteShotgun = (shotgun) => {
 
-    // retrieve the complete shotgun and populate the users' fields
+    // retrieve the complete shotgun and populate the users" fields
     let retrieveShotgun = (shotgun, callback) => {
-        Shotgun.findById(shotgun._id, {__v: 0}).populate('room', {__v: 0}).populate('user', {
+        Shotgun.findById(shotgun._id, {__v: 0}).populate("room", {__v: 0}).populate("user", {
             password: 0,
             __v: 0
-        }).populate('roommates', {password: 0, __v: 0}).exec((err, populatedShotgun) => {
+        }).populate("roommates", {password: 0, __v: 0}).exec((err, populatedShotgun) => {
             if (err) {
                 console.error("-> Couldn't populate shotgun " + shotgun._id + ".");
-                let error = new Error("Couldn't populate shotgun " + shotgun._id + ".");
-                error.name = "Error 500 : Internal Server error";
-                error.httpStatusCode = "500";
-                return callback(error);
+                return callback(errors.getServerError("Couldn't populate shotgun " + shotgun._id + "."));
             }
             callback(null, populatedShotgun);
         });
@@ -72,41 +67,26 @@ exports.afterCompleteShotgun = (shotgun) => {
     let sendMails = (populatedShotgun, callback) => {
 
         let userOwner = populatedShotgun.user;
-        let roommates = populatedShotgun.roommates;
-        let users = roommates;
+        let users = populatedShotgun.roommates;
         users.push(userOwner);
         let room = populatedShotgun.room;
 
         let usersList = [];
         users.forEach(
             (item) => {
-                usersList.push('<li>' + item.username + '</li>');
+                usersList.push("<li>" + item.username + "</li>");
             }
         );
 
         let title = `Shotgun terminé !`;
-        let content = `<p>Félicitations, tu as trouvé un endroit où dormir dans la belle villa des Gênets! </p>
-		<br/>
-		<p>
-			Récapitulatif de ton shotgun: 
-			<ul>
-					<li>` + userOwner.username + ` a réservé la chambre ` + room.text + `.</li>
-					<li>Compagnons de chambre : <ul>  ` + usersList + ` </ul></li>
-			</ul>
-		</p>
-		<br/><br/>
-		<br>A très bientôt à la villa!</br>
-		<br/><br/>
-		<i>Ceci est un mail automatique. Pour toute assistance, contactez-nous via <a href="mailto:houlegatefest.gmail.com">
-		houlgatefest.gmail.com</a>.`;
-
+        let content = shotgunNotificationTemplate(userOwner.username, room.text, usersList);
 
         // send mail to all users
         let stackSendMail = [];
         users.forEach(
             (item) => {
                 let mailContent = {
-                    to: item.email, // this field also accepts the complete list of the users' email
+                    to: item.email, // this field also accepts the complete list of the users" email
                     subject: title,
                     text: content
                 };
@@ -114,10 +94,7 @@ exports.afterCompleteShotgun = (shotgun) => {
                     mail.mailSender(mailContent, (err, sentMail) => {
                             if (err) {
                                 console.error("-> Recap sending failed for user " + item.username + ".");
-                                let error = new Error("Couldn't send email to users after shotgun " + populatedShotgun._id + " completed.");
-                                error.name = "Error 500 : Internal Server error";
-                                error.httpStatusCode = "500";
-                                return callback(error);
+                                return callback(errors.getServerError("Couldn't send email to users after shotgun " + populatedShotgun._id + " completed."));
                             }
                             console.log("Recap mail sent to " + item.username);
                             return callback();

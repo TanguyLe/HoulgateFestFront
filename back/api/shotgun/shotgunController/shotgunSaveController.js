@@ -2,6 +2,7 @@ let mongoose = require('mongoose'),
     Room = mongoose.model('Rooms'),
     Shotgun = mongoose.model('Shotguns'),
     User = mongoose.model('Users'),
+    userErrors = require("../../user/userErrors"),
     shotgunComplete = require("./shotgunCompleteController"),
     async = require('async');
 
@@ -39,13 +40,8 @@ exports.saveShotgun = (userId, room, callback) => {
                         }, {new: true}, (err, foundUser) => {
                             if (err) return callback(err);
 
-                            if (!foundUser) {
-                                console.error("-> User not found.");
-                                let error = new Error('User with id ' + shotgun.user + ' not found.');
-                                error.name = "Error 404 : Not found";
-                                error.httpStatusCode = "404";
-                                return callback(error);
-                            }
+                            if (!foundUser)
+                                return callback(userErrors("id", shotgun.user));
 
                             console.log("...User " + foundUser.username + " is updated.");
                             callback(null, shotgun);
@@ -60,13 +56,8 @@ exports.saveShotgun = (userId, room, callback) => {
                     }, {new: true}, (err, foundUser) => {
                         if (err) return callback(err);
 
-                        if (!foundUser) {
-                            console.error("-> User not found.");
-                            let error = new Error('User with id ' + shotgun.user + ' not found.');
-                            error.name = "Error 404 : Not found";
-                            error.httpStatusCode = "404";
-                            return callback(error);
-                        }
+                        if (!foundUser)
+                            return callback(userErrors("id", shotgun.user));
 
                         console.log("...User " + foundUser.username + " is updated.");
                         callback(null, shotgun);

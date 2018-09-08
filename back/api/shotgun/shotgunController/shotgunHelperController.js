@@ -1,7 +1,8 @@
-let mongoose = require('mongoose'),
-	Shotgun = mongoose.model('Shotguns');
+let mongoose = require("mongoose"),
+	shotgunErrors = require("../shotgunErrors"),
+	Shotgun = mongoose.model("Shotguns");
 
-// Check room isn't part of any shotgun already
+// Check room isn"t part of any shotgun already
 exports.checkRoomNotShotgun = (roomId, callback) => {
 	console.log("Check room " + roomId + " not shotgun...");
 	Shotgun.findOne({ room: roomId }, (err, foundShotgun) => {
@@ -9,7 +10,7 @@ exports.checkRoomNotShotgun = (roomId, callback) => {
 
 		if (foundShotgun) {
 			console.error("-> Room " + roomId + " already shotgun.");
-			let error = new Error('Room with id ' + roomId + ' already shotgun.');
+			let error = new Error("Room with id " + roomId + " already shotgun.");
 			error.name = "Error 400 : Query parameter error";
 			error.httpStatusCode = "400";
 			return callback(error);
@@ -28,13 +29,8 @@ exports.findShotgun = (roomId, callback) => {
 	Shotgun.findOne({ room: roomId }, (err, shotgun) => {
 		if (err) return callback(err);
 
-		if (!shotgun) {
-			console.error("-> Shotgun with roomId " + roomId + " not found.");
-			let error = new Error("Shotgun not found with roomId " + roomId);
-			error.name = "Error 404 : Not found";
-			error.httpStatusCode = "404";
-			return callback(error);
-		}
+		if (!shotgun)
+			return callback(shotgunErrors.getShotgunNotFoundError(roomId));
 
 		console.log("... Shotgun found.");
 		callback(null, shotgun);

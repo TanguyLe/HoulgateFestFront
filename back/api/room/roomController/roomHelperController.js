@@ -1,4 +1,5 @@
 let mongoose = require('mongoose'),
+    roomErrors = require("../roomErrors"),
     Room = mongoose.model('Rooms');
 
 // Check room exists
@@ -12,14 +13,8 @@ exports.checkRoomExists = (roomId, callback) => {
             console.log("... Room found.");
             return callback(null, foundRoom);
         }
-        else {
-            console.error("-> No room found.");
-            let error = new Error('No room with id ' + roomId + ' found.');
-            error.name = "Error 400 : Query parameter error";
-            error.httpStatusCode = "400";
-            return callback(error);
-
-        }
+        else
+            return callback(roomErrors.getRoomNotFoundError(roomId));
     })
 };
 
@@ -30,13 +25,8 @@ exports.checkRoomReadyForShotgun = (roomId, usersNb, callback) => {
     Room.findById(roomId, (err, room) => {
         if (err) return callback(err);
 
-        if (!room) {
-            console.error("-> Room not found");
-            let error = new Error('Room with id ' + roomId + ' not found.');
-            error.name = "Error 404 : Not found";
-            error.httpStatusCode = "404";
-            return callback(error);
-        }
+        if (!room)
+            return callback(roomErrors.getRoomNotFoundError(roomId));
         if (room.nbBeds < usersNb) {
             console.error("-> Not enough space in selected room");
             let error = new Error('Too many roommates for room with id ' + roomId + ' : not enough beds');

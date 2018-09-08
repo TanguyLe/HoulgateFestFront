@@ -1,7 +1,9 @@
-let mongoose = require('mongoose'),
-    Shotgun = mongoose.model('Shotguns'),
+let mongoose = require("mongoose"),
+    Shotgun = mongoose.model("Shotguns"),
     shotgunComplete = require("./shotgunCompleteController"),
-    async = require('async');
+    shotgunErrors = require("../shotgunErrors"),
+    errors = require("../../utils/errors"),
+    async = require("async");
 
 let tuttimer = {};
 
@@ -26,25 +28,18 @@ exports.timeoutTriggered = (shotgun) => {
             console.log("...shotgun is NOT done after timeout. Nothing to be done.");
             return null;
         }
-        if (shotgun.status !== 'done') {
+        if (shotgun.status !== "done") {
             console.log("Deleting Shotgun on room " + shotgun.room + "...");
             // delete shotgun
             let deleteShotgun = (shotgun, callback) => {
                 Shotgun.findByIdAndRemove(shotgun._id, (err, deletedShotgun) => {
                     if (err) {
                         console.error("-> Shotgun deleting error.");
-                        let error = new Error('Shotgun with roomId ' + shotgun.room + ' could not be deleted.');
-                        error.name = "Error 500 : Internal Server Error";
-                        error.httpStatusCode = "500";
-                        return callback(error);
+                        return callback(errors.getServerError("Shotgun with roomId " + shotgun.room + " could not be deleted."));
                     }
-                    if (!deletedShotgun) {
-                        console.error("-> Error : No shotgun to delete.");
-                        let error = new Error('Shotgun with roomId ' + shotgun.room + ' not found.');
-                        error.name = "Error 404 : Not found";
-                        error.httpStatusCode = "404";
-                        return callback(error);
-                    }
+                    if (!deletedShotgun)
+                        return callback(shotgunErrors .getShotgunNotFoundError(shotgun.room));
+
                     callback(null, deletedShotgun)
                 });
             };

@@ -38,11 +38,8 @@ exports.deleteShotguns = (usersId, callback) => {
                                 console.log("User " + user.username + " doesn't own a room anymore.");
                                 return callback();
                             }).catch(err => {
-                            console.error("-> User " + user.username + " could not be updated.");
-                            let error = new Error("Couldn't save " + user.username);
-                            error.name = "Error 500 : Internal Server Error";
-                            error.httpStatusCode = "500";
-                            return callback(error);
+                                console.error("-> User " + user.username + " could not be updated.");
+                                return callback(errors.getServerError("Couldn't save " + user.username));
                         });
                     })
                 })

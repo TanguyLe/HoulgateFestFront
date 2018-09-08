@@ -1,6 +1,8 @@
 let mongoose = require('mongoose'),
     User = mongoose.model('Users'),
     rollback = require("./rollbackController"),
+    userError = require("../../user/userErrors"),
+    errors = require("../../utils/errors"),
     async = require('async');
 
 
@@ -17,13 +19,8 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
 
         User.findOne({email: userOwner.email}, (err, user) => {
             if (err) return callback(err);
-            if (!user) {
-                console.error("-> User with email " + userOwner.email + " not found");
-                let error = new Error('User with email ' + userOwner.email + ' not found.');
-                error.name = "Error 404 : Not found";
-                error.httpStatusCode = "404";
-                return callback(error);
-            }
+            if (!user)
+                return callback(userError.getUserNotFoundError("email", userOwner.email));
 
             // check that only the user owner can update his room
             if (!(String(user._id) === String(shotgun.user))) {
@@ -51,11 +48,8 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
                     console.log("User " + user.username + " has shotgun.");
                     callback();
                 }).catch(err => {
-                console.error("-> User " + user.username + " could not be udpated.")
-                let error = new Error("Couldn't save " + user.username);
-                error.name = "Error 500 : Internal Server Error";
-                error.httpStatusCode = "500";
-                return callback(error);
+                    console.error("-> User " + user.username + " could not be udpated.");
+                    return callback(errors.getServerError("Couldn't save " + user.username));
             });
         })
     };
@@ -66,13 +60,8 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
             let updateRoommate = (callback) => {
                 User.findOne({email: item}, (err, user) => {
                     if (err) return callback(err);
-                    if (!user) {
-                        console.error("-> User with email " + item + " not found");
-                        let error = new Error('User with email ' + item + ' not found.');
-                        error.name = "Error 404 : Not found";
-                        error.httpStatusCode = "404";
-                        return callback(error);
-                    }
+                    if (!user)
+                        return callback(userError.getUserNotFoundError("email", userOwner.email));
 
                     // check that user hasn't already shotgun
                     if (user.hasShotgun) {
@@ -91,11 +80,8 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
                             console.log("User " + user.username + " has shotgun.");
                             callback(null, user._id);
                         }).catch((err) => {
-                        console.error("-> User " + user.username + " could not be udpated.")
-                        let error = new Error("Couldn't save " + user.username);
-                        error.name = "Error 500 : Internal Server Error";
-                        error.httpStatusCode = "500";
-                        return callback(error);
+                            console.error("-> User " + user.username + " could not be udpated.");
+                            return callback(errors.getServerError("Couldn't save " + user.username));
                     });
                 })
             };

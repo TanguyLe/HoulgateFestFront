@@ -1,7 +1,7 @@
-let mongoose = require('mongoose'),
-    Shotgun = mongoose.model('Shotguns'),
-    User = mongoose.model('Users'),
-    Room = mongoose.model('Rooms'),
+let mongoose = require("mongoose"),
+    Shotgun = mongoose.model("Shotguns"),
+    User = mongoose.model("Users"),
+    Room = mongoose.model("Rooms"),
     tokenUtils = require("../../utils/token"),
     shotgunComplete = require("./shotgunCompleteController"),
     userHelper = require("../../user/userController/userHelperController"),
@@ -10,8 +10,11 @@ let mongoose = require('mongoose'),
     saveShotgun = require("./shotgunSaveController"),
     shotgunUsers = require("./shotgunUsersController"),
     rollback = require("./rollbackController"),
+    shotgunErrors = require("../shotgunErrors"),
+    userErrors = require("../../user/userErrors"),
+    errors = require("../../utils/errors"),
     timeout = require("./timeoutController"),
-    async = require('async');
+    async = require("async");
 
 // Handle Shotgun create on POST.
 exports.shotgunCreatePost = (req, res) => {
@@ -64,7 +67,7 @@ exports.shotgunCreatePost = (req, res) => {
     async.waterfall([
         (callback) => {
             async.parallel([
-                // check that user exists and hasn't already shotgun
+                // check that user exists and hasn"t already shotgun
                 (callback) => {
                     userHelper.checkUserOK(user.email, (err, user) => {
                         if (err) {
@@ -180,13 +183,9 @@ exports.shotgunDelete = (req, res) => {
             // Find shotgun
             Shotgun.findOne({room: req.params.roomId}, (err, shotgun) => {
                 if (err) return callback(err);
-                if (!shotgun) {
-                    console.error("-> Error : No shotgun to delete.");
-                    let error = new Error("Shotgun not found with roomId " + req.params.roomId);
-                    error.name = "Error 404 : Not found";
-                    error.httpStatusCode = "404";
-                    return callback(error);
-                }
+                if (!shotgun)
+                    return callback(shotgunErrors.getShotgunNotFoundError(req.params.roomId));
+
                 console.log("... Shotgun found.");
                 callback(null, shotgun);
             })
@@ -196,13 +195,9 @@ exports.shotgunDelete = (req, res) => {
             console.log("Check user owner...");
             User.findOne({email: user.email}, (err, user) => {
                 if (err) return callback(err);
-                if (!user) {
-                    console.error("-> User with email " + user.email + " not found.");
-                    let error = new Error('User with email ' + user.email + ' not found.');
-                    error.name = "Error 404 : Not found";
-                    error.httpStatusCode = "404";
-                    return callback(error);
-                }
+                if (!user)
+                    return callback(userErrors.getUserNotFoundError("email", user.email));
+
                 // check that only the user owner can update his room
                 if (!(String(user._id) === String(shotgun.user))) {
                     console.error("-> User " + user.username + " doesn't own the shotgun. Can't delete the shotgun.");
@@ -219,18 +214,10 @@ exports.shotgunDelete = (req, res) => {
             Shotgun.findOneAndRemove({room: req.params.roomId}, (err, deletedShotgun) => {
                 if (err) {
                     console.error("-> Shotgun deleting error.");
-                    let error = new Error('Shotgun with roomId ' + req.params.roomId + ' could not be deleted.');
-                    error.name = "Error 500 : Internal Server Error";
-                    error.httpStatusCode = "500";
-                    return callback(error);
+                    return callback(errors.getServerError("Shotgun with roomId " + req.params.roomId + " could not be deleted."));
                 }
-                if (!deletedShotgun) {
-                    console.error("-> Error : No shotgun to delete.");
-                    let error = new Error('Shotgun with roomId ' + req.params.roomId + ' not found.');
-                    error.name = "Error 404 : Not found";
-                    error.httpStatusCode = "404";
-                    return callback(error);
-                }
+                if (!deletedShotgun)
+                    return callback(shotgunErrors.getShotgunNotFoundError(req.params.roomId));
                 console.log("... Shotgun successfully deleted.");
                 timeout.clearTimeout(deletedShotgun); // remove timeout set when the shotgun was created
                 callback(null, deletedShotgun);
@@ -292,7 +279,7 @@ exports.shotgunDelete = (req, res) => {
 // Display list of all shotguned rooms.
 exports.roomList = (req, res) => {
 
-    Shotgun.find({}, {__v: 0}).populate('room', {__v: 0}).exec((err, foundShotguns) => {
+    Shotgun.find({}, {__v: 0}).populate("room", {__v: 0}).exec((err, foundShotguns) => {
         if (err) {
             return res.status("500").send({
                 meta: {
@@ -356,11 +343,11 @@ exports.roommatesAdd = (req, res, next) => {
     }
 
     /* Add roommates */
-    let updateUsers = req.query.roommates.split(',');
+    let updateUsers = req.query.roommates.split(",");
 
     async.waterfall([
         (callback) => {
-            // find room and check that the number of users (roommates + user owner) isn't exceeding the number of beds
+            // find room and check that the number of users (roommates + user owner) isn"t exceeding the number of beds
             roomHelper.checkRoomReadyForShotgun(req.params.roomId, updateUsers.length + 1, callback);
         },
         (room, callback) => {
@@ -380,22 +367,18 @@ exports.roommatesAdd = (req, res, next) => {
         },
         // retrieve the complete shotgun and populate all its fields
         (shotgun, callback) => {
-            Shotgun.findById(shotgun._id, {__v: 0}).populate('room', {__v: 0}).populate('user', {
+            Shotgun.findById(shotgun._id, {__v: 0}).populate("room", {__v: 0}).populate("user", {
                 password: 0,
                 __v: 0
-            }).populate('roommates', {password: 0, __v: 0}).exec((err, populatedShotgun) => {
-                if (err) {
-                    let error = new Error("Couldn't populate shotgun " + shotgun._id + ".");
-                    error.name = "Error 500 : Internal Server error";
-                    error.httpStatusCode = "500";
-                    return callback(error);
-                }
+            }).populate("roommates", {password: 0, __v: 0}).exec((err, populatedShotgun) => {
+                if (err)
+                    return callback(errors.getServerError("Couldn"t populate shotgun " + shotgun._id + "."));
                 callback(null, populatedShotgun);
             });
         }
     ], (err, shotgun) => {
         if (err) {
-            if (err.kind === 'ObjectId') {
+            if (err.kind === "ObjectId") {
                 return res.status(404).send({
                     meta: {
                         error_type: "Error 404 : Not found",
