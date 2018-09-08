@@ -21,7 +21,7 @@ exports.checkRoomExists = (roomId, callback) => {
 
         }
     })
-}
+};
 
 // Check that the room exists and has sufficient beds for the number of users 
 exports.checkRoomReadyForShotgun = (roomId, usersNb, callback) => {
