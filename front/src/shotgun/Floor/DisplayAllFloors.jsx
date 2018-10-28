@@ -4,7 +4,6 @@ import {map} from "lodash/fp";
 const mapUncapped = map.convert({cap: false});
 
 import Floor from "./";
-import {villaLesGenets} from "../villaLesGenetsDef";
 import {FLOOR_GRID_STRUCT_INDEX_PREFIX} from "../constants";
 
 class DisplayAllFloors extends React.Component {

@@ -10,8 +10,8 @@ import {
 import MultipleDropdown from "../MultipleDropdown";
 
 export default class ShotgunPortal extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.state = {
             open: false

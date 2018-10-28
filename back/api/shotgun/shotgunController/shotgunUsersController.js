@@ -20,7 +20,7 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
         User.findOne({email: userOwner.email}, (err, user) => {
             if (err) return callback(err);
             if (!user)
-                return callback(userError.getUserNotFoundError("email", userOwner.email));
+                return callback(userError.getUserNotFoFundError("email", userOwner.email));
 
             // check that only the user owner can update his room
             if (!(String(user._id) === String(shotgun.user))) {
@@ -58,10 +58,12 @@ exports.shotgunUsers = (shotgun, userOwner, updateRoommates, roomId, callback) =
     updateRoommates.forEach(
         (item) => {
             let updateRoommate = (callback) => {
-                User.findOne({email: item}, (err, user) => {
+                console.log("Trying to update user:" + item)
+                User.findById(item, (err, user) => {
                     if (err) return callback(err);
+                    console.log(item)
                     if (!user)
-                        return callback(userError.getUserNotFoundError("email", userOwner.email));
+                        return callback(userError.getUserNotFoundError("id", item));
 
                     // check that user hasn't already shotgun
                     if (user.hasShotgun) {

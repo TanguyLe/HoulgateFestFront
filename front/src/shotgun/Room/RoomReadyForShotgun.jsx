@@ -1,5 +1,4 @@
 import React from "react";
-import {Button} from "semantic-ui-react";
 import ShotgunPortal from "./ShotgunModal";
 
 import RoomBasis from "./RoomBasis";

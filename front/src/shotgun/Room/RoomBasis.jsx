@@ -1,10 +1,8 @@
 import React from "react";
-import glamorous from "glamorous";
 import {ROOM_SEATS_DISPLAY_INDEX_PREFIX} from "../constants";
 
 class RoomBasis extends React.Component {
     render() {
-        let display = "";
         let preDisplay = [];
 
         if (this.props.seats) {
@@ -27,13 +25,7 @@ class RoomBasis extends React.Component {
                 {this.props.name}
                 {preDisplay.map((e, i) => {
                     return (
-                        <div
-                            key={
-                                ROOM_SEATS_DISPLAY_INDEX_PREFIX +
-                                this.props.name +
-                                i
-                            }
-                        >
+                        <div key={ROOM_SEATS_DISPLAY_INDEX_PREFIX + this.props.name + i}>
                             {e}
                         </div>
                     );

@@ -33,7 +33,7 @@ let createUser = (username, email, password, activated, cb) => {
 
 let createUsers = (callback) => {
     async.parallel([
-        (cb) => {createUser("Patrick", "Rothfuss@rothfuss.je", "1973-06-06", true, cb);},
+        (cb) => {createUser("Patrick", "Rothfuss@rothfuss.je", "test", true, cb);},
         (cb) => {createUser("Ben", "Bova@bova.je", "1932-11-8", true, cb);},
         (cb) => {createUser("Isaac", "Asimov@asimov.je", "1920-01-02", true, cb);},
         (cb) => {createUser("Bob", "Billings@billings.je", "1920-01-02", true, cb);},

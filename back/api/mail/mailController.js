@@ -9,11 +9,12 @@ const enhanceText = (text) => {
 };
 
 exports.mailSender = (mailContent, cb, triedOnce) => {
+    let STANDARD_VALUES = {};
     try {
         triedOnce = typeof triedOnce !== 'undefined' ? triedOnce : false;
         let transporter = nodemailer.createTransport(emailConfig.ACCOUNT_CONFIG);
         mailContent.html = enhanceText(mailContent.text);
-        let mailOptions = Object.assign(emailConfig.STANDARD_VALUES, mailContent);
+        let mailOptions = Object.assign(STANDARD_VALUES, mailContent);
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.error(error);

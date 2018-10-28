@@ -4,39 +4,45 @@ import {isNil, get} from "lodash/fp";
 import RoomBasis from "./RoomBasis";
 import ShotgunPortal from "./ShotgunModal";
 
+
 class Room extends React.Component {
     render() {
         let content = "";
         let disable = false;
         let status = this.props.roomState;
+        const roomId = this.props.id;
 
         if (this.props.seats > 0) {
             if (this.props.roomState === "disabled") {
                 content = "DISABLED";
                 disable = true;
-            } else if (this.props.userState.hasShotgun === true) {
-                if (get("roomId", this.props) === this.props.userState.room) {
+            }
+            else if (this.props.userState.hasShotgun) {
+                if (roomId === this.props.userState.room) {
                     status = "shotgunSuccessful";
-                    content = "You have already shotgun this room";
-                } else {
+                    content = "It's your room!";
+                }
+                else {
                     content = "You have already shotgunned";
                     disable = true;
                 }
-            } else if (this.props.userState.isShotgun === true) {
-                if (get("roomId", this.props) === this.props.userState.room) {
+            }
+            else if (this.props.userState.isShotgun) {
+                if (roomId === this.props.userState.room) {
                     status = "attributingBeds";
-                    content =
-                        "You have the priority on this room, hurry up before timeout";
-                } else {
+                    content = "You have the priority on this room, hurry up before timeout";
+                }
+                else {
                     content = "You have a shotgun in progress";
                     disable = true;
                 }
-            } else if (this.props.roomState === "shotguned") {
+            }
+            else if (this.props.roomState === "shotgunned") {
                 content = "Room already shotgunned";
                 disable = true;
-            } else {
-                status = this.props.roomState;
             }
+            else
+                status = this.props.roomState;
         }
 
         return (
@@ -55,10 +61,7 @@ class Room extends React.Component {
                     availablePersonsIds={this.props.availablePersonsIds}
                     createShotgunFunction={this.props.createShotgunFunction || null}
                     addPersonsInShotgunFunction={roommatesIds =>
-                        this.props.addPersonsInShotgunFunction(
-                            this.props.name,
-                            roommatesIds
-                        )
+                        this.props.addPersonsInShotgunFunction(this.props.id, roommatesIds)
                     }
                 />
             </RoomBasis>

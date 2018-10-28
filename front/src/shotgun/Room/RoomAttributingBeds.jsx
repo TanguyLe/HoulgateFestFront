@@ -1,6 +1,5 @@
 import React from "react";
 import RoomBasis from "./RoomBasis";
-import MultipleDropdown from "../MultipleDropdown";
 import ShotgunPortal from "./ShotgunModal";
 
 class RoomAttributingBeds extends React.Component {

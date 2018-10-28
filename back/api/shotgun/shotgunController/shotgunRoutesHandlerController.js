@@ -180,6 +180,7 @@ exports.shotgunDelete = (req, res) => {
         // find the shotgun
         (callback) => {
             console.log("Find shotgun...");
+            console.log(req.params)
             // Find shotgun
             Shotgun.findOne({room: req.params.roomId}, (err, shotgun) => {
                 if (err) return callback(err);
@@ -304,8 +305,6 @@ exports.roommatesAdd = (req, res, next) => {
     let user = undefined;
     let accessToken = tokenUtils.getJWTToken(req.headers);
 
-    console.log(req.body);
-
     // check user is authenticated
     tokenUtils.checkAccessToken(
         accessToken,
@@ -343,7 +342,7 @@ exports.roommatesAdd = (req, res, next) => {
     }
 
     /* Add roommates */
-    let updateUsers = req.query.roommates.split(",");
+    let updateUsers = req.body.roommates;
 
     async.waterfall([
         (callback) => {
@@ -372,7 +371,7 @@ exports.roommatesAdd = (req, res, next) => {
                 __v: 0
             }).populate("roommates", {password: 0, __v: 0}).exec((err, populatedShotgun) => {
                 if (err)
-                    return callback(errors.getServerError("Couldn"t populate shotgun " + shotgun._id + "."));
+                    return callback(errors.getServerError("Couldn't populate shotgun " + shotgun._id + "."));
                 callback(null, populatedShotgun);
             });
         }

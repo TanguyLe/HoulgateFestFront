@@ -1,5 +1,6 @@
 let mongoose = require("mongoose"),
     Shotgun = mongoose.model("Shotguns"),
+    User = mongoose.model("Users"),
     shotgunComplete = require("./shotgunCompleteController"),
     shotgunErrors = require("../shotgunErrors"),
     errors = require("../../utils/errors"),
@@ -9,7 +10,7 @@ let tuttimer = {};
 
 // Set a timeout of 5 min linked to a shotgun
 exports.setTimeout = (shotgun) => {
-    tuttimer[shotgun._id] = setTimeout(this.timeoutTriggered.bind(null, shotgun), 300000);
+    tuttimer[shotgun._id] = setTimeout(this.timeoutTriggered.bind(null, shotgun), 5000);
 };
 
 // Clear a timeout related to a shotgun

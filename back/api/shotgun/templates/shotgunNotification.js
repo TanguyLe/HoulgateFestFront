@@ -1,4 +1,4 @@
-exports.shotgunNotificationTemplate = (owner, room, users) => {
+exports.getShotgunNotificationContent = (owner, room, users) => {
     return (`<head>
         <style>
         </style>

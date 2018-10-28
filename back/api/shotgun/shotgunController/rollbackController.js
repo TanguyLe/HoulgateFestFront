@@ -8,11 +8,12 @@ let mongoose = require("mongoose"),
 let rollBackUsers = (users, roomId, callback) => {
     console.log("Rolling back users..." + users);
     let stackUpdateUsers = [];
+    let updateUser;
     users.forEach(
         (item) => {
             // depending on the data type representing the user (email or id), we call findById or findOne
             if (item instanceof mongoose.Types.ObjectId) {
-                let updateUser = (callback) => {
+                updateUser = (callback) => {
                     User.findById(item, (err, user) => {
                         if (err) return callback(err);
 
@@ -49,7 +50,7 @@ let rollBackUsers = (users, roomId, callback) => {
                 }
             }
             else {
-                let updateUser = (callback) => {
+                updateUser = (callback) => {
                     User.findOne({ email: item }, (err, user) => {
                         if (err) return callback(err);
 

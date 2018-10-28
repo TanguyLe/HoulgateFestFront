@@ -1,10 +1,10 @@
-/* @flow */
 import React from "react";
 import {Form, Message, List} from "semantic-ui-react";
 
 
-import {NAME, TYPE, SIGN_UP_FORM_BLOCK_INDEX_PREFIX, USERS_URL, LABEL,
+import {NAME, TYPE, SIGN_UP_FORM_BLOCK_INDEX_PREFIX, LABEL,
         SIGN_UP_DEF, REGEXES, ERROR_MSG, REGISTRATION_ERROR_MSG_PREFIX} from "../../constants";
+import {USERS_ENDPOINT} from "../../../constants";
 import {upCaseFirstLetter} from "../../../utils/miscFcts"
 import {postCallApi} from "../../../utils/api/fetchMiddleware";
 
@@ -73,7 +73,7 @@ class SignUpForm extends React.Component {
             formValues[key] = this.state[key].value
         });
 
-        postCallApi(USERS_URL, formValues, false)
+        postCallApi(USERS_ENDPOINT, formValues, false)
             .then((response) => {
                 if (!response.ok)
                     throw Error();

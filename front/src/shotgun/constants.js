@@ -1,3 +1,5 @@
+import {SERVER_ENDPOINT} from "../constants";
+
 export const ROOM_GRID_STRUCT_INDEX_PREFIX = "RoomGridStruct";
 export const FLOOR_GRID_STRUCT_INDEX_PREFIX = "FloorGridStruct";
 export const ROOM_SEATS_DISPLAY_INDEX_PREFIX = "RoomSeatsDisplay";
@@ -12,3 +14,7 @@ export const LIVING_ROOM_TYPE = "livingRoom";
 export const GARDEN_TYPE = "garden";
 
 export const shotgunDate = "June 07, 2018 20:00:00";
+
+export const ROOMS_ENDPOINT = SERVER_ENDPOINT + "/rooms";
+export const SHOTGUN_ROOMS_ENDPOINT = SERVER_ENDPOINT + "/shotgun/rooms";
+export const getShotgunRoomUrl = (roomId) =>  (SHOTGUN_ROOMS_ENDPOINT + '/' + roomId);

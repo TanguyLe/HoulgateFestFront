@@ -1,24 +1,23 @@
 import React from "react";
+import {
+    Icon,
+    Message
+} from "semantic-ui-react";
 import {map, filter, find, get, isNil, includes} from "lodash/fp";
 
-import Floor from "./Floor";
 import DisplayAllFloors from "./Floor/DisplayAllFloors";
+import {objectMap} from "../utils/miscFcts"
 import {villaLesGenets} from "./villaLesGenetsDef";
-import {FLOOR_GRID_STRUCT_INDEX_PREFIX} from "./constants";
+import {USERS_ENDPOINT} from "../constants"
+import {ROOMS_ENDPOINT, SHOTGUN_ROOMS_ENDPOINT, getShotgunRoomUrl} from "./constants";
 
-import {
-    getCallApi,
-    postCallApi,
-    putCallApi
-} from "../utils/api/fetchMiddleware";
+import {getCallApi, postCallApi, putCallApi} from "../utils/api/fetchMiddleware";
 
-// API_URL defined by webpack
-const SERVER_ENDPOINT = API_URL + "/api";
 const INTERVAL_DURATION = 15000;
 
 class ShotgunContainer extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.state = {
             villaLesGenets: {
@@ -32,186 +31,110 @@ class ShotgunContainer extends React.Component {
                     };
                 }, villaLesGenets.floors)
             },
-            userState: "",
+            status: "loading",
+            userState: {},
             availablePersonsIds: []
         };
 
         this.addPersonsInShotgun = this.addPersonsInShotgun.bind(this);
         this.createShotgun = this.createShotgun.bind(this);
-        this.getRoomIdFromRoomName = this.getRoomIdFromRoomName.bind(this);
-        this.getUserMailFromUserId = this.getUserMailFromUserId.bind(this);
+    }
+
+    componentDidUpdate(){
+        // console.log("updated")
+        // console.log(Object.assign({}, this.state))
     }
 
     async componentDidMount() {
-        const apiCallRoutesUser = SERVER_ENDPOINT + "/rooms";
-        const queriedRooms = (await (await getCallApi(
-            apiCallRoutesUser,
-            false
-        )).json()).data;
-        this.setState({queriedRooms});
+        const roomsApiCall = (await getCallApi(ROOMS_ENDPOINT, false));
+        const rooms = (await roomsApiCall.json()).data;
+
+        let roomsIndexed = rooms.reduce((acc, room) => ({...acc, [room._id]: room}), {});
+
+        const RoomFct = (room) => {
+            const roomName = room.name;
+
+            const roomId = get("_id", find(room => room.text === roomName, rooms));
+            roomsIndexed[roomId] = Object.assign(roomsIndexed[roomId], room);
+
+            return roomId;
+        };
+
+        const floorFct = (floor) => {
+            return Object.assign(floor, {rooms: map(RoomFct, floor.rooms)})
+        };
+
+        this.state.villaLesGenets.floors = map(floorFct, this.state.villaLesGenets.floors);
+        this.setState({roomsIndexed: roomsIndexed});
 
         this.updateFloors();
-        this.updateUserState();
-        this.updateAvailableUsers();
+        this.updateUsers();
 
         this.refrechInterval = setInterval(() => {
             this.updateFloors();
-            this.updateUserState();
-            this.updateAvailableUsers();
+            this.updateUsers();
         }, INTERVAL_DURATION);
     }
 
-    getRoomIdFromRoomName(roomName) {
-        return get(
-            "_id",
-            find(room => room.text === roomName, this.state.queriedRooms)
-        );
-    }
-
-    getUserMailFromUserId(userId) {
-        console.log(this.state.availablePersonsIds)
-        return get(
-            "email",
-            find(user => user._id === userId, this.state.availablePersonsIds)
-        );
-    }
-
-    updateState(room, floor) {
-        const villaLesGenets = {
-            floors: map(oldFloor => {
-                if (oldFloor.name === floor.name) {
-                    return floor;
-                } else {
-                    return oldFloor;
-                }
-            }, this.state.villaLesGenets.floors)
-        };
-
-        this.setState({
-            villaLesGenets: villaLesGenets,
-            room: room,
-            floor: floor
-        });
+    updateRoom(roomId, newRoom) {
+        const currentRoom = this.state.roomsIndexed[roomId];
+        this.setState(Object.assign({roomsIndexed: Object.assign(this.state.roomsIndexed,
+                                                          {[roomId]: Object.assign({}, currentRoom, newRoom)})}));
     }
 
     async updateFloors() {
-        const apiCallShotgunRoomsRoute = SERVER_ENDPOINT + "/shotgun/rooms/";
+        const shotgunsApiCall = await getCallApi(SHOTGUN_ROOMS_ENDPOINT, false);
+        const shotguns = (await shotgunsApiCall.json()).data;
 
-        const roomsServerState = await getCallApi(apiCallShotgunRoomsRoute, false);
-        const shotgunsOnDb = (await roomsServerState.json()).data;
+        const alreadyShotgunnedRoomsIds = map(shotgun => shotgun.room._id, shotguns);
 
-        const alreadyShotgunedRoomsIds = map(
-            shotgun => shotgun.room._id,
-            shotgunsOnDb
-        );
+        const updateRooms = room => {
+            if (room._id in alreadyShotgunnedRoomsIds)
+                return Object.assign({}, room, {status: "shotgunSuccessful"});
 
-        const updateFloorRooms = floor => ({
-            ...floor,
-            rooms: map(room => {
-                let state;
-                if (
-                    includes(
-                        this.getRoomIdFromRoomName(room.name),
-                        alreadyShotgunedRoomsIds
-                    )
-                ) {
-                    if (!isNil(this.state.shotgunId)) {
-                        if (
-                            this.getRoomIdFromRoomName(room.name) ===
-                            find(shotgun => shotgun._id === this.state.shotgunId).room._id
-                        ) {
-                            state = "shotgunSuccessful";
-                        }
-                    } else {
-                        state = "shotguned";
-                    }
-                } else {
-                    state = "readyForShotgun";
-                }
-                return {
-                    ...room,
-                    state,
-                    id: this.getRoomIdFromRoomName(room.name)
-                };
-            }, floor.rooms)
-        });
+            return Object.assign({}, room, {status: "readyForShotgun"})
+        };
 
-        const newFloors = map(updateFloorRooms, this.state.villaLesGenets.floors);
-
-        this.setState({
-            villaLesGenets: {...villaLesGenets, floors: newFloors}
-        });
+        this.setState({roomsIndexed: objectMap(this.state.roomsIndexed, updateRooms), status: "loaded"});
     }
 
-    async updateUserState() {
-        const apiCallUsersRoute = SERVER_ENDPOINT + "/users";
-
-        const usersStates = await getCallApi(apiCallUsersRoute, false);
-        const usersStatesOnDb = (await usersStates.json()).data;
+    async updateUsers() {
+        const usersApiCall = await getCallApi(USERS_ENDPOINT, false);
+        const users = (await usersApiCall.json()).data;
 
         const currentUserUsername = window.localStorage.getItem("username");
 
-        const user = find(
-            user => user.username === currentUserUsername,
-            usersStatesOnDb
+        const user = find(user => user.username === currentUserUsername, users);
+
+        const availablePersonsIds = filter(person =>
+                (person.hasShotgun === false && person.isShotgun === false),
+            users
         );
 
-        this.setState({
+        this.setState(Object.assign({
             userState: {
                 hasShotgun: user.hasShotgun,
                 isShotgun: user.isShotgun,
                 room: user.room
-            }
-        });
-    }
-
-    async updateAvailableUsers() {
-        const apiCallUsersRoute = SERVER_ENDPOINT + "/users";
-        const serverRequestUsers = getCallApi(apiCallUsersRoute, false);
-
-        const UsersServerAnswer = await serverRequestUsers;
-        const listOfUsers = (await UsersServerAnswer.json()).data;
-
-        const currentUserUsername = window.localStorage.getItem("username");
-
-        const availablePersonsIds = filter(
-            person =>
-                (person.hasShotgun === false && person.isShotgun === false) ||
-                currentUserUsername === person.username,
-            listOfUsers
-        );
-
-        this.setState({
+            },
             availablePersonsIds: availablePersonsIds
-        });
+        }));
 
-        return availablePersonsIds;
+        return availablePersonsIds
     }
 
-    async createShotgun(event, room, floor) {
+    async createShotgun(event, roomId) {
         ////////////////////////////////////////////////////////////////////////
         ////// set state as loading while waiting for query results ////////////
         ////////////////////////////////////////////////////////////////////////
 
-        const availablePersonsIdsQuery = this.updateAvailableUsers();
+        const availablePersonsIdsQuery = this.updateUsers();
 
-        const roomId = this.getRoomIdFromRoomName(room.name);
+        const createShotgunQuery = postCallApi(getShotgunRoomUrl(roomId), {roomId: roomId}, true);
 
-        const apiPostCreateShotgunRoute =
-            SERVER_ENDPOINT + "/shotgun/rooms/" + roomId;
-        const createShotgunQuery = postCallApi(
-            apiPostCreateShotgunRoute,
-            {roomId: roomId},
-            true
-        );
+        await this.updateFloors();
 
-        this.updateFloors();
-        this.updateUserState();
-
-        room["state"] = "loading";
-        floor["rooms"] = [...floor.rooms, room];
-
-        this.updateState(room, floor);
+        this.updateRoom(roomId, {state: "loading"});
 
         ////////////////////////////////////////////////////////////////////////
         ////// waiting for server answer ///////////////////////////////////////
@@ -224,15 +147,11 @@ class ShotgunContainer extends React.Component {
             ////// preShotgunConfirmed /////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////
 
-            const shotgunResult = (await shotgunServerUpdate.json()).data;
+            const shotgunResult = (await shotgunServerUpdate.json());
 
             const availablePersonsIds = await availablePersonsIdsQuery;
 
-            room["state"] = "attributingBeds";
-            room["availablePersonsIds"] = availablePersonsIds;
-            floor["rooms"] = [...floor.rooms, room];
-
-            this.updateState(room, floor);
+            this.updateRoom(roomId, {state: "attributingBeds", "availablePersonsIds": availablePersonsIds});
 
             this.setState({
                 availablePersonsIds: availablePersonsIds,
@@ -240,51 +159,31 @@ class ShotgunContainer extends React.Component {
             });
         } else {
             ////////////////////////////////////////////////////////////////////
-            ////// preShotgun denined //////////////////////////////////////////
+            ////// preShotgun denied //////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////
 
             alert("this room is not available anymore or you already shotgunned a room");
-            room["state"] = "disabled";
-            floor["rooms"] = [...floor.rooms, room];
+            this.updateRoom(roomId, {state: "disabled"});
 
-            this.updateState(room, floor);
-
-            this.updateFloors();
-            this.updateUserState();
+            await this.updateFloors();
+            await this.updateUsers();
         }
     }
 
-    async addPersonsInShotgun(roomName, roommatesIds = []) {
+    async addPersonsInShotgun(roomId, roommatesIds = []) {
         const shotgunId = this.state.shotgunId;
 
-        console.log(roommatesIds);
-
-        const roomId = this.getRoomIdFromRoomName(roomName);
-        if (roommatesIds.length < 1) {
+        if (roommatesIds.length < 1)
             throw new Error("no roommates to add");
-        } else {
-            const roommatesEmails = map(
-                id => this.getUserMailFromUserId(id),
-                roommatesIds
-            );
-
-            console.log(roommatesEmails);
-            const apiPutPersoninShotgunRoute =
-                SERVER_ENDPOINT + "/shotgun/rooms/" + roomId;
+        else {
             const addUserToShotgun = putCallApi(
-                apiPutPersoninShotgunRoute,
-                {roomId: roomId, roommates: roommatesEmails, shotgunId},
+                getShotgunRoomUrl(roomId),
+                {
+                    roomId: roomId,
+                    roommates: roommatesIds,
+                    shotgunId
+                },
                 true
-            );
-
-            const floor = find(
-                floor => includes(roomName, map(room => room.name, floor.rooms)),
-                this.state.villaLesGenets.floors
-            );
-
-            const room = find(
-                roomOfFloor => roomOfFloor.name === roomName,
-                floor.rooms
             );
 
             const addUserToShotgunResult = await addUserToShotgun;
@@ -292,35 +191,49 @@ class ShotgunContainer extends React.Component {
             if (addUserToShotgunResult.status === 200) {
                 const addUserToShotgunBody = (await addUserToShotgunResult.json()).data;
 
-                room["state"] = "shotgunSuccessful";
-                floor["rooms"] = [...floor.rooms, room];
+                this.updateRoom(roomId, {state: "shotgunSuccessful"});
 
-                this.updateState(room, floor);
-
+                this.updateUsers();
                 this.setState({
                     // Work in progress there, the state doesn't go down
                 });
-                console.log("shotgun successful");
-            } else {
-                room["state"] = "shotgunFailed";
-                floor["rooms"] = [...floor.rooms, room];
-
-                this.updateState(room, floor);
-
-                console.log("shotgun failed");
-            }
+            } else
+                this.updateRoom(roomId, {state: "shotgunFailed"});
         }
     }
 
+    getFloorsToRender(){
+        const replaceRoom = (roomId) => {
+            return this.state.roomsIndexed[roomId]
+        };
+
+        const replaceFloor = (floor) => {
+            return Object.assign({}, floor, {rooms: map(replaceRoom, floor.rooms)})
+        };
+
+        return map(replaceFloor, this.state.villaLesGenets.floors);
+    }
+
     render() {
+        let floors = undefined;
+
+        if (this.state.status !== "loading")
+            floors = this.getFloorsToRender();
+
         return (
-            <DisplayAllFloors
-                floors={this.state.villaLesGenets.floors}
-                userState={this.state.userState}
-                createShotgunFunction={this.createShotgun}
-                availablePersonsIds={this.state.availablePersonsIds}
-                addPersonsInShotgunFunction={this.addPersonsInShotgun}
-            />
+            this.state.status === "loading" ?
+                <Message info icon>
+                    <Icon name="circle notched" loading/>
+                    <Message.Content>Chargement des pièces...</Message.Content>
+                </Message>
+                :
+                <DisplayAllFloors
+                    floors={floors}
+                    userState={this.state.userState}
+                    createShotgunFunction={this.createShotgun}
+                    availablePersonsIds={this.state.availablePersonsIds}
+                    addPersonsInShotgunFunction={this.addPersonsInShotgun}
+                />
         );
     }
 

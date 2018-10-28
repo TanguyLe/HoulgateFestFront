@@ -59,6 +59,7 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --hot --config webpack.dev.config",
+    "devBuild": "webpack --config webpack.dev.config",
     "build": "webpack --config webpack.prod.config",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"

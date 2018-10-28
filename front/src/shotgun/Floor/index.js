@@ -85,6 +85,7 @@ export class Floor extends React.Component {
 
                         return (
                             <Room
+                                id={room._id}
                                 name={room.name}
                                 seats={room.seats}
                                 key={
@@ -98,7 +99,7 @@ export class Floor extends React.Component {
                                 userState={this.props.userState}
                                 availablePersonsIds={this.props.availablePersonsIds}
                                 createShotgunFunction={(event) =>
-                                    this.props.createShotgunFunction(event, room)
+                                    this.props.createShotgunFunction(event, room._id)
                                 }
                                 addPersonsInShotgunFunction={
                                     this.props.addPersonsInShotgunFunction

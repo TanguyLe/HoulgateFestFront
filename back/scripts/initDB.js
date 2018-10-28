@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 
+
 let getMongoDbFromArgs = require("./scriptUtils").getMongoDbFromArgs;
 console.log("This script populates initial necessary objects to the database.");
 
@@ -9,7 +10,7 @@ let Room = require("../api/room/roomModel");
 
 let babelCore = require("babel-core/register"),
     bableFill = require("babel-polyfill"),
-    villaLesGenets = require("../../front/src/shotgun/villaLesGenetsDef.js");
+    villaLesGenets = require("./villaLesGenetsDef.js");
 
 let mongoose = require("mongoose");
 let mongoDB = getMongoDbFromArgs();
@@ -20,7 +21,7 @@ mongoose.connect(mongoDB);
 
 let createRoom = (roomType, text, nbBeds, cb) => {
     let roomDetail = {
-        roomType: roomType,
+        type: roomType,
         text: text,
         nbBeds: nbBeds
     };

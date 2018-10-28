@@ -3,7 +3,7 @@ let mongoose = require("mongoose"),
     deleteShotgun = require("./shotgunDeleteController"),
     rollback = require("./rollbackController"),
     shotgunErrors = require("../shotgunErrors"),
-    shotgunNotificationTemplate = require("../templates/shotgunNotification"),
+    shotgunNotification = require("../templates/shotgunNotification"),
     mail = require("../../mail/mailController"),
     async = require("async");
 
@@ -79,7 +79,7 @@ exports.afterCompleteShotgun = (shotgun) => {
         );
 
         let title = `Shotgun terminé !`;
-        let content = shotgunNotificationTemplate(userOwner.username, room.text, usersList);
+        let content = shotgunNotification.getShotgunNotificationContent(userOwner.username, room.text, usersList);
 
         // send mail to all users
         let stackSendMail = [];
