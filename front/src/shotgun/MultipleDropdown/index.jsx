@@ -15,18 +15,13 @@ import Gravatar from "react-gravatar";
 
 class MultipleDropdown extends React.Component {
     constructor(props) {
-        super(props);
+        super();
 
-        this.state = {
-            beds: Array(props.numberOfBeds).fill(''),
-            availablePersonsIds: []
-        };
-
+        let availablePersonsIds = [];
         this.optionsPerUserId = {};
 
-
         map(person => {
-            this.state.availablePersonsIds.push(person._id);
+            availablePersonsIds.push(person._id);
             this.optionsPerUserId[person._id] = {
                 key: person._id,
                 value: person._id,
@@ -40,6 +35,11 @@ class MultipleDropdown extends React.Component {
                 )
             };
         }, props.availablePersonsIds);
+
+        this.state = {
+            beds: new Array(props.numberOfBeds).fill(''),
+            availablePersonsIds: availablePersonsIds
+        };
 
         this.handleChange = this.handleChange.bind(this);
         this.submit = this.submit.bind(this);

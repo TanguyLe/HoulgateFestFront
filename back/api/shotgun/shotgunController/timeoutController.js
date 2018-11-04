@@ -10,7 +10,7 @@ let tuttimer = {};
 
 // Set a timeout of 5 min linked to a shotgun
 exports.setTimeout = (shotgun) => {
-    tuttimer[shotgun._id] = setTimeout(this.timeoutTriggered.bind(null, shotgun), 5000);
+    tuttimer[shotgun._id] = setTimeout(this.timeoutTriggered.bind(null, shotgun), 500000);
 };
 
 // Clear a timeout related to a shotgun
@@ -45,10 +45,12 @@ exports.timeoutTriggered = (shotgun) => {
                 });
             };
 
+            // roll back the user owner
             let updateUserOwner = (shotgun, callback) => {
-                // special treatment for user owner
-                User.findByIdAndUpdate(shotgun.user, {hasShotgun: false, isShotgun: false}, (err, user) => {
+                // special tratment for user owner
+                User.findByIdAndUpdate(shotgun.user, {hasShotgun: false, hasPreShotgun: false, room: null}, (err, user) => {
                     if (err) return callback(err);
+                    console.log("User " + user.username + " rolled back.");
                     callback();
                 })
             };

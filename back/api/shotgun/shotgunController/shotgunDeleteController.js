@@ -31,7 +31,7 @@ exports.deleteShotguns = (usersId, callback) => {
                         if (String(user.room) === String(deletedShotgun.roomId)) {
                             user.room = null;
                         }
-                        user.isShotgun = false; // the user doesn't own a room anymore
+                        user.hasPreShotgun = false; // the user doesn't own a room anymore
 
                         user.save()
                             .then(user => {

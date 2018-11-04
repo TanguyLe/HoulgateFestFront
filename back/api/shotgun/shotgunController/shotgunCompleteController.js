@@ -5,6 +5,7 @@ let mongoose = require("mongoose"),
     shotgunErrors = require("../shotgunErrors"),
     shotgunNotification = require("../templates/shotgunNotification"),
     mail = require("../../mail/mailController"),
+    errors = require("../../utils/errors"),
     async = require("async");
 
 // Compelete the shotgun by

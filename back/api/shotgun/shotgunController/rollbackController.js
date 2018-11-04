@@ -26,7 +26,7 @@ let rollBackUsers = (users, roomId, callback) => {
                                 // the user has shotgun for the specified room, we free him
                                 user.hasShotgun = false;
                                 // don"t erase link to room if user owner
-                                if(!user.isShotgun) user.room = null;
+                                if(!user.hasPreShotgun) user.room = null;
 
                                 user.save()
                                     .then(user => {
@@ -63,7 +63,7 @@ let rollBackUsers = (users, roomId, callback) => {
                                 // the user has shotgun for the specified room, we free him
                                 user.hasShotgun = false;
                                 // don"t erase link to room if user owner
-                                if(!user.isShotgun) user.room = null;
+                                if(!user.hasPreShotgun) user.room = null;
 
                                 user.save()
                                     .then(user => {

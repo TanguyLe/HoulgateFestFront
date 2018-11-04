@@ -7,7 +7,7 @@ let mongoose = require('mongoose'),
     async = require('async');
 
 // Save shotgun in DB
-exports.saveShotgun = (userId, room, callback) => {
+exports.savePreShotgun = (userId, room, callback) => {
     console.log("Saving shotgun...");
     let roomId = room._id;
     const shotgun = new Shotgun({room: roomId, user: userId});
@@ -17,7 +17,7 @@ exports.saveShotgun = (userId, room, callback) => {
         (callback) => {
             shotgun.save()
                 .then(shotgun => {
-                    console.log("...Shotgun saved.");
+                    console.log("...preShotgun saved.");
                     callback(null, shotgun);
                 }).catch((err) => {
                 return callback(err);
@@ -35,7 +35,7 @@ exports.saveShotgun = (userId, room, callback) => {
                     User.findByIdAndUpdate(shotgun.user,
                         {
                             hasShotgun: true,
-                            isShotgun: true,
+                            hasPreShotgun: true,
                             room: roomId
                         }, {new: true}, (err, foundUser) => {
                             if (err) return callback(err);
@@ -51,7 +51,7 @@ exports.saveShotgun = (userId, room, callback) => {
             else {
                 User.findByIdAndUpdate(shotgun.user,
                     {
-                        isShotgun: true,
+                        hasPreShotgun: true,
                         room: roomId
                     }, {new: true}, (err, foundUser) => {
                         if (err) return callback(err);

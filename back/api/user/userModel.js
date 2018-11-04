@@ -18,8 +18,8 @@ let UserSchema = new mongoose.Schema({
         required: true
     },
     hasShotgun: {type: Boolean, default: false},
-    isShotgun: {type: Boolean, default: false},
-    room: {type: mongoose.Schema.Types.ObjectId, ref: 'Rooms'},
+    hasPreShotgun: {type: Boolean, default: false},
+    room: {type: mongoose.Schema.Types.ObjectId, ref: 'Rooms', default: null},
     activated: {
         type: Boolean,
         required: true,

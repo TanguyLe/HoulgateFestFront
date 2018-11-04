@@ -50,15 +50,6 @@ export default class ShotgunPortal extends React.Component {
                     />
                 );
 
-            // case "shotguned":
-            //   return (
-            //     <MultipleDropdown
-            //       numberOfBeds={this.props.seats}
-            //       availablePersonsIds={this.props.availablePersonsIds}
-            //       onSubmit={this.props.addPersonsInShotgunFunction}
-            //     />
-            //   );
-
             case "loading":
                 return (
                     <Message info icon>

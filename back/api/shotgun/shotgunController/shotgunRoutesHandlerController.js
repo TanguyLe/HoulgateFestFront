@@ -67,7 +67,7 @@ exports.shotgunCreatePost = (req, res) => {
     async.waterfall([
         (callback) => {
             async.parallel([
-                // check that user exists and hasn"t already shotgun
+                // check that user exists and hasn't already shotgun
                 (callback) => {
                     userHelper.checkUserOK(user.email, (err, user) => {
                         if (err) {
@@ -109,7 +109,7 @@ exports.shotgunCreatePost = (req, res) => {
             })
         }, (results, callback) => {
             // Save shotgun in DB
-            saveShotgun.saveShotgun(results[0], results[1][0], (err, shotgun) => {
+            saveShotgun.savePreShotgun(results[0], results[1][0], (err, shotgun) => {
                 if (err) {
                     console.error("-> Shotgun saving error.");
                     return callback(err);
@@ -244,7 +244,7 @@ exports.shotgunDelete = (req, res) => {
             // roll back the user owner
             let updateUserOwner = (shotgun, callback) => {
                 // special tratment for user owner
-                User.findByIdAndUpdate(shotgun.user, {hasShotgun: false, isShotgun: false, room: null}, (err, user) => {
+                User.findByIdAndUpdate(shotgun.user, {hasShotgun: false, hasPreShotgun: false, room: null}, (err, user) => {
                     if (err) return callback(err);
                     console.log("User " + user.username + " rolled back.");
                     callback();

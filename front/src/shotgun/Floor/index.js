@@ -50,6 +50,12 @@ export class Floor extends React.Component {
         this.calcSizes();
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return (JSON.stringify(nextProps) !== JSON.stringify(this.props)) ||
+            (JSON.stringify(nextState) !== JSON.stringify(this.state))
+    }
+
+
     render() {
         let gridStyle = {
             display: "grid",
@@ -94,8 +100,7 @@ export class Floor extends React.Component {
                                     index
                                 }
                                 position={position}
-                                roomState={room.state}
-                                roomId={room.id}
+                                roomState={room.status}
                                 userState={this.props.userState}
                                 availablePersonsIds={this.props.availablePersonsIds}
                                 createShotgunFunction={(event) =>

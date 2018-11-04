@@ -27,7 +27,7 @@ let retrieveShotguns = (cb) => {
         __v: 0,
         _id: 0,
         hasShotgun: 0,
-        isShotgun: 0,
+        hasPreShotgun: 0,
         room: 0,
         activated: 0
     }).populate("roommates", {
@@ -35,7 +35,7 @@ let retrieveShotguns = (cb) => {
         __v: 0,
         _id: 0,
         hasShotgun: 0,
-        isShotgun: 0,
+        hasPreShotgun: 0,
         room: 0,
         activated: 0
     }).exec((err, shotguns) => {
@@ -53,7 +53,7 @@ let retrieveStandaloneUsers = (shotguns, cb) => {
         password: 0,
         __v: 0,
         _id: 0,
-        isShotgun: 0,
+        hasPreShotgun: 0,
         room: 0,
         activated: 0
     }).exec((err, users) => {

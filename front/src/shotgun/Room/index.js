@@ -6,6 +6,11 @@ import ShotgunPortal from "./ShotgunModal";
 
 
 class Room extends React.Component {
+    shouldComponentUpdate(nextProps, nextState) {
+        return (JSON.stringify(nextProps) !== JSON.stringify(this.props)) ||
+            (JSON.stringify(nextState) !== JSON.stringify(this.state))
+    }
+
     render() {
         let content = "";
         let disable = false;
@@ -13,11 +18,7 @@ class Room extends React.Component {
         const roomId = this.props.id;
 
         if (this.props.seats > 0) {
-            if (this.props.roomState === "disabled") {
-                content = "DISABLED";
-                disable = true;
-            }
-            else if (this.props.userState.hasShotgun) {
+            if (this.props.userState.hasShotgun) {
                 if (roomId === this.props.userState.room) {
                     status = "shotgunSuccessful";
                     content = "It's your room!";
@@ -27,7 +28,7 @@ class Room extends React.Component {
                     disable = true;
                 }
             }
-            else if (this.props.userState.isShotgun) {
+            else if (this.props.userState.hasPreShotgun) {
                 if (roomId === this.props.userState.room) {
                     status = "attributingBeds";
                     content = "You have the priority on this room, hurry up before timeout";
@@ -39,6 +40,10 @@ class Room extends React.Component {
             }
             else if (this.props.roomState === "shotgunned") {
                 content = "Room already shotgunned";
+                disable = true;
+            }
+            else if (this.props.roomState === "preShotgunned") {
+                content = "Room currently preShotgunned";
                 disable = true;
             }
             else

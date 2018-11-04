@@ -16,7 +16,7 @@ exports.checkUserOK = (userEmail, callback) => {
                 return callback(error);
             }
 
-            if (foundUser.hasShotgun || foundUser.isShotgun) {
+            if (foundUser.hasShotgun || foundUser.hasPreShotgun) {
                 let error = new Error('User ' + foundUser.username + ' has already shotgunned or owns a shotgun.');
                 error.name = "Error 409 : Conflict";
                 error.httpStatusCode = "409";
