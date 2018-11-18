@@ -12,42 +12,52 @@ class Room extends React.Component {
     }
 
     render() {
+        let buttonType = "blue";
         let content = "";
         let disable = false;
-        let status = this.props.roomState;
+
         const roomId = this.props.id;
+        const roomStatus = this.props.roomState;
+
+        const shotgunOnGoing = (this.props.userState.hasPreShotgun || this.props.userState.hasShotgun);
+        const isUserRoom = shotgunOnGoing ? roomId === this.props.userState.room : false;
+
+        let finalStatus =  roomStatus;
 
         if (this.props.seats > 0) {
-            if (this.props.userState.hasShotgun) {
-                if (roomId === this.props.userState.room) {
-                    status = "shotgunSuccessful";
-                    content = "It's your room!";
+            if (roomStatus === "shotgunned") {
+                if (isUserRoom) {
+                        buttonType = "green";
+                        content = "C'est ici que tu as shotgun!";
+                        finalStatus = "shotgunSuccessful";
+                    }
+                    else {
+                        buttonType = "red";
+                        content = "Déjà shotgun";
+                        disable = true;
+                    }
+
+            }
+            else if (roomStatus === "preShotgunned") {
+                if (isUserRoom) {
+                    content = "Tu as la priorité sur cette pièce, dépêche toi de finaliser ton shotgun!";
+                    finalStatus = "attributingBeds";
                 }
                 else {
-                    content = "You have already shotgunned";
+                    buttonType = "orange";
+                    content = "Shotgun en cours...";
                     disable = true;
                 }
             }
-            else if (this.props.userState.hasPreShotgun) {
-                if (roomId === this.props.userState.room) {
-                    status = "attributingBeds";
-                    content = "You have the priority on this room, hurry up before timeout";
-                }
-                else {
-                    content = "You have a shotgun in progress";
+            else {
+                content = "Shotgun!";
+
+                if (shotgunOnGoing)
                     disable = true;
-                }
+                else
+                    finalStatus = "readyForShotgun";
             }
-            else if (this.props.roomState === "shotgunned") {
-                content = "Room already shotgunned";
-                disable = true;
-            }
-            else if (this.props.roomState === "preShotgunned") {
-                content = "Room currently preShotgunned";
-                disable = true;
-            }
-            else
-                status = this.props.roomState;
+
         }
 
         return (
@@ -57,12 +67,13 @@ class Room extends React.Component {
                 position={this.props.position}
                 name={this.props.name}
             >
-                {content}
                 <ShotgunPortal
                     disabled={disable || !this.props.seats}
+                    content={content}
+                    buttonType={buttonType}
                     seats={this.props.seats}
                     name={this.props.name}
-                    status={status}
+                    status={finalStatus}
                     availablePersonsIds={this.props.availablePersonsIds}
                     createShotgunFunction={this.props.createShotgunFunction || null}
                     addPersonsInShotgunFunction={roommatesIds =>

@@ -27,8 +27,6 @@ class ShotgunContainer extends React.Component {
             roomsIndexed: {}
         };
 
-        console.log(JSON.parse(JSON.stringify(this.state)))
-
         this.addPersonsInShotgun = this.addPersonsInShotgun.bind(this);
         this.createShotgun = this.createShotgun.bind(this);
         this.intervalFunction = this.intervalFunction.bind(this);
@@ -55,11 +53,6 @@ class ShotgunContainer extends React.Component {
         const usersUpdater = await this.getUsersUpdater();
 
         this.updateState([floorsUpdater, usersUpdater]);
-    }
-
-    componentDidUpdate() {
-        console.log("update")
-        console.log(JSON.parse(JSON.stringify(this.state)))
     }
 
     async componentDidMount() {
@@ -140,7 +133,6 @@ class ShotgunContainer extends React.Component {
         const shotguns = shotgunsList.filter(shotgun => shotgun.status === "done");
         const shotgunnedRoomIds = shotguns ? shotguns.map(shotgun => shotgun.room._id) : [];
 
-
         const updateRooms = room => {
             if (preShotgunnedRoomIds.includes(room._id))
                 return Object.assign({}, room, {status: "preShotgunned"});
@@ -178,7 +170,7 @@ class ShotgunContainer extends React.Component {
 
                 const usersUpdater = await this.getUsersUpdater();
 
-                roomUpdater = this.getRoomUpdater(roomId, {status: "attributingBeds"});
+                roomUpdater = this.getRoomUpdater(roomId, {status: "preShotgunned"});
 
                 this.updateState([{shotgunId: shotgunResult.data._id}, usersUpdater, roomUpdater]);
             } else {
@@ -195,34 +187,26 @@ class ShotgunContainer extends React.Component {
     async addPersonsInShotgun(roomId, roommatesIds = []) {
         const shotgunId = this.state.shotgunId;
 
-        if (roommatesIds.length < 1)
-            throw new Error("no roommates to add");
-        else {
+        let roomUpdater = this.getRoomUpdater(roomId, {status: "loading"});
+
+        this.updateState([roomUpdater], async () => {
             const addUserToShotgun = putCallApi(
-                getShotgunRoomUrl(roomId),
-                {
-                    roomId: roomId,
-                    roommates: roommatesIds,
-                    shotgunId
-                },
-                true
+                getShotgunRoomUrl(roomId), {roomId: roomId, roommates: roommatesIds, shotgunId}, true
             );
 
             const addUserToShotgunResult = await addUserToShotgun;
 
             if (addUserToShotgunResult.status === 200) {
-                const addUserToShotgunBody = (await addUserToShotgunResult.json()).data;
-                console.log(JSON.parse(JSON.stringify(addUserToShotgunBody)))
-
-                const roomUpdater = this.getRoomUpdater(roomId, {status: "shotgunSuccessful"});
-
+                const roomUpdater = this.getRoomUpdater(roomId, {status: "shotgunned"});
                 const usersUpdater = await this.getUsersUpdater();
+
                 this.updateState([usersUpdater, roomUpdater]);
             } else {
-                alert("Trop tard! Cette pièce est soit déjà shotgun, soit toi ou un de tes camarades est déjà inscrit dans une pièce");
+                alert("Trop tard! Cette pièce est soit déjà shotgun, soit toi ou un de " +
+                      "tes camarades est déjà inscrit dans une pièce");
                 await this.intervalFunction();
             }
-        }
+        });
     }
 
     getFloorsToRender() {

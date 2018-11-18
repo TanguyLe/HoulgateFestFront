@@ -1,11 +1,5 @@
 import React from "react";
-import {
-    Button,
-    Segment,
-    TransitionablePortal,
-    Icon,
-    Message
-} from "semantic-ui-react";
+import {Button, Segment, TransitionablePortal, Icon, Message} from "semantic-ui-react";
 
 import MultipleDropdown from "../MultipleDropdown";
 
@@ -32,13 +26,11 @@ export default class ShotgunPortal extends React.Component {
 
     getMessage(status) {
         switch (status) {
-            case "readyForShotgun":
+            case "loading":
                 return (
                     <Message info icon>
-                        <Button
-                            content="Shotgun!"
-                            onClick={this.props.createShotgunFunction}
-                        />
+                        <Icon name="circle notched" loading/>
+                        <Message.Content>Shotgun en cours...</Message.Content>
                     </Message>
                 );
             case "attributingBeds":
@@ -48,14 +40,6 @@ export default class ShotgunPortal extends React.Component {
                         availablePersonsIds={this.props.availablePersonsIds}
                         onSubmit={this.props.addPersonsInShotgunFunction}
                     />
-                );
-
-            case "loading":
-                return (
-                    <Message info icon>
-                        <Icon name="circle notched" loading/>
-                        <Message.Content>Shotgun en cours...</Message.Content>
-                    </Message>
                 );
             case "shotgunSuccessful":
                 return (
@@ -88,23 +72,23 @@ export default class ShotgunPortal extends React.Component {
     }
 
     render() {
-        let trigger = (
-            <Button compact content="I'm in!" disabled={this.state.open}/>
-        );
+        const directShotgun = this.props.status === "readyForShotgun";
 
-        if (this.props.disabled) trigger = "";
+        let trigger = <Button color={this.props.buttonType}
+                              compact
+                              content={this.props.content}
+                              disabled={this.props.disabled || this.state.open}
+                              onClick={directShotgun ? this.props.createShotgunFunction : () => {}}/>;
 
         return (
             <TransitionablePortal
-                open={this.state.open}
+                open={!this.props.disabled && this.state.open}
                 onOpen={this.handleOpen}
                 onClose={this.handleClose}
-                trigger={trigger}
+                trigger={!this.props.content ? "" : trigger}
             >
                 <Segment className="ShotgunModal">
-                    <h3>
-                        {this.props.name}: {this.props.seats} places
-                    </h3>
+                    <h3> {this.props.name}: {this.props.seats} places </h3>
                     {this.getMessage(this.props.status)}
                 </Segment>
             </TransitionablePortal>
