@@ -17,12 +17,12 @@ let Shotgun = require("../api/shotgun/shotgunModel");
 let User = require("../api/user/userModel");
 
 let retrieveShotguns = (cb) => {
-    Shotgun.find({}, {__v: 0, _id: 0, createdAt: 0, updatedAt: 0}).populate("room", {
+    Shotgun.find({}, {__v: 0, _id: 0, createdAt: 0, updatedAt: 0}).populate("rooms", {
         __v: 0,
         _id: 0,
         createdAt: 0,
         updatedAt: 0
-    }).populate("user", {
+    }).populate("users", {
         password: 0,
         __v: 0,
         _id: 0,
@@ -41,7 +41,7 @@ let retrieveShotguns = (cb) => {
     }).exec((err, shotguns) => {
         if (err) {
             console.error(err);
-            return cb(error);
+            return cb(err);
         }
         console.log("-> Completed shotguns retrieved.");
         return cb(null, shotguns);

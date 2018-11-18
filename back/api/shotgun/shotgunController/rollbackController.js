@@ -43,7 +43,7 @@ let rollBackUsers = (users, roomId, callback) => {
                             }
                         }
                         else {
-                            console.log("User " + user.username + " hasn't shotgun yet. Not rolled back.")
+                            console.log("User " + user.username + " hasn't shotgun yet. Not rolled back.");
                             return callback(null, user._id);
                         }
                     })

@@ -1,6 +1,5 @@
 import React from "react";
 import {Icon, Message} from "semantic-ui-react";
-import {map, filter, find} from "lodash/fp";
 
 import DisplayAllFloors from "./Floor/DisplayAllFloors";
 import {objectMap} from "../utils/miscFcts"
@@ -18,15 +17,8 @@ class ShotgunContainer extends React.Component {
 
         this.state = {
             villaLesGenets: {
-                floors: map(floor => {
-                    return {
-                        ...floor,
-                        rooms: map(room => {
-                            room.status = "readyForShotgun";
-                            return room;
-                        }, floor.rooms)
-                    };
-                }, villaLesGenets.floors)
+                floors: villaLesGenets.floors.map(floor => ({
+                    ...floor, rooms: floor.rooms.map(room => ({...room, status: "readyForShotgun"}))}))
             },
             status: "loading",
             shotgunId: null,
@@ -34,6 +26,8 @@ class ShotgunContainer extends React.Component {
             availablePersonsIds: [],
             roomsIndexed: {}
         };
+
+        console.log(JSON.parse(JSON.stringify(this.state)))
 
         this.addPersonsInShotgun = this.addPersonsInShotgun.bind(this);
         this.createShotgun = this.createShotgun.bind(this);
@@ -63,35 +57,40 @@ class ShotgunContainer extends React.Component {
         this.updateState([floorsUpdater, usersUpdater]);
     }
 
+    componentDidUpdate() {
+        console.log("update")
+        console.log(JSON.parse(JSON.stringify(this.state)))
+    }
+
     async componentDidMount() {
         const roomsApiCall = (await getCallApi(ROOMS_ENDPOINT, false));
         const rooms = (await roomsApiCall.json()).data;
 
-        let roomsIndexed = rooms.reduce((acc, room) => ({...acc, [room._id]: room}), {});
-
         const RoomFct = (room) => {
             const roomName = room.name;
 
-            const roomId = find(room => room.text === roomName, rooms)._id;
+            const roomId = rooms.find(room => room.text === roomName)._id;
             roomsIndexed[roomId] = Object.assign(roomsIndexed[roomId], room);
 
             return roomId;
         };
 
         const floorFct = (floor) => {
-            return Object.assign(floor, {rooms: map(RoomFct, floor.rooms)})
+            return Object.assign(floor, {rooms: floor.rooms.map(RoomFct)})
         };
 
-        this.updateState([
-            {
-                villaLesGenets: Object.assign(this.state.villaLesGenets,
-                    {floors: map(floorFct, this.state.villaLesGenets.floors)}),
-                roomsIndexed: roomsIndexed
-            }], async () => {
+        let roomsIndexed = rooms.reduce((acc, room) => ({...acc, [room._id]: room}), {});
+
+        this.updateState([{
+            villaLesGenets: Object.assign(this.state.villaLesGenets,
+                {floors: this.state.villaLesGenets.floors.map(floorFct)}),
+            roomsIndexed: roomsIndexed
+        }], async () => {
+
             const floorsUpdater = await this.getFloorsUpdater();
             const usersUpdater = await this.getUsersUpdater();
 
-            this.updateState([floorsUpdater, , usersUpdater], () => {
+            this.updateState([floorsUpdater, usersUpdater], () => {
                 this.refrechInterval = setInterval(this.intervalFunction, INTERVAL_DURATION);
             });
         });
@@ -111,11 +110,10 @@ class ShotgunContainer extends React.Component {
 
         const currentUserUsername = window.localStorage.getItem("username");
 
-        const user = find(user => user.username === currentUserUsername, users);
+        const user = users.find(user => user.username === currentUserUsername);
 
-        const availablePersonsIds = filter(person =>
-                ((person.hasShotgun === false && person.hasPreShotgun === false) || user._id === person._id),
-            users
+        const availablePersonsIds = users.filter(person =>
+            ((person.hasShotgun === false) || (user._id === person._id)),
         );
 
         let res = {
@@ -137,10 +135,10 @@ class ShotgunContainer extends React.Component {
         const shotgunsApiCall = await getCallApi(SHOTGUN_ROOMS_ENDPOINT, false);
         const shotgunsList = (await shotgunsApiCall.json()).data;
 
-        const preShotguns = filter(shotgun => shotgun.status === "created", shotgunsList);
-        const preShotgunnedRoomIds = preShotguns ? map(shotgun => shotgun.room._id, preShotguns) : [];
-        const shotguns = filter(shotgun => shotgun.status === "shotgunned", shotgunsList);
-        const shotgunnedRoomIds = shotguns ? map(shotgun => shotgun.room._id, shotguns) : [];
+        const preShotguns = shotgunsList.filter(shotgun => shotgun.status === "created");
+        const preShotgunnedRoomIds = preShotguns ? preShotguns.map(shotgun => shotgun.room._id) : [];
+        const shotguns = shotgunsList.filter(shotgun => shotgun.status === "done");
+        const shotgunnedRoomIds = shotguns ? shotguns.map(shotgun => shotgun.room._id) : [];
 
 
         const updateRooms = room => {
@@ -188,12 +186,8 @@ class ShotgunContainer extends React.Component {
                 ////// preShotgun denied //////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////
 
-                alert("this room is not available anymore or you already shotgunned a room");
-                // this.getRoomUpdater(roomId, {status: "disabled"});
-
-                const floorsUpdater = await this.getFloorsUpdater();
-                const usersUpdater = await this.getUsersUpdater();
-                this.updateState([usersUpdater, floorsUpdater]);
+                alert("Cette pièce n'est plus disponible, ou tu as déjà shotgun");
+                await this.intervalFunction();
             }
         });
     }
@@ -218,14 +212,16 @@ class ShotgunContainer extends React.Component {
 
             if (addUserToShotgunResult.status === 200) {
                 const addUserToShotgunBody = (await addUserToShotgunResult.json()).data;
+                console.log(JSON.parse(JSON.stringify(addUserToShotgunBody)))
 
                 const roomUpdater = this.getRoomUpdater(roomId, {status: "shotgunSuccessful"});
 
                 const usersUpdater = await this.getUsersUpdater();
                 this.updateState([usersUpdater, roomUpdater]);
-            } else
-                4
-            // this.getRoomUpdater(roomId, {status: "shotgunFailed"});
+            } else {
+                alert("Trop tard! Cette pièce est soit déjà shotgun, soit toi ou un de tes camarades est déjà inscrit dans une pièce");
+                await this.intervalFunction();
+            }
         }
     }
 
@@ -235,10 +231,10 @@ class ShotgunContainer extends React.Component {
         };
 
         const replaceFloor = (floor) => {
-            return Object.assign({}, floor, {rooms: map(replaceRoom, floor.rooms)})
+            return Object.assign({}, floor, {rooms: floor.rooms.map(replaceRoom)})
         };
 
-        return map(replaceFloor, this.state.villaLesGenets.floors);
+        return this.state.villaLesGenets.floors.map(replaceFloor);
     }
 
     render() {

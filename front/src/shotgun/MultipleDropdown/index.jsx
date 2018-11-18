@@ -1,17 +1,7 @@
 import React from "react";
-import {
-    map,
-    range,
-    clone,
-    filter,
-    includes,
-    get,
-    find,
-    slice
-} from "lodash/fp";
-
-import {Dropdown, Button, Form} from "semantic-ui-react";
 import Gravatar from "react-gravatar";
+import {Dropdown, Button, Form} from "semantic-ui-react";
+
 
 class MultipleDropdown extends React.Component {
     constructor(props) {
@@ -20,8 +10,9 @@ class MultipleDropdown extends React.Component {
         let availablePersonsIds = [];
         this.optionsPerUserId = {};
 
-        map(person => {
+        props.availablePersonsIds.map(person => {
             availablePersonsIds.push(person._id);
+
             this.optionsPerUserId[person._id] = {
                 key: person._id,
                 value: person._id,
@@ -34,7 +25,7 @@ class MultipleDropdown extends React.Component {
                     />
                 )
             };
-        }, props.availablePersonsIds);
+        });
 
         this.state = {
             beds: new Array(props.numberOfBeds).fill(''),
@@ -59,7 +50,7 @@ class MultipleDropdown extends React.Component {
             if (oldSelection !== '')
                 persons.push(oldSelection);
 
-            this.setState(Object.assign(this.state, {beds: beds, availablePersonsIds: persons}));
+            this.setState({beds: beds, availablePersonsIds: persons});
         }
     }
 
@@ -68,28 +59,47 @@ class MultipleDropdown extends React.Component {
         event.preventDefault();
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(nextProps.availablePersonsIds) !== JSON.stringify(this.props.availablePersonsIds)) {
+            const nextIds = nextProps.availablePersonsIds.map(person => person._id);
+
+            // Let's check the selected beds first
+
+            const currentBeds = this.state.beds.map(e => {
+                if ((e === '') || (!nextIds.includes(e)))
+                    return '';
+
+                return e;
+            });
+
+            // Then the available persons
+
+            const currentAvailablePersonsIds = this.state.availablePersonsIds.filter(e => nextIds.includes(e));
+
+            this.setState({beds: currentBeds, availablePersonsIds: currentAvailablePersonsIds});
+        }
+    }
+
     componentDidMount() {
-        const currentUserId = get("key",
-            find(
-                person => person.text === window.localStorage.getItem("username"),
-                this.optionsPerUserId
-            ));
+        const currentUsername = window.localStorage.getItem("username");
+        const currentUserId = Object.values(this.optionsPerUserId).find(person => person.text === currentUsername).key;
 
         this.handleChange("", 0, currentUserId);
     }
 
     render() {
-        const generateDropdownOption = (listIds) => map(id => this.optionsPerUserId[id], listIds);
+        const regularOptions = this.state.availablePersonsIds.map(id => this.optionsPerUserId[id]);
+        const generateDropdownOption = (username) => [...regularOptions, this.optionsPerUserId[username]];
+
         const submitDisabled = this.state.beds.indexOf('') !== -1;
 
         return (
             <Form>
                 <Form.Group style={{flexWrap: "wrap"}}>
                     {[
-                        ...map(bedIndex => {
-                                const username = this.state.beds[bedIndex];
-                                const options = username === '' ? generateDropdownOption(this.state.availablePersonsIds) :
-                                                generateDropdownOption(this.state.availablePersonsIds.concat([username]));
+                        ...[...new Array(this.props.numberOfBeds).keys()].map(bedIndex => {
+                                const userId = this.state.beds[bedIndex];
+                                const options = userId === '' ? regularOptions : generateDropdownOption(userId);
 
                                 return (
                                     <Form.Field key={`bed_${bedIndex}`}>
@@ -99,15 +109,13 @@ class MultipleDropdown extends React.Component {
                                             selection
                                             disabled={bedIndex === 0}
                                             search
-                                            onChange={(event, {value}) =>
-                                                this.handleChange(event, bedIndex, value)
-                                            }
-                                            value={username}
+                                            onChange={(event, {value}) => this.handleChange(event, bedIndex, value)}
+                                            value={userId}
                                             options={options}
                                         />
                                     </Form.Field>
                                 );
-                        }, range(0, this.props.numberOfBeds)),
+                        }),
                         <Button
                             key={"validationButton"}
                             disabled={submitDisabled}
@@ -116,7 +124,6 @@ class MultipleDropdown extends React.Component {
                         >
                             Confirmer
                         </Button>
-                        // </div>
                     ]}
                 </Form.Group>
             </Form>
