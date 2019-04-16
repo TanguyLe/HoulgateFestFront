@@ -100,7 +100,7 @@ export class Floor extends React.Component {
                                     index
                                 }
                                 position={position}
-                                roomState={room.status}
+                                roomStatus={room.status}
                                 userState={this.props.userState}
                                 availablePersonsIds={this.props.availablePersonsIds}
                                 createShotgunFunction={(event) =>

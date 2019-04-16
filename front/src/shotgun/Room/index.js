@@ -3,6 +3,12 @@ import {isNil, get} from "lodash/fp";
 
 import RoomBasis from "./RoomBasis";
 import ShotgunPortal from "./ShotgunModal";
+import {
+    ROOM_STATUS_LOADING,
+    ROOM_STATUS_SHOTGUNNED,
+    ROOM_STATUS_PRESHOTGUNNED,
+    ROOM_STATUS_READY
+} from "../constants";
 
 
 class Room extends React.Component {
@@ -17,7 +23,7 @@ class Room extends React.Component {
         let disable = false;
 
         const roomId = this.props.id;
-        const roomStatus = this.props.roomState;
+        const roomStatus = this.props.roomStatus;
 
         const shotgunOnGoing = (this.props.userState.hasPreShotgun || this.props.userState.hasShotgun);
         const isUserRoom = shotgunOnGoing ? roomId === this.props.userState.room : false;
@@ -25,7 +31,7 @@ class Room extends React.Component {
         let finalStatus =  roomStatus;
 
         if (this.props.seats > 0) {
-            if (roomStatus === "shotgunned") {
+            if (roomStatus === ROOM_STATUS_SHOTGUNNED) {
                 if (isUserRoom) {
                         buttonType = "green";
                         content = "C'est ici que tu as shotgun!";
@@ -38,7 +44,7 @@ class Room extends React.Component {
                     }
 
             }
-            else if (roomStatus === "preShotgunned") {
+            else if (roomStatus === ROOM_STATUS_PRESHOTGUNNED) {
                 if (isUserRoom) {
                     content = "Tu as la priorité sur cette pièce, dépêche toi de finaliser ton shotgun!";
                     finalStatus = "attributingBeds";
