@@ -7,7 +7,7 @@ export const ROOM_SEATS_DISPLAY_INDEX_PREFIX = "RoomSeatsDisplay";
 export const ROOM_STATUS_SHOTGUNNED = "shotgunned";
 export const ROOM_STATUS_LOADING = "loading";
 export const ROOM_STATUS_PRESHOTGUNNED = "preShotgunned";
-export const ROOM_STATUS_READY = "ready";
+export const ROOM_STATUS_READY = "readyForShotgun";
 
 export const PASSING_TYPE = "passing";
 export const BATHROOM_TYPE = "bathroom";

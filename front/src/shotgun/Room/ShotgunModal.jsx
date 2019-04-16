@@ -2,6 +2,8 @@ import React from "react";
 import {Button, Segment, TransitionablePortal, Icon, Message} from "semantic-ui-react";
 
 import MultipleDropdown from "../MultipleDropdown";
+import {ROOM_STATUS_READY} from "../constants"
+
 
 export default class ShotgunPortal extends React.Component {
     constructor() {
@@ -72,7 +74,7 @@ export default class ShotgunPortal extends React.Component {
     }
 
     render() {
-        const directShotgun = this.props.status === "readyForShotgun";
+        const directShotgun = this.props.status === ROOM_STATUS_READY;
 
         let trigger = <Button color={this.props.buttonType}
                               compact
@@ -85,7 +87,7 @@ export default class ShotgunPortal extends React.Component {
                 open={!this.props.disabled && this.state.open}
                 onOpen={this.handleOpen}
                 onClose={this.handleClose}
-                trigger={!this.props.content ? "" : trigger}
+                trigger={trigger}
             >
                 <Segment className="ShotgunModal">
                     <h3> {this.props.name}: {this.props.seats} places </h3>

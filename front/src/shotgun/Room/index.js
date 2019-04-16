@@ -6,8 +6,7 @@ import ShotgunPortal from "./ShotgunModal";
 import {
     ROOM_STATUS_LOADING,
     ROOM_STATUS_SHOTGUNNED,
-    ROOM_STATUS_PRESHOTGUNNED,
-    ROOM_STATUS_READY
+    ROOM_STATUS_PRESHOTGUNNED
 } from "../constants";
 
 
@@ -19,51 +18,64 @@ class Room extends React.Component {
 
     render() {
         let buttonType = "blue";
-        let content = "";
+        let content = "Shotgun!";
         let disable = false;
 
         const roomId = this.props.id;
         const roomStatus = this.props.roomStatus;
 
-        const shotgunOnGoing = (this.props.userState.hasPreShotgun || this.props.userState.hasShotgun);
-        const isUserRoom = shotgunOnGoing ? roomId === this.props.userState.room : false;
+        const shotgunOnGoingForUser = (this.props.userState.hasPreShotgun || this.props.userState.hasShotgun);
+        const isUserRoom = shotgunOnGoingForUser ? roomId === this.props.userState.room : false;
 
         let finalStatus =  roomStatus;
 
-        if (this.props.seats > 0) {
-            if (roomStatus === ROOM_STATUS_SHOTGUNNED) {
-                if (isUserRoom) {
-                        buttonType = "green";
-                        content = "C'est ici que tu as shotgun!";
-                        finalStatus = "shotgunSuccessful";
-                    }
-                    else {
-                        buttonType = "red";
-                        content = "Déjà shotgun";
-                        disable = true;
-                    }
+        /**
+         * Logic here is rather simple in the end :
+         * 1) Room is shotgunned
+         *  a. By the user => Successful green button
+         *  b. By someone else => Disabled red button
+         * 2) Room is preShotgunned
+         *  a. By the user => Encouraging blue button
+         *  b. By someone else => Disabled orange button
+         * 3) Room is loading => Disabled grey button
+         * 4) Room is ready (means empty)
+         *  a. User is taken => Disabled blue button
+         *  b. User is free => Enable blue button
+         */
 
-            }
-            else if (roomStatus === ROOM_STATUS_PRESHOTGUNNED) {
-                if (isUserRoom) {
-                    content = "Tu as la priorité sur cette pièce, dépêche toi de finaliser ton shotgun!";
-                    finalStatus = "attributingBeds";
-                }
-                else {
-                    buttonType = "orange";
-                    content = "Shotgun en cours...";
-                    disable = true;
-                }
+        if (roomStatus === ROOM_STATUS_SHOTGUNNED) {
+            if (isUserRoom) {
+                buttonType = "green";
+                content = "C'est ici que tu as shotgun!";
+                finalStatus = "shotgunSuccessful";
             }
             else {
-                content = "Shotgun!";
-
-                if (shotgunOnGoing)
-                    disable = true;
-                else
-                    finalStatus = "readyForShotgun";
+                buttonType = "red";
+                content = "Déjà shotgun";
+                disable = true;
             }
 
+        }
+        else if (roomStatus === ROOM_STATUS_PRESHOTGUNNED) {
+            if (isUserRoom) {
+                content = "Finalise ton shotgun!";
+                finalStatus = "attributingBeds";
+            }
+            else {
+                buttonType = "orange";
+                content = "Shotgun en cours...";
+                disable = true;
+            }
+        }
+        else if (roomStatus === ROOM_STATUS_LOADING){
+            buttonType = "grey";
+            content = "Chargement...";
+            disable = true;
+        }
+        else if (shotgunOnGoingForUser) {
+            // Remaining state is readyForShotgun, the case where no shotgun
+            // is ongoing for the user is handled by the default
+            disable = true;
         }
 
         return (
@@ -73,19 +85,20 @@ class Room extends React.Component {
                 position={this.props.position}
                 name={this.props.name}
             >
-                <ShotgunPortal
-                    disabled={disable || !this.props.seats}
-                    content={content}
-                    buttonType={buttonType}
-                    seats={this.props.seats}
-                    name={this.props.name}
-                    status={finalStatus}
-                    availablePersonsIds={this.props.availablePersonsIds}
-                    createShotgunFunction={this.props.createShotgunFunction || null}
-                    addPersonsInShotgunFunction={roommatesIds =>
-                        this.props.addPersonsInShotgunFunction(this.props.id, roommatesIds)
-                    }
-                />
+                {this.props.seats > 0 ?
+                    <ShotgunPortal
+                        disabled={disable}
+                        content={content}
+                        buttonType={buttonType}
+                        seats={this.props.seats}
+                        name={this.props.name}
+                        status={finalStatus}
+                        availablePersonsIds={this.props.availablePersonsIds}
+                        createShotgunFunction={this.props.createShotgunFunction || null}
+                        addPersonsInShotgunFunction={roommatesIds =>
+                            this.props.addPersonsInShotgunFunction(this.props.id, roommatesIds)
+                        }
+                    /> : ""}
             </RoomBasis>
         );
     }
