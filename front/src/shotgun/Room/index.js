@@ -24,8 +24,16 @@ class Room extends React.Component {
         const roomId = this.props.id;
         const roomStatus = this.props.roomStatus;
 
-        const shotgunOnGoingForUser = (this.props.userState.hasPreShotgun || this.props.userState.hasShotgun);
-        const isUserRoom = shotgunOnGoingForUser ? roomId === this.props.userState.room : false;
+        const currentUserUsername = window.localStorage.getItem("username");
+        const users = Object.values(this.props.userInfo);
+        const currentUser = users.find(user => user.username === currentUserUsername);
+
+        const shotgunOnGoingForUser = (currentUser.hasPreShotgun || currentUser.hasShotgun);
+        const isUserRoom = shotgunOnGoingForUser ? roomId === currentUser.room : false;
+
+        const availablePersons = users.filter(person =>
+            ((person.hasShotgun === false) || (currentUser._id === person._id)),
+        );
 
         let finalStatus =  roomStatus;
 
@@ -96,7 +104,7 @@ class Room extends React.Component {
                         seats={this.props.seats}
                         name={this.props.name}
                         status={finalStatus}
-                        availablePersons={this.props.availablePersons}
+                        availablePersons={availablePersons}
                         createShotgunFunction={this.props.createShotgunFunction || null}
                         addPersonsInShotgunFunction={roommatesIds =>
                             this.props.addPersonsInShotgunFunction(this.props.id, roommatesIds)

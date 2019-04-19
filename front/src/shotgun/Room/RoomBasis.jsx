@@ -13,7 +13,6 @@ class RoomBasis extends React.Component {
     }
 
     render() {
-        console.log(this.props);
         let preDisplay = this.props.seats ? (this.props.seats + " places") : null;
         let user = this.props.user ? ("par " + this.getUsername(this.props.user)) : '';
         user = <div>{user}</div>;

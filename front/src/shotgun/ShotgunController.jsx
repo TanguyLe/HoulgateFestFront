@@ -31,8 +31,6 @@ class ShotgunContainer extends React.Component {
             },
             loading: true,
             shotgunId: null,
-            userState: {},
-            availablePersons: [],
             userInfo: {},
             roomsIndexed: {}
         };
@@ -57,7 +55,7 @@ class ShotgunContainer extends React.Component {
 
     async getUsersUpdater() {
         /**
-         * Returns an updater for the availablePersonsIds, userState and eventually shotgunId.
+         * Returns an updater for the userInfo and eventually shotgunId.
          * It is an object up-to-date with the server to be used with the updateState method.
          */
         const usersApiCall = await getCallApi(USERS_ENDPOINT, false);
@@ -67,23 +65,10 @@ class ShotgunContainer extends React.Component {
 
         const currentUser = users.find(user => user.username === currentUserUsername);
 
-        const availablePersons = users.filter(person =>
-            ((person.hasShotgun === false) || (currentUser._id === person._id)),
-        );
-
         let userInfo = {};
         users.forEach((user) => userInfo[user._id] = user);
 
-        let res = {
-            userState: {
-                hasShotgun: currentUser.hasShotgun,
-                hasPreShotgun: currentUser.hasPreShotgun,
-                room: currentUser.room
-            },
-            availablePersons: availablePersons,
-            userInfo: userInfo
-        };
-
+        let res = {userInfo: userInfo};
         if (!currentUser.hasShotgun && !currentUser.hasPreShotgun)
             res.shotgunId = null;
 
@@ -257,10 +242,8 @@ class ShotgunContainer extends React.Component {
 
         return <DisplayAllFloors
             floors={this.getFloorsToRender()}
-            userState={this.state.userState}
             userInfo={this.state.userInfo}
             createShotgunFunction={this.createShotgun}
-            availablePersons={this.state.availablePersons}
             addPersonsInShotgunFunction={this.addPersonsInShotgun}
         />;
 

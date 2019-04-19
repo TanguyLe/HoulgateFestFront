@@ -103,9 +103,7 @@ export class Floor extends React.Component {
                                 roomStatus={room.status}
                                 user={room.user}
                                 roommates={room.roommates}
-                                userState={this.props.userState}
                                 userInfo={this.props.userInfo}
-                                availablePersons={this.props.availablePersons}
                                 createShotgunFunction={(event) =>
                                     this.props.createShotgunFunction(event, room._id)
                                 }
