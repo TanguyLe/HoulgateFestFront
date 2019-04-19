@@ -84,6 +84,9 @@ class Room extends React.Component {
                 seats={this.props.seats}
                 position={this.props.position}
                 name={this.props.name}
+                user={this.props.user}
+                roommates={this.props.roommates}
+                userInfo={this.props.userInfo}
             >
                 {this.props.seats > 0 ?
                     <ShotgunPortal
@@ -93,7 +96,7 @@ class Room extends React.Component {
                         seats={this.props.seats}
                         name={this.props.name}
                         status={finalStatus}
-                        availablePersonsIds={this.props.availablePersonsIds}
+                        availablePersons={this.props.availablePersons}
                         createShotgunFunction={this.props.createShotgunFunction || null}
                         addPersonsInShotgunFunction={roommatesIds =>
                             this.props.addPersonsInShotgunFunction(this.props.id, roommatesIds)

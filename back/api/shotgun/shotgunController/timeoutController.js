@@ -29,7 +29,7 @@ exports.timeoutTriggered = (shotgun) => {
             console.log("...shotgun is NOT done after timeout. Nothing to be done.");
             return null;
         }
-        if (shotgun.status !== "done") {
+        if (shotgun.status !== "shotgunned") {
             console.log("Deleting Shotgun on room " + shotgun.room + "...");
             // delete shotgun
             let deleteShotgun = (shotgun, callback) => {

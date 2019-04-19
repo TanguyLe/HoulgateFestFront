@@ -2,7 +2,6 @@ import {SERVER_ENDPOINT} from "../constants";
 
 export const ROOM_GRID_STRUCT_INDEX_PREFIX = "RoomGridStruct";
 export const FLOOR_GRID_STRUCT_INDEX_PREFIX = "FloorGridStruct";
-export const ROOM_SEATS_DISPLAY_INDEX_PREFIX = "RoomSeatsDisplay";
 
 export const ROOM_STATUS_SHOTGUNNED = "shotgunned";
 export const ROOM_STATUS_LOADING = "loading";

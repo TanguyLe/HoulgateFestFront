@@ -15,7 +15,7 @@ exports.completeShotgun = (roomId, roommatesId, callback) => {
     console.log("Completing shotgun...");
     Shotgun.findOneAndUpdate({room: roomId}, {
         roommates: roommatesId,
-        status: "done"
+        status: "shotgunned"
     }, {new: true})
         .then(shotgun => {
             if (!shotgun)

@@ -1,13 +1,32 @@
 import React from "react";
-import {ROOM_SEATS_DISPLAY_INDEX_PREFIX} from "../constants";
+import {Popup} from 'semantic-ui-react'
 
 class RoomBasis extends React.Component {
-    render() {
-        let preDisplay = [];
+    constructor() {
+        super();
 
-        if (this.props.seats) {
-            preDisplay = [<br/>, this.props.seats + " places", <br/>];
-        }
+        this.getUsername = this.getUsername.bind(this);
+    }
+
+    getUsername(userId) {
+        return this.props.userInfo[userId].username;
+    }
+
+    render() {
+        console.log(this.props);
+        let preDisplay = this.props.seats ? (this.props.seats + " places") : null;
+        let user = this.props.user ? ("par " + this.getUsername(this.props.user)) : '';
+        user = <div>{user}</div>;
+
+        let roommates = this.props.roommates ? this.props.roommates.map((userId) => this.getUsername(userId)).join(', ')
+            : null;
+
+        let view = '';
+        if (roommates)
+            view = <Popup trigger={user} content={"Avec: " + roommates}/>;
+        else
+            view = user;
+
         return (
             <div
                 style={{
@@ -23,13 +42,8 @@ class RoomBasis extends React.Component {
                 }}
             >
                 {this.props.name}
-                {preDisplay.map((e, i) => {
-                    return (
-                        <div key={ROOM_SEATS_DISPLAY_INDEX_PREFIX + this.props.name + i}>
-                            {e}
-                        </div>
-                    );
-                })}
+                <br/>{preDisplay}<br/>
+                {view}
                 {this.props.children}
             </div>
         );

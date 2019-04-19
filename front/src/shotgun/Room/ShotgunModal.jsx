@@ -39,7 +39,7 @@ export default class ShotgunPortal extends React.Component {
                 return (
                     <MultipleDropdown
                         numberOfBeds={this.props.seats}
-                        availablePersonsIds={this.props.availablePersonsIds}
+                        availablePersons={this.props.availablePersons}
                         onSubmit={this.props.addPersonsInShotgunFunction}
                     />
                 );

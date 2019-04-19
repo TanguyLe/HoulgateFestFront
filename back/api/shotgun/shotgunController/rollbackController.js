@@ -121,7 +121,7 @@ let rollBackShotgun = (roomId, callback) => {
         (shotgun, callback) => {
             Shotgun.findByIdAndUpdate(shotgun._id, {
                 roommates: [],
-                status: "created"
+                status: "preShotgunned"
             }, { new: true }, (err, shotgun) => {
                 if (err) {
                     console.error("-> Error while rolling back the Shotgun.");

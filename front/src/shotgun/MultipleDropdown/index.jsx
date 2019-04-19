@@ -10,7 +10,7 @@ class MultipleDropdown extends React.Component {
         let availablePersonsIds = [];
         this.optionsPerUserId = {};
 
-        props.availablePersonsIds.map(person => {
+        props.availablePersons.map(person => {
             availablePersonsIds.push(person._id);
 
             this.optionsPerUserId[person._id] = {
@@ -60,8 +60,8 @@ class MultipleDropdown extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(nextProps.availablePersonsIds) !== JSON.stringify(this.props.availablePersonsIds)) {
-            const nextIds = nextProps.availablePersonsIds.map(person => person._id);
+        if (JSON.stringify(nextProps.availablePersons) !== JSON.stringify(this.props.availablePersons)) {
+            const nextIds = nextProps.availablePersons.map(person => person._id);
 
             // Let's check the selected beds first
 

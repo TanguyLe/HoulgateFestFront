@@ -15,8 +15,9 @@ class DisplayAllFloors extends React.Component {
                         <Floor
                             key={FLOOR_GRID_STRUCT_INDEX_PREFIX + index}
                             floorData={floor}
-                            availablePersonsIds={this.props.availablePersonsIds}
+                            availablePersons={this.props.availablePersons}
                             userState={this.props.userState}
+                            userInfo={this.props.userInfo}
                             createShotgunFunction={(event, room) =>
                                 this.props.createShotgunFunction(event, room, floor)
                             }

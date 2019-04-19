@@ -30,10 +30,10 @@ class ShotgunContainer extends React.Component {
                 }))
             },
             loading: true,
-            status: "loading",
             shotgunId: null,
             userState: {},
-            availablePersonsIds: [],
+            availablePersons: [],
+            userInfo: {},
             roomsIndexed: {}
         };
 
@@ -67,9 +67,12 @@ class ShotgunContainer extends React.Component {
 
         const currentUser = users.find(user => user.username === currentUserUsername);
 
-        const availablePersonsIds = users.filter(person =>
+        const availablePersons = users.filter(person =>
             ((person.hasShotgun === false) || (currentUser._id === person._id)),
         );
+
+        let userInfo = {};
+        users.forEach((user) => userInfo[user._id] = user);
 
         let res = {
             userState: {
@@ -77,7 +80,8 @@ class ShotgunContainer extends React.Component {
                 hasPreShotgun: currentUser.hasPreShotgun,
                 room: currentUser.room
             },
-            availablePersonsIds: availablePersonsIds
+            availablePersons: availablePersons,
+            userInfo: userInfo
         };
 
         if (!currentUser.hasShotgun && !currentUser.hasPreShotgun)
@@ -95,21 +99,14 @@ class ShotgunContainer extends React.Component {
         const shotgunsApiCall = await getCallApi(SHOTGUN_ROOMS_ENDPOINT, false);
         const shotgunsList = (await shotgunsApiCall.json()).data;
 
-        const preShotguns = shotgunsList.filter(shotgun => shotgun.status === "created");
-        const preShotgunnedRoomIds = preShotguns ? preShotguns.map(shotgun => shotgun.room._id) : [];
-        const shotguns = shotgunsList.filter(shotgun => shotgun.status === "done");
-        const shotgunnedRoomIds = shotguns ? shotguns.map(shotgun => shotgun.room._id) : [];
-
         // Right now it doesn't seem straightforward, but getFloorsUpdater should be able to use getRoomUpdater a
         // way or another.
         const updateRoom = room => {
-            if (preShotgunnedRoomIds.includes(room._id))
-                return Object.assign({}, room, {status: ROOM_STATUS_PRESHOTGUNNED});
-
-            if (shotgunnedRoomIds.includes(room._id))
-                return Object.assign({}, room, {status: ROOM_STATUS_SHOTGUNNED});
-
-            return Object.assign({}, room, {status: ROOM_STATUS_READY});
+            let related_shotgun = shotgunsList.find(shotgun => shotgun.room._id === room._id);
+            if (!related_shotgun)
+                return Object.assign({}, room, {status: ROOM_STATUS_READY});
+            else
+                return Object.assign({}, room, related_shotgun, related_shotgun.room);
         };
 
         return {roomsIndexed: objectMap(this.state.roomsIndexed, updateRoom), loading: false};
@@ -261,8 +258,9 @@ class ShotgunContainer extends React.Component {
         return <DisplayAllFloors
             floors={this.getFloorsToRender()}
             userState={this.state.userState}
+            userInfo={this.state.userInfo}
             createShotgunFunction={this.createShotgun}
-            availablePersonsIds={this.state.availablePersonsIds}
+            availablePersons={this.state.availablePersons}
             addPersonsInShotgunFunction={this.addPersonsInShotgun}
         />;
 
