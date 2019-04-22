@@ -8,5 +8,15 @@ module.exports = {
             throw "ERROR: You need to specify a valid mongodb URL as the first argument";
 
         return userArgs[0];
-    }
+    },
+    testUsers: [
+        ["Patrick", "Rothfuss@rothfuss.je", "test", true],
+        ["Ben", "Bova@bova.je", "test", true],
+        ["Isaac", "Asimov@asimov.je", "test", true],
+        ["Bob", "bob@bob.je", "test", true],
+        ["Jim", "Jones@jones.je", "test", true],
+        ["Julie", "julie@julie.je", "test", true],
+        ["Marie", "marie@marie.je", "test", true],
+        ["Claire", "claire@claire.je", "test", true]
+    ]
 };
