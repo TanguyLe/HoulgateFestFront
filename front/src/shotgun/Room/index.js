@@ -1,5 +1,4 @@
 import React from "react";
-import {isNil, get} from "lodash/fp";
 
 import RoomBasis from "./RoomBasis";
 import ShotgunPortal from "./ShotgunModal";
@@ -8,7 +7,6 @@ import {
     ROOM_STATUS_SHOTGUNNED,
     ROOM_STATUS_PRESHOTGUNNED
 } from "../constants";
-
 
 class Room extends React.Component {
     shouldComponentUpdate(nextProps, nextState) {
@@ -95,12 +93,12 @@ class Room extends React.Component {
                 user={this.props.user}
                 roommates={this.props.roommates}
                 userInfo={this.props.userInfo}
+                borderColor={buttonType === "blue" ? "#353535" : buttonType}
             >
                 {this.props.seats > 0 ?
                     <ShotgunPortal
                         disabled={disable}
                         content={content}
-                        buttonType={buttonType}
                         seats={this.props.seats}
                         name={this.props.name}
                         status={finalStatus}

@@ -54,14 +54,16 @@ a {
     margin: 0 5px 0 5px;
     position: relative;
     width: calc(35% - 10px);
-    min-width: 500px;
+    min-width: 400px;
+    min-height: 400px;
 }
 
 .HoulgateFest .smallFloorContainer {
     margin: 0 5px 0 5px;
     position: relative;
     width: calc(15% - 10px);
-    min-width: 200px;
+    min-width: 400px;
+    min-height: 400px;
 }
 
 .HoulgateFest .floorTitle {

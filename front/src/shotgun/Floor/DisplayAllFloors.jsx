@@ -9,7 +9,15 @@ import {FLOOR_GRID_STRUCT_INDEX_PREFIX} from "../constants";
 class DisplayAllFloors extends React.Component {
     render() {
         return (
-            <div className="allFloors">
+            <div 
+                style={{  
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    paddingTop:"1em"
+                }}
+            >
                 {mapUncapped((floor, index) => {
                     return (
                         <Floor

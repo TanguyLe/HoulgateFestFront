@@ -1,5 +1,51 @@
 import React from "react";
 import {Popup} from 'semantic-ui-react'
+import glamorous from "glamorous"
+
+// Cannot set hover in inline style
+// I use glamorous to do it
+// @emotion/styled would be better
+// but I am too lazy
+
+const StyledDiv = glamorous.div(({ position, borderColor = "#353535", hover = false})=>{
+    const hoverProps = !hover ? {} : {
+        ":hover": {"& .tooltip": {visibility: "visible"}}
+    }
+    return ({
+    position:"relative",
+    border: `1px solid ${borderColor}`,
+    userSelect:"none",
+    gridColumnStart: position.columnStart,
+    gridColumnEnd: position.columnEnd,
+    gridRowStart: position.rowStart,
+    gridRowEnd: position.rowEnd,
+    ...hoverProps
+})})
+
+const Tooltip = glamorous.div({
+    visibility: "hidden",
+    minWidth:"100%",
+    backgroundColor: "rgba(35,35,35,0.7)",
+    color: "#fff",
+    textAlign: "center",
+    borderRadius: 6,
+    padding: '5px 0px',
+    position: "absolute",
+    top: -5,
+    zIndex: 1,
+    transform: "translateY(-100%)"
+})
+
+const Wrapper = glamorous.div({  
+    display: "flex",
+    height:"100%",
+    overflow: "hidden",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center"
+})
+
 
 class RoomBasis extends React.Component {
     constructor() {
@@ -13,39 +59,35 @@ class RoomBasis extends React.Component {
     }
 
     render() {
-        let preDisplay = this.props.seats ? (this.props.seats + " places") : null;
-        let user = this.props.user ? ("par " + this.getUsername(this.props.user)) : '';
-        user = <div>{user}</div>;
+        const { seats, user, roommates, children, name, position, small = false, borderColor } = this.props
+        let preDisplay = seats ? ("\n"+ seats + " places") : null;
+        let userName = user ? ("par " + this.getUsername(user)) : '';
+        userName = <div>{user}</div>;
 
-        let roommates = this.props.roommates ? this.props.roommates.map((userId) => this.getUsername(userId)).join(', ')
+        let roommatesDisplay = roommates ? roommates.map((userId) => this.getUsername(userId)).join(', ')
             : null;
 
         let view = '';
-        if (roommates)
-            view = <Popup trigger={user} content={"Avec: " + roommates}/>;
+        if (roommatesDisplay)
+            view = <Popup trigger={userName} content={"Avec: " + roommatesDisplay}/>;
         else
-            view = user;
-
+            view = userName;
+           
         return (
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    border: "1px solid #353535",
-                    gridColumnStart: this.props.position.columnStart,
-                    gridColumnEnd: this.props.position.columnEnd,
-                    gridRowStart: this.props.position.rowStart,
-                    gridRowEnd: this.props.position.rowEnd
-                }}
-            >
-                {this.props.name}
-                <br/>{preDisplay}<br/>
-                {view}
-                {this.props.children}
-            </div>
+            <StyledDiv hover position={position} borderColor={borderColor}>
+                <Tooltip className={"tooltip"}> 
+                    {name}
+                    {preDisplay}
+                </Tooltip>
+                <Wrapper>
+                    {children}
+                    <span style={{overflowWrap:" break-word",width:"100%"}}>{name}</span>
+                    {preDisplay}
+                    {view}
+                </Wrapper>
+            </StyledDiv>
         );
+        
     }
 }
 
