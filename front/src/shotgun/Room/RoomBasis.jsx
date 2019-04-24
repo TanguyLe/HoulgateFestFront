@@ -62,7 +62,7 @@ class RoomBasis extends React.Component {
         const { seats, user, roommates, children, name, position, small = false, borderColor } = this.props
         let preDisplay = seats ? ("\n"+ seats + " places") : null;
         let userName = user ? ("par " + this.getUsername(user)) : '';
-        userName = <div>{user}</div>;
+        userName = <div>{userName}</div>;
 
         let roommatesDisplay = roommates ? roommates.map((userId) => this.getUsername(userId)).join(', ')
             : null;
