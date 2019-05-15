@@ -102,6 +102,7 @@ class Room extends React.Component {
                         seats={this.props.seats}
                         name={this.props.name}
                         status={finalStatus}
+                        buttonType={buttonType}
                         availablePersons={availablePersons}
                         createShotgunFunction={this.props.createShotgunFunction || null}
                         addPersonsInShotgunFunction={roommatesIds =>
