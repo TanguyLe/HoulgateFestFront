@@ -54,7 +54,7 @@ class Room extends React.Component {
         if (roomStatus === ROOM_STATUS_SHOTGUNNED) {
             if (isUserRoom) {
                 buttonType = "green";
-                content = "C'est ici que tu as shotgun!";
+                content = "Done";
                 finalStatus = "shotgunSuccessful";
             }
             else {
