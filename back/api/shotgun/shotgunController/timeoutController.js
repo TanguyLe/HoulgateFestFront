@@ -10,7 +10,7 @@ let tuttimer = {};
 
 // Set a timeout of 5 min linked to a shotgun
 exports.setTimeout = (shotgun) => {
-    tuttimer[shotgun._id] = setTimeout(this.timeoutTriggered.bind(null, shotgun), 500000);
+    tuttimer[shotgun._id] = setTimeout(this.timeoutTriggered.bind(null, shotgun), 120000);
 };
 
 // Clear a timeout related to a shotgun
