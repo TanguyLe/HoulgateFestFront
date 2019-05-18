@@ -14,7 +14,7 @@ module.exports = (app) => {
     app.route("/api/users/:user/activate")
         .get(userActivator.activator.completeActivateNext, user.afterCompleteActivation);
 
-    app.route("/api/users/:users/passwordReset")
+    app.route("/api/users/:user/passwordReset")
         .put(userActivator.activator.completePasswordResetNext, user.afterCompletePasswordReset);
 
     app.route("/api/passwordReset")
