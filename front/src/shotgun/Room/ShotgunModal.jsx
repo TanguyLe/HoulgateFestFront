@@ -52,7 +52,7 @@ export default class ShotgunPortal extends React.Component {
                                 {this.props.friends
                                     ? "(" + this.props.friends.join(", ") + ")"
                                     : ""}. Réjouis toi de voir ton nom gravé dans le marbre sur ce
-                                site. Tu est maitenant responsable si quelqu'un veut échanger :)
+                                site. Tu es maitenant responsable si quelqu'un veut échanger :)
                             </p>
                             <p>
                                 Si c'est une erreur de ta part, pas d'autre solution qu'un petit
