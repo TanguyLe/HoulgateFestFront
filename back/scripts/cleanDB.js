@@ -39,8 +39,18 @@ let removeTestUsers = (cb) => {
     });
 };
 
+let removeShotgunStatuses = (cb) => {
+    User.update({}, {$set: {"hasShotgun": false, "hasPreShotgun": false}}, {"upsert": false, "multi": true}, (err) => {
+        if (err) {
+            cb(err, null);
+            return
+        }
+        console.log("Shotgun statuses reset.");
+        cb(null);
+    })
+};
 
-async.series([deleteShotguns, removeTestUsers],
+async.series([deleteShotguns, removeTestUsers, removeShotgunStatuses],
     (err) => {
         if (err) {
             console.log("FINAL ERR: " + err);
