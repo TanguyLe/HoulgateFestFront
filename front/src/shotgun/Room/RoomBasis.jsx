@@ -32,7 +32,11 @@ class RoomBasis extends React.Component {
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
+                    height:"100%",
+                    userSelect:"none",
                     alignItems: "center",
+                    textAlign: "center",
+                    overflow: "hidden",
                     border: "1px solid #353535",
                     gridColumnStart: this.props.position.columnStart,
                     gridColumnEnd: this.props.position.columnEnd,
@@ -40,8 +44,8 @@ class RoomBasis extends React.Component {
                     gridRowEnd: this.props.position.rowEnd
                 }}
             >
-                {this.props.name}
-                <br/>{preDisplay}<br/>
+                <span style={{overflowWrap:" break-word",width:"100%"}}>{this.props.name}</span>
+                {preDisplay}<br/>
                 {view}
                 {this.props.children}
             </div>
