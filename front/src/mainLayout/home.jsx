@@ -13,7 +13,7 @@ class Home extends React.Component {
 					<br/>
 					Il sera en constante évolution, mais pour l'instant l'objectif est de vous permettre de réserver l'endroit où vous dormirez dans la maison.
 					Enfin pas exactement "pour l'instant",
-					car le shotgun des chambres ouvrira ses portes le 9 Juin à 20h ! Surtout notez bien la date et l'heure, vous n'aurez pas de seconde chance.
+					car le shotgun des chambres ouvrira ses portes le 10 Juin à 20h ! Surtout notez bien la date et l'heure, vous n'aurez pas de seconde chance.
 				</p>
 				<p>
 					D'ici là pensez à vous <Link to="/register">inscrire</Link> et vérifiez bien que vous pouvez vous connecter.
