@@ -15,4 +15,4 @@ _book
 package-lock.json
 
 *.min.js
-/back/api/utils/emailConfig.js
+/back/api/mail/emailConfig.js

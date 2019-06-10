@@ -17,6 +17,9 @@ let UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    hasShotgun: {type: Boolean, default: false},
+    hasPreShotgun: {type: Boolean, default: false},
+    room: {type: mongoose.Schema.Types.ObjectId, ref: 'Rooms', default: null},
     activated: {
         type: Boolean,
         required: true,
@@ -25,7 +28,7 @@ let UserSchema = new mongoose.Schema({
 });
 
 UserSchema.plugin(beautifyUnique, {
-    defaultMessage: "{PATH} existe déjà"
+    defaultMessage: "{PATH} existe déjà."
 });
 
 module.exports = mongoose.model("Users", UserSchema);

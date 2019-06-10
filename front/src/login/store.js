@@ -18,7 +18,7 @@ export const unregister = (fct) => {
     }
 };
 
-export const displatch = () => {
+export const dispatch = () => {
     let creds = getCredentials();
 
     loginStore.forEach((fct) => {
@@ -41,7 +41,7 @@ export const login = (username, accessToken, refreshToken) => {
     window.localStorage.setItem("refreshToken", refreshToken);
     window.localStorage.setItem("session", true);
 
-    displatch();
+    dispatch();
 };
 
 export const getCredentials = () => {

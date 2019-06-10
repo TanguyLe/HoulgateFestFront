@@ -1,4 +1,3 @@
-/* @flow */
 import React from "react";
 import {Form, Message, List} from "semantic-ui-react";
 

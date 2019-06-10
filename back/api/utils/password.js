@@ -1,9 +1,17 @@
 let bcrypt = require("bcrypt");
 
-exports.cryptPassword = (password) => {
-    return bcrypt.hash(password, 10)
+exports.cryptPassword = (plainTextPassword) => {
+    return bcrypt.hash(plainTextPassword, 10)
 };
 
-exports.comparePassword = (pass, hash) => {
-    return bcrypt.compare(pass, hash)
+exports.comparePassword = (plainTextPassword, hash) => {
+    return bcrypt.compare(plainTextPassword, hash)
+};
+
+exports.cryptPasswordSync = (plainTextPassword) => {
+    return bcrypt.hashSync(plainTextPassword, 10)
+};
+
+exports.comparePasswordSync = (plainTextPassword, hash) => {
+    return bcrypt.compareSync(plainTextPassword, hash)
 };

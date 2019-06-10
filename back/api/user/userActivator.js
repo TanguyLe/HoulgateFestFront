@@ -5,7 +5,7 @@ let mongo = require('mongodb'),
     User = mongoose.model("Users"),
     passwordUtils = require("../utils/password"),
     tokenUtils = require("../utils/token"),
-    emailConfig = require('../utils/emailConfig');
+    emailConfig = require('../mail/emailConfig');
 
 exports.activator = activator;
 

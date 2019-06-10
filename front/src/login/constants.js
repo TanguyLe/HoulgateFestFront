@@ -1,9 +1,9 @@
-export const BACK_URL = "http://localhost:3000/";
-export const LOGIN_URL = BACK_URL + "login";
-export const USERS_URL = BACK_URL + "users";
-export const PSWD_RESET_URL = BACK_URL + "passwordReset";
-export const getPasswordResetUrl = (id, code) => (USERS_URL + '/' + id + "/passwordReset?authorization=" + code);
-export const getActivateUserUrl = (id, code) => (USERS_URL + '/' + id + "/activate?authorization=" + code);
+import {SERVER_ENDPOINT, USERS_ENDPOINT} from "../constants";
+
+export const LOGIN_URL = SERVER_ENDPOINT + "/login";
+export const PSWD_RESET_URL = SERVER_ENDPOINT + "/passwordReset";
+export const getPasswordResetUrl = (id, code) => (USERS_ENDPOINT + '/' + id + "/passwordReset?authorization=" + code);
+export const getActivateUserUrl = (id, code) => (USERS_ENDPOINT + '/' + id + "/activate?authorization=" + code);
 
 export const SIGN_UP_FORM_BLOCK_INDEX_PREFIX = "signUpFormBlock";
 export const PSWRD_RESET_BLOCK_INDEX_PREFIX = "passwordResetFormBlock";
