@@ -30,15 +30,6 @@
     "url": "git+https://github.com/TanguyLe/HoulgateFest.git"
   },
   "main": "index.js",
-  "scripts": {
-    "dev": "nodemon server.js",
-    "devStartShotgun": "HAS_STARTED=1 nodemon server.js",
-    "start": "node server.js",
-    "startShotgun": "HAS_STARTED=1 node server.js",
-    "initDB": "node ./scripts/initDB.js mongodb://localhost/Userdb",
-    "populateDB": "node ./scripts/populateDB.js mongodb://localhost/Userdb",
-    "cleanDB": "node ./scripts/cleanDB.js mongodb://localhost/Userdb"
-  },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
     "nodemon": "^1.14.12"
@@ -58,5 +49,14 @@
     "mongoose": "^5.0.12",
     "mongoose-beautiful-unique-validation": "^7.1.1",
     "nodemailer": "^4.6.4"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "devStartShotgun": "HAS_STARTED=1 nodemon server.js",
+    "start": "node server.js",
+    "startShotgun": "HAS_STARTED=1 node server.js",
+    "initDB": "node ./scripts/initDB.js mongodb://localhost/Userdb",
+    "populateDB": "node ./scripts/populateDB.js mongodb://localhost/Userdb",
+    "cleanDB": "node ./scripts/cleanDB.js mongodb://localhost/Userdb"
   }
 }
