@@ -15,6 +15,7 @@ git clone git@github.com:TanguyLe/HoulgateFest.git
 3. Go to the cloned directory and install the modules:
 ```shell
 cd HoulgateFest/front
+npm i -D webpack-cli
 npm install
 ```
 You're ready to go!
