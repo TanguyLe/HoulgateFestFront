@@ -1,6 +1,7 @@
 import {getCredentials, login} from "../../login/store";
 import {REFRESH_LOGIN_URL} from "./constants";
 import {genGetParams, genPostParams, genPutParams, getAuthUpdatedParams} from "./paramsFcts";
+import {UNKNOWN_ERROR_MSG} from "../../labels";
 
 export const refreshLogin = () => {
     let creds = getCredentials();
@@ -17,7 +18,7 @@ export const refreshLogin = () => {
         .then((jsonData) => {
             login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
         })
-        .catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connection internet. " + error))
+        .catch(error => alert(UNKNOWN_ERROR_MSG + error))
 };
 
 export const autoRefreshFetch = (requestUrl, params) => {

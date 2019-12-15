@@ -51,7 +51,7 @@ export const RESET_PSWRD_DEF = [
 
 export const CREATE_PSWRD_RESET_DEF = [
     {[NAME]: EMAIL, [LABEL]: EMAIL_FR, [TYPE]: TEXT, [ERROR_MSG]: INVALID_EMAIL}
-]
+];
 
 export const REGEXES = {
     email: /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i

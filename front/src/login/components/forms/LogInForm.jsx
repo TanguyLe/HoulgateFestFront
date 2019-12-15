@@ -4,6 +4,7 @@ import {Segment, Form, Button, Divider} from 'semantic-ui-react'
 
 import {login} from "../../store"
 import {LOGIN_URL} from "../../constants"
+import {UNKNOWN_ERROR_MSG} from "../../../labels"
 import {postCallApi} from "../../../utils/api/fetchMiddleware";
 
 
@@ -52,7 +53,7 @@ class LogIn extends React.Component {
 
                 else
                     login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
-            }).catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connection internet."))
+            }).catch(error => alert(UNKNOWN_ERROR_MSG))
     }
 
     handleChange(event) {

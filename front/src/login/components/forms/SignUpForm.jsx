@@ -7,6 +7,7 @@ import {NAME, TYPE, SIGN_UP_FORM_BLOCK_INDEX_PREFIX, LABEL,
 import {USERS_ENDPOINT} from "../../../constants";
 import {upCaseFirstLetter} from "../../../utils/miscFcts"
 import {postCallApi} from "../../../utils/api/fetchMiddleware";
+import {UNKNOWN_ERROR_MSG} from "../../../labels";
 
 
 class SignUpForm extends React.Component {
@@ -93,7 +94,7 @@ class SignUpForm extends React.Component {
                     });
                     this.setState(newState);
                 }
-            }).catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connection internet. " + error))
+            }).catch(error => alert(UNKNOWN_ERROR_MSG + error))
     }
 
     validateField(name, value) {

@@ -6,6 +6,7 @@ import {
     NAME, TYPE, CREATE_PSWRD_RESET_BLOCK_INDEX_PREFIX, LABEL, PSWD_RESET_URL,
     CREATE_PSWRD_RESET_DEF, REGEXES, ERROR_MSG, CREATE_PSWRD_RESET_ERROR_MSG_PREFIX, CONFIRM
 } from "../../constants";
+import {UNKNOWN_ERROR_MSG} from "../../../labels"
 import {upCaseFirstLetter} from "../../../utils/miscFcts"
 import {postCallApi} from "../../../utils/api/fetchMiddleware";
 
@@ -104,7 +105,7 @@ class CreatePasswordResetForm extends React.Component {
                     this.setState({status: "sent"});
             }).catch(error => {
             this.setState({status: "input"});
-            alert("Erreur inattendue, veuillez vérifier l'état de votre connexion internet. " + error)
+            alert(UNKNOWN_ERROR_MSG + error)
         })
     }
 
