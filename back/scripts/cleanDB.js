@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-let scriptUtils = require("./scriptUtils");
+let scriptUtils = require("./scriptsUtils");
 console.log("This script cleans the db of test users and shotguns.");
 
 
@@ -8,15 +8,11 @@ let async = require("async");
 let User = require("../api/user/userModel");
 let Shotgun = require("../api/shotgun/shotgunModel");
 
-let mongoose = require("mongoose");
 let mongoDB = scriptUtils.getMongoDbFromArgs();
-
-mongoose.Promise = global.Promise;
-mongoose.connection.on("error", console.error.bind(console, "MongoDB connection error:"));
-mongoose.connect(mongoDB);
+let mongooseConnection = scriptUtils.connectToDb(mongoDB);
 
 let deleteShotguns = (cb) => {
-    Shotgun.remove({}, (err) => {
+    Shotgun.deleteMany({}, (err) => {
             if (err) {
                 cb(err, null);
                 return
@@ -29,7 +25,7 @@ let deleteShotguns = (cb) => {
 
 let removeTestUsers = (cb) => {
     let toDeleteUsernames = scriptUtils.testUsers.map((user) => user[0]);
-    User.remove({username: {$in: toDeleteUsernames}}, (err) => {
+    User.deleteMany({username: {$in: toDeleteUsernames}}, (err) => {
         if (err) {
             cb(err, null);
             return
@@ -40,7 +36,10 @@ let removeTestUsers = (cb) => {
 };
 
 let removeShotgunStatuses = (cb) => {
-    User.update({}, {$set: {"hasShotgun": false, "hasPreShotgun": false}}, {"upsert": false, "multi": true}, (err) => {
+    User.updateMany({}, {$set: {"hasShotgun": false, "hasPreShotgun": false}}, {
+        "upsert": false,
+        "multi": true
+    }, (err) => {
         if (err) {
             cb(err, null);
             return
@@ -56,5 +55,5 @@ async.series([deleteShotguns, removeTestUsers, removeShotgunStatuses],
             console.log("FINAL ERR: " + err);
         }
         // All done, disconnect from database
-        mongoose.connection.close();
+        mongooseConnection.close();
     });
