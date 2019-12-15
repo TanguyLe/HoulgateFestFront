@@ -25,11 +25,11 @@ exports.config = {
             });
         },
         activate: (id, callback) => {
-            User.update({"_id": new mongo.ObjectId(id)}, {$set: {activated: true}}, callback);
+            User.updateOne({"_id": new mongo.ObjectId(id)}, {$set: {activated: true}}, callback);
         },
         setPassword: (id, password, callback) => {
             passwordUtils.cryptPassword(password).then((resPassword) => {
-                User.update({"_id": new mongo.ObjectId(id)}, {$set: {password: resPassword}}, callback);
+                User.updateOne({"_id": new mongo.ObjectId(id)}, {$set: {password: resPassword}}, callback);
             });
         },
     },
