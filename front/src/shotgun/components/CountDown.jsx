@@ -5,13 +5,19 @@ export default class Countdown extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = this.calculateCountdown(props.date);
+        // We store the target date and the current date and compute the current date ourselves not to rely on the
+        // client's date. The actualDate from the upper component is actually a correctDate from an API
+        this.currentDatetime = Date.parse(props.timezoneLocalizedActualDatetime);
+        this.targetDatetime = Date.parse(props.targetDatetime);
+
+        this.state = this.calculateCountdown();
     }
 
     componentDidMount() {
         // update every second
         this.interval = setInterval(() => {
-            const date = this.calculateCountdown(this.props.date);
+            this.currentDatetime += 1000;
+            const date = this.calculateCountdown();
             date ? this.setState(date) : this.stop();
         }, 1000);
     }
@@ -20,8 +26,8 @@ export default class Countdown extends React.Component {
         this.stop();
     }
 
-    calculateCountdown(endDate) {
-        let diff = (Date.parse(new Date(endDate)) - Date.parse(new Date())) / 1000;
+    calculateCountdown() {
+        let diff = (this.targetDatetime - this.currentDatetime) / 1000;
 
         // clear countdown when date is reached
         if (diff <= 0) return false;
@@ -51,7 +57,7 @@ export default class Countdown extends React.Component {
             timeLeft.min = Math.floor(diff / 60);
             diff -= timeLeft.min * 60;
         }
-        timeLeft.sec = diff;
+        timeLeft.sec = Math.round(diff);
 
         return timeLeft;
     }
