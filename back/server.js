@@ -17,7 +17,11 @@ bodyParser = require('body-parser');
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
-mongoose.connect('mongodb://localhost/Userdb', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost/Userdb', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+});
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));//get notification of connection errors
 
