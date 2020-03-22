@@ -1,5 +1,5 @@
 import React from "react"
-import {BrowserRouter, Switch} from "react-router-dom"
+import {BrowserRouter, Route, Switch} from "react-router-dom"
 
 import Home from "./mainLayout/home"
 
@@ -17,14 +17,30 @@ class App extends React.Component {
     render() {
         return <BrowserRouter>
                 <Switch>
-                    <DefaultLayout path="/" exact component={Home}/>
-                    <DefaultLayout path="/shotgun" component={ShotgunPage} bigContainer/>
-                    <DefaultLayout path="/contact" component={ContactPage}/>
-                    <DefaultLayout path="/register" component={SignUpPage}/>
-                    <DefaultLayout path="/activateUser" component={activateAccount}/>
-                    <DefaultLayout path="/passwordReset" component={passwordResetPage}/>
-                    <DefaultLayout path="/createPasswordReset" component={createPasswordResetPage}/>
-                    <DefaultLayout component={NotFound}/>
+                    <Route path="/">
+                        <DefaultLayout exact component={Home}/>
+                    </Route>
+                    <Route path="/shotgun">
+                        <DefaultLayout component={ShotgunPage} bigContainer/>
+                    </Route>
+                    <Route path="/contact">
+                        <DefaultLayout component={ContactPage}/>
+                    </Route>
+                    <Route path="/register">
+                        <DefaultLayout component={SignUpPage}/>
+                    </Route>
+                    <Route path="/activateUser">
+                        <DefaultLayout component={activateAccount}/>
+                    </Route>
+                    <Route path="/passwordReset">
+                        <DefaultLayout component={passwordResetPage}/>
+                    </Route>
+                    <Route path="/createPasswordReset">
+                        <DefaultLayout component={createPasswordResetPage}/>
+                    </Route>
+                    <Route path="*">
+                        <DefaultLayout component={NotFound}/>
+                    </Route>
                 </Switch>
         </BrowserRouter>
     }

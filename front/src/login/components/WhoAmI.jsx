@@ -15,7 +15,7 @@ class WhoAmI extends React.Component {
             this.setState({login: creds.login})
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (window.localStorage.getItem("session")) {
             const username = window.localStorage.getItem("username");
             const accessToken = window.localStorage.getItem("accessToken");

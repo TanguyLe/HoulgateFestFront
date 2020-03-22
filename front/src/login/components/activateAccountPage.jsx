@@ -16,7 +16,7 @@ class activateAccount extends React.Component {
         }
     }
 
-    componentWillMount(){
+    componentDidMount(){
         const parsed = parse(this.props.location.search);
 
         this.id = parsed.id;
