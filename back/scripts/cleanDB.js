@@ -49,7 +49,12 @@ let removeShotgunStatuses = (cb) => {
     })
 };
 
-async.series([deleteShotguns, removeTestUsers, removeShotgunStatuses],
+const seriesWithUsers = [deleteShotguns, removeShotgunStatuses];
+const seriesWithoutUsers =     [...seriesWithUsers, removeTestUsers];
+
+let series = process.argv.slice(2)[1] === "keepUsers" ? seriesWithUsers : seriesWithoutUsers;
+
+async.series(series,
     (err) => {
         if (err) {
             console.log("FINAL ERR: " + err);

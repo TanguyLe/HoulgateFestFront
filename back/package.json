@@ -57,6 +57,7 @@
     "startShotgun": "HAS_STARTED=1 node server.js",
     "initDB": "node ./scripts/initDB.js mongodb://localhost/Userdb",
     "populateDB": "node ./scripts/populateDB.js mongodb://localhost/Userdb",
+    "cleanShotguns": "node ./scripts/cleanDB.js mongodb://localhost/Userdb keepUsers",
     "cleanDB": "node ./scripts/cleanDB.js mongodb://localhost/Userdb"
   }
 }
