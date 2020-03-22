@@ -1,5 +1,5 @@
 import React from "react"
-import {BrowserRouter, Route, Switch} from "react-router-dom"
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 
 import Home from "./mainLayout/home"
 
@@ -15,11 +15,8 @@ import ContactPage from './contact/contactPage'
 
 class App extends React.Component {
     render() {
-        return <BrowserRouter>
+        return <Router>
                 <Switch>
-                    <Route path="/">
-                        <DefaultLayout exact component={Home}/>
-                    </Route>
                     <Route path="/shotgun">
                         <DefaultLayout component={ShotgunPage} bigContainer/>
                     </Route>
@@ -38,11 +35,14 @@ class App extends React.Component {
                     <Route path="/createPasswordReset">
                         <DefaultLayout component={createPasswordResetPage}/>
                     </Route>
+                    <Route path="/">
+                        <DefaultLayout exact component={Home}/>
+                    </Route>
                     <Route path="*">
                         <DefaultLayout component={NotFound}/>
                     </Route>
                 </Switch>
-        </BrowserRouter>
+        </Router>
     }
 }
 
