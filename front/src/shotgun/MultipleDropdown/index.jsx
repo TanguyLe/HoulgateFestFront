@@ -59,13 +59,12 @@ class MultipleDropdown extends React.Component {
         event.preventDefault();
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(nextProps.availablePersons) !== JSON.stringify(this.props.availablePersons)) {
-            const nextIds = nextProps.availablePersons.map(person => person._id);
+    static getDerivedStateFromProps(props, state) {
+            const nextIds = props.availablePersons.map(person => person._id);
 
             // Let's check the selected beds first
 
-            const currentBeds = this.state.beds.map(e => {
+            const currentBeds = state.beds.map(e => {
                 if ((e === '') || (!nextIds.includes(e)))
                     return '';
 
@@ -74,10 +73,9 @@ class MultipleDropdown extends React.Component {
 
             // Then the available persons
 
-            const currentAvailablePersonsIds = this.state.availablePersonsIds.filter(e => nextIds.includes(e));
+            const currentAvailablePersonsIds = state.availablePersonsIds.filter(e => nextIds.includes(e));
 
-            this.setState({beds: currentBeds, availablePersonsIds: currentAvailablePersonsIds});
-        }
+            return {beds: currentBeds, availablePersonsIds: currentAvailablePersonsIds};
     }
 
     componentDidMount() {
