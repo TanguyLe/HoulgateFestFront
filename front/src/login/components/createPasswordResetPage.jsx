@@ -3,7 +3,7 @@ import React from "react"
 import CreatePasswordResetForm from "./forms/CreatePasswordResetForm";
 import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenNotConnectedWrapper"
 
-class createPasswordResetPage extends React.Component {
+class CreatePasswordResetPage extends React.Component {
     render() {
         return(
             <OnlyWhenConnectedWrapper className="createPasswordresetPage">
@@ -13,4 +13,4 @@ class createPasswordResetPage extends React.Component {
     }
 }
 
-export default createPasswordResetPage
+export default CreatePasswordResetPage

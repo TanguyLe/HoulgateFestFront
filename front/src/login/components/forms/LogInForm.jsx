@@ -1,5 +1,4 @@
 import React from "react";
-import {withRouter} from 'react-router-dom';
 import {Segment, Form, Button, Divider} from 'semantic-ui-react'
 
 import {login} from "../../store"
@@ -8,7 +7,7 @@ import {UNKNOWN_ERROR_MSG} from "../../../labels"
 import {postCallApi} from "../../../utils/api/fetchMiddleware";
 
 
-class LogIn extends React.Component {
+export default class LogIn extends React.Component {
     constructor() {
         super();
         // The component is destroyed at closing by semantic-ui portal, which is not the expected behavior
@@ -95,7 +94,7 @@ class LogIn extends React.Component {
                             value={this.state.password}
                             onKeyPress={this.handleKeyPress}
                             onChange={this.handleChange}/>
-                <a onClick={this.onClickPasswordReset}> Mot de passe oublié? </a>
+                <a onClick={this.onClickPasswordReset}> Mot de passe oublié ? </a>
                 <Segment>
                     <Button primary fluid onClick={this.onClickLogin}>Je me connecte</Button>
                     <Divider horizontal>Ou</Divider>
@@ -105,5 +104,3 @@ class LogIn extends React.Component {
         );
     }
 }
-
-export default withRouter(LogIn);

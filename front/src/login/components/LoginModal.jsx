@@ -1,10 +1,11 @@
 import React from "react";
+import {withRouter} from 'react-router-dom';
 import {Button, Header, Segment, TransitionablePortal} from 'semantic-ui-react'
 
 
 import LogInForm from "./forms/LogInForm"
 
-export default class LoginPortal extends React.Component {
+class LoginPortal extends React.Component {
     constructor() {
         super();
 
@@ -34,9 +35,11 @@ export default class LoginPortal extends React.Component {
             >
                 <Segment className="ConnectionModal">
                     <Header>Connecte-toi</Header>
-                    <LogInForm className="loginForm" toClose={this.handleClose}/>
+                    <LogInForm className="loginForm" history={this.props.history} toClose={this.handleClose}/>
                 </Segment>
             </TransitionablePortal>
-        )
+        );
     }
 }
+
+export default withRouter(LoginPortal);

@@ -6,9 +6,9 @@ import Home from "./mainLayout/home"
 import ShotgunPage from "./shotgun/shotgunPage"
 import NotFound from "./mainLayout/notFound"
 import SignUpPage from "./login/components/signUpPage"
-import activateAccount from "./login/components/activateAccountPage"
-import passwordResetPage from "./login/components/passwordResetPage"
-import createPasswordResetPage from "./login/components/createPasswordResetPage"
+import ActivateAccount from "./login/components/activateAccountPage"
+import PasswordResetPage from "./login/components/passwordResetPage"
+import CreatePasswordResetPage from "./login/components/createPasswordResetPage"
 import DefaultLayout from './mainLayout/layout'
 import ContactPage from './contact/contactPage'
 
@@ -17,6 +17,9 @@ class App extends React.Component {
     render() {
         return <Router>
                 <Switch>
+                    <Route exact path="/">
+                        <DefaultLayout exact component={Home}/>
+                    </Route>
                     <Route path="/shotgun">
                         <DefaultLayout component={ShotgunPage} bigContainer/>
                     </Route>
@@ -27,22 +30,19 @@ class App extends React.Component {
                         <DefaultLayout component={SignUpPage}/>
                     </Route>
                     <Route path="/activateUser">
-                        <DefaultLayout component={activateAccount}/>
+                        <DefaultLayout component={ActivateAccount}/>
                     </Route>
                     <Route path="/passwordReset">
-                        <DefaultLayout component={passwordResetPage}/>
+                        <DefaultLayout component={PasswordResetPage}/>
                     </Route>
                     <Route path="/createPasswordReset">
-                        <DefaultLayout component={createPasswordResetPage}/>
-                    </Route>
-                    <Route path="/">
-                        <DefaultLayout exact component={Home}/>
+                        <DefaultLayout component={CreatePasswordResetPage}/>
                     </Route>
                     <Route path="*">
                         <DefaultLayout component={NotFound}/>
                     </Route>
                 </Switch>
-        </Router>
+        </Router>;
     }
 }
 
