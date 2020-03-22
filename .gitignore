@@ -15,4 +15,5 @@ _book
 package-lock.json
 
 *.min.js
+*.min.js.LICENSE
 /back/api/mail/emailConfig.js

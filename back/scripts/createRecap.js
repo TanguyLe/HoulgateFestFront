@@ -1,17 +1,13 @@
 #! /usr/bin/env node
 
-let getMongoDbFromArgs = require("./scriptUtils").getMongoDbFromArgs;
+let scriptUtils = require("./scriptsUtils");
 console.log("This script retrieves all the confirmed shotgun from the database");
 
 let async = require("async");
 let fs = require("fs");
 
-let mongoose = require("mongoose");
-let mongoDB = getMongoDbFromArgs();
-
-mongoose.Promise = global.Promise;
-mongoose.connection.on("error", console.error.bind(console, "MongoDB connection error:"));
-mongoose.connect(mongoDB);
+let mongoDB = scriptUtils.getMongoDbFromArgs();
+let mongooseConnection = scriptUtils.connectToDb(mongoDB);
 
 let Shotgun = require("../api/shotgun/shotgunModel");
 let User = require("../api/user/userModel");
@@ -98,5 +94,5 @@ async.waterfall([
             console.log("Recap file created at the current directory.");
 
         // All done, disconnect from database
-        mongoose.connection.close();
+        mongooseConnection.close();
     });

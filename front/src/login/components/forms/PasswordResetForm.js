@@ -6,6 +6,7 @@ import {NAME, TYPE, PSWRD_RESET_BLOCK_INDEX_PREFIX,  LABEL,
     RESET_PSWRD_DEF, REGEXES, ERROR_MSG, PSWRD_RESET_ERROR_MSG_PREFIX, CONFIRM} from "../../constants";
 import {upCaseFirstLetter} from "../../../utils/miscFcts"
 import {putCallApi} from "../../../utils/api/fetchMiddleware";
+import {UNKNOWN_ERROR_MSG} from "../../../labels";
 
 
 class PasswordResetForm extends React.Component {
@@ -92,7 +93,7 @@ class PasswordResetForm extends React.Component {
                     });
                     this.setState(newState);
                 }
-            }).catch(error => alert("Erreur inattendue, veuillez vérifier l'état de votre connection internet. " + error))
+            }).catch(error => alert(UNKNOWN_ERROR_MSG + error))
     }
 
     validateField(name, value) {

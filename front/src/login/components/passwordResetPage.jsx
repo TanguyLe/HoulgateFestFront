@@ -15,7 +15,7 @@ class passwordResetPage extends React.Component {
         this.onPasswordChanged = this.onPasswordChanged.bind(this);
     }
 
-    componentWillMount(){
+    componentDidMount(){
         const parsed = parse(this.props.location.search);
 
         this.id = parsed.id;

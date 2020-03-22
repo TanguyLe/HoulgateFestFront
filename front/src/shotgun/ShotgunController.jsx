@@ -89,7 +89,7 @@ class ShotgunContainer extends React.Component {
         const updateRoom = room => {
             let related_shotgun = shotgunsList.find(shotgun => shotgun.room._id === room._id);
             if (!related_shotgun)
-                return Object.assign({}, room, {status: ROOM_STATUS_READY});
+                return Object.assign({}, room, {status: ROOM_STATUS_READY, user: ''});
             else
                 return Object.assign({}, room, related_shotgun, related_shotgun.room);
         };

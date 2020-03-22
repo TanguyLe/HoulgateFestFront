@@ -12,11 +12,16 @@ let express = require("express"),
     shotgunRoutes = require('./api/shotgun/shotgunRoutes'),
     Mail = require('./api/mail/mailModel'),
     contactRoutes = require('./api/contact/contactRoutes');
-    bodyParser = require('body-parser');
+bodyParser = require('body-parser');
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Userdb');
+mongoose.set('useCreateIndex', true);
+mongoose.connect('mongodb://localhost/Userdb', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+});
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));//get notification of connection errors
 

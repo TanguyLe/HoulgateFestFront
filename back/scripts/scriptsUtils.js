@@ -1,3 +1,6 @@
+let mongoose = require("mongoose");
+
+
 module.exports = {
     getMongoDbFromArgs: () => {
         console.log("Specifies database as argument - e.g.: populatedb mongodb://your_username:your_password@your_dabase_url");
@@ -8,6 +11,14 @@ module.exports = {
             throw "ERROR: You need to specify a valid mongodb URL as the first argument";
 
         return userArgs[0];
+    },
+    connectToDb: (mongoDB) => {
+        mongoose.Promise = global.Promise;
+        mongoose.set('useCreateIndex', true);
+        mongoose.connection.on("error", console.error.bind(console, "MongoDB connection error:"));
+        mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+
+        return mongoose.connection
     },
     testUsers: [
         ["Patrick", "Rothfuss@rothfuss.je", "test", true],

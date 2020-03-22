@@ -2,12 +2,13 @@ let webpack = require("webpack");
 
 module.exports = {
 	entry: [
-		"babel-polyfill",
 		"react-hot-loader/patch",
 		"./src/houlgatefest.js"
 	],
+	mode: "development",
 	resolve: {
-		extensions: [".js", ".jsx"]
+		extensions: [".js", ".jsx"],
+		alias: { 'react-dom': '@hot-loader/react-dom' }
 	},
 	devtool: "#inline-source-map",
 	module: {
@@ -17,7 +18,7 @@ module.exports = {
 				exclude: [/node_modules/, /bin/],
 				use: [
 					"react-hot-loader/webpack",
-					"babel-loader?presets[]=react"
+					"babel-loader"
 				]
 			},
 			{

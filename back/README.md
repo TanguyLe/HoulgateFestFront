@@ -28,7 +28,7 @@ sudo apt-get install -y mongodb-org
 ## Usage
 ### Development
 Make sure the service for the db runs by using `sudo service mongod start`.
-You can fill the database with mock values using the command `node populateDB.js mongodb://localhost/Userdb`.
+You can fill the database with mock values using the command `npm run populateDB`.
 To run a hot-reloading web server for development use  `npm run dev`. To access directly the mongo console if needed just use `mongo`.
 
 Your db server will be on localhost, the node server on the port displayed by your console!

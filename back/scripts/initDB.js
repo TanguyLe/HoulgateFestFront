@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 
-let getMongoDbFromArgs = require("./scriptUtils").getMongoDbFromArgs;
+let scriptsUtils = require("./scriptsUtils");
 console.log("This script populates initial necessary objects to the database.");
 
 
@@ -12,12 +12,8 @@ let babelCore = require("babel-core/register"),
     bableFill = require("babel-polyfill"),
     villaLesGenets = require("./villaLesGenetsDef.js");
 
-let mongoose = require("mongoose");
-let mongoDB = getMongoDbFromArgs();
-
-mongoose.Promise = global.Promise;
-mongoose.connection.on("error", console.error.bind(console, "MongoDB connection error:"));
-mongoose.connect(mongoDB);
+let mongoDB = scriptsUtils.getMongoDbFromArgs();
+let mongooseConnection = scriptsUtils.connectToDb(mongoDB);
 
 let createRoom = (roomType, text, nbBeds, cb) => {
     let roomDetail = {
@@ -59,5 +55,5 @@ async.series([createRooms],
             console.log("FINAL ERR: " + err);
         }
         // All done, disconnect from database
-        mongoose.connection.close();
+        mongooseConnection.close();
     });
