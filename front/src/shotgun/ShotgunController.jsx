@@ -30,6 +30,7 @@ class ShotgunContainer extends React.Component {
                 }))
             },
             loading: true,
+            error: false,
             shotgunId: null,
             userInfo: {},
             roomsIndexed: {}
@@ -107,7 +108,7 @@ class ShotgunContainer extends React.Component {
         this.setState(nextState, callback);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps, nextState, _) {
         return (JSON.stringify(nextProps) !== JSON.stringify(this.props)) ||
             (JSON.stringify(nextState) !== JSON.stringify(this.state))
     }
@@ -124,36 +125,41 @@ class ShotgunContainer extends React.Component {
          * Fetches the rooms' definition and the floors' definition, updates once with the eventual shotguns and
          * the user, and then start the time-outed refreshes.
          */
-        const roomsApiCall = (await getCallApi(ROOMS_ENDPOINT, true));
-        const rooms = (await roomsApiCall.json()).data;
+        await getCallApi(ROOMS_ENDPOINT, true).then(async (response) => {
+            if (response.status === 400)
+                this.setState({error: true, loading: false});
+            else {
+                const rooms = (await response.json()).data;
 
-        const RoomFct = (room) => {
-            const roomName = room.name;
+                const RoomFct = (room) => {
+                    const roomName = room.name;
 
-            const roomId = rooms.find(room => room.text === roomName)._id;
-            roomsIndexed[roomId] = Object.assign(roomsIndexed[roomId], room);
+                    const roomId = rooms.find(room => room.text === roomName)._id;
+                    roomsIndexed[roomId] = Object.assign(roomsIndexed[roomId], room);
 
-            return roomId;
-        };
+                    return roomId;
+                };
 
-        const floorFct = (floor) => {
-            return Object.assign(floor, {rooms: floor.rooms.map(RoomFct)})
-        };
+                const floorFct = (floor) => {
+                    return Object.assign(floor, {rooms: floor.rooms.map(RoomFct)})
+                };
 
-        let roomsIndexed = rooms.reduce((acc, room) => ({...acc, [room._id]: room}), {});
+                let roomsIndexed = rooms.reduce((acc, room) => ({...acc, [room._id]: room}), {});
 
-        this.updateState([{
-            villaLesGenets: Object.assign(this.state.villaLesGenets,
-                {floors: this.state.villaLesGenets.floors.map(floorFct)}),
-            roomsIndexed: roomsIndexed
-        }], async () => {
+                this.updateState([{
+                    villaLesGenets: Object.assign(this.state.villaLesGenets,
+                        {floors: this.state.villaLesGenets.floors.map(floorFct)}),
+                    roomsIndexed: roomsIndexed
+                }], async () => {
 
-            const floorsUpdater = await this.getFloorsUpdater();
-            const usersUpdater = await this.getUsersUpdater();
+                    const floorsUpdater = await this.getFloorsUpdater();
+                    const usersUpdater = await this.getUsersUpdater();
 
-            this.updateState([floorsUpdater, usersUpdater], () => {
-                this.refrechInterval = setInterval(this.intervalFunction, INTERVAL_DURATION);
-            });
+                    this.updateState([floorsUpdater, usersUpdater], () => {
+                        this.refrechInterval = setInterval(this.intervalFunction, INTERVAL_DURATION);
+                    });
+                });
+            }
         });
     }
 
@@ -239,6 +245,14 @@ class ShotgunContainer extends React.Component {
                 <Icon name="circle notched" loading/>
                 <Message.Content>Chargement des pièces...</Message.Content>
             </Message>;
+
+        if (this.state.error)
+            return <Message error>
+                <Message.Content>Erreur de chargement des pièces, tu n'aurais pas du voir ça. Vérifie ta
+                                 connection internet et recharge la page.
+                </Message.Content>
+            </Message>;
+
 
         return <DisplayAllFloors
             floors={this.getFloorsToRender()}
