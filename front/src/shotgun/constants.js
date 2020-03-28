@@ -17,8 +17,8 @@ export const STAIRS_TYPE = "stairs";
 export const LIVING_ROOM_TYPE = "livingRoom";
 export const GARDEN_TYPE = "garden";
 
-export const shotgunDate = "June 10, 2019 20:00:00";
-
 export const ROOMS_ENDPOINT = SERVER_ENDPOINT + "/rooms";
 export const SHOTGUN_ROOMS_ENDPOINT = SERVER_ENDPOINT + "/shotgun/rooms";
 export const getShotgunRoomUrl = (roomId) =>  (SHOTGUN_ROOMS_ENDPOINT + '/' + roomId);
+
+export const EDITIONS_ENDPOINT = SERVER_ENDPOINT + "/edition";

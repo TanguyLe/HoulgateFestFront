@@ -6,19 +6,27 @@ export default class Countdown extends React.Component {
         super(props);
 
         // We store the target date and the current date and compute the current date ourselves not to rely on the
-        // client's date. The actualDate from the upper component is actually a correctDate from an API
-        this.currentDatetime = Date.parse(props.timezoneLocalizedActualDatetime);
-        this.targetDatetime = Date.parse(props.targetDatetime);
-
-        this.state = this.calculateCountdown();
+        // client's date. The currentDatetime from the upper component is actually a correctDate from an API
+        this.state = {
+            currentDatetime: props.currentDatetime,
+            timeLeft: Countdown.calculateCountdown(props.targetDatetime, props.currentDatetime)
+        };
     }
 
     componentDidMount() {
         // update every second
         this.interval = setInterval(() => {
-            this.currentDatetime += 1000;
-            const date = this.calculateCountdown();
-            date ? this.setState(date) : this.stop();
+
+            let nextCurrentDatetime = new Date(this.state.currentDatetime);
+            nextCurrentDatetime.setSeconds(nextCurrentDatetime.getSeconds() + 1);
+            const timeLeft = Countdown.calculateCountdown(this.props.targetDatetime, nextCurrentDatetime);
+            timeLeft ? this.setState(
+                {
+                    currentDatetime: nextCurrentDatetime,
+                    timeLeft: timeLeft
+                }
+            ) : this.stop();
+
         }, 1000);
     }
 
@@ -26,8 +34,8 @@ export default class Countdown extends React.Component {
         this.stop();
     }
 
-    calculateCountdown() {
-        let diff = (this.targetDatetime - this.currentDatetime) / 1000;
+    static calculateCountdown(targetDatetime, currentDatetime) {
+        let diff = (targetDatetime - currentDatetime) / 1000;
 
         // clear countdown when date is reached
         if (diff <= 0) return false;
@@ -40,7 +48,6 @@ export default class Countdown extends React.Component {
             sec: 0
         };
 
-        // calculate time difference between now and expected date
         if (diff >= (365.25 * 86400)) { // 365.25 * 24 * 60 * 60
             timeLeft.years = Math.floor(diff / (365.25 * 86400));
             diff -= timeLeft.years * 365.25 * 86400;
@@ -79,7 +86,7 @@ export default class Countdown extends React.Component {
     }
 
     render() {
-        const countDown = this.state;
+        const countDown = this.state.timeLeft;
 
         return (
             <div className="Countdown">
@@ -93,7 +100,7 @@ export default class Countdown extends React.Component {
                 <span className="CountdownCol">
 				  <span className="CountdownColElement">
 					<strong>{this.addLeadingZeros(countDown.hours)}</strong>
-					<span>Heures</span>
+					<span>{countDown.hours === 1 ? "Heure" : 'Heures'}</span>
 				  </span>
 				</span>
 
@@ -101,14 +108,14 @@ export default class Countdown extends React.Component {
                 <span className="CountdownCol">
 				  <span className="CountdownColElement">
 					<strong>{this.addLeadingZeros(countDown.min)}</strong>
-					<span>Minutes</span>
+					<span>{countDown.min === 1 ? "Minute" : 'Minutes'}</span>
 				  </span>
 				</span>
 
                 <span className="CountdownCol">
 				  <span className="CountdownColElement">
 					<strong>{this.addLeadingZeros(countDown.sec)}</strong>
-					<span>Secondes</span>
+					<span>{countDown.sec === 1 ? "Seconde" : 'Secondes'}</span>
 				  </span>
 				</span>
             </div>
