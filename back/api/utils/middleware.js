@@ -1,7 +1,8 @@
 let tokenUtils = require("./token"),
     path = require('path'),
     labels = require("../../labels"),
-    pth = path.join(__dirname, '..', '..', '..', '/front/web');
+    pth = path.join(__dirname, '..', '..', '..', '/front/web'),
+    editionController = require('../edition/editionController');
 
 exports.userAuth = (req, res, next) => {
     req.user = null;
@@ -36,10 +37,17 @@ exports.isFront = (req, res, next) => {
 
 
 exports.hasStarted = (req, res, next) => {
-    if (process.env.HAS_STARTED !== "1")
-        res.status(400).send({message: "Shotgun has not started yet"});
-    else
+    if (process.env.HAS_STARTED === "1")
         next();
+    else {
+        editionController.getEditions(editions => {
+            const currentEdition = editionController.getCurrentEditionFromEditions(editions);
+            if ((currentEdition !== undefined) && (new Date() > currentEdition.shotgunDate))
+                next();
+            else
+                res.status(400).send({message: "Shotgun has not started yet"});
+        });
+    }
 };
 
 exports.notFound = (req, res) => {
