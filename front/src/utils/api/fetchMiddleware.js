@@ -11,7 +11,8 @@ export const refreshLogin = () => {
     return fetch(REFRESH_LOGIN_URL, params)
         .then((response) => {
             if (!response.ok)
-                throw Error("Requête");
+                throw Error("Erreur lors du refresh de ton login, " +
+                            "essaie de recharger la page et de te déconnecter/reconnecter.");
             return response;
         })
         .then((response) => response.json())

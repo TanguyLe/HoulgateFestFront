@@ -69,8 +69,9 @@ class ShotgunPage extends React.Component {
             else {
                 if (this.state.currentDatetime < this.state.targetDatetime)
                     display = [
-                        <div className="Countdown">Ouverture du Shotgun des chambres:</div>,
+                        <div key="countdown-title" className="Countdown">Ouverture du Shotgun des chambres:</div>,
                         <Countdown onTime={this.updateActualDate}
+                                   key="countdown-component"
                                    targetDatetime={this.state.targetDatetime}
                                    currentDatetime={this.state.currentDatetime}/>
                     ];
