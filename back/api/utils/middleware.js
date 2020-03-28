@@ -1,19 +1,25 @@
 let tokenUtils = require("./token"),
     path = require('path'),
+    labels = require("../../labels"),
     pth = path.join(__dirname, '..', '..', '..', '/front/web');
 
 exports.userAuth = (req, res, next) => {
-    req.user = undefined;
+    req.user = null;
 
     if (req.headers) {
         let accessToken = tokenUtils.getJWTToken(req.headers);
 
         if (accessToken)
             tokenUtils.checkAccessToken(accessToken, (err, decode) => {
-                req.user = decode
+                if (!err)
+                    req.user = decode;
             }, false);
     }
-    next();
+
+    if (req.user !== null)
+        next();
+    else
+        res.status(401).send({message: labels.FAILED_AUTH_INVALID_CRED_MSG});
 };
 
 
@@ -31,7 +37,7 @@ exports.isFront = (req, res, next) => {
 
 exports.hasStarted = (req, res, next) => {
     if (process.env.HAS_STARTED !== "1")
-        res.status(200).send({message: "Shotgun has not started yet"});
+        res.status(400).send({message: "Shotgun has not started yet"});
     else
         next();
 };

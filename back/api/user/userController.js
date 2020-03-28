@@ -111,13 +111,6 @@ exports.refreshLogin = (req, res) => {
 
 };
 
-exports.loginRequired = (req, res, next) => {
-    if (req.user)
-        next();
-    else
-        return res.status(401).json({message: labels.FAILED_AUTH_INVALID_CRED_MSG});
-};
-
 // Display list of all users.
 exports.userList = (req, res) => {
     User.find({}, {password: 0, __v: 0})

@@ -8,9 +8,6 @@ module.exports = (app) => {
         .get(user.userList)
         .post(user.createUser, userActivator.activator.createActivate);
 
-    app.route("/api/users/:userId")
-        .get(user.loginRequired, user.readUser);
-
     app.route("/api/users/:user/activate")
         .get(userActivator.activator.completeActivateNext, user.afterCompleteActivation);
 

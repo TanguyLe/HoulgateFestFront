@@ -8,6 +8,7 @@ let express = require("express"),
     Shotgun = require('./api/shotgun/shotgunModel'),
     middleware = require('./api/utils/middleware'),
     userRoutes = require('./api/user/userRoutes'),
+    userRoutesWithAuth = require('./api/user/userRoutesWithAuth'),
     roomRoutes = require('./api/room/roomRoutes'),
     shotgunRoutes = require('./api/shotgun/shotgunRoutes'),
     Mail = require('./api/mail/mailModel'),
@@ -30,8 +31,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(middleware.isFront);
-app.use(middleware.userAuth);
 userRoutes(app);
+app.use(middleware.userAuth);
+userRoutesWithAuth(app);
 contactRoutes(app);
 app.use(middleware.hasStarted);
 roomRoutes(app);
