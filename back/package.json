@@ -58,6 +58,7 @@
     "initDB": "node ./scripts/initDB.js mongodb://localhost/Userdb",
     "populateDB": "node ./scripts/populateDB.js mongodb://localhost/Userdb",
     "cleanShotguns": "node ./scripts/cleanDB.js mongodb://localhost/Userdb keepUsers",
-    "cleanDB": "node ./scripts/cleanDB.js mongodb://localhost/Userdb"
+    "cleanDB": "node ./scripts/cleanDB.js mongodb://localhost/Userdb",
+    "fillEditions": "node ./scripts/fillEditions.js mongodb://localhost/Userdb"
   }
 }
