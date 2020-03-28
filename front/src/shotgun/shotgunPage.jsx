@@ -32,32 +32,52 @@ class ShotgunPage extends React.Component {
     async componentDidMount() {
         this.setState({loading: true}, async () => {
             const editionsApiCall = await getCallApi(EDITIONS_ENDPOINT + "?current=true", true);
-            const targetDatetime = (await editionsApiCall.json()).data.shotgunDate;
-            const parisDatetimeFromApi = (await getParisDatetimeFromAPI()).datetime;
+            const responseJson = (await editionsApiCall.json());
+            if (responseJson.data === undefined)
+                this.setState({
+                    loading: false,
+                    targetDatetime: null
+                });
+            else {
+                const targetDatetime = responseJson.data.shotgunDate;
+                const parisDatetimeFromApi = (await getParisDatetimeFromAPI()).datetime;
 
-            this.setState({
-                loading: false,
-                currentDatetime: new Date(parisDatetimeFromApi),
-                targetDatetime: new Date(targetDatetime)
-            })
+                this.setState({
+                    loading: false,
+                    currentDatetime: new Date(parisDatetimeFromApi),
+                    targetDatetime: new Date(targetDatetime)
+                })
+            }
         });
     }
 
     render() {
-        let display = this.state.loading ?
-            <Message info icon>
+        let display;
+
+        if (this.state.loading)
+            display = <Message info icon>
                 <Icon name="circle notched" loading/>
                 <Message.Content>Vérification de l'heure...</Message.Content>
-            </Message> :
-            (this.state.currentDatetime < this.state.targetDatetime ?
-                <div>
-                    <div className="Countdown">Ouverture du Shotgun des chambres:</div>
-                    <Countdown onTime={this.updateActualDate}
-                               targetDatetime={this.state.targetDatetime}
-                               currentDatetime={this.state.currentDatetime}/>
-                </div>
-                :
-                <ShotgunController/>);
+            </Message>;
+        else {
+            if (this.state.targetDatetime === null)
+                display = <Message info>
+                    <Message.Content>
+                        La date de shotgun n'a pas encore été définie cette année. Reviens plus tard !
+                    </Message.Content>
+                </Message>;
+            else {
+                if (this.state.currentDatetime < this.state.targetDatetime)
+                    display = [
+                        <div className="Countdown">Ouverture du Shotgun des chambres:</div>,
+                        <Countdown onTime={this.updateActualDate}
+                                   targetDatetime={this.state.targetDatetime}
+                                   currentDatetime={this.state.currentDatetime}/>
+                    ];
+                else
+                    display = <ShotgunController/>
+            }
+        }
 
         return (<OnlyWhenConnectedWrapper>
             {display}
