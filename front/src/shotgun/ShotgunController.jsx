@@ -58,7 +58,7 @@ class ShotgunContainer extends React.Component {
          * Returns an updater for the userInfo and eventually shotgunId.
          * It is an object up-to-date with the server to be used with the updateState method.
          */
-        const usersApiCall = await getCallApi(USERS_ENDPOINT, false);
+        const usersApiCall = await getCallApi(USERS_ENDPOINT, true);
         const users = (await usersApiCall.json()).data;
 
         const currentUserUsername = window.localStorage.getItem("username");
@@ -81,7 +81,7 @@ class ShotgunContainer extends React.Component {
          * to the state.
          * It is an object up-to-date with the server to be used with the updateState method.
          */
-        const shotgunsApiCall = await getCallApi(SHOTGUN_ROOMS_ENDPOINT, false);
+        const shotgunsApiCall = await getCallApi(SHOTGUN_ROOMS_ENDPOINT, true);
         const shotgunsList = (await shotgunsApiCall.json()).data;
 
         // Right now it doesn't seem straightforward, but getFloorsUpdater should be able to use getRoomUpdater a
@@ -124,7 +124,7 @@ class ShotgunContainer extends React.Component {
          * Fetches the rooms' definition and the floors' definition, updates once with the eventual shotguns and
          * the user, and then start the time-outed refreshes.
          */
-        const roomsApiCall = (await getCallApi(ROOMS_ENDPOINT, false));
+        const roomsApiCall = (await getCallApi(ROOMS_ENDPOINT, true));
         const rooms = (await roomsApiCall.json()).data;
 
         const RoomFct = (room) => {
