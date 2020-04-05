@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Segment, TransitionablePortal, Icon, Message} from "semantic-ui-react";
 
-import MultipleDropdown from "../MultipleDropdown";
+import BedsMultipleDropdown from "./bedsMultipleDropdown";
 import {ROOM_STATUS_READY} from "../constants"
 
 
@@ -37,7 +37,7 @@ export default class ShotgunPortal extends React.Component {
                 );
             case "attributingBeds":
                 return (
-                    <MultipleDropdown
+                    <BedsMultipleDropdown
                         numberOfBeds={this.props.seats}
                         availablePersons={this.props.availablePersons}
                         onSubmit={this.props.addPersonsInShotgunFunction}

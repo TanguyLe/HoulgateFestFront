@@ -3,8 +3,8 @@ import {map} from "lodash/fp";
 
 const mapUncapped = map.convert({cap: false});
 
-import Floor from "./";
-import {FLOOR_GRID_STRUCT_INDEX_PREFIX} from "../constants";
+import Floor from "./index";
+import {FLOOR_GRID_STRUCT_INDEX_PREFIX} from "../../constants";
 
 let getHeight = () => window.innerWidth < 640 ? "auto" : "calc(100vh - 150px)";
 

@@ -3,7 +3,7 @@ import {Image, Header, Icon, Reveal} from "semantic-ui-react"
 import {Link} from "react-router-dom";
 
 
-class Home extends React.Component {
+class Homepage extends React.Component {
     render() {
         return (
             <div className="WelcomePage">
@@ -97,4 +97,4 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+export default Homepage;

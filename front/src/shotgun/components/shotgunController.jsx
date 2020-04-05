@@ -1,10 +1,10 @@
 import React from "react";
 import {Icon, Message} from "semantic-ui-react";
 
-import DisplayAllFloors from "./Floor/DisplayAllFloors";
-import {objectMap} from "../utils/miscFcts"
-import {villaLesGenets} from "./villaLesGenetsDef";
-import {USERS_ENDPOINT} from "../constants"
+import DisplayAllFloors from "./floor/DisplayAllFloors";
+import {objectMap} from "../../utils/miscFcts"
+import {villaLesGenets} from "../villaLesGenetsDef";
+import {USERS_ENDPOINT} from "../../constants"
 import {
     ROOMS_ENDPOINT,
     SHOTGUN_ROOMS_ENDPOINT,
@@ -13,9 +13,9 @@ import {
     ROOM_STATUS_SHOTGUNNED,
     ROOM_STATUS_PRESHOTGUNNED,
     ROOM_STATUS_READY
-} from "./constants";
+} from "../constants";
 
-import {getCallApi, postCallApi, putCallApi} from "../utils/api/fetchMiddleware";
+import {getCallApi, postCallApi, putCallApi} from "../../utils/api/fetchMiddleware";
 
 const INTERVAL_DURATION = 15000;
 
@@ -44,7 +44,7 @@ class ShotgunContainer extends React.Component {
 
     getRoomUpdater(roomId, newRoom) {
         /**
-         * Returns an updater for the roomsIndexed particularly to change one Room.
+         * Returns an updater for the roomsIndexed particularly to change one room.
          * It is an object to be used with the updateState method.
          */
         const currentRoom = this.state.roomsIndexed[roomId];

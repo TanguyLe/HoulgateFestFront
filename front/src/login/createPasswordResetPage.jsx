@@ -1,7 +1,7 @@
 import React from "react"
 
-import CreatePasswordResetForm from "./forms/CreatePasswordResetForm";
-import OnlyWhenConnectedWrapper from "../../utils/login/OnlyWhenNotConnectedWrapper"
+import CreatePasswordResetForm from "./components/forms/createPasswordResetForm";
+import OnlyWhenConnectedWrapper from "../utils/login/onlyWhenNotConnectedWrapper"
 
 class CreatePasswordResetPage extends React.Component {
     render() {
