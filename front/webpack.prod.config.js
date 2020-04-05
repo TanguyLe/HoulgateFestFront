@@ -39,7 +39,8 @@ module.exports = {
             "process.env": {
                 NODE_ENV: JSON.stringify("production")
             },
-            "API_URL": "\"http://houlgatefest.fr\""
+            "API_URL": "\"http://houlgatefest.fr\"",
+            "HAS_STARTED": false
         })
     ]
 };
