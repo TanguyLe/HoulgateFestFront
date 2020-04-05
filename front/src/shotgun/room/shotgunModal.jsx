@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Segment, TransitionablePortal, Icon, Message} from "semantic-ui-react";
 
-import MultipleDropdown from "../MultipleDropdown";
+import MultipleDropdown from "../multipleDropdown";
 import {ROOM_STATUS_READY} from "../constants"
 
 

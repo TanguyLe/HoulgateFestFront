@@ -1,7 +1,7 @@
 import React from "react";
 import {Icon, Message} from "semantic-ui-react";
 
-import DisplayAllFloors from "./Floor/DisplayAllFloors";
+import DisplayAllFloors from "./floor/DisplayAllFloors";
 import {objectMap} from "../utils/miscFcts"
 import {villaLesGenets} from "./villaLesGenetsDef";
 import {USERS_ENDPOINT} from "../constants"
@@ -44,7 +44,7 @@ class ShotgunContainer extends React.Component {
 
     getRoomUpdater(roomId, newRoom) {
         /**
-         * Returns an updater for the roomsIndexed particularly to change one Room.
+         * Returns an updater for the roomsIndexed particularly to change one room.
          * It is an object to be used with the updateState method.
          */
         const currentRoom = this.state.roomsIndexed[roomId];

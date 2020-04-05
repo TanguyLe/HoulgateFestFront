@@ -2,7 +2,7 @@ import React from "react";
 
 import {EDITIONS_ENDPOINT} from "./constants"
 import {getParisDatetimeFromAPI} from "../utils/miscFcts";
-import Countdown from "./components/CountDown"
+import Countdown from "./components/countdown"
 import ShotgunController from "./ShotgunController"
 
 import {Icon, Message} from "semantic-ui-react";

@@ -1,6 +1,6 @@
 import React from "react";
 
-import Room from "../Room";
+import Room from "../room";
 import {ROOM_GRID_STRUCT_INDEX_PREFIX} from "../constants";
 
 export class Floor extends React.Component {

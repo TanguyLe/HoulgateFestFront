@@ -1,8 +1,8 @@
 import React from "react";
 import {isNil, get} from "lodash/fp";
 
-import RoomBasis from "./RoomBasis";
-import ShotgunPortal from "./ShotgunModal";
+import RoomBasis from "./roomBasis";
+import ShotgunPortal from "./shotgunModal";
 import {
     ROOM_STATUS_LOADING,
     ROOM_STATUS_SHOTGUNNED,

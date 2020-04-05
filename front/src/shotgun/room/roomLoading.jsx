@@ -1,6 +1,6 @@
 import React from "react";
-import RoomBasis from "./RoomBasis";
-import ShotgunPortal from "./ShotgunModal";
+import RoomBasis from "./roomBasis";
+import ShotgunPortal from "./shotgunModal";
 
 class RoomLoading extends React.Component {
     render() {

@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import {Button, Header, Segment, TransitionablePortal} from 'semantic-ui-react'
 
 
-import LogInForm from "./forms/LogInForm"
+import LogInForm from "./forms/logInForm"
 
 class LoginPortal extends React.Component {
     constructor() {

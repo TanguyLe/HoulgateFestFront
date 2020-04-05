@@ -1,5 +1,5 @@
 import React from "react";
-import RoomBasis from "./RoomBasis";
+import RoomBasis from "./roomBasis";
 
 class RoomDisabled extends React.Component {
     render() {

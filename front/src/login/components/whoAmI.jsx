@@ -49,6 +49,6 @@ class WhoAmI extends React.Component {
 }
 
 
-import LoginModal from "./LoginModal"
+import LoginModal from "./loginModal"
 
 export default WhoAmI;
