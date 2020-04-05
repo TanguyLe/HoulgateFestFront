@@ -141,6 +141,6 @@ a {
     user-select: none;
 }
 
-smalltext {
+.smalltext {
     font-size: 0.85em;
 }

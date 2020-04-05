@@ -16,10 +16,10 @@ class Home extends React.Component {
 
                 Créé à l’aube de l’été 2018, le fameux “HoulgateFest” est en réalité un moment de fête ayant lieu
                 dans
-                le bourg de Houlgate <smalltext> (d'où le nom, assez explicite en fin de compte,
+                le bourg de Houlgate <i className="smalltext"> (d'où le nom, assez explicite en fin de compte,
                 quand on veut bien
                 se donner la peine de s’y pencher 5 à 10 minutes quoi... perso
-                je trouve que c’est balèze étymologiquement... après chacun se fera son avis hein).  </smalltext>
+                je trouve que c’est balèze étymologiquement... après chacun se fera son avis hein).  </i>
                 Ce rendez-vous est maintenant devenu annuel, il est d’ailleurs considéré depuis comme
                 un véritable must pour tous les déglingos de la night de la Côte-Fleurie.
                 <b> En résumé, HoulgateFest qu’est-ce que c’est ?</b> <br/>
@@ -32,7 +32,7 @@ class Home extends React.Component {
                 </Header>
 
                 Cette édition 2020 se déroulera du vendredi 26 au dimanche 28 Juin
-                <smalltext> (Sauf contre-indication si le coro continue). </smalltext>
+                <i className="smalltext"> (Sauf contre-indication si le coro continue). </i>
 
 
                 <Header as="h3">
