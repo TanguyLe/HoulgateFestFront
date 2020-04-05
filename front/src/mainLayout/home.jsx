@@ -90,7 +90,7 @@ class Home extends React.Component {
                     répondez à <a target="blank" href="https://www.facebook.com/events/1263546553855244/">
                     l’événement Facebook </a>.
                 </p>
-                <b> Hugo Bis </b>
+                <div style={{"float": "right"}}><b> Hugo Bis </b></div>
 
             </div>
         );
