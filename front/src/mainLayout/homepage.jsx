@@ -75,7 +75,7 @@ class Homepage extends React.Component {
                         <Image src="gandalf_v2.jpg" size="small" floated="left"/>
                     </Reveal.Content>
                     <Reveal.Content hidden>
-                        <Image src="pere_fouras.jpeg" size="small" floated="left"/>
+                        <Image src="pere_fouras.jpg" size="small" floated="left"/>
                     </Reveal.Content>
                 </Reveal>
                 <p>
