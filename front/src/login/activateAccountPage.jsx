@@ -1,9 +1,9 @@
 import React from "react";
 import {parse} from "query-string";
 
-import {getCallApi} from "../../utils/api/fetchMiddleware";
-import {login} from "../store"
-import {getActivateUserUrl} from "../constants"
+import {getCallApi} from "../utils/api/fetchMiddleware";
+import {login} from "./store"
+import {getActivateUserUrl} from "./constants"
 
 
 class activateAccount extends React.Component {

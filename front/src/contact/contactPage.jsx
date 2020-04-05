@@ -1,6 +1,6 @@
 import React from "react"
 
-import ContactForm from "./contactForm"
+import ContactForm from "./components/contactForm"
 
 let ContactPage = () => {
     return (

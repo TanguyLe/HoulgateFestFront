@@ -1,9 +1,9 @@
 import React from "react"
 import {parse} from "query-string";
 
-import PasswordResetForm from "./forms/passwordResetForm"
-import OnlyWhenConnectedWrapper from "../../utils/login/onlyWhenNotConnectedWrapper"
-import {getPasswordResetUrl} from "../constants"
+import PasswordResetForm from "./components/forms/passwordResetForm"
+import OnlyWhenConnectedWrapper from "../utils/login/onlyWhenNotConnectedWrapper"
+import {getPasswordResetUrl} from "./constants"
 
 
 class passwordResetPage extends React.Component {

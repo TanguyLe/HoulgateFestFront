@@ -1,8 +1,8 @@
 import React from "react";
 import {Form, Message, List, Icon} from 'semantic-ui-react';
-import {CONTACT_URL, CONTACT_DEF} from "./constants";
-import {postCallApi} from "../utils/api/fetchMiddleware";
-import {upCaseFirstLetter} from "../utils/miscFcts";
+import {CONTACT_URL, CONTACT_DEF} from "../constants";
+import {postCallApi} from "../../utils/api/fetchMiddleware";
+import {upCaseFirstLetter} from "../../utils/miscFcts";
 import {withRouter} from "react-router-dom";
 
 class ContactForm extends React.Component {

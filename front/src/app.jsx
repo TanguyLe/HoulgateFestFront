@@ -1,15 +1,15 @@
 import React from "react"
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 
-import Home from "./mainLayout/home"
+import Homepage from "./mainLayout/homepage"
 
 import ShotgunPage from "./shotgun/shotgunPage"
-import NotFound from "./mainLayout/notFound"
-import SignUpPage from "./login/components/signUpPage"
-import ActivateAccount from "./login/components/activateAccountPage"
-import PasswordResetPage from "./login/components/passwordResetPage"
-import CreatePasswordResetPage from "./login/components/createPasswordResetPage"
-import DefaultLayout from './mainLayout/layout'
+import NotFound from "./mainLayout/components/notFound"
+import SignUpPage from "./login/signUpPage"
+import ActivateAccount from "./login/activateAccountPage"
+import PasswordResetPage from "./login/passwordResetPage"
+import CreatePasswordResetPage from "./login/createPasswordResetPage"
+import DefaultLayout from './mainLayout/components/layout'
 import ContactPage from './contact/contactPage'
 
 
@@ -18,7 +18,7 @@ class App extends React.Component {
         return <Router>
                 <Switch>
                     <Route exact path="/">
-                        <DefaultLayout exact component={Home}/>
+                        <DefaultLayout exact component={Homepage}/>
                     </Route>
                     <Route path="/shotgun">
                         <DefaultLayout component={ShotgunPage} bigContainer/>

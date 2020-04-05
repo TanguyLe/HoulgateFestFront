@@ -3,7 +3,7 @@ import Gravatar from "react-gravatar";
 import {Dropdown, Button, Form} from "semantic-ui-react";
 
 
-class MultipleDropdown extends React.Component {
+class BedsMultipleDropdown extends React.Component {
     constructor(props) {
         super();
 
@@ -129,4 +129,4 @@ class MultipleDropdown extends React.Component {
     }
 }
 
-export default MultipleDropdown;
+export default BedsMultipleDropdown;

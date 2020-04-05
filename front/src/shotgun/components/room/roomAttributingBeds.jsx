@@ -1,21 +1,21 @@
 import React from "react";
-import ShotgunPortal from "./shotgunModal";
-
 import RoomBasis from "./roomBasis";
+import ShotgunPortal from "../shotgunModal";
 
-class RoomReadyForShotgun extends React.Component {
+class RoomAttributingBeds extends React.Component {
     render() {
         return (
             <RoomBasis {...this.props}>
                 <ShotgunPortal
-                    status={"readyForShotgun"}
+                    status={"attributingBeds"}
                     numberOfBeds={this.props.numberOfBeds}
                     availablePersonIds={this.props.availablePersonIds}
-                    createShotgunFunction={this.props.createShotgunFunction}
+                    onSubmit={this.props.onSubmit}
+                    validationFunction={this.props.addPersonsInShotgunFunction}
                 />
             </RoomBasis>
         );
     }
 }
 
-export default RoomReadyForShotgun;
+export default RoomAttributingBeds;

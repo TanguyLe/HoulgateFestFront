@@ -1,7 +1,7 @@
 import React from "react"
 
-import SignUpForm from "./forms/signUpForm"
-import OnlyWhenConnectedWrapper from "../../utils/login/onlyWhenNotConnectedWrapper"
+import SignUpForm from "./components/forms/signUpForm"
+import OnlyWhenConnectedWrapper from "../utils/login/onlyWhenNotConnectedWrapper"
 
 class SignUpPage extends React.Component {
     constructor() {
