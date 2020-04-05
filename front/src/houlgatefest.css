@@ -140,3 +140,7 @@ a {
     -ms-user-select: none;
     user-select: none;
 }
+
+.smalltext {
+    font-size: 0.85em;
+}
