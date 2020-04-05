@@ -80,7 +80,7 @@ class Home extends React.Component {
                 </Reveal>
                 <p>
                     L’orga nous a pondu une nouvelle idée cette année: un thème ! Par chance il a
-                    choisi un incontournable pour décevoir personne: <b>l’univers d’Harry Potter</b>.
+                    choisi un incontournable pour ne décevoir personne : <b>l’univers d’Harry Potter</b>.
                     Ca tombe bien je suis fan de la 1ère heure ! <br/>
                     J’adore le magicien blanc, ouais Gandalf ouais, c’est trop un perso qui claque je trouve.
                 </p>
