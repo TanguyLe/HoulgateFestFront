@@ -6,9 +6,11 @@ let express = require("express"),
     User = require('./api/user/userModel'),
     Room = require('./api/room/roomModel'),
     Shotgun = require('./api/shotgun/shotgunModel'),
+    Edition = require('./api/edition/editionModel'),
     middleware = require('./api/utils/middleware'),
     userRoutes = require('./api/user/userRoutes'),
     userRoutesWithAuth = require('./api/user/userRoutesWithAuth'),
+    editionRoutes = require('./api/edition/editionRoutes'),
     roomRoutes = require('./api/room/roomRoutes'),
     shotgunRoutes = require('./api/shotgun/shotgunRoutes'),
     Mail = require('./api/mail/mailModel'),
@@ -35,6 +37,7 @@ userRoutes(app);
 app.use(middleware.userAuth);
 userRoutesWithAuth(app);
 contactRoutes(app);
+editionRoutes(app);
 app.use(middleware.hasStarted);
 roomRoutes(app);
 shotgunRoutes(app);
