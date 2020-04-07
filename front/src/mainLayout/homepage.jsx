@@ -42,7 +42,7 @@ class Homepage extends React.Component {
 
                 <p>
                     La bâtisse est certes spacieuse mais ses murs n’ont rien à voir avec l’état que
-                    pourrait avoir l’élastique de mon slop fétiche (au réveil notamment).
+                    pourrait avoir l’élastique de mon slop fétiche <i className="smalltext">(au réveil notamment)</i> .
                     Pour le dire avec vos mots: ses murs ne sont pas extensibles quoi !
                 </p>
                 <p>
@@ -72,7 +72,7 @@ class Homepage extends React.Component {
 
                 <Reveal animated='fade'>
                     <Reveal.Content visible>
-                        <Image src="gandalf_v2.jpg" size="small" floated="left"/>
+                        <Image src="dumbledore.jpg" size="small" floated="left"/>
                     </Reveal.Content>
                     <Reveal.Content hidden>
                         <Image src="pere_fouras.jpg" size="small" floated="left"/>
@@ -81,7 +81,7 @@ class Homepage extends React.Component {
                 <p>
                     L’orga nous a pondu une nouvelle idée cette année: un thème ! Par chance il a
                     choisi un incontournable pour ne décevoir personne : <b>l’univers d’Harry Potter</b>.
-                    Ca tombe bien je suis fan de la 1ère heure ! <br/>
+                    Ca tombe bien je suis un fan de la 1ère heure ! <br/>
                     J’adore le magicien blanc, ouais Gandalf ouais, c’est trop un perso qui claque je trouve.
                 </p>
                 <p>
