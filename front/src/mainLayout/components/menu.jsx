@@ -13,46 +13,21 @@ export const rightItems = [
     {children: <WhoAmI/>, key: "user"}
 ];
 
-const NavBarMobile = ({
-                          children,
-                          leftItems,
-                          onPusherClick,
-                          onToggle,
-                          rightItems,
-                          visible
-                      }) => (
-    <Sidebar.Pushable>
-        <Sidebar
-            as={Menu}
-            animation="overlay"
-            //icon="labeled"
-            inverted
-            items={leftItems}
-            vertical
-            visible={visible}
-        />
-        <Sidebar.Pusher
-            dimmed={visible}
-            onClick={onPusherClick}
-            style={{minHeight: "100vh"}}
-        >
-            <Menu fixed="top" inverted>
-                <Menu.Item onClick={onToggle}>
-                    <Icon name="sidebar"/>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to='/'> <Image src="./logov3.png" size="small"/></Link>
-                </Menu.Item>
-                <Menu.Menu position="right">
-                    {rightItems.map(item => {
-                        item['as'] = 'div';
-                        return <Menu.Item {...item} />
-                    })}
-                </Menu.Menu>
-            </Menu>
-            {children}
-        </Sidebar.Pusher>
-    </Sidebar.Pushable>
+const NavBarMobile = ({onToggle, rightItems}) => (
+    <Menu fixed="top" inverted>
+        <Menu.Item onClick={onToggle}>
+            <Icon name="sidebar"/>
+        </Menu.Item>
+        <Menu.Item>
+            <Link to='/'> <Image src="./logov3.png" size="small"/></Link>
+        </Menu.Item>
+        <Menu.Menu position="right">
+            {rightItems.map(item => {
+                item['as'] = 'div';
+                return <Menu.Item {...item} />
+            })}
+        </Menu.Menu>
+    </Menu>
 );
 
 const NavBarDesktop = ({leftItems, rightItems}) => (
@@ -103,15 +78,31 @@ class NavBar extends React.Component {
         return (
             <div>
                 <Responsive {...Responsive.onlyMobile}>
-                    <NavBarMobile
-                        leftItems={leftItems}
-                        onPusherClick={this.handlePusher}
-                        onToggle={this.handleToggle}
-                        rightItems={rightItems}
-                        visible={visible}
-                    >
-                        <NavBarChildren bigContainer={bigContainer}>{children}</NavBarChildren>
-                    </NavBarMobile>
+                    <Sidebar.Pushable>
+                        <Sidebar
+                            as={Menu}
+                            animation="overlay"
+                            inverted
+                            vertical
+                            visible={visible}
+                        >
+                            {leftItems.map(item => {
+                                item['as'] = 'div';
+                                return <Menu.Item {...item} onClick={this.handlePusher}/>
+                            })}
+                        </Sidebar>
+                        <Sidebar.Pusher
+                            dimmed={visible}
+                            onClick={this.handlePusher}
+                            style={{minHeight: "100vh"}}
+                        >
+                            <NavBarMobile
+                                onToggle={this.handleToggle}
+                                rightItems={rightItems}
+                            />
+                            <NavBarChildren bigContainer={bigContainer}>{children}</NavBarChildren>
+                        </Sidebar.Pusher>
+                    </Sidebar.Pushable>
                 </Responsive>
                 <Responsive minWidth={Responsive.onlyTablet.minWidth}>
                     <NavBarDesktop leftItems={leftItems} rightItems={rightItems}/>
