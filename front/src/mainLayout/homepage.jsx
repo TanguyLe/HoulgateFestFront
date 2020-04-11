@@ -31,7 +31,7 @@ class Homepage extends React.Component {
                     <Header.Content>La Date</Header.Content>
                 </Header>
 
-                Cette édition 2020 se déroulera du vendredi 26 au dimanche 28 Juin
+                Cette édition 2020 se déroulera du <b>vendredi 26 au dimanche 28 Juin</b>
                 <i className="smalltext"> (Sauf contre-indication si le coro continue). </i>
 
 
@@ -43,7 +43,7 @@ class Homepage extends React.Component {
                 <p>
                     La bâtisse est certes spacieuse mais ses murs n’ont rien à voir avec l’état que
                     pourrait avoir l’élastique de mon slop fétiche <i className="smalltext">(au réveil notamment)</i> .
-                    Pour le dire avec vos mots: ses murs ne sont pas extensibles quoi !
+                    Pour le dire avec vos mots : <b>ses murs ne sont pas extensibles quoi !</b>
                 </p>
                 <p>
                     Mais le génie au physique de rêve et au poil dru qui nous sert d’organisateur a tout prévu.
@@ -72,17 +72,18 @@ class Homepage extends React.Component {
 
                 <Reveal animated='fade'>
                     <Reveal.Content visible>
-                        <Image src="dumbledore_v2.jpg" size="small" floated="left"/>
+                        <Image src="dumbledore_v2.jpg" size="medium" floated="left"/>
                     </Reveal.Content>
                     <Reveal.Content hidden>
-                        <Image src="pere_fouras.jpg" size="small" floated="left"/>
+                        <Image src="pere_fouras.jpg" size="medium" floated="left"/>
                     </Reveal.Content>
                 </Reveal>
                 <p>
-                    L’orga nous a pondu une nouvelle idée cette année: un thème ! Par chance il a
+                    L’orga nous a pondu une nouvelle idée cette année : un thème ! Par chance il a
                     choisi un incontournable pour ne décevoir personne : <b>l’univers d’Harry Potter</b>.
-                    Ca tombe bien je suis un fan de la 1ère heure ! <br/>
-                    J’adore le magicien blanc, ouais Gandalf ouais, c’est trop un perso qui claque je trouve.
+                    Ça tombe bien je suis un fan de la 1ère heure ! <br/>
+                    J’adore le magicien blanc, ouais
+                    <i className="smalltext"> Gandalf</i> ouais, c’est trop un perso qui claque je trouve.
                 </p>
                 <p>
                     Pour avoir toutes les notifications concernant

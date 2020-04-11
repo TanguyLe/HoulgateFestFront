@@ -79,7 +79,7 @@ class NavBarChildren extends React.Component {
         if (bigContainer)
             return <Container fluid style={{paddingTop: "6.2rem"}}>{children}</Container>;
         else
-            return <Container style={{paddingTop: "6.2rem"}}>{children}</Container>
+            return <Container text style={{paddingTop: "6.2rem"}}>{children}</Container>
     }
 }
 
