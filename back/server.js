@@ -3,7 +3,7 @@ let express = require("express"),
     bodyParser = require('body-parser'),
 
     app = express(),
-    port = process.env.PORT || 3000,
+    port = process.env.PORT || 8000,
 
     User = require('./api/user/userModel'),
     Room = require('./api/room/roomModel'),
