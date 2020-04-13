@@ -1,38 +1,32 @@
 let express = require("express"),
+    cors = require('cors'),
+    bodyParser = require('body-parser'),
+
     app = express(),
     port = process.env.PORT || 3000,
-    cors = require('cors'),
-    mongoose = require('mongoose'),
+
     User = require('./api/user/userModel'),
     Room = require('./api/room/roomModel'),
     Shotgun = require('./api/shotgun/shotgunModel'),
     Edition = require('./api/edition/editionModel'),
+    Mail = require('./api/mail/mailModel'),
+
     middleware = require('./api/utils/middleware'),
+    scriptsUtils = require("./scripts/scriptsUtils"),
+
     userRoutes = require('./api/user/userRoutes'),
     userRoutesWithAuth = require('./api/user/userRoutesWithAuth'),
     editionRoutes = require('./api/edition/editionRoutes'),
     roomRoutes = require('./api/room/roomRoutes'),
     shotgunRoutes = require('./api/shotgun/shotgunRoutes'),
-    Mail = require('./api/mail/mailModel'),
     contactRoutes = require('./api/contact/contactRoutes');
-bodyParser = require('body-parser');
 
-// mongoose instance connection url connection
-mongoose.Promise = global.Promise;
-mongoose.set('useCreateIndex', true);
-mongoose.connect('mongodb://localhost/Userdb', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-});
-let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));//get notification of connection errors
+scriptsUtils.connectToDb("mongodb://localhost/Userdb");
 
 app.use(cors());
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(middleware.isFront);
+
 userRoutes(app);
 app.use(middleware.userAuth);
 userRoutesWithAuth(app);
@@ -44,6 +38,6 @@ shotgunRoutes(app);
 
 app.use(middleware.notFound);
 
-app.listen(port);
-
-console.log("HoulgateFest server started on: " + port);
+app.listen(port, () =>
+    console.log("HoulgateFestBack server started on: " + port)
+);

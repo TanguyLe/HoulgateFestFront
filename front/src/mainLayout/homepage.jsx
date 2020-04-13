@@ -72,10 +72,10 @@ class Homepage extends React.Component {
 
                 <Reveal animated='fade'>
                     <Reveal.Content visible>
-                        <Image src="dumbledore_v2.jpg" size="medium" floated="left"/>
+                        <Image src="static/dumbledore_v2.jpg" size="medium" floated="left"/>
                     </Reveal.Content>
                     <Reveal.Content hidden>
-                        <Image src="pere_fouras.jpg" size="medium" floated="left"/>
+                        <Image src="static/pere_fouras.jpg" size="medium" floated="left"/>
                     </Reveal.Content>
                 </Reveal>
                 <p>

@@ -1,7 +1,5 @@
 let tokenUtils = require("./token"),
-    path = require('path'),
     labels = require("../../labels"),
-    pth = path.join(__dirname, '..', '..', '..', '/front/web'),
     editionController = require('../edition/editionController');
 
 exports.userAuth = (req, res, next) => {
@@ -21,18 +19,6 @@ exports.userAuth = (req, res, next) => {
         next();
     else
         res.status(401).send({message: labels.FAILED_AUTH_INVALID_CRED_MSG});
-};
-
-
-exports.isFront = (req, res, next) => {
-    if ([".png", ".js", ".jpg"].includes(path.extname(req.originalUrl)))
-        res.sendFile(pth + req.originalUrl);
-    else if (req.originalUrl === '/houlgatefest.min.js')
-        res.sendFile(pth + '/houlgatefest.min.js');
-    else if (req.originalUrl.split('/')[1] === 'api')
-        next();
-    else
-        res.sendFile(pth + '/index.html');
 };
 
 
