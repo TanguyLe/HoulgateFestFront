@@ -4,23 +4,23 @@ module.exports = (app) => {
 
     userActivator.activator.init(userActivator.config);
 
-    app.route("/api/users")
+    app.route("/users")
         .get(user.userList)
         .post(user.createUser, userActivator.activator.createActivate);
 
-    app.route("/api/users/:user/activate")
+    app.route("/users/:user/activate")
         .get(userActivator.activator.completeActivateNext, user.afterCompleteActivation);
 
-    app.route("/api/users/:user/passwordReset")
+    app.route("/users/:user/passwordReset")
         .put(userActivator.activator.completePasswordResetNext, user.afterCompletePasswordReset);
 
-    app.route("/api/passwordReset")
+    app.route("/passwordReset")
         .post(user.beforeCreatePasswordReset, userActivator.activator.createPasswordResetNext, user.afterCreatePasswordReset);
 
-    app.route("/api/login")
+    app.route("/login")
         .post(user.login);
 
-    app.route("/api/refreshLogin")
+    app.route("/refreshLogin")
         .post(user.refreshLogin);
 
 };

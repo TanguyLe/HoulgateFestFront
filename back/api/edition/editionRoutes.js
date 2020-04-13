@@ -20,6 +20,6 @@ const getEditions = (req, res) => {
 };
 
 module.exports = (app) => {
-    app.route('/api/edition')
+    app.route('/edition')
         .get(getEditions);
 };

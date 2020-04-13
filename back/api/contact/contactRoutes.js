@@ -1,6 +1,6 @@
 module.exports = (app) => {
     let contact = require('../contact/contactController');
 
-    app.route('/api/contact')
+    app.route('/contact')
         .post(contact.send);
 };

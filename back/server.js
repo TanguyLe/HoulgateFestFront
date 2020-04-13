@@ -3,7 +3,7 @@ let express = require("express"),
     bodyParser = require('body-parser'),
 
     app = express(),
-    port = process.env.PORT || 8000,
+    port = process.env.PORT || 3000,
 
     User = require('./api/user/userModel'),
     Room = require('./api/room/roomModel'),
@@ -12,7 +12,7 @@ let express = require("express"),
     Mail = require('./api/mail/mailModel'),
 
     middleware = require('./api/utils/middleware'),
-    scriptsUtils = require("./scriptsUtils"),
+    scriptsUtils = require("./scripts/scriptsUtils"),
 
     userRoutes = require('./api/user/userRoutes'),
     userRoutesWithAuth = require('./api/user/userRoutesWithAuth'),
@@ -27,7 +27,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.use(middleware.isFront);
 userRoutes(app);
 app.use(middleware.userAuth);
 userRoutesWithAuth(app);
