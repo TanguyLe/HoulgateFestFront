@@ -39,7 +39,7 @@ module.exports = {
         },
         plugins: [new webpack.HotModuleReplacementPlugin(),
             new webpack.DefinePlugin({
-                "API_URL": "\"http://localhost:8000\"",
+                "API_URL": "\"http://localhost:3000\"",
                 "HAS_STARTED": process.env.HAS_STARTED === '1'
             })]
 };

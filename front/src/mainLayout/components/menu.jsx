@@ -19,7 +19,7 @@ const NavBarMobile = ({onToggle, rightItems}) => (
             <Icon name="sidebar"/>
         </Menu.Item>
         <Menu.Item>
-            <Link to='/'> <Image src="./logov3.png" size="small"/></Link>
+            <Link to='/'> <Image src="static/logov3.png" size="small"/></Link>
         </Menu.Item>
         <Menu.Menu position="right">
             {rightItems.map(item => {
@@ -31,9 +31,9 @@ const NavBarMobile = ({onToggle, rightItems}) => (
 );
 
 const NavBarDesktop = ({leftItems, rightItems}) => (
-    <Menu fixed="top" inverted>
+    <Menu fixed="top" inverted>v
         <Menu.Item>
-            <Link to='/'> <Image src="logov3.png" size="small"/></Link>
+            <Link to='/'> <Image src="static/logov3.png" size="small"/></Link>
         </Menu.Item>
         {leftItems.map(item => {
             item['as'] = 'div';
