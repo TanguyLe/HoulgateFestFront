@@ -8,9 +8,9 @@ let express = require("express"),
 const webPath = path.join(__dirname, 'web');
 
 serveFront = (req, res) => {
-    if ([".png", ".js", ".jpg"].includes(path.extname(req.originalUrl)))
+    if ([".png", ".js", ".jpg", ".ico"].includes(path.extname(req.originalUrl)))
         res.sendFile(path.join(webPath, req.originalUrl));
-    else if ("api" in req.originalUrl)
+    else if (req.originalUrl.includes("api"))
         res.status(400).send({message: "This server is only for frontend and doesn't contain the API."});
     else
         res.sendFile(path.join(webPath, 'index.html'));
