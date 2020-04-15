@@ -1,4 +1,6 @@
-export const CONTACT_URL = "./contact";
+import {SERVER_ENDPOINT} from "../constants";
+
+export const CONTACT_URL = SERVER_ENDPOINT + "/contact";
 
 export const regexes = {
     mail: {
