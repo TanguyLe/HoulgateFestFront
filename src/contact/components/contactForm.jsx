@@ -153,8 +153,9 @@ class ContactForm extends React.Component {
 
                 })}
                 <Form.Group inline>
-                    <Form.Button type="submit" disabled={!this.isFormValid() || (this.state.status !== 'input')}
-                                 onClick={this.handleSubmit}>Envoyer</Form.Button>
+                    <Form.Button type="submit" disabled={!this.isFormValid() || (this.state.status !== 'input')}>
+                        Envoyer
+                    </Form.Button>
                     <Form.Button type="reset" onClick={this.reset}>Réinitialiser</Form.Button>
                 </Form.Group>
                 <Message error>
