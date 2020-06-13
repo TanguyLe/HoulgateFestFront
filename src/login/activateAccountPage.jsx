@@ -1,12 +1,14 @@
 import React from "react";
 import {parse} from "query-string";
+import {withRouter} from "react-router-dom";
 
 import {getCallApi} from "../utils/api/fetchMiddleware";
 import {login} from "./store"
 import {getActivateUserUrl} from "./constants"
 
 
-class activateAccount extends React.Component {
+class ActivateAccount extends React.Component {
+
     constructor() {
         super();
 
@@ -62,4 +64,4 @@ class activateAccount extends React.Component {
     }
 }
 
-export default activateAccount;
+export default withRouter(ActivateAccount);

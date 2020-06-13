@@ -32,7 +32,7 @@ const NavBarMobile = ({onToggle, rightItems}) => (
 );
 
 const NavBarDesktop = ({leftItems, rightItems}) => (
-    <Menu fixed="top" inverted>v
+    <Menu fixed="top" inverted>
         <Menu.Item>
             <Link to='/'> <Image src="static/logov3.png" size="small"/></Link>
         </Menu.Item>
