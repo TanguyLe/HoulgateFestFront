@@ -78,8 +78,8 @@
     "webpack-dev-server": "^3.9.0"
   },
   "scripts": {
-    "dev": "webpack-dev-server --hot --config webpack.dev.config --port 8000",
-    "devStartShotgun": "HAS_STARTED=1 webpack-dev-server --hot --config webpack.dev.config --port 8000",
+    "dev": "API_URL=http://localhost:3000 webpack-dev-server --hot --config webpack.dev.config --port 8000",
+    "devStartShotgun": "API_URL=http://localhost:3000 HAS_STARTED=1 webpack-dev-server --hot --config webpack.dev.config --port 8000",
     "devBuild": "webpack --config webpack.dev.config",
     "build": "webpack --config webpack.prod.config",
     "start": "node server.js"
