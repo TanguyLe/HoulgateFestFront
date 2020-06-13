@@ -34,11 +34,10 @@ module.exports = {
         minimizer: [new TerserPlugin()],
     },
     plugins: [
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("production")
-            },
-            "HAS_STARTED": false
+        new webpack.EnvironmentPlugin({
+            NODE_ENV: "production",
+            API_URL: null,
+            HAS_STARTED: false
         })
     ]
 };
