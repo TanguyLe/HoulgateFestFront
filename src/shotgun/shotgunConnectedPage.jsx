@@ -58,7 +58,7 @@ class ShotgunConnectedPage extends React.Component {
             </Message>;
 
         // This is set within webpack
-        if (HAS_STARTED)
+        if (process.env.HAS_STARTED)
             return <ShotgunController/>;
 
         if (this.state.targetDatetime === null)

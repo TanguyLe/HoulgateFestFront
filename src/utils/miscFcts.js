@@ -12,7 +12,7 @@ export const objectMap = (object, mapFn) => {
 };
 
 export const getParisDatetimeFromAPI = async () => {
-    return fetch("http://worldtimeapi.org/api/timezone/Europe/Paris")
+    return fetch("https://worldtimeapi.org/api/timezone/Europe/Paris")
         .then((response) => response.json())
         .catch(error => alert(UNKNOWN_ERROR_MSG + error))
 };

@@ -21,6 +21,9 @@
       "email": "alex.vaast@gmail.com"
     }
   ],
+  "engines": {
+    "node": "12.13.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TanguyLe/HoulgateFest.git"
@@ -76,7 +79,7 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --hot --config webpack.dev.config --port 8000",
-    "devStartShotgun": "HAS_STARTED=1 webpack-dev-server --hot --config webpack.dev.config --port 8000",
+    "devStartShotgun": "HAS_STARTED=true webpack-dev-server --hot --config webpack.dev.config --port 8000",
     "devBuild": "webpack --config webpack.dev.config",
     "build": "webpack --config webpack.prod.config",
     "start": "node server.js"
