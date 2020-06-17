@@ -27,7 +27,7 @@ const TripsTable = ({ trips, isBack }) => {
                 <Table.Row>
                     <Table.HeaderCell colSpan={credentials ? 5 : 4}>
                         {title}
-                        {credentials && <Button size="mini" floated='right' primary>Nouveau</Button>}
+                        {credentials && <Button size="mini" floated='right' primary compact>Nouveau</Button>}
                     </Table.HeaderCell>
                     
                 </Table.Row>
@@ -55,8 +55,8 @@ const TripsTable = ({ trips, isBack }) => {
                         </Table.Cell>
                     { credentials && 
                         <Table.Cell>
-                            <Button size="mini" disabled={credentials != trip.driver.username}>Modifier</Button>
-                            <Button size="mini" disabled={credentials != trip.driver.username}>Supprimer</Button>
+                            <Button size="mini" disabled={credentials != trip.driver.username} compact>Modifier</Button>
+                            <Button size="mini" disabled={credentials != trip.driver.username} compact>Supprimer</Button>
                         </Table.Cell> 
                     }
                     </Table.Row>
