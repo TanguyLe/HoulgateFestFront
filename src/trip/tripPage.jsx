@@ -1,5 +1,5 @@
 import React from "react"
-import { Grid } from 'semantic-ui-react'
+import { Grid, Container } from 'semantic-ui-react'
 
 import TripsTable from './components/tripsTable'
 
@@ -40,16 +40,18 @@ const DATA = [
 
 let TripPage = () => {
     return (
-        <Grid divided='vertically'>
-            <Grid.Row columns={2}>
-                <Grid.Column>
-                    <TripsTable trips={DATA.filter(data => data.type === 'FORTH')}></TripsTable>
-                </Grid.Column>
-                <Grid.Column>
-                    <TripsTable isBack trips={DATA.filter(data => data.type === 'BACK')}></TripsTable>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
+        <Container fluid className="tripsContainer">
+            <Grid>
+                <Grid.Row columns={2}>
+                    <Grid.Column>
+                        <TripsTable trips={DATA.filter(data => data.type === 'FORTH')}></TripsTable>
+                    </Grid.Column>
+                    <Grid.Column>
+                        <TripsTable isBack trips={DATA.filter(data => data.type === 'BACK')}></TripsTable>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </Container>
     );
 };
 

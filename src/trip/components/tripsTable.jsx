@@ -5,7 +5,7 @@ import { getCredentials, register, unregister } from '../../login/store'
 import dateFormat from '../../utils/dateFormat'
 
 const TripsTable = ({ trips, isBack }) => {
-    const [title] = useState(isBack ? 'Trajet retour' : 'Trajet Aller')
+    const [title] = useState(isBack ? 'Trajets retour' : 'Trajets Aller')
     const [credentials, setCredentials] = useState()
 
     const changingCreds = (creds) => {
@@ -22,12 +22,12 @@ const TripsTable = ({ trips, isBack }) => {
     }, [])
 
     return (
-        <Table celled striped>
+        <Table textAlign="center" size="small" celled striped compact>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell colSpan={credentials ? 5 : 4}>
                         {title}
-                        {credentials && <Button floated='right' primary>Nouveau</Button>}
+                        {credentials && <Button size="mini" floated='right' primary>Nouveau</Button>}
                     </Table.HeaderCell>
                     
                 </Table.Row>
@@ -55,8 +55,8 @@ const TripsTable = ({ trips, isBack }) => {
                         </Table.Cell>
                     { credentials && 
                         <Table.Cell>
-                            <Button disabled={credentials != trip.driver.username}>Modifier</Button>
-                            <Button disabled={credentials != trip.driver.username}>Supprimer</Button>
+                            <Button size="mini" disabled={credentials != trip.driver.username}>Modifier</Button>
+                            <Button size="mini" disabled={credentials != trip.driver.username}>Supprimer</Button>
                         </Table.Cell> 
                     }
                     </Table.Row>
