@@ -85,12 +85,6 @@ a {
     z-index: 1000;
 }
 
-/* Trips Container */
-
-.tripsContainer {
-    padding: 0 15px 0 15px;
-}
-
 /* Connection Modal */
 
 .HoulgateFest .ConnectionModal {

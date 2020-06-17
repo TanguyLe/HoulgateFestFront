@@ -40,18 +40,14 @@ const DATA = [
 
 let TripPage = () => {
     return (
-        <Container fluid className="tripsContainer">
-            <Grid>
-                <Grid.Row columns={2}>
-                    <Grid.Column>
-                        <TripsTable trips={DATA.filter(data => data.type === 'FORTH')}></TripsTable>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <TripsTable isBack trips={DATA.filter(data => data.type === 'BACK')}></TripsTable>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </Container>
+        <Grid padded>
+            <Grid.Column mobile={32} tablet={16} computer={8}>
+                <TripsTable trips={DATA.filter(data => data.type === 'FORTH')}></TripsTable>
+            </Grid.Column>
+            <Grid.Column mobile={32} tablet={16} computer={8}>
+                <TripsTable isBack trips={DATA.filter(data => data.type === 'BACK')}></TripsTable>
+            </Grid.Column>
+        </Grid>
     );
 };
 
