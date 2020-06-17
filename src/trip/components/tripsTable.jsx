@@ -25,9 +25,9 @@ const TripsTable = ({ trips, isBack }) => {
         <Table celled striped>
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell colSpan='5'>
-                        <>{title}</>
-                        <Button floated='right' primary>Ajouter</Button>
+                    <Table.HeaderCell colSpan={credentials ? 5 : 4}>
+                        {title}
+                        {credentials && <Button floated='right' primary>Nouveau</Button>}
                     </Table.HeaderCell>
                     
                 </Table.Row>
@@ -36,7 +36,7 @@ const TripsTable = ({ trips, isBack }) => {
                     <Table.HeaderCell>Depart</Table.HeaderCell>
                     <Table.HeaderCell>Lieu</Table.HeaderCell>
                     <Table.HeaderCell>Passagers</Table.HeaderCell>
-                    <Table.HeaderCell>Actions</Table.HeaderCell>
+                    {credentials && <Table.HeaderCell>Actions</Table.HeaderCell>}
                 </Table.Row>
             </Table.Header>
 
@@ -53,10 +53,12 @@ const TripsTable = ({ trips, isBack }) => {
                                 ))
                             }</ul>
                         </Table.Cell>
+                    { credentials && 
                         <Table.Cell>
                             <Button disabled={credentials != trip.driver.username}>Modifier</Button>
                             <Button disabled={credentials != trip.driver.username}>Supprimer</Button>
-                        </Table.Cell>
+                        </Table.Cell> 
+                    }
                     </Table.Row>
                 ))}
             </Table.Body>
