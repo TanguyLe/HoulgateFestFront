@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { getCredentials, register, unregister } from '../../login/store'
-
 import { Table, Button } from 'semantic-ui-react'
+
+import { getCredentials, register, unregister } from '../../login/store'
 import dateFormat from '../../utils/dateFormat'
 
 const TripsTable = ({ trips, isBack }) => {
     const [title] = useState(isBack ? 'Trajet retour' : 'Trajet Aller')
     const [credentials, setCredentials] = useState()
-    const [connectedUser, setConnectedUser] = useState()
+
+    const changingCreds = (creds) => {
+        if (creds.login !== credentials)
+            setCredentials(creds.login)
+    }
 
     useEffect(() => {
-        console.log('did mount: ', credentials)
-        register(setCredentials)
-        setCredentials(getCredentials())
+        register(changingCreds)
+        changingCreds(getCredentials())
+        return () => {
+            unregister(setCredentials)
+        }
     }, [])
-     
-    useEffect(() => {
-        console.log('credentials did update: ', credentials)
-        if (credentials) setConnectedUser(credentials.login ? credentials.login : undefined)
-    }, [credentials])
 
     return (
         <Table celled striped>
@@ -53,8 +54,8 @@ const TripsTable = ({ trips, isBack }) => {
                             }</ul>
                         </Table.Cell>
                         <Table.Cell>
-                            <Button disabled={connectedUser != trip.driver.username}>Modifier</Button>
-                            <Button disabled={connectedUser != trip.driver.username}>Supprimer</Button>
+                            <Button disabled={credentials != trip.driver.username}>Modifier</Button>
+                            <Button disabled={credentials != trip.driver.username}>Supprimer</Button>
                         </Table.Cell>
                     </Table.Row>
                 ))}
