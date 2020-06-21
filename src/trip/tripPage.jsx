@@ -41,10 +41,10 @@ const DATA = [
 let TripPage = () => {
     return (
         <Grid padded>
-            <Grid.Column mobile={32} tablet={16} computer={8}>
+            <Grid.Column mobile={16} tablet={16} computer={8}>
                 <TripsTable trips={DATA.filter(data => data.type === 'FORTH')}></TripsTable>
             </Grid.Column>
-            <Grid.Column mobile={32} tablet={16} computer={8}>
+            <Grid.Column mobile={16} tablet={16} computer={8}>
                 <TripsTable isBack trips={DATA.filter(data => data.type === 'BACK')}></TripsTable>
             </Grid.Column>
         </Grid>
