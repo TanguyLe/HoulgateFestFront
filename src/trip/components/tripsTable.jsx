@@ -26,17 +26,15 @@ const TripsTable = ({ trips, isBack }) => {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell colSpan={credentials ? 5 : 4}>
-                        {title}
-                        {credentials && <Button size="mini" floated='right' primary compact>Nouveau</Button>}
+                        { credentials ? <>{title}<Button size="mini" floated='right' primary compact>Nouveau</Button></> : title }
                     </Table.HeaderCell>
-                    
                 </Table.Row>
                 <Table.Row>
                     <Table.HeaderCell>Conducteur</Table.HeaderCell>
                     <Table.HeaderCell>Depart</Table.HeaderCell>
                     <Table.HeaderCell>Lieu</Table.HeaderCell>
                     <Table.HeaderCell>Passagers</Table.HeaderCell>
-                    {credentials && <Table.HeaderCell>Actions</Table.HeaderCell>}
+                    { credentials ? <Table.HeaderCell>Actions</Table.HeaderCell> : null }
                 </Table.Row>
             </Table.Header>
 
@@ -53,12 +51,12 @@ const TripsTable = ({ trips, isBack }) => {
                                 ))
                             }</ul>
                         </Table.Cell>
-                    { credentials && 
-                        <Table.Cell>
-                            <Button size="mini" disabled={credentials != trip.driver.username} compact>Modifier</Button>
-                            <Button size="mini" disabled={credentials != trip.driver.username} compact>Supprimer</Button>
-                        </Table.Cell> 
-                    }
+                        { credentials ? 
+                            <Table.Cell>
+                                <Button size="mini" disabled={credentials != trip.driver.username} compact>Modifier</Button>
+                                <Button size="mini" disabled={credentials != trip.driver.username} compact>Supprimer</Button>
+                            </Table.Cell> 
+                        : null }
                     </Table.Row>
                 ))}
             </Table.Body>
