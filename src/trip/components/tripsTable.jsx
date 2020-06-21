@@ -6,18 +6,18 @@ import dateFormat from '../../utils/dateFormat'
 
 const TripsTable = ({ trips, isBack }) => {
     const [title] = useState(isBack ? 'Trajets retour' : 'Trajets Aller')
-    const [credentials, setCredentials] = useState()
+    const [login, setLogin] = useState()
 
-    const changingCreds = (creds) => {
-        if (creds.login !== credentials)
-            setCredentials(creds.login)
+    const changingLogin = (creds) => {
+        if (creds.login !== login)
+            setLogin(creds.login)
     }
 
     useEffect(() => {
-        register(changingCreds)
-        changingCreds(getCredentials())
+        register(changingLogin)
+        changingLogin(getCredentials())
         return () => {
-            unregister(setCredentials)
+            unregister(setLogin)
         }
     }, [])
 
@@ -25,8 +25,8 @@ const TripsTable = ({ trips, isBack }) => {
         <Table textAlign="center" size="small" celled striped compact>
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell colSpan={credentials ? 5 : 4}>
-                        { credentials ? <>{title}<Button size="mini" floated='right' primary compact>Nouveau</Button></> : title }
+                    <Table.HeaderCell colSpan={login ? 5 : 4}>
+                        { login ? <>{title}<Button size="mini" floated='right' primary compact>Nouveau</Button></> : title }
                     </Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
@@ -34,7 +34,7 @@ const TripsTable = ({ trips, isBack }) => {
                     <Table.HeaderCell>Depart</Table.HeaderCell>
                     <Table.HeaderCell>Lieu</Table.HeaderCell>
                     <Table.HeaderCell>Passagers</Table.HeaderCell>
-                    { credentials ? <Table.HeaderCell>Actions</Table.HeaderCell> : null }
+                    { login ? <Table.HeaderCell>Actions</Table.HeaderCell> : null }
                 </Table.Row>
             </Table.Header>
 
@@ -51,10 +51,10 @@ const TripsTable = ({ trips, isBack }) => {
                                 ))
                             }</ul>
                         </Table.Cell>
-                        { credentials ? 
+                        { login ? 
                             <Table.Cell>
-                                <Button size="mini" disabled={credentials != trip.driver.username} compact>Modifier</Button>
-                                <Button size="mini" disabled={credentials != trip.driver.username} compact>Supprimer</Button>
+                                <Button size="mini" disabled={login != trip.driver.username} compact>Modifier</Button>
+                                <Button size="mini" disabled={login != trip.driver.username} compact>Supprimer</Button>
                             </Table.Cell> 
                         : null }
                     </Table.Row>
