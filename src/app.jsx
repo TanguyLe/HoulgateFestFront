@@ -25,7 +25,7 @@ class App extends React.Component {
                         <DefaultLayout component={ShotgunPage} bigContainer/>
                     </Route>
                     <Route path="/trips">
-                        <DefaultLayout component={TripPage}/>
+                        <DefaultLayout component={TripPage} bigContainer/>
                     </Route>
                     <Route path="/contact">
                         <DefaultLayout component={ContactPage}/>
