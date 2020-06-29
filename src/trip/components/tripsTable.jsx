@@ -34,7 +34,7 @@ const TripsTable = ({ trips, isBack }) => {
                 <Table.Row>
                     <Table.HeaderCell colSpan='5'>
                         <>{title}</>
-                        <TripsModal mode='add' floated='right' isBack primary/>
+                        { login ? <TripsModal mode='add' floated='right' isBack primary/> : null }
                     </Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
