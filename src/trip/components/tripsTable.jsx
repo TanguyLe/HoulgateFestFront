@@ -3,10 +3,12 @@ import { Table, Button, Portal, Segment, Header } from 'semantic-ui-react'
 
 import { getCredentials, register, unregister } from '../../login/store'
 import dateFormat from '../../utils/dateFormat'
+import TripsModal from "./tripsModal";
 
 const TripsTable = ({ trips, isBack }) => {
     const [title] = useState(isBack ? 'Trajets retour' : 'Trajets Aller')
     const [login, setLogin] = useState()
+    const [deletePopup, setDeletePopup] = useState(false)
 
     const changingLogin = (creds) => {
         if (creds.login !== login)
@@ -32,7 +34,7 @@ const TripsTable = ({ trips, isBack }) => {
                 <Table.Row>
                     <Table.HeaderCell colSpan='5'>
                         <>{title}</>
-                        <TripsModal mode='add' floated='right' isBack primary></TripsModal>
+                        <TripsModal mode='add' floated='right' isBack primary/>
                     </Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
@@ -59,11 +61,11 @@ const TripsTable = ({ trips, isBack }) => {
                         </Table.Cell>
                         { login ?
                             <Table.Cell>
-                                <Button mode='edit' initialData={trip} disabled={connectedUser != trip.driver.username}>Modifier</Button>
+                                <TripsModal mode='edit' initialData={trip} disabled={login !== trip.driver.username}>Modifier</TripsModal>
                                 <Portal
                                     openOnTriggerClick
                                     open={deletePopup}
-                                    trigger={<Button size='mini' disabled={connectedUser != trip.driver.username}  content='Supprimer'/>}
+                                    trigger={<Button size='mini' disabled={login !== trip.driver.username}  content='Supprimer'/>}
                                     onOpen={() => setDeletePopup(true)}
                                     onClose={handleDeleteTrip}
                                 >
