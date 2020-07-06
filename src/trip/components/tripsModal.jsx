@@ -18,8 +18,8 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
     ]
 
     const [btnName, setBtnName] = useState('')
+    const [btnEnabled, setBtnEnabled] = useState(false)
     const [inputs, setInputs] = useState({})
-    const [btnState, setBtnState] = useState(false)
     const [error, setError] = useState({ header: null, content: null, isHidden: true })
 
     useEffect(() => {
@@ -27,10 +27,10 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
         switch (mode) {
             case 'add':
                 setBtnName('Ajouter')
+                setInputs({ passengers: [] })
                 break;
             case 'edit':
                 if (initialData) {
-                    setBtnState(true)
                     const date = dateFormat(initialData.start).split(' ')[0]
                     const time = dateFormat(initialData.start).split(' ')[1]
                     const passengers = initialData.passengers.map(passenger => passenger.username)
@@ -42,11 +42,22 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
         }
     },[])
 
-    useEffect(() => {
-        if (inputs.passengers && inputs.passengers.length > inputs.seats)
-            return setError({ header: "Erreur", content: "Le nombre de passager ne peux dépasser le nombre de sièges", isHidden: false })
-        setError({ header: null, content: null, isHidden: true })
-    }, [inputs.seats, inputs.passengers])
+    useEffect(() => {        
+        let emptyFields = false
+        
+        Object.values(inputs).forEach(value => { if (typeof value !== "object" && !value) emptyFields = true; })
+        if (inputs.passengers) {
+            if (!inputs.passengers.length) emptyFields = true
+            if (inputs.passengers.length > inputs.seats) {
+                setBtnEnabled(false)
+                return setError({ header: "Erreur", content: "Le nombre de passager ne peux dépasser le nombre de sièges.", isHidden: false })
+            }
+            setError({ header: null, content: null, isHidden: true })
+        }
+
+        if (emptyFields) return setBtnEnabled(false)
+        setBtnEnabled(true)
+    }, [inputs])
 
     const handleSubmit = (e) => {
         /** To implement database registration */
@@ -58,7 +69,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
             style={{ top: '25%' }} 
             closeIcon
         >
-            <Modal.Header icon='car' content='Trajet' />
+            <Modal.Header icon='car' content={`${mode === 'edit' ? 'Modifier' : 'Ajouter'} trajet`} />
             <Modal.Content>
                 <Form>
                     <Form.Field required>
@@ -97,7 +108,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                 <Message attached header={error.header} content={error.content} hidden={error.isHidden} error size="mini"/>
             </Modal.Content>
             <Modal.Actions>
-                <Button primary size='mini' onClick={handleSubmit} disabled={!btnState}>
+                <Button primary size='mini' onClick={handleSubmit} disabled={!btnEnabled}>
                     <Icon name='checkmark' /> Valider
                 </Button>
             </Modal.Actions>
