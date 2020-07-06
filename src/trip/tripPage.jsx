@@ -54,10 +54,10 @@ let TripPage = () => {
     return (
         <Grid padded>
             <Grid.Column mobile={16} tablet={16} computer={8}>
-                <TripsTable trips={TRIPS.filter(trips => trips.type === 'FORTH')} users={USERS}></TripsTable>
+                <TripsTable trips={TRIPS.filter(trips => trips.type === 'FORTH')} users={USERS}/>
             </Grid.Column>
             <Grid.Column mobile={16} tablet={16} computer={8}>
-                <TripsTable isBack trips={TRIPS.filter(trips => trips.type === 'BACK')} users={USERS}></TripsTable>
+                <TripsTable isBack trips={TRIPS.filter(trips => trips.type === 'BACK')} users={USERS}/>
             </Grid.Column>
         </Grid>
     );
