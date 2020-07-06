@@ -17,28 +17,16 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
         { value: "Momo", text: "Momo" }
     ]
 
-    const [btnName, setBtnName] = useState('')
     const [btnEnabled, setBtnEnabled] = useState(false)
-    const [inputs, setInputs] = useState({})
+    const [inputs, setInputs] = useState({ adress: '', seats: 0, date: '', time: '', passengers: [] })
     const [error, setError] = useState({ header: null, content: null, isHidden: true })
 
     useEffect(() => {
-
-        switch (mode) {
-            case 'add':
-                setBtnName('Ajouter')
-                setInputs({ passengers: [] })
-                break;
-            case 'edit':
-                if (initialData) {
-                    const date = dateFormat(initialData.start).split(' ')[0]
-                    const time = dateFormat(initialData.start).split(' ')[1]
-                    const passengers = initialData.passengers.map(passenger => passenger.username)
-                    setInputs({ adress: initialData.adress, seats: initialData.seats, date, time, passengers })
-                }
-                setBtnName('Modifier')
-            default:
-                break;
+        if (mode === 'edit' && initialData) {
+            const date = dateFormat(initialData.start).split(' ')[0]
+            const time = dateFormat(initialData.start).split(' ')[1]
+            const passengers = initialData.passengers.map(passenger => passenger.username)
+            return setInputs({ adress: initialData.adress, seats: initialData.seats, date, time, passengers })
         }
     },[])
 
@@ -63,13 +51,15 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
         /** To implement database registration */
     }
 
+    const actionType = mode === 'edit' ? 'Modifier' : 'Ajouter'
+
     return (
         <Modal 
-            trigger={<Button size='mini' disabled={disabled} floated={floated} primary={primary}>{btnName}</Button>} 
+            trigger={<Button size='mini' disabled={disabled} floated={floated} primary={primary}>{actionType}</Button>} 
             style={{ top: '25%' }} 
             closeIcon
         >
-            <Modal.Header icon='car' content={`${mode === 'edit' ? 'Modifier' : 'Ajouter'} trajet`} />
+            <Modal.Header icon='car' content={`${actionType} trajet`} />
             <Modal.Content>
                 <Form>
                     <Form.Field required>
@@ -109,7 +99,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
             </Modal.Content>
             <Modal.Actions>
                 <Button primary size='mini' onClick={handleSubmit} disabled={!btnEnabled}>
-                    <Icon name='checkmark' /> Valider
+                    <Icon name='checkmark' /> {actionType}
                 </Button>
             </Modal.Actions>
         </Modal>
