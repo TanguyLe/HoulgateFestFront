@@ -5,7 +5,7 @@ import { getCredentials, register, unregister } from '../../login/store'
 import dateFormat from '../../utils/dateFormat'
 import TripsModal from "./tripsModal";
 
-const TripsTable = ({ trips, isBack }) => {
+const TripsTable = ({ trips, users, isBack }) => {
     const [title] = useState(isBack ? 'Trajets retour' : 'Trajets Aller')
     const [login, setLogin] = useState()
     const [deletePopup, setDeletePopup] = useState(false)
@@ -33,8 +33,7 @@ const TripsTable = ({ trips, isBack }) => {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell colSpan='5'>
-                        <>{title}</>
-                        { login ? <TripsModal mode='add' floated='right' isBack primary/> : null }
+                        {title} {login ? <TripsModal mode='add' floated='right' isBack primary/> : null }
                     </Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
@@ -61,7 +60,7 @@ const TripsTable = ({ trips, isBack }) => {
                         </Table.Cell>
                         { login ?
                             <Table.Cell>
-                                <TripsModal mode='edit' initialData={trip} disabled={login !== trip.driver.username}>Modifier</TripsModal>
+                                <TripsModal mode='edit' initialData={trip} users={users} disabled={login !== trip.driver.username}>Modifier</TripsModal>
                                 <Portal
                                     openOnTriggerClick
                                     open={deletePopup}

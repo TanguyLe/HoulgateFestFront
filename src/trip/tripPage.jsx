@@ -1,9 +1,9 @@
 import React from "react"
-import { Grid, Container } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 
 import TripsTable from './components/tripsTable'
 
-const DATA = [
+const TRIPS = [
     {
         driver: {"username": "Tanguy"},
         start: new Date(),
@@ -38,14 +38,26 @@ const DATA = [
     }
 ]
 
+const USERS = [
+    { value: "Baptiste", text: "Baptiste" },
+    { value: "Romain", text: "Romain" },
+    { value: "Othmane", text: "Othmane" },
+    { value: "Julie", text: "Julie" },
+    { value: "Hugo", text: "Hugo" },
+    { value: "Patrick", text: "Patrick" },
+    { value: "Léa", text: "Léa" },
+    { value: "Tanguy", text: "Tanguy" },
+    { value: "Momo", text: "Momo" }
+]
+
 let TripPage = () => {
     return (
         <Grid padded>
             <Grid.Column mobile={16} tablet={16} computer={8}>
-                <TripsTable trips={DATA.filter(data => data.type === 'FORTH')}></TripsTable>
+                <TripsTable trips={TRIPS.filter(trips => trips.type === 'FORTH')} users={USERS}></TripsTable>
             </Grid.Column>
             <Grid.Column mobile={16} tablet={16} computer={8}>
-                <TripsTable isBack trips={DATA.filter(data => data.type === 'BACK')}></TripsTable>
+                <TripsTable isBack trips={TRIPS.filter(trips => trips.type === 'BACK')} users={USERS}></TripsTable>
             </Grid.Column>
         </Grid>
     );

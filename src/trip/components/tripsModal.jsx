@@ -22,7 +22,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
     const [error, setError] = useState({ header: null, content: null, isHidden: true })
 
     useEffect(() => {
-        if (mode === 'edit' && initialData) {
+        if (initialData) {
             const date = dateFormat(initialData.start).split(' ')[0]
             const time = dateFormat(initialData.start).split(' ')[1]
             const passengers = initialData.passengers.map(passenger => passenger.username)
@@ -38,7 +38,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
             if (!inputs.passengers.length) emptyFields = true
             if (inputs.passengers.length > inputs.seats) {
                 setBtnEnabled(false)
-                return setError({ header: "Erreur", content: "Le nombre de passager ne peux dépasser le nombre de sièges.", isHidden: false })
+                return setError({ header: "Erreur", content: "Le nombre de passagers ne peut dépasser le nombre de sièges.", isHidden: false })
             }
             setError({ header: null, content: null, isHidden: true })
         }
