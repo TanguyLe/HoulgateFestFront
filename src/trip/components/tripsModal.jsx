@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Button, Icon, Modal, Form, Input, Dropdown } from 'semantic-ui-react'
+import { Button, Icon, Modal, Form, Input, Dropdown, Message } from 'semantic-ui-react'
 import dateFormat from '../../utils/dateFormat'
 
 const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) => {
@@ -19,6 +19,8 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
 
     const [btnName, setBtnName] = useState('')
     const [inputs, setInputs] = useState({})
+    const [btnState, setBtnState] = useState(false)
+    const [error, setError] = useState({ header: null, content: null, isHidden: true })
 
     useEffect(() => {
 
@@ -28,6 +30,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                 break;
             case 'edit':
                 if (initialData) {
+                    setBtnState(true)
                     const date = dateFormat(initialData.start).split(' ')[0]
                     const time = dateFormat(initialData.start).split(' ')[1]
                     const passengers = initialData.passengers.map(passenger => passenger.username)
@@ -38,6 +41,12 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                 break;
         }
     },[])
+
+    useEffect(() => {
+        if (inputs.passengers && inputs.passengers.length > inputs.seats)
+            return setError({ header: "Erreur", content: "Le nombre de passager ne peux dépasser le nombre de sièges", isHidden: false })
+        setError({ header: null, content: null, isHidden: true })
+    }, [inputs.seats, inputs.passengers])
 
     const handleSubmit = (e) => {
         /** To implement database registration */
@@ -85,9 +94,10 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                         />
                     </Form.Field>
                 </Form>
+                <Message attached header={error.header} content={error.content} hidden={error.isHidden} error size="mini"/>
             </Modal.Content>
             <Modal.Actions>
-                <Button primary size='mini' onClick={handleSubmit}>
+                <Button primary size='mini' onClick={handleSubmit} disabled={!btnState}>
                     <Icon name='checkmark' /> Valider
                 </Button>
             </Modal.Actions>
