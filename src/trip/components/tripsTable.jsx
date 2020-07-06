@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Button } from 'semantic-ui-react'
+import { Table, Button, Portal, Segment, Header } from 'semantic-ui-react'
 
 import { getCredentials, register, unregister } from '../../login/store'
 import dateFormat from '../../utils/dateFormat'
+import TripsModal from "./tripsModal";
 
-const TripsTable = ({ trips, isBack }) => {
+const TripsTable = ({ trips, users, isBack }) => {
     const [title] = useState(isBack ? 'Trajets retour' : 'Trajets Aller')
     const [login, setLogin] = useState()
+    const [deletePopup, setDeletePopup] = useState(false)
 
     const changingLogin = (creds) => {
         if (creds.login !== login)
@@ -21,12 +23,17 @@ const TripsTable = ({ trips, isBack }) => {
         }
     }, [])
 
+    const handleDeleteTrip = () => {
+        setDeletePopup(false)
+        /** perform deletion from db */
+    }
+
     return (
         <Table textAlign="center" size="small" celled striped compact>
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell colSpan={login ? 5 : 4}>
-                        { login ? <>{title}<Button size="mini" floated='right' primary compact>Nouveau</Button></> : title }
+                    <Table.HeaderCell colSpan='5'>
+                        {title} {login ? <TripsModal mode='add' floated='right' isBack primary/> : null }
                     </Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
@@ -51,11 +58,29 @@ const TripsTable = ({ trips, isBack }) => {
                                 ))
                             }</ul>
                         </Table.Cell>
-                        { login ? 
+                        { login ?
                             <Table.Cell>
-                                <Button size="mini" disabled={login != trip.driver.username} compact>Modifier</Button>
-                                <Button size="mini" disabled={login != trip.driver.username} compact>Supprimer</Button>
-                            </Table.Cell> 
+                                <TripsModal mode='edit' initialData={trip} users={users} disabled={login !== trip.driver.username}>Modifier</TripsModal>
+                                <Portal
+                                    openOnTriggerClick
+                                    open={deletePopup}
+                                    trigger={<Button size='mini' disabled={login !== trip.driver.username}  content='Supprimer'/>}
+                                    onOpen={() => setDeletePopup(true)}
+                                    onClose={handleDeleteTrip}
+                                >
+                                    <Segment
+                                        style={{
+                                            left: '40%',
+                                            position: 'fixed',
+                                            top: '40%',
+                                            zIndex: 1000,
+                                        }}
+                                    >
+                                        <Header>Êtes vous sûr de vouloir supprimer ce trajet ?</Header>
+                                        <Button size='mini' content='Confirmer' negative onClick={handleDeleteTrip}/>
+                                    </Segment>
+                                </Portal>
+                            </Table.Cell>
                         : null }
                     </Table.Row>
                 ))}
