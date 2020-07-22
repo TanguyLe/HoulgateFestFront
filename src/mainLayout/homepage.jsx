@@ -31,8 +31,9 @@ class Homepage extends React.Component {
                     <Header.Content>La Date</Header.Content>
                 </Header>
 
-                Cette édition 2020 se déroulera du <b>vendredi 26 au dimanche 28 Juin</b>
-                <i className="smalltext"> (Sauf contre-indication si le coro continue). </i>
+                Cette édition 2020 se déroulera du <strike>vendredi 26 au dimanche 28 Juin</strike>
+                <b> vendredi 25 au dimanche 27 Septembre</b>
+                <i className="smalltext"> (Sauf contre-indication si le coro <strike>continue</strike> repart). </i>
 
 
                 <Header as="h3">
@@ -58,7 +59,7 @@ class Homepage extends React.Component {
                 </Header>
 
                 Pour faire simple il y aura surement plus de fêtards que de chambres disponibles.
-                Donc soyez présent <b>le vendredi 12 Juin à 20h (heure de Paris)</b> sur cette plateforme
+                Donc soyez présent <b>le vendredi 18 Septembre à 20h (heure de Paris)</b> sur cette plateforme
                 pour réserver votre nid douillet.
                 D'ici là pensez à vous <Link to="/register">inscrire</Link> et vérifiez
                 bien que vous pouvez vous connecter.
