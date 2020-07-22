@@ -12,6 +12,7 @@ import CreatePasswordResetPage from "./login/createPasswordResetPage"
 import DefaultLayout from './mainLayout/components/layout'
 import ContactPage from './contact/contactPage'
 import TripPage from './trip/tripPage'
+import ScoresPage from "./scores/scoresPage"
 
 
 class App extends React.Component {
@@ -26,6 +27,9 @@ class App extends React.Component {
                     </Route>
                     <Route path="/trips">
                         <DefaultLayout component={TripPage} bigContainer/>
+                    </Route>
+                    <Route path="/scores">
+                        <DefaultLayout component={ScoresPage} bigContainer/>
                     </Route>
                     <Route path="/contact">
                         <DefaultLayout component={ContactPage}/>
