@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react'
 
+import { getCredentials, register, unregister } from '../login/store'
 import { getCallApi, postCallApi, putCallApi, deleteCallApi } from '../utils/api/fetchMiddleware'
 import { USERS_ENDPOINT, TRIPS_ENDPOINT } from './constants'
 import { useEffect } from 'react';
@@ -7,6 +8,7 @@ import { useEffect } from 'react';
 export const TripContext = createContext();
 
 const TripContextProvider = (props) => {
+    const [login, setLogin] = useState()
     const [users, setUsers] = useState()
     const [trips, setTrips] = useState()
 
@@ -55,10 +57,23 @@ const TripContextProvider = (props) => {
         await loadTrips()
     }
 
+    const changingLogin = (creds) => {
+        if (creds.login !== login)
+            setLogin(creds.login)
+    }
+
+    useEffect(() => {
+        register(changingLogin)
+        changingLogin(getCredentials())
+        return () => {
+            unregister(setLogin)
+        }
+    }, [])
+
     useEffect(() => { init () }, [])
 
     return (
-        <TripContext.Provider value={{ users, trips, getUserById, getUserByUsername, createTrip, updateTrip, deleteTrip }}>
+        <TripContext.Provider value={{ login, users, trips, getUserById, getUserByUsername, createTrip, updateTrip, deleteTrip }}>
             { props.children }
         </TripContext.Provider>
     );

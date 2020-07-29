@@ -1,30 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Table, Button, Portal, Segment, Header } from 'semantic-ui-react'
 
-import { getCredentials, register, unregister } from '../../login/store'
 import { TripContext } from '../TripContext'
 import dateFormat from '../../utils/dateFormat'
 import TripsModal from "./tripsModal";
 
 const TripsTable = ({ isBack }) => {
-    const { trips, getUserById, deleteTrip } = useContext(TripContext)
+    const { login, trips, getUserById, deleteTrip } = useContext(TripContext)
 
     const [title] = useState(isBack ? 'Trajets retour' : 'Trajets Aller')
-    const [login, setLogin] = useState()
     const [deletePopup, setDeletePopup] = useState(false)
-
-    const changingLogin = (creds) => {
-        if (creds.login !== login)
-            setLogin(creds.login)
-    }
-
-    useEffect(() => {
-        register(changingLogin)
-        changingLogin(getCredentials())
-        return () => {
-            unregister(setLogin)
-        }
-    }, [])
 
     const handleDeleteTrip = async (id) => {
         await deleteTrip(id)
