@@ -1,9 +1,8 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 
 import { getCredentials, register, unregister } from '../login/store'
 import { getCallApi, postCallApi, putCallApi, deleteCallApi } from '../utils/api/fetchMiddleware'
 import { USERS_ENDPOINT, TRIPS_ENDPOINT } from './constants'
-import { useEffect } from 'react';
 
 export const TripContext = createContext();
 
