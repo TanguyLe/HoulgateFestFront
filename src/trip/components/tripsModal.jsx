@@ -9,7 +9,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
 
     const [modalOpen, setModalOpen] = useState(undefined)
     const [btnEnabled, setBtnEnabled] = useState(false)
-    const [inputs, setInputs] = useState({ location: '', seats: 0, date: '', time: '', passengers: [] })
+    const [inputs, setInputs] = useState({ location: '', seats: 1, date: '', time: '', passengers: [] })
     const [error, setError] = useState({ header: null, content: null, isHidden: true })
 
     useEffect(() => {
@@ -24,13 +24,13 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
     useEffect(() => {
         let emptyFields = false
         
-        Object.values(inputs).forEach(value => { 
-            if (typeof value !== "object" && !value) {
+        for (const key in inputs) {
+            const value = inputs[key]
+            if (key !== "passengers" && !value)
                 emptyFields = true;
-            } 
-        })
+        }
+ 
         if (inputs.passengers) {
-            if (!inputs.passengers.length) emptyFields = true
             if (inputs.passengers.length > inputs.seats) {
                 setBtnEnabled(false)
                 return setError({ header: "Erreur", content: "Le nombre de passagers ne peut dépasser le nombre de sièges.", isHidden: false })
@@ -56,7 +56,6 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
             default:
                 break;
         }
-        setInputs({ location: '', seats: 0, date: '', time: '', passengers: [] })
         setModalOpen(false)
     }
 
@@ -104,7 +103,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                             <Input type='number' min='1' value={inputs.seats} onChange={(e) => setInputs({ ...inputs, seats: e.target.value })}/>
                         </Form.Field>
                     </Form.Group>
-                    <Form.Field required>
+                    <Form.Field>
                         <label>Passagers</label>{
                         users ?
                         <Dropdown
