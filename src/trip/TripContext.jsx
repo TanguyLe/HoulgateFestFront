@@ -46,13 +46,13 @@ const TripContextProvider = (props) => {
     const getUserByUsername = (username) => users.filter(user => user.username === username)[0]
 
     const loadUsers = async () => {
-        const response = await getCallApi(USERS_ENDPOINT, false)
+        const response = await getCallApi(USERS_ENDPOINT)
         const jsonData = await response.json()
         setUsers(jsonData.data) 
     }
 
     const loadTrips = async () => {
-        const response = await getCallApi(TRIPS_ENDPOINT, false)
+        const response = await getCallApi(TRIPS_ENDPOINT)
         const jsonData = await response.json()
         setTrips(jsonData.data) 
     }
