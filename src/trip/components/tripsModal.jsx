@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Button, Icon, Modal, Form, Input, Dropdown, Message } from 'semantic-ui-react'
 
-import { getCredentials } from '../../login/store'
 import { TripContext } from '../TripContext'
 import dateFormat from '../../utils/dateFormat'
 
@@ -43,7 +42,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
     }, [inputs])
 
     const handleSubmit = async () => {
-        const driver = await getUserByUsername(getCredentials().login)._id
+        const driver = getUserByUsername(login)._id
         const { _id, location, seats, date, time, passengers } = inputs
         const fullDate = new Date(`${date} ${time}`)
         const type = isBack ? "BACK" : "FORTH"
