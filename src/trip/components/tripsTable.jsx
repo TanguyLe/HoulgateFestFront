@@ -21,7 +21,7 @@ const TripsTable = ({ isBack }) => {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell colSpan='5'>
-                        {title} {login ? <TripsModal mode='add' floated='right' isBack={isBack} primary/> : null }
+                        {title} <TripsModal mode='add' floated='right' isBack={isBack} primary/>
                     </Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
@@ -29,7 +29,7 @@ const TripsTable = ({ isBack }) => {
                     <Table.HeaderCell>Depart</Table.HeaderCell>
                     <Table.HeaderCell>Lieu</Table.HeaderCell>
                     <Table.HeaderCell>Passagers</Table.HeaderCell>
-                    { login ? <Table.HeaderCell>Actions</Table.HeaderCell> : null }
+                    <Table.HeaderCell>Actions</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
 
@@ -47,32 +47,30 @@ const TripsTable = ({ isBack }) => {
                                     ))
                                 }</ul>
                             </Table.Cell>
-                            { login ?
-                                <Table.Cell>
-                                    <TripsModal mode='edit' initialData={trip} disabled={login !== getUserById(trip.driver).username} isBack={isBack}>Modifier</TripsModal>
-                                    <Portal
-                                        openOnTriggerClick
-                                        open={deletePopup}
-                                        trigger={<Button size='mini' disabled={login !== getUserById(trip.driver).username}  content='Supprimer'/>}
-                                        onOpen={() => setDeletePopup(true)}
+                            <Table.Cell>
+                                <TripsModal mode='edit' initialData={trip} disabled={login !== getUserById(trip.driver).username} isBack={isBack}>Modifier</TripsModal>
+                                <Portal
+                                    openOnTriggerClick
+                                    open={deletePopup}
+                                    trigger={<Button size='mini' disabled={login !== getUserById(trip.driver).username}  content='Supprimer'/>}
+                                    onOpen={() => setDeletePopup(true)}
+                                >
+                                    <Segment
+                                        style={{
+                                            "border": "solid 1px #666",
+                                            left: '40%',
+                                            position: 'fixed',
+                                            top: '40%',
+                                            zIndex: 1000,
+                                            textAlign: "center"
+                                        }}
                                     >
-                                        <Segment
-                                            style={{
-                                                "border": "solid 1px #666",
-                                                left: '40%',
-                                                position: 'fixed',
-                                                top: '40%',
-                                                zIndex: 1000,
-                                                textAlign: "center"
-                                            }}
-                                        >
-                                            <Header>Êtes vous sûr de vouloir supprimer ce trajet ?</Header>
-                                            <Button size='mini' content='Annuler' onClick={() => setDeletePopup(false)}/>
-                                            <Button size='mini' content='Confirmer' negative onClick={() => handleDeleteTrip(trip._id)}/>
-                                        </Segment>
-                                    </Portal>
-                                </Table.Cell>
-                            : null }
+                                        <Header>Êtes vous sûr de vouloir supprimer ce trajet ?</Header>
+                                        <Button size='mini' content='Annuler' onClick={() => setDeletePopup(false)}/>
+                                        <Button size='mini' content='Confirmer' negative onClick={() => handleDeleteTrip(trip._id)}/>
+                                    </Segment>
+                                </Portal>
+                            </Table.Cell>
                         </Table.Row>
                     )) 
                 : null}
