@@ -58,7 +58,6 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                 break;
         }
         setModalOpen(false)
-        setModalOpen(undefined)
     }
 
     const actionType = mode === 'edit' ? 'Modifier' : 'Ajouter'
@@ -66,9 +65,22 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
     return (
         <Modal
             open={modalOpen}
-            trigger={<Button size='mini' disabled={disabled} floated={floated} primary={primary}>{actionType}</Button>} 
-            style={{ top: '25%' }} 
             closeIcon
+            onClose={() => setModalOpen(false)}
+            trigger={
+                <Button 
+                    size='mini' 
+                    disabled={disabled} 
+                    floated={floated} 
+                    primary={primary} 
+                    onClick={(e) => {
+                        e.preventDefault
+                        setModalOpen(true)
+                    }}
+                >
+                    {actionType}
+                </Button>}
+            style={{ top: '25%' }} 
         >
             <Modal.Header icon='car' content={`${actionType} trajet`} />
             <Modal.Content>
