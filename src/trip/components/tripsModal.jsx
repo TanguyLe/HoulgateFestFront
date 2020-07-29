@@ -54,7 +54,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
         }
     }, [users])
 
-    const handleSubmit = async (inputs) => {
+    const handleSubmit = async () => {
         const driver = await getUserByUsername(getCredentials().login)._id
         const { _id, location, seats, date, time, passengers } = inputs
         const fullDate = new Date(`${date} ${time}`)
@@ -123,7 +123,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                 <Message attached header={error.header} content={error.content} hidden={error.isHidden} error size="mini"/>
             </Modal.Content>
             <Modal.Actions>
-                <Button primary size='mini' onClick={() => handleSubmit(inputs)} disabled={!btnEnabled}>
+                <Button primary size='mini' onClick={() => handleSubmit()} disabled={!btnEnabled}>
                     <Icon name='checkmark' /> {actionType}
                 </Button>
             </Modal.Actions>
