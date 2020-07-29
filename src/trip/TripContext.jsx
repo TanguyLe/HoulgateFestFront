@@ -42,8 +42,8 @@ const TripContextProvider = (props) => {
         }
     }
 
-    const getUserById = (id) => users.filter(user => user._id === id)[0]
-    const getUserByUsername = (username) => users.filter(user => user.username === username)[0]
+    const getUserById = (id) => users.find(user => user._id === id)
+    const getUserByUsername = (username) => users.find(user => user.username === username)
 
     const loadUsers = async () => {
         const response = await getCallApi(USERS_ENDPOINT)
