@@ -61,6 +61,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
     }
 
     const actionType = mode === 'edit' ? 'Modifier' : 'Ajouter'
+    const tripType = !isBack ? 'aller' : 'retour'
 
     return (
         <Modal
@@ -82,7 +83,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                 </Button>}
             style={{ top: '25%' }} 
         >
-            <Modal.Header icon='car' content={`${actionType} trajet`} />
+            <Modal.Header icon='car' content={`${actionType} trajet ${tripType}`} />
             <Modal.Content>
                 <Form>
                     <Form.Field required>
