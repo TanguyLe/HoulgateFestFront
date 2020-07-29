@@ -12,14 +12,19 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
     const [inputs, setInputs] = useState({ location: '', seats: 1, date: '', time: '', passengers: [] })
     const [error, setError] = useState({ header: null, content: null, isHidden: true })
 
-    useEffect(() => {
+
+    const setOrResetInputs = () => {
         if (initialData) {
             const date = dateFormat(initialData.date).split(' ')[0]
             const time = dateFormat(initialData.date).split(' ')[1]
             const { _id, driver, location, passengers, seats, type } = initialData
             return setInputs({ _id, date, time, driver, location, passengers, seats, type })
+        } else {
+            return setInputs({ location: '', seats: 1, date: '', time: '', passengers: [] })
         }
-    },[])
+    }
+
+    useEffect(() => setOrResetInputs(), [])
 
     useEffect(() => {
         let emptyFields = false
@@ -49,6 +54,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
         switch (mode) {
             case "add":
                 await createTrip({ driver, location, seats, date: fullDate, passengers, type })
+                setOrResetInputs()
                 break;
             case "edit":
                 await updateTrip(_id, { driver, location, seats, date: fullDate, passengers, type })
@@ -66,7 +72,11 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
         <Modal
             open={modalOpen}
             closeIcon
-            onClose={() => setModalOpen(false)}
+            onClose={() => {
+                setModalOpen(false)
+                if (mode === 'edit')
+                    setOrResetInputs()
+            }}
             trigger={
                 <Button 
                     size='mini' 
