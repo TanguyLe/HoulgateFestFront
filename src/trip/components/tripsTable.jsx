@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { Table, Button, Portal, Segment, Header } from 'semantic-ui-react'
 
 import { TripContext } from '../TripContext'
