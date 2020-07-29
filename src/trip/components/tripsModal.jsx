@@ -57,6 +57,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
             default:
                 break;
         }
+        setInputs({ location: '', seats: 0, date: '', time: '', passengers: [] })
         setModalOpen(false)
     }
 
