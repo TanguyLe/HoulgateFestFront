@@ -24,10 +24,7 @@ const TripContextProvider = (props) => {
         const response = await putCallApi(`${TRIPS_ENDPOINT}/${id}`, trip)
         if (response.ok) {
             const jsonData = await response.json()
-            const copy = [...trips]
-            const index = trips.findIndex(trip => trip._id === jsonData.data._id)
-            copy[index] = jsonData.data
-            setTrips([...copy])
+            setTrips(prevTrips => prevTrips.map(trip => trip._id === jsonData.data._id ? jsonData.data : trip))
         }
     }
 
