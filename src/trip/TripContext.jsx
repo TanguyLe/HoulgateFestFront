@@ -15,7 +15,6 @@ const TripContextProvider = (props) => {
         const response = await postCallApi(TRIPS_ENDPOINT, trip)
         if (response.ok) {
             const jsonData = await response.json()
-            console.log(jsonData)
             setTrips([...trips, jsonData.data])
         }
     }
@@ -32,10 +31,7 @@ const TripContextProvider = (props) => {
         const response = await deleteCallApi(`${TRIPS_ENDPOINT}/${id}`)
         if (response.ok) {
             const jsonData = await response.json()
-            const copy = [...trips]
-            const index = trips.findIndex(trip => trip._id === jsonData.data._id)
-            copy.splice(index, 1)
-            setTrips([...copy])
+            setTrips(prevTrips => prevTrips.filter(trip => trip._id !== jsonData.data._id))
         }
     }
 
