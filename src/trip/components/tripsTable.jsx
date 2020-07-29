@@ -21,7 +21,7 @@ const TripsTable = ({ isBack }) => {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell colSpan='5'>
-                        {title} {login ? <TripsModal mode='add' floated='right' isBack={isBack && false} primary/> : null }
+                        {title} {login ? <TripsModal mode='add' floated='right' isBack={isBack} primary/> : null }
                     </Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
@@ -49,7 +49,7 @@ const TripsTable = ({ isBack }) => {
                             </Table.Cell>
                             { login ?
                                 <Table.Cell>
-                                    <TripsModal mode='edit' initialData={trip} disabled={login !== getUserById(trip.driver).username}>Modifier</TripsModal>
+                                    <TripsModal mode='edit' initialData={trip} disabled={login !== getUserById(trip.driver).username} isBack={isBack}>Modifier</TripsModal>
                                     <Portal
                                         openOnTriggerClick
                                         open={deletePopup}
