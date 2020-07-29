@@ -6,10 +6,9 @@ import { TripContext } from '../TripContext'
 import dateFormat from '../../utils/dateFormat'
 
 const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) => {
-    const { users, createTrip, updateTrip, getUserByUsername } = useContext(TripContext)
+    const { login, users, createTrip, updateTrip, getUserByUsername } = useContext(TripContext)
 
     const [modalOpen, setModalOpen] = useState(undefined)
-    const [userDropdownList, setUserDropDownList] = useState()
     const [btnEnabled, setBtnEnabled] = useState(false)
     const [inputs, setInputs] = useState({ location: '', seats: 0, date: '', time: '', passengers: [] })
     const [error, setError] = useState({ header: null, content: null, isHidden: true })
@@ -42,17 +41,6 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
         if (emptyFields) return setBtnEnabled(false)
         setBtnEnabled(true)
     }, [inputs])
-
-    useEffect(() => {
-        if (users) {
-            let res = []
-            users.forEach(user => {
-                if (user.username)
-                    res.push({ value: user._id, text: user.username })
-            })
-            setUserDropDownList(res)
-        }
-    }, [users])
 
     const handleSubmit = async () => {
         const driver = await getUserByUsername(getCredentials().login)._id
@@ -105,7 +93,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                     </Form.Group>
                     <Form.Field required>
                         <label>Passagers</label>{
-                        userDropdownList ?
+                        users ?
                         <Dropdown
                             placeholder='Selection des passagers'
                             fluid
@@ -113,7 +101,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                             search
                             selection
                             clearable
-                            options={userDropdownList}
+                            options={users.filter(user => user.username !== login).map(user => ({ value: user._id, text: user.username }))}
                             onChange={(e, { value }) => setInputs({ ...inputs, passengers: value })}
                             value={inputs.passengers}
                         />
