@@ -56,16 +56,16 @@ const TripContextProvider = (props) => {
         await loadTrips()
     }
 
-    const changingLogin = (creds) => {
+    const onLoginChange = (creds) => {
         if (creds.login !== login)
             setLogin(creds.login)
     }
 
     useEffect(() => {
-        register(changingLogin)
-        changingLogin(getCredentials())
+        register(onLoginChange)
+        onLoginChange(getCredentials())
         return () => {
-            unregister(setLogin)
+            unregister(onLoginChange)
         }
     }, [])
 
