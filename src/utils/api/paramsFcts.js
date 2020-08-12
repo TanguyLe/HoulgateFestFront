@@ -1,4 +1,4 @@
-import {POST, GET, PUT} from "./constants";
+import {POST, GET, PUT, DELETE} from "./constants";
 import {getCredentials} from "../../login/store";
 
 
@@ -40,3 +40,4 @@ export const getAuthUpdatedParams = (params) => {
 export const genPostParams = (body, auth = true) => genParams(POST, body, auth);
 export const genPutParams = (body, auth = true) => genParams(PUT, body, auth);
 export const genGetParams = (auth = true) => genParams(GET, "", auth);
+export const genDeleteParams = (auth = true) => genParams(DELETE, "", auth);

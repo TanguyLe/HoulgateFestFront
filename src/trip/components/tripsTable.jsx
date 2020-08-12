@@ -1,31 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Table, Button, Portal, Segment, Header } from 'semantic-ui-react'
 
-import { getCredentials, register, unregister } from '../../login/store'
+import { TripContext } from '../TripContext'
 import dateFormat from '../../utils/dateFormat'
 import TripsModal from "./tripsModal";
 
-const TripsTable = ({ trips, users, isBack }) => {
+const TripsTable = ({ isBack }) => {
+    const { login, trips, getUserById, deleteTrip } = useContext(TripContext)
+
     const [title] = useState(isBack ? 'Trajets retour' : 'Trajets Aller')
-    const [login, setLogin] = useState()
     const [deletePopup, setDeletePopup] = useState(false)
 
-    const changingLogin = (creds) => {
-        if (creds.login !== login)
-            setLogin(creds.login)
-    }
-
-    useEffect(() => {
-        register(changingLogin)
-        changingLogin(getCredentials())
-        return () => {
-            unregister(setLogin)
-        }
-    }, [])
-
-    const handleDeleteTrip = () => {
+    const handleDeleteTrip = async (id) => {
+        await deleteTrip(id)
         setDeletePopup(false)
-        /** perform deletion from db */
     }
 
     return (
@@ -33,7 +21,7 @@ const TripsTable = ({ trips, users, isBack }) => {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell colSpan='5'>
-                        {title} {login ? <TripsModal mode='add' floated='right' isBack primary/> : null }
+                        {title} <TripsModal mode='add' floated='right' isBack={isBack} primary/>
                     </Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
@@ -41,49 +29,51 @@ const TripsTable = ({ trips, users, isBack }) => {
                     <Table.HeaderCell>Depart</Table.HeaderCell>
                     <Table.HeaderCell>Lieu</Table.HeaderCell>
                     <Table.HeaderCell>Passagers</Table.HeaderCell>
-                    { login ? <Table.HeaderCell>Actions</Table.HeaderCell> : null }
+                    <Table.HeaderCell>Actions</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
 
             <Table.Body>
-                {trips.map((trip, tripIndex) => (
-                    <Table.Row key={`trip-${tripIndex}`}>
-                        <Table.Cell>{trip.driver.username}</Table.Cell>
-                        <Table.Cell>{dateFormat(trip.start)}</Table.Cell>
-                        <Table.Cell>{trip.adress}</Table.Cell>
-                        <Table.Cell>
-                            <ul>{
-                                Array(trip.seats).fill().map((_, index) => (
-                                    <li key={`passenger-${tripIndex}-${index}`}>{trip.passengers[index] ? trip.passengers[index].username : 'Place libre'}</li>
-                                ))
-                            }</ul>
-                        </Table.Cell>
-                        { login ?
+                { trips ?
+                    trips.filter(trip => trip.type === ( isBack ? "BACK" : "FORTH")).map((trip, tripIndex) => (
+                        <Table.Row key={`trip-${tripIndex}`}>
+                            <Table.Cell>{getUserById(trip.driver).username}</Table.Cell>
+                            <Table.Cell>{dateFormat(trip.date)}</Table.Cell>
+                            <Table.Cell>{trip.location}</Table.Cell>
                             <Table.Cell>
-                                <TripsModal mode='edit' initialData={trip} users={users} disabled={login !== trip.driver.username}>Modifier</TripsModal>
+                                <ul>{
+                                    Array(trip.seats).fill().map((_, index) => (
+                                        <li key={`passenger-${tripIndex}-${index}`}>{trip.passengers[index] ? getUserById(trip.passengers[index]).username : 'Place libre'}</li>
+                                    ))
+                                }</ul>
+                            </Table.Cell>
+                            <Table.Cell>
+                                <TripsModal mode='edit' initialData={trip} disabled={login !== getUserById(trip.driver).username} isBack={isBack}>Modifier</TripsModal>
                                 <Portal
                                     openOnTriggerClick
                                     open={deletePopup}
-                                    trigger={<Button size='mini' disabled={login !== trip.driver.username}  content='Supprimer'/>}
+                                    trigger={<Button size='mini' disabled={login !== getUserById(trip.driver).username}  content='Supprimer'/>}
                                     onOpen={() => setDeletePopup(true)}
-                                    onClose={handleDeleteTrip}
                                 >
                                     <Segment
                                         style={{
+                                            "border": "solid 1px #666",
                                             left: '40%',
                                             position: 'fixed',
                                             top: '40%',
                                             zIndex: 1000,
+                                            textAlign: "center"
                                         }}
                                     >
                                         <Header>Êtes vous sûr de vouloir supprimer ce trajet ?</Header>
-                                        <Button size='mini' content='Confirmer' negative onClick={handleDeleteTrip}/>
+                                        <Button size='mini' content='Annuler' onClick={() => setDeletePopup(false)}/>
+                                        <Button size='mini' content='Confirmer' negative onClick={() => handleDeleteTrip(trip._id)}/>
                                     </Segment>
                                 </Portal>
                             </Table.Cell>
-                        : null }
-                    </Table.Row>
-                ))}
+                        </Table.Row>
+                    )) 
+                : null}
             </Table.Body>
         </Table>
     )

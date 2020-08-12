@@ -1,6 +1,6 @@
 import {getCredentials, login} from "../../login/store";
 import {REFRESH_LOGIN_URL} from "./constants";
-import {genGetParams, genPostParams, genPutParams, getAuthUpdatedParams} from "./paramsFcts";
+import {genGetParams, genPostParams, genPutParams, genDeleteParams, getAuthUpdatedParams} from "./paramsFcts";
 import {UNKNOWN_ERROR_MSG} from "../../labels";
 
 export const refreshLogin = () => {
@@ -52,4 +52,11 @@ export const putCallApi = (endpoint, body, auth = true) => {
         return autoRefreshFetch(endpoint, genPutParams(body, auth));
 
     return fetch(endpoint, genPutParams(body, auth))
+};
+
+export const deleteCallApi = (endpoint, body, auth = true) => {
+    if (auth)
+        return autoRefreshFetch(endpoint, genDeleteParams(body, auth));
+
+    return fetch(endpoint, genDeleteParams(body, auth))
 };
