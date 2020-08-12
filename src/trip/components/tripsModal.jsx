@@ -7,11 +7,10 @@ import dateFormat from '../../utils/dateFormat'
 const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) => {
     const { login, users, createTrip, updateTrip, getUserByUsername } = useContext(TripContext)
 
-    const [modalOpen, setModalOpen] = useState(undefined)
+    const [modalOpen, setModalOpen] = useState(false)
     const [btnEnabled, setBtnEnabled] = useState(false)
     const [inputs, setInputs] = useState({ location: '', seats: 1, date: '', time: '', passengers: [] })
     const [error, setError] = useState({ header: null, content: null, isHidden: true })
-
 
     const setOrResetInputs = () => {
         if (initialData) {
@@ -29,11 +28,12 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
     useEffect(() => {
         let emptyFields = false
         
-        for (const key in inputs) {
-            const value = inputs[key]
-            if (key !== "passengers" && !value)
-                emptyFields = true;
-        }
+        // Checking for empty values in inputs
+        Object.entries(inputs).filter(entry => entry[0] !== "passengers").forEach(entry => {
+            if (!entry[1]) {
+                emptyFields = true
+            }
+        })
  
         if (inputs.passengers) {
             if (inputs.passengers.length > inputs.seats) {
@@ -133,7 +133,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                 <Message attached header={error.header} content={error.content} hidden={error.isHidden} error size="mini"/>
             </Modal.Content>
             <Modal.Actions>
-                <Button primary size='mini' onClick={() => handleSubmit()} disabled={!btnEnabled}>
+                <Button primary size='mini' onClick={handleSubmit} disabled={!btnEnabled}>
                     <Icon name='checkmark' /> {actionType}
                 </Button>
             </Modal.Actions>
