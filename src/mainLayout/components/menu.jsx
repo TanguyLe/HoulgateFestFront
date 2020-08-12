@@ -7,6 +7,7 @@ import WhoAmI from "../../login/components/whoAmI"
 
 export const leftItems = [
     {children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun"},
+    {children: <Link to='/trips'>Trajets</Link>, key: "trips"},
     {children: <Link to='/contact'>Contact</Link>, key: "contact"}
 ];
 export const rightItems = [
@@ -31,7 +32,7 @@ const NavBarMobile = ({onToggle, rightItems}) => (
 );
 
 const NavBarDesktop = ({leftItems, rightItems}) => (
-    <Menu fixed="top" inverted>v
+    <Menu fixed="top" inverted>
         <Menu.Item>
             <Link to='/'> <Image src="static/logov3.png" size="small"/></Link>
         </Menu.Item>

@@ -5,7 +5,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     entry: [
-        "react-hot-loader/patch",
         "./src/houlgatefest.js"
     ],
     mode: "production",
@@ -35,12 +34,10 @@ module.exports = {
         minimizer: [new TerserPlugin()],
     },
     plugins: [
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("production")
-            },
-            "API_URL": "\"http://houlgatefest.fr/api\"",
-            "HAS_STARTED": false
+        new webpack.EnvironmentPlugin({
+            NODE_ENV: "production",
+            API_URL: null,
+            HAS_STARTED: false
         })
     ]
 };
