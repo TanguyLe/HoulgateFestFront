@@ -1,7 +1,7 @@
 import React from "react";
 
 import Room from "../room";
-import {ROOM_GRID_STRUCT_INDEX_PREFIX} from "../../constants";
+import { ROOM_GRID_STRUCT_INDEX_PREFIX } from "../../constants";
 
 export class Floor extends React.Component {
     constructor(props) {
@@ -9,7 +9,7 @@ export class Floor extends React.Component {
 
         this.state = {
             gridHeight: "calc(100% - 60px)",
-            gridWidth: "100%"
+            gridWidth: "100%",
         };
 
         this.floorId = props.floorData.name;
@@ -17,8 +17,7 @@ export class Floor extends React.Component {
         this.onResize = this.onResize.bind(this);
 
         this.resizing = false;
-        this.widthHeightRatio =
-            props.floorData.size.width / props.floorData.size.height;
+        this.widthHeightRatio = props.floorData.size.width / props.floorData.size.height;
     }
 
     onResize() {
@@ -39,9 +38,8 @@ export class Floor extends React.Component {
         let associatedHeight = currentFullWidth / this.widthHeightRatio;
         let associatedWidth = currentFullHeight * this.widthHeightRatio;
 
-        if (associatedHeight > currentFullHeight)
-            this.setState({gridWidth: associatedWidth});
-        else this.setState({gridHeight: associatedHeight});
+        if (associatedHeight > currentFullHeight) this.setState({ gridWidth: associatedWidth });
+        else this.setState({ gridHeight: associatedHeight });
     }
 
     componentDidMount() {
@@ -51,10 +49,11 @@ export class Floor extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return (JSON.stringify(nextProps) !== JSON.stringify(this.props)) ||
-            (JSON.stringify(nextState) !== JSON.stringify(this.state))
+        return (
+            JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+            JSON.stringify(nextState) !== JSON.stringify(this.state)
+        );
     }
-
 
     render() {
         let gridStyle = {
@@ -65,12 +64,11 @@ export class Floor extends React.Component {
             maxHeight: "calc(100% - 60px)",
             margin: "auto",
             height: this.state.gridHeight,
-            width: this.state.gridWidth
+            width: this.state.gridWidth,
         };
 
         let isBigFloor =
-            this.props.floorData.name === "Rdc" ||
-            this.props.floorData.name === "Premier Etage";
+            this.props.floorData.name === "Rdc" || this.props.floorData.name === "Premier Etage";
 
         return (
             <div
@@ -86,7 +84,7 @@ export class Floor extends React.Component {
                             rowStart: room.gridPosition.rows.start,
                             rowEnd: room.gridPosition.rows.end,
                             columnStart: room.gridPosition.columns.start,
-                            columnEnd: room.gridPosition.columns.end
+                            columnEnd: room.gridPosition.columns.end,
                         };
 
                         return (
@@ -107,9 +105,7 @@ export class Floor extends React.Component {
                                 createShotgunFunction={(event) =>
                                     this.props.createShotgunFunction(event, room._id)
                                 }
-                                addPersonsInShotgunFunction={
-                                    this.props.addPersonsInShotgunFunction
-                                }
+                                addPersonsInShotgunFunction={this.props.addPersonsInShotgunFunction}
                             />
                         );
                     })}

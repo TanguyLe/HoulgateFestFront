@@ -1,14 +1,11 @@
 {
-  "presets": [
-    "@babel/preset-react",
-    "@babel/preset-env"
-  ],
-  "sourceMaps": true,
-  "plugins": [
-    "react-hot-loader/babel",
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-proposal-function-bind",
-    "@babel/plugin-transform-object-assign",
-    "@babel/plugin-transform-runtime"
-  ]
+    "presets": ["@babel/preset-react", "@babel/preset-env"],
+    "sourceMaps": true,
+    "plugins": [
+        "react-hot-loader/babel",
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-function-bind",
+        "@babel/plugin-transform-object-assign",
+        "@babel/plugin-transform-runtime"
+    ]
 }

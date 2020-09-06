@@ -1,16 +1,15 @@
 import React from "react";
-import {Button, Segment, TransitionablePortal, Icon, Message} from "semantic-ui-react";
+import { Button, Segment, TransitionablePortal, Icon, Message } from "semantic-ui-react";
 
 import BedsMultipleDropdown from "./bedsMultipleDropdown";
-import {ROOM_STATUS_READY} from "../constants"
-
+import { ROOM_STATUS_READY } from "../constants";
 
 export default class ShotgunPortal extends React.Component {
     constructor() {
         super();
 
         this.state = {
-            open: false
+            open: false,
         };
 
         this.handleClose = this.handleClose.bind(this);
@@ -19,11 +18,11 @@ export default class ShotgunPortal extends React.Component {
     }
 
     handleOpen() {
-        this.setState({open: true});
+        this.setState({ open: true });
     }
 
     handleClose() {
-        this.setState({open: false});
+        this.setState({ open: false });
     }
 
     getMessage(status) {
@@ -31,7 +30,7 @@ export default class ShotgunPortal extends React.Component {
             case "loading":
                 return (
                     <Message info icon>
-                        <Icon name="circle notched" loading/>
+                        <Icon name="circle notched" loading />
                         <Message.Content>Shotgun en cours...</Message.Content>
                     </Message>
                 );
@@ -51,8 +50,9 @@ export default class ShotgunPortal extends React.Component {
                                 Félicitations, tu as bien shotgun avec tes amis
                                 {this.props.friends
                                     ? "(" + this.props.friends.join(", ") + ")"
-                                    : ""}. Réjouis toi de voir ton nom gravé dans le marbre sur ce
-                                site. Tu es maitenant responsable si quelqu'un veut échanger :)
+                                    : ""}
+                                . Réjouis toi de voir ton nom gravé dans le marbre sur ce site. Tu
+                                es maitenant responsable si quelqu'un veut échanger :)
                             </p>
                             <p>
                                 Si c'est une erreur de ta part, pas d'autre solution qu'un petit
@@ -76,11 +76,15 @@ export default class ShotgunPortal extends React.Component {
     render() {
         const directShotgun = this.props.status === ROOM_STATUS_READY;
 
-        let trigger = <Button color={this.props.buttonType}
-                              compact
-                              content={this.props.content}
-                              disabled={this.props.disabled || this.state.open}
-                              onClick={directShotgun ? this.props.createShotgunFunction : () => {}}/>;
+        let trigger = (
+            <Button
+                color={this.props.buttonType}
+                compact
+                content={this.props.content}
+                disabled={this.props.disabled || this.state.open}
+                onClick={directShotgun ? this.props.createShotgunFunction : () => {}}
+            />
+        );
 
         return (
             <TransitionablePortal
@@ -90,7 +94,10 @@ export default class ShotgunPortal extends React.Component {
                 trigger={trigger}
             >
                 <Segment className="ShotgunModal">
-                    <h3> {this.props.name}: {this.props.seats} places </h3>
+                    <h3>
+                        {" "}
+                        {this.props.name}: {this.props.seats} places{" "}
+                    </h3>
                     {this.getMessage(this.props.status)}
                 </Segment>
             </TransitionablePortal>

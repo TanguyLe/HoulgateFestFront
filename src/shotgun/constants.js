@@ -1,4 +1,4 @@
-import {SERVER_ENDPOINT} from "../constants";
+import { SERVER_ENDPOINT } from "../constants";
 
 export const ROOM_GRID_STRUCT_INDEX_PREFIX = "RoomGridStruct";
 export const FLOOR_GRID_STRUCT_INDEX_PREFIX = "FloorGridStruct";
@@ -19,6 +19,6 @@ export const GARDEN_TYPE = "garden";
 
 export const ROOMS_ENDPOINT = SERVER_ENDPOINT + "/rooms";
 export const SHOTGUN_ROOMS_ENDPOINT = SERVER_ENDPOINT + "/shotgun/rooms";
-export const getShotgunRoomUrl = (roomId) =>  (SHOTGUN_ROOMS_ENDPOINT + '/' + roomId);
+export const getShotgunRoomUrl = (roomId) => SHOTGUN_ROOMS_ENDPOINT + "/" + roomId;
 
 export const EDITIONS_ENDPOINT = SERVER_ENDPOINT + "/edition";

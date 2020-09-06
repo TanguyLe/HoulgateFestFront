@@ -1,6 +1,5 @@
 import React from "react";
 
-
 export default class Countdown extends React.Component {
     constructor(props) {
         super(props);
@@ -9,24 +8,25 @@ export default class Countdown extends React.Component {
         // client's date. The currentDatetime from the upper component is actually a correctDate from an API
         this.state = {
             currentDatetime: props.currentDatetime,
-            timeLeft: Countdown.calculateCountdown(props.targetDatetime, props.currentDatetime)
+            timeLeft: Countdown.calculateCountdown(props.targetDatetime, props.currentDatetime),
         };
     }
 
     componentDidMount() {
         // update every second
         this.interval = setInterval(() => {
-
             let nextCurrentDatetime = new Date(this.state.currentDatetime);
             nextCurrentDatetime.setSeconds(nextCurrentDatetime.getSeconds() + 1);
-            const timeLeft = Countdown.calculateCountdown(this.props.targetDatetime, nextCurrentDatetime);
-            timeLeft ? this.setState(
-                {
-                    currentDatetime: nextCurrentDatetime,
-                    timeLeft: timeLeft
-                }
-            ) : this.stop();
-
+            const timeLeft = Countdown.calculateCountdown(
+                this.props.targetDatetime,
+                nextCurrentDatetime
+            );
+            timeLeft
+                ? this.setState({
+                      currentDatetime: nextCurrentDatetime,
+                      timeLeft: timeLeft,
+                  })
+                : this.stop();
         }, 1000);
     }
 
@@ -45,18 +45,21 @@ export default class Countdown extends React.Component {
             days: 0,
             hours: 0,
             min: 0,
-            sec: 0
+            sec: 0,
         };
 
-        if (diff >= (365.25 * 86400)) { // 365.25 * 24 * 60 * 60
+        if (diff >= 365.25 * 86400) {
+            // 365.25 * 24 * 60 * 60
             timeLeft.years = Math.floor(diff / (365.25 * 86400));
             diff -= timeLeft.years * 365.25 * 86400;
         }
-        if (diff >= 86400) { // 24 * 60 * 60
+        if (diff >= 86400) {
+            // 24 * 60 * 60
             timeLeft.days = Math.floor(diff / 86400);
             diff -= timeLeft.days * 86400;
         }
-        if (diff >= 3600) { // 60 * 60
+        if (diff >= 3600) {
+            // 60 * 60
             timeLeft.hours = Math.floor(diff / 3600);
             diff -= timeLeft.hours * 3600;
         }
@@ -71,15 +74,14 @@ export default class Countdown extends React.Component {
 
     stop() {
         clearInterval(this.interval);
-        if (this.props.onTime)
-            this.props.onTime();
+        if (this.props.onTime) this.props.onTime();
     }
 
     addLeadingZeros(value) {
         value = String(value);
 
         while (value.length < 2) {
-            value = '0' + value;
+            value = "0" + value;
         }
 
         return value;
@@ -90,34 +92,33 @@ export default class Countdown extends React.Component {
 
         return (
             <div className="Countdown">
-				<span className="CountdownCol">
-				  <span className="CountdownColElement">
-					<strong>{this.addLeadingZeros(countDown.days)}</strong>
-					<span>{countDown.days === 1 ? "Jour" : 'Jours'}</span>
-				  </span>
-				</span>
+                <span className="CountdownCol">
+                    <span className="CountdownColElement">
+                        <strong>{this.addLeadingZeros(countDown.days)}</strong>
+                        <span>{countDown.days === 1 ? "Jour" : "Jours"}</span>
+                    </span>
+                </span>
 
                 <span className="CountdownCol">
-				  <span className="CountdownColElement">
-					<strong>{this.addLeadingZeros(countDown.hours)}</strong>
-					<span>{countDown.hours === 1 ? "Heure" : 'Heures'}</span>
-				  </span>
-				</span>
-
-
-                <span className="CountdownCol">
-				  <span className="CountdownColElement">
-					<strong>{this.addLeadingZeros(countDown.min)}</strong>
-					<span>{countDown.min === 1 ? "Minute" : 'Minutes'}</span>
-				  </span>
-				</span>
+                    <span className="CountdownColElement">
+                        <strong>{this.addLeadingZeros(countDown.hours)}</strong>
+                        <span>{countDown.hours === 1 ? "Heure" : "Heures"}</span>
+                    </span>
+                </span>
 
                 <span className="CountdownCol">
-				  <span className="CountdownColElement">
-					<strong>{this.addLeadingZeros(countDown.sec)}</strong>
-					<span>{countDown.sec === 1 ? "Seconde" : 'Secondes'}</span>
-				  </span>
-				</span>
+                    <span className="CountdownColElement">
+                        <strong>{this.addLeadingZeros(countDown.min)}</strong>
+                        <span>{countDown.min === 1 ? "Minute" : "Minutes"}</span>
+                    </span>
+                </span>
+
+                <span className="CountdownCol">
+                    <span className="CountdownColElement">
+                        <strong>{this.addLeadingZeros(countDown.sec)}</strong>
+                        <span>{countDown.sec === 1 ? "Seconde" : "Secondes"}</span>
+                    </span>
+                </span>
             </div>
         );
     }

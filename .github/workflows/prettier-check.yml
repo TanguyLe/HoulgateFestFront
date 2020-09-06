@@ -20,4 +20,3 @@ jobs:
               run: |
                   npm ci
                   npm run prettier-check
-                  
