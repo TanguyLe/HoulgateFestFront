@@ -70,6 +70,7 @@
     "babel-loader": "^8.0.6",
     "cross-env": "^7.0.2",
     "css-loader": "^3.3.2",
+    "prettier": "^2.1.1",
     "react-hot-loader": "^4.3.11",
     "require": "^2.4.20",
     "style-loader": "^0.19.1",
@@ -79,6 +80,8 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
+    "prettier-check": "prettier --check .",
+    "prettier-run": "prettier --write .",
     "dev": "webpack-dev-server --hot --config webpack.dev.config --port 8000",
     "devStartShotgun": "cross-env-shell HAS_STARTED=true npm run dev",
     "devBuild": "webpack --config webpack.dev.config",
