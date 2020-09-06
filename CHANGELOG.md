@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -  Implement versioning [PR82](https://github.com/TanguyLe/HoulgateFestBack/pull/82)
 
+### Changed
+
+- Multi-platform env variables handling [PR84](https://github.com/TanguyLe/HoulgateFestBack/pull/84)
+
 ## [v0.2.0] 2020-08-12
 
 ### Added
