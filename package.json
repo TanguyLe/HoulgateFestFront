@@ -1,6 +1,6 @@
 {
   "name": "houlgatefest",
-  "version": "1.0.0",
+  "version": "0.2.1",
   "description": "Front of the website for the HoulgateFest project.",
   "license": "UNLICENSED",
   "authors": [
@@ -22,7 +22,7 @@
     }
   ],
   "engines": {
-    "node": "12.16.2"
+    "node": "12.18.3"
   },
   "repository": {
     "type": "git",
@@ -35,7 +35,7 @@
     "@types/react": "^15.0.0",
     "cors": "^2.8.4",
     "express": "^4.16.3",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.20",
     "query-string": "^6.0.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
@@ -68,6 +68,7 @@
     "@babel/preset-react": "^7.7.4",
     "@babel/preset-stage-0": "^7.0.0",
     "babel-loader": "^8.0.6",
+    "cross-env": "^7.0.2",
     "css-loader": "^3.3.2",
     "react-hot-loader": "^4.3.11",
     "require": "^2.4.20",
@@ -75,11 +76,11 @@
     "terser-webpack-plugin": "^2.3.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
+    "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
     "dev": "webpack-dev-server --hot --config webpack.dev.config --port 8000",
-    "devStartShotgun": "HAS_STARTED=true webpack-dev-server --hot --config webpack.dev.config --port 8000",
+    "devStartShotgun": "cross-env-shell HAS_STARTED=true npm run dev",
     "devBuild": "webpack --config webpack.dev.config",
     "build": "webpack --config webpack.prod.config",
     "start": "node server.js"

@@ -8,7 +8,7 @@ It is meant to work alongside its backend : https://github.com/TanguyLe/Houlgate
 
 ## Installation
 ### Prerequisites
-1. Node and npm installed, recommended versions are node 12.13.1 and npm 6.12.1.
+1. Node and npm installed, recommended versions are node 12.18.3.
 2. Repo cloned.
 
 ### Packages
