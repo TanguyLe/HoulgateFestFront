@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Multi-platform env variables handling [PR84](https://github.com/TanguyLe/HoulgateFestBack/pull/84)
 
+### Changed
+
+-   Fixed time zones in trips creation [PR89](https://github.com/TanguyLe/HoulgateFestBack/pull/89)
+
 ## [v0.2.0] 2020-08-12
 
 ### Added

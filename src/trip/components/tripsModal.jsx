@@ -49,7 +49,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
     const handleSubmit = async () => {
         const driver = getUserByUsername(login)._id
         const { _id, location, seats, date, time, passengers } = inputs
-        const fullDate = new Date(`${date} ${time}`)
+        const fullDate = new Date(`${date} ${time}:00 GMT+00:00`)
         const type = isBack ? "BACK" : "FORTH"
         switch (mode) {
             case "add":
