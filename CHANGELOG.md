@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [v0.3.0] 2020-09-19
+
+### Added
+- A scoreboard ! [PR72](https://github.com/TanguyLe/HoulgateFestFront/pull/72)
+
+
 ## [v0.2.1] 2020-09-09
 
 ### Added
