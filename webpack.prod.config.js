@@ -37,7 +37,8 @@ module.exports = {
         new webpack.EnvironmentPlugin({
             NODE_ENV: "production",
             API_URL: null,
-            HAS_STARTED: false
+            HAS_STARTED: false,
+            SCORES_BOARD_URL: "https://keepthescore.co/board/wytbkwbpzjr/"
         })
     ]
 };
