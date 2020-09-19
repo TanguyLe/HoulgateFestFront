@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- The shotgun popup display is now flowing [PR97](https://github.com/TanguyLe/HoulgateFestFront/pull/97)
+
 
 ## [v0.3.0] 2020-09-19
 
