@@ -8,6 +8,7 @@ import WhoAmI from "../../login/components/whoAmI"
 export const leftItems = [
     {children: <Link to='/shotgun'>Shotgun</Link>, key: "shotgun"},
     {children: <Link to='/trips'>Trajets</Link>, key: "trips"},
+    {children: <Link to='/scores'>Scores</Link>, key: "scores"},
     {children: <Link to='/contact'>Contact</Link>, key: "contact"}
 ];
 export const rightItems = [
