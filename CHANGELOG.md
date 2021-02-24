@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - The shotgun popup display is now flowing [PR97](https://github.com/TanguyLe/HoulgateFestFront/pull/97)
+- The scoreboard url now points ot the 2021 scoreboard [PR103](https://github.com/TanguyLe/HoulgateFestFront/pull/103)
+- Node engine updated for vercel [PR103](https://github.com/TanguyLe/HoulgateFestFront/pull/103)
 
 
 ## [v0.3.0] 2020-09-19
