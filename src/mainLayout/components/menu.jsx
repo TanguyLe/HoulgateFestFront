@@ -2,7 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {Icon, Responsive, Sidebar, Menu, Container, Image} from 'semantic-ui-react';
 
-import WhoAmI from "../../login/components/whoAmI"
+import WhoAmI from "../../login/components/whoAmI";
 
 
 export const leftItems = [
