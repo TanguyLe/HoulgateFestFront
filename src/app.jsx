@@ -13,6 +13,7 @@ import DefaultLayout from "./mainLayout/components/layout";
 import ContactPage from "./contact/contactPage";
 import TripPage from "./trip/tripPage";
 import ScoresPage from "./scores/scoresPage";
+import HistoryPage from "./history/historyPage";
 
 class App extends React.Component {
     render() {
@@ -21,6 +22,9 @@ class App extends React.Component {
                 <Switch>
                     <Route exact path="/">
                         <DefaultLayout exact component={Homepage} />
+                    </Route>
+                    <Route path="/history">
+                        <DefaultLayout component={HistoryPage} auth/>
                     </Route>
                     <Route path="/shotgun">
                         <DefaultLayout component={ShotgunPage} bigContainer auth />
