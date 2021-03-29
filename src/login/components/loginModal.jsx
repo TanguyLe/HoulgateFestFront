@@ -25,16 +25,22 @@ class LoginPortal extends React.Component {
         this.setState({open: false});
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        if (nextState === this.state)
+            return 0;
+        return 1;
+    }
+
     render() {
         return (
             <TransitionablePortal
                 open={this.state.open}
                 onOpen={this.handleOpen}
                 onClose={this.handleClose}
-                trigger={(<Button content="Connexion" disabled={this.state.open}/>)}
+                trigger={(<Button content="Connexion" id="loginPortalOpener" disabled={this.state.open}/>)}
             >
                 <Segment className="ConnectionModal">
-                    <Header>Connecte-toi</Header>
+                    <Header id={"loginPortal"}>Connecte-toi</Header>
                     <LogInForm className="loginForm" history={this.props.history} toClose={this.handleClose}/>
                 </Segment>
             </TransitionablePortal>
