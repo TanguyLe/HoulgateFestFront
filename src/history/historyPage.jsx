@@ -1,5 +1,5 @@
 import React from "react";
-import {Header, Icon} from "semantic-ui-react"
+import {Header, Icon, Image} from "semantic-ui-react"
 
 
 class HistoryPage extends React.Component {
@@ -11,6 +11,7 @@ class HistoryPage extends React.Component {
                     <Icon name='heart'/>
                     <Header.Content>2018: Naissance du HoulgateFest (8 au 10 Juin)</Header.Content>
                 </Header>
+                <Image style={{"paddingBottom": "10px"}} src="static/banners/2018.jpg" centered spaced/>
 
                 <p>
                     Les pionniers de la nouba normande investissent Houlgate le temps d’un weekend.
@@ -31,6 +32,7 @@ class HistoryPage extends React.Component {
                     <Icon name='heart'/>
                     <Header.Content>2019: HoulgateFest Le Retour (27 au 29 Juin)</Header.Content>
                 </Header>
+                <Image style={{"paddingBottom": "10px"}} src="static/banners/2019.jpg" centered spaced/>
 
                 <p>
                     Un an plus tard, la fiesta est de retour à Houlgate.
@@ -48,6 +50,7 @@ class HistoryPage extends React.Component {
                     <Icon name='heart'/>
                     <Header.Content>2020: HoulgateFest et la Coupe de F (25 au 27 Septembre)</Header.Content>
                 </Header>
+                <Image style={{"paddingBottom": "10px"}} src="static/banners/2020.png" centered spaced/>
 
                 <p>
                     Édition initialement prévue le weekend du 26 juin 2020 mais repoussée cause Covid.
