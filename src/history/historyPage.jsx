@@ -1,5 +1,6 @@
 import React from "react";
 import {Header, Icon, Image} from "semantic-ui-react"
+import ImagesCarousel from "./components/carousel";
 
 
 class HistoryPage extends React.Component {
@@ -27,7 +28,6 @@ class HistoryPage extends React.Component {
                     établissement culinaire (ayant dû fermer pour 6 mois de travaux et près de
                     14 plaintes de la Mairie et des riverains suite à cet événement).
                 </p>
-
                 <Header as="h3">
                     <Icon name='heart'/>
                     <Header.Content>2019: HoulgateFest Le Retour (27 au 29 Juin)</Header.Content>
@@ -46,6 +46,15 @@ class HistoryPage extends React.Component {
                     Deux équipes s’affrontent tout au long du weekend.
                     Ce sera finalement la Team Tirajosaure qui prendra le meilleur sur la Team Sir Concis.
                 </p>
+                <ImagesCarousel
+                    images={
+                        [
+                            {path: "static/pictures/2019/IMG_20190629_234232.jpg"},
+                            {path: "static/pictures/2019/IMG_20190630_055110.jpg"},
+                            {path: "static/pictures/2019/IMG_20190630_111947.jpg"}
+                        ]
+                    }
+                />
                 <Header as="h3">
                     <Icon name='heart'/>
                     <Header.Content>2020: HoulgateFest et la Coupe de F (25 au 27 Septembre)</Header.Content>
@@ -63,6 +72,16 @@ class HistoryPage extends React.Component {
                     L’objectif étant d’accumuler les points lors de quiz, jeux et défis afin de faire gagner sa maison.
                     Une fois n’est pas coutume, ce sont les Serpentards qui ramenèrent la coupe à la maison.
                 </p>
+                <ImagesCarousel
+                    carousel
+                    images={
+                        [
+                            {path: "static/pictures/2019/IMG_20190629_234232.jpg"},
+                            {path: "static/pictures/2019/IMG_20190630_055110.jpg"},
+                            {path: "static/pictures/2019/IMG_20190630_111947.jpg"}
+                        ]
+                    }
+                />
                 <div style={{"float": "right"}}><b> Hugo Bis </b></div>
             </div>
         );

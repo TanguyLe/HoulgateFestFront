@@ -39,6 +39,7 @@
         "query-string": "^6.0.0",
         "react": "^16.8.0",
         "react-dom": "^16.8.0",
+        "react-responsive-carousel": "^3.2.16",
         "react-router-dom": "^5.1.2",
         "semantic-ui-react": "^0.88.0"
     },
