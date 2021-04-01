@@ -36,7 +36,12 @@ const TripsTable = ({ isBack }) => {
             <Table.Body>
                 { trips ?
                     trips.filter(trip => trip.type === ( isBack ? "BACK" : "FORTH")).map((trip, tripIndex) => (
-                        <Table.Row key={`trip-${tripIndex}`}>
+                        <Table.Row
+                            key={`trip-${tripIndex}`}
+                            negative={trip.seats === trip.passengers.length}
+                            warning={trip.passengers.length !== 0 && trip.seats > trip.passengers.length}
+                            positive={trip.passengers.length === 0}
+                        >
                             <Table.Cell>{getUserById(trip.driver).username}</Table.Cell>
                             <Table.Cell>{dateFormat(trip.date)}</Table.Cell>
                             <Table.Cell>{trip.location}</Table.Cell>
