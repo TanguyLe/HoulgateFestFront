@@ -1,20 +1,20 @@
-import React, { useState, useContext } from 'react'
-import { Table, Button, Portal, Segment, Header } from 'semantic-ui-react'
+import React, { useState, useContext } from 'react';
+import { Table, Button, Portal, Segment, Header } from 'semantic-ui-react';
 
-import { TripContext } from '../TripContext'
-import dateFormat from '../../utils/dateFormat'
+import { TripContext } from '../TripContext';
+import dateFormat from '../../utils/dateFormat';
 import TripsModal from "./tripsModal";
 
 const TripsTable = ({ isBack }) => {
-    const { login, trips, getUserById, deleteTrip } = useContext(TripContext)
+    const { login, trips, getUserById, deleteTrip } = useContext(TripContext);
 
-    const [title] = useState(isBack ? 'Trajets retour' : 'Trajets Aller')
-    const [deletePopup, setDeletePopup] = useState(false)
+    const [title] = useState(isBack ? 'Trajets retour' : 'Trajets Aller');
+    const [deletePopup, setDeletePopup] = useState(false);
 
     const handleDeleteTrip = async (id) => {
-        await deleteTrip(id)
-        setDeletePopup(false)
-    }
+        await deleteTrip(id);
+        setDeletePopup(false);
+    };
 
     return (
         <Table textAlign="center" size="small" celled striped compact>
@@ -77,6 +77,6 @@ const TripsTable = ({ isBack }) => {
             </Table.Body>
         </Table>
     )
-}
+};
 
-export default TripsTable
+export default TripsTable;

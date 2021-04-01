@@ -8,11 +8,8 @@ const TripPage = () => {
     return (
             <TripContextProvider>
                 <Grid padded>
-                    <Grid.Column mobile={16} tablet={16} computer={8}>
+                    <Grid.Column mobile={26} tablet={26} computer={12}>
                         <TripsTable />
-                    </Grid.Column>
-                    <Grid.Column mobile={16} tablet={16} computer={8}>
-                        <TripsTable isBack />
                     </Grid.Column>
                 </Grid>
             </TripContextProvider>
