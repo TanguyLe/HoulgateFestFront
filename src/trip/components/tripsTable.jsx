@@ -72,7 +72,7 @@ const TripsTable = ({ isBack }) => {
                                 </Portal>
                             </Table.Cell>
                         </Table.Row>
-                    )) 
+                    ))
                 : null}
             </Table.Body>
         </Table>
