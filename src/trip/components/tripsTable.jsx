@@ -92,16 +92,21 @@ const TripsTable = ({ isBack }) => {
                             <Table.Cell>{dateFormat(trip.date)}</Table.Cell>
                             <Table.Cell>{trip.location}</Table.Cell>
                             <Table.Cell>
-                                <ul>{
+                                {
                                     Array(trip.seats).fill().map((_, index) => (
-                                        <li key={`passenger-${tripIndex}-${index}`}>
+                                        <Button
+                                            size="mini"
+                                            disabled
+                                            primary={!trip.passengers[index]}
+                                            key={`passenger-${tripIndex}-${index}`}
+                                        >
                                             {
                                                 trip.passengers[index] ?
                                                     getUserById(trip.passengers[index]).username : 'Place libre'
                                             }
-                                        </li>
+                                        </Button>
                                     ))
-                                }</ul>
+                                }
                             </Table.Cell>
                             <TripsButtons
                                 trip={trip}
