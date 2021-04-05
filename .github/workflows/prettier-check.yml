@@ -1,7 +1,7 @@
 name: Prettier-Check
 
-# This action works with pull requests and pushes
-on: [pull_request, push]
+# This action works with pull requests
+on: [pull_request]
 
 jobs:
     prettier:
