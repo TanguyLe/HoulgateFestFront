@@ -39,7 +39,7 @@ class Homepage extends React.Component {
                 </Header>
 
                 <p>
-                    Cette édition 2021 se déroulera du <b>vendredi 4 au dimanche 6 Juin</b> (
+                    Cette édition 2021 se déroulera du <b>vendredi 11 au dimanche 13 Juin</b> (
                     <i className="smalltext">sauf contre-indication dû à ce connard de virus - crevard de virus).</i><br/>
                 </p>
                 <div style={{"display": "inline-block", "width": "100%"}}>
