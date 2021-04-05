@@ -56,9 +56,6 @@ const TripsModal = ({ mode, initialData, disabled, primary }) => {
         const driver = getUserByUsername(login)._id;
         const { _id, location, seats, date, time, passengers } = inputs;
         const fullDate = new Date(`${date} ${time}:00`);
-        console.log(date);
-        console.log(time);
-        console.log(fullDate);
         switch (mode) {
             case "add":
                 await createTrip({ driver, location, seats, date: fullDate, passengers });

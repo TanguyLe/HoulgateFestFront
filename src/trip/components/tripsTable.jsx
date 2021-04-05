@@ -6,7 +6,15 @@ import dateFormat from '../../utils/dateFormat';
 import TripsModal from "./tripsModal";
 
 const TripsButtons = (props) => {
-    const { trip, isDriver, setDeletePopup, handleDeleteTrip, deletePopup } = props;
+    const { trip, isDriver } = props;
+
+    const { deleteTrip } = useContext(TripContext);
+
+    const [deletePopup, setDeletePopup] = useState(false);
+    const handleDeleteTrip = async (id) => {
+        await deleteTrip(id);
+        setDeletePopup(false);
+    };
 
     const buttons = (
         <div>
@@ -53,14 +61,8 @@ const TripsButtons = (props) => {
 };
 
 const TripsTable = () => {
-    const { login, trips, getUserById, deleteTrip } = useContext(TripContext);
+    const { login, trips, getUserById } = useContext(TripContext);
 
-    const [deletePopup, setDeletePopup] = useState(false);
-
-    const handleDeleteTrip = async (id) => {
-        await deleteTrip(id);
-        setDeletePopup(false);
-    };
     return (
         <Table textAlign="center" size="small" celled striped compact>
             <Table.Header>
@@ -110,9 +112,6 @@ const TripsTable = () => {
                             <TripsButtons
                                 trip={trip}
                                 isDriver={login !== getUserById(trip.driver).username}
-                                setDeletePopup={setDeletePopup}
-                                deletePopup={deletePopup}
-                                handleDeleteTrip={handleDeleteTrip}
                             />
                         </Table.Row>
                     ))
