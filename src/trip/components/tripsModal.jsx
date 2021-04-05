@@ -1,91 +1,91 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { Button, Icon, Modal, Form, Input, Dropdown, Message } from 'semantic-ui-react'
+import React, { useEffect, useState, useContext } from 'react';
+import { Button, Icon, Modal, Form, Input, Dropdown, Message } from 'semantic-ui-react';
 
-import { TripContext } from '../TripContext'
-import dateFormat from '../../utils/dateFormat'
+import { TripContext } from '../TripContext';
+import dateFormat from '../../utils/dateFormat';
 
 const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) => {
-    const { login, users, createTrip, updateTrip, getUserByUsername } = useContext(TripContext)
+    const { login, users, createTrip, updateTrip, getUserByUsername } = useContext(TripContext);
 
-    const [modalOpen, setModalOpen] = useState(false)
-    const [btnEnabled, setBtnEnabled] = useState(false)
-    const [inputs, setInputs] = useState({ location: '', seats: 1, date: '', time: '', passengers: [] })
-    const [error, setError] = useState({ header: null, content: null, isHidden: true })
+    const [modalOpen, setModalOpen] = useState(false);
+    const [btnEnabled, setBtnEnabled] = useState(false);
+    const [inputs, setInputs] = useState({ location: '', seats: 1, date: '', time: '', passengers: [] });
+    const [error, setError] = useState({ header: null, content: null, isHidden: true });
 
     const setOrResetInputs = () => {
         if (initialData) {
-            const date = dateFormat(initialData.date).split(' ')[0]
-            const time = dateFormat(initialData.date).split(' ')[1]
-            const { _id, driver, location, passengers, seats, type } = initialData
-            return setInputs({ _id, date, time, driver, location, passengers, seats, type })
+            const date = dateFormat(initialData.date).split(' ')[0];
+            const time = dateFormat(initialData.date).split(' ')[1];
+            const { _id, driver, location, passengers, seats, type } = initialData;
+            return setInputs({ _id, date, time, driver, location, passengers, seats, type });
         } else {
-            return setInputs({ location: '', seats: 1, date: '', time: '', passengers: [] })
+            return setInputs({ location: '', seats: 1, date: '', time: '', passengers: [] });
         }
-    }
+    };
 
-    useEffect(() => setOrResetInputs(), [])
+    useEffect(() => setOrResetInputs(), []);
 
     useEffect(() => {
-        let emptyFields = false
+        let emptyFields = false;
         
         // Checking for empty values in inputs
         Object.entries(inputs).filter(entry => entry[0] !== "passengers").forEach(entry => {
             if (!entry[1]) {
-                emptyFields = true
+                emptyFields = true;
             }
-        })
+        });
  
         if (inputs.passengers) {
             if (inputs.passengers.length > inputs.seats) {
-                setBtnEnabled(false)
-                return setError({ header: "Erreur", content: "Le nombre de passagers ne peut dépasser le nombre de sièges.", isHidden: false })
+                setBtnEnabled(false);
+                return setError({ header: "Erreur", content: "Le nombre de passagers ne peut dépasser le nombre de sièges.", isHidden: false });
             }
             setError({ header: null, content: null, isHidden: true })
         }
-        if (emptyFields) return setBtnEnabled(false)
-        setBtnEnabled(true)
-    }, [inputs])
+        if (emptyFields) return setBtnEnabled(false);
+        setBtnEnabled(true);
+    }, [inputs]);
 
     const handleSubmit = async () => {
-        const driver = getUserByUsername(login)._id
-        const { _id, location, seats, date, time, passengers } = inputs
-        const fullDate = new Date(`${date} ${time}:00 GMT+00:00`)
-        const type = isBack ? "BACK" : "FORTH"
+        const driver = getUserByUsername(login)._id;
+        const { _id, location, seats, date, time, passengers } = inputs;
+        const fullDate = new Date(`${date} ${time}:00 GMT+00:00`);
+        const type = isBack ? "BACK" : "FORTH";
         switch (mode) {
             case "add":
-                await createTrip({ driver, location, seats, date: fullDate, passengers, type })
-                setOrResetInputs()
+                await createTrip({ driver, location, seats, date: fullDate, passengers, type });
+                setOrResetInputs();
                 break;
             case "edit":
-                await updateTrip(_id, { driver, location, seats, date: fullDate, passengers, type })
+                await updateTrip(_id, { driver, location, seats, date: fullDate, passengers, type });
                 break;
             default:
                 break;
         }
-        setModalOpen(false)
-    }
+        setModalOpen(false);
+    };
 
-    const actionType = mode === 'edit' ? 'Modifier' : 'Ajouter'
-    const tripType = !isBack ? 'aller' : 'retour'
+    const actionType = mode === 'edit' ? 'Modifier' : 'Ajouter';
+    const tripType = !isBack ? 'aller' : 'retour';
 
     return (
         <Modal
             open={modalOpen}
             closeIcon
             onClose={() => {
-                setModalOpen(false)
+                setModalOpen(false);
                 if (mode === 'edit')
-                    setOrResetInputs()
+                    setOrResetInputs();
             }}
             trigger={
                 <Button 
-                    size='mini' 
-                    disabled={disabled} 
-                    floated={floated} 
+                    size='mini'
+                    disabled={disabled}
+                    floated={floated}
                     primary={primary} 
                     onClick={(e) => {
-                        e.preventDefault
-                        setModalOpen(true)
+                        e.preventDefault;
+                        setModalOpen(true);
                     }}
                 >
                     {actionType}
@@ -139,6 +139,6 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
             </Modal.Actions>
         </Modal>
     )
-}
+};
 
-export default TripsModal
+export default TripsModal;

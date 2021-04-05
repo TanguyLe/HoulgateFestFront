@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {Table, Button, Portal, Segment, Header, Popup} from 'semantic-ui-react';
+import {Table, Button, Label, Portal, Segment, Header, Popup} from 'semantic-ui-react';
 
 import { TripContext } from '../TripContext';
 import dateFormat from '../../utils/dateFormat';
@@ -84,7 +84,6 @@ const TripsTable = ({ isBack }) => {
                     trips.filter(trip => trip.type === ( isBack ? "BACK" : "FORTH")).map((trip, tripIndex) => (
                         <Table.Row
                             key={`trip-${tripIndex}`}
-                            negative={trip.seats === trip.passengers.length}
                             warning={trip.passengers.length !== 0 && trip.seats > trip.passengers.length}
                             positive={trip.passengers.length === 0}
                         >
@@ -94,17 +93,18 @@ const TripsTable = ({ isBack }) => {
                             <Table.Cell>
                                 {
                                     Array(trip.seats).fill().map((_, index) => (
-                                        <Button
+                                        <Label
                                             size="mini"
+                                            style={{"margin": "2px"}}
                                             disabled
-                                            primary={!trip.passengers[index]}
+                                            color={!trip.passengers[index] ? "blue" : "green"}
                                             key={`passenger-${tripIndex}-${index}`}
                                         >
                                             {
                                                 trip.passengers[index] ?
                                                     getUserById(trip.passengers[index]).username : 'Place libre'
                                             }
-                                        </Button>
+                                        </Label>
                                     ))
                                 }
                             </Table.Cell>
