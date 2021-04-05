@@ -4,7 +4,7 @@ import { Button, Icon, Modal, Form, Input, Dropdown, Message } from 'semantic-ui
 import { TripContext } from '../TripContext';
 import dateFormat from '../../utils/dateFormat';
 
-const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) => {
+const TripsModal = ({ mode, initialData, disabled, primary, isBack }) => {
     const { login, users, createTrip, updateTrip, getUserByUsername } = useContext(TripContext);
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -81,8 +81,7 @@ const TripsModal = ({ mode, initialData, disabled, floated, primary, isBack }) =
                 <Button 
                     size='mini'
                     disabled={disabled}
-                    floated={floated}
-                    primary={primary} 
+                    primary={primary}
                     onClick={(e) => {
                         e.preventDefault;
                         setModalOpen(true);

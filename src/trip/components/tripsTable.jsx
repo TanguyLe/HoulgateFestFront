@@ -67,7 +67,7 @@ const TripsTable = ({ isBack }) => {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell colSpan='5'>
-                        {title} <TripsModal mode='add' floated='right' isBack={isBack} primary/>
+                        {title} <TripsModal mode='add' isBack={isBack} primary/>
                     </Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
