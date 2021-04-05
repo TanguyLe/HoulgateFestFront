@@ -6,7 +6,7 @@ import dateFormat from '../../utils/dateFormat';
 import TripsModal from "./tripsModal";
 
 const TripsButtons = (props) => {
-    const { trip, isDriver } = props;
+    const { trip, isDriver, isPastYear } = props;
 
     const { deleteTrip } = useContext(TripContext);
 
@@ -15,16 +15,17 @@ const TripsButtons = (props) => {
         await deleteTrip(id);
         setDeletePopup(false);
     };
+    const disabled = !isDriver || isPastYear;
 
     const buttons = (
         <div>
-            <TripsModal mode='edit' initialData={trip} disabled={isDriver}>
+            <TripsModal mode='edit' initialData={trip} disabled={disabled}>
                 Modifier
             </TripsModal>
         <Portal
             openOnTriggerClick
             open={deletePopup}
-            trigger={<Button size='mini' disabled={isDriver}  content='Supprimer'/>}
+            trigger={<Button size='mini' disabled={disabled}  content='Supprimer'/>}
             onOpen={() => setDeletePopup(true)}
         >
             <Segment
@@ -63,6 +64,8 @@ const TripsButtons = (props) => {
 const TripsTable = () => {
     const { login, trips, getUserById } = useContext(TripContext);
 
+    const sortedTrips = trips ? trips.sort((a, b) => ((new Date(a.date) < new Date(b.date)) ? 1 : -1)) : undefined;
+
     return (
         <Table textAlign="center" size="small" celled striped compact>
             <Table.Header>
@@ -81,12 +84,13 @@ const TripsTable = () => {
             </Table.Header>
 
             <Table.Body>
-                { trips ?
-                    trips.map((trip, tripIndex) => (
+                { sortedTrips ?
+                    sortedTrips.map((trip, tripIndex) => (
                         <Table.Row
                             key={`trip-${tripIndex}`}
                             warning={trip.passengers.length !== 0 && trip.seats > trip.passengers.length}
                             positive={trip.passengers.length === 0}
+                            disabled={(new Date(trip.date)).getFullYear() !== (new Date()).getFullYear()}
                         >
                             <Table.Cell>{getUserById(trip.driver).username}</Table.Cell>
                             <Table.Cell>{dateFormat(trip.date)}</Table.Cell>
@@ -97,8 +101,11 @@ const TripsTable = () => {
                                         <Label
                                             size="mini"
                                             style={{"margin": "2px"}}
-                                            disabled
-                                            color={!trip.passengers[index] ? "blue" : "green"}
+                                            color={
+                                                (new Date(trip.date)).getFullYear() !== (new Date()).getFullYear() ?
+                                                    "grey" :
+                                                    (!trip.passengers[index] ? "blue" : "green")
+                                            }
                                             key={`passenger-${tripIndex}-${index}`}
                                         >
                                             {
@@ -111,7 +118,8 @@ const TripsTable = () => {
                             </Table.Cell>
                             <TripsButtons
                                 trip={trip}
-                                isDriver={login !== getUserById(trip.driver).username}
+                                isPastYear={!currentEdition.targetDatetime || trip.date.year !== currentEdition.targetDatetime.year}
+                                isDriver={login === getUserById(trip.driver).username}
                             />
                         </Table.Row>
                     ))
