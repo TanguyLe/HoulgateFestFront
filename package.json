@@ -1,91 +1,91 @@
 {
-  "name": "houlgatefest",
-  "version": "0.4.0",
-  "description": "Front of the website for the HoulgateFest project.",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Tanguy Le Floch",
-      "email": "lefloch.ta@gmail.com"
+    "name": "houlgatefest",
+    "version": "0.4.0",
+    "description": "Front of the website for the HoulgateFest project.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tanguy Le Floch",
+            "email": "lefloch.ta@gmail.com"
+        },
+        {
+            "name": "Gautier Barbereau",
+            "email": "gautier.barbereau@gmail.com"
+        },
+        {
+            "name": "Hugo Raynal",
+            "email": "raynalhugo@gmail.com"
+        },
+        {
+            "name": "Alexandre Vaast",
+            "email": "alex.vaast@gmail.com"
+        }
+    ],
+    "engines": {
+        "node": "12.20.1"
     },
-    {
-      "name": "Gautier Barbereau",
-      "email": "gautier.barbereau@gmail.com"
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TanguyLe/HoulgateFest.git"
     },
-    {
-      "name": "Hugo Raynal",
-      "email": "raynalhugo@gmail.com"
+    "main": "index.js",
+    "dependencies": {
+        "@babel/polyfill": "^7.7.0",
+        "@hot-loader/react-dom": "^16.8.6",
+        "@types/react": "^15.0.0",
+        "cors": "^2.8.4",
+        "express": "^4.16.3",
+        "lodash": "^4.17.20",
+        "query-string": "^6.0.0",
+        "react": "^16.8.0",
+        "react-dom": "^16.8.0",
+        "react-gravatar": "^2.6.3",
+        "react-router-dom": "^5.1.2",
+        "semantic-ui-react": "^0.88.0"
     },
-    {
-      "name": "Alexandre Vaast",
-      "email": "alex.vaast@gmail.com"
+    "devDependencies": {
+        "@babel/cli": "^7.7.5",
+        "@babel/core": "^7.7.5",
+        "@babel/plugin-proposal-class-properties": "^7.0.0",
+        "@babel/plugin-proposal-decorators": "^7.0.0",
+        "@babel/plugin-proposal-do-expressions": "^7.0.0",
+        "@babel/plugin-proposal-export-default-from": "^7.0.0",
+        "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
+        "@babel/plugin-proposal-function-bind": "^7.0.0",
+        "@babel/plugin-proposal-function-sent": "^7.0.0",
+        "@babel/plugin-proposal-json-strings": "^7.0.0",
+        "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
+        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
+        "@babel/plugin-proposal-numeric-separator": "^7.0.0",
+        "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+        "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
+        "@babel/plugin-proposal-throw-expressions": "^7.0.0",
+        "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+        "@babel/plugin-syntax-import-meta": "^7.0.0",
+        "@babel/plugin-transform-object-assign": "^7.7.4",
+        "@babel/plugin-transform-runtime": "^7.7.6",
+        "@babel/preset-env": "^7.7.6",
+        "@babel/preset-react": "^7.7.4",
+        "@babel/preset-stage-0": "^7.0.0",
+        "babel-loader": "^8.0.6",
+        "cross-env": "^7.0.2",
+        "css-loader": "^3.3.2",
+        "prettier": "^2.1.1",
+        "react-hot-loader": "^4.3.11",
+        "require": "^2.4.20",
+        "style-loader": "^0.19.1",
+        "terser-webpack-plugin": "^2.3.0",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "scripts": {
+        "prettier-check": "prettier --check .",
+        "prettier-run": "prettier --write .",
+        "dev": "webpack-dev-server --hot --config webpack.dev.config --port 8000",
+        "devStartShotgun": "cross-env-shell HAS_STARTED=true npm run dev",
+        "devBuild": "webpack --config webpack.dev.config",
+        "build": "webpack --config webpack.prod.config",
+        "start": "node server.js"
     }
-  ],
-  "engines": {
-    "node": "12.20.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TanguyLe/HoulgateFest.git"
-  },
-  "main": "index.js",
-  "dependencies": {
-    "@babel/polyfill": "^7.7.0",
-    "@hot-loader/react-dom": "^16.8.6",
-    "@types/react": "^15.0.0",
-    "cors": "^2.8.4",
-    "express": "^4.16.3",
-    "lodash": "^4.17.20",
-    "query-string": "^6.0.0",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0",
-    "react-gravatar": "^2.6.3",
-    "react-router-dom": "^5.1.2",
-    "semantic-ui-react": "^0.88.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.7.5",
-    "@babel/core": "^7.7.5",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-decorators": "^7.0.0",
-    "@babel/plugin-proposal-do-expressions": "^7.0.0",
-    "@babel/plugin-proposal-export-default-from": "^7.0.0",
-    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
-    "@babel/plugin-proposal-function-bind": "^7.0.0",
-    "@babel/plugin-proposal-function-sent": "^7.0.0",
-    "@babel/plugin-proposal-json-strings": "^7.0.0",
-    "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
-    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
-    "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
-    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-    "@babel/plugin-syntax-import-meta": "^7.0.0",
-    "@babel/plugin-transform-object-assign": "^7.7.4",
-    "@babel/plugin-transform-runtime": "^7.7.6",
-    "@babel/preset-env": "^7.7.6",
-    "@babel/preset-react": "^7.7.4",
-    "@babel/preset-stage-0": "^7.0.0",
-    "babel-loader": "^8.0.6",
-    "cross-env": "^7.0.2",
-    "css-loader": "^3.3.2",
-    "prettier": "^2.1.1",
-    "react-hot-loader": "^4.3.11",
-    "require": "^2.4.20",
-    "style-loader": "^0.19.1",
-    "terser-webpack-plugin": "^2.3.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.11.0"
-  },
-  "scripts": {
-    "prettier-check": "prettier --check .",
-    "prettier-run": "prettier --write .",
-    "dev": "webpack-dev-server --hot --config webpack.dev.config --port 8000",
-    "devStartShotgun": "cross-env-shell HAS_STARTED=true npm run dev",
-    "devBuild": "webpack --config webpack.dev.config",
-    "build": "webpack --config webpack.prod.config",
-    "start": "node server.js"
-  }
 }

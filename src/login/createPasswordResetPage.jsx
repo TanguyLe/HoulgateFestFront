@@ -1,15 +1,16 @@
-import React from "react"
+import React from "react";
 
 import CreatePasswordResetForm from "./components/forms/createPasswordResetForm";
 
 class CreatePasswordResetPage extends React.Component {
     render() {
-        return(
+        return (
             <div className="createPasswordresetPage">
                 <h1> Changement de Mot de Passe </h1>
-                <CreatePasswordResetForm/>
-            </div>);
+                <CreatePasswordResetForm />
+            </div>
+        );
     }
 }
 
-export default CreatePasswordResetPage
+export default CreatePasswordResetPage;

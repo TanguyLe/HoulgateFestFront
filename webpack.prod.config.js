@@ -1,33 +1,30 @@
 let webpack = require("webpack");
 
-const TerserPlugin = require('terser-webpack-plugin');
-
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
-    entry: [
-        "./src/houlgatefest.js"
-    ],
+    entry: ["./src/houlgatefest.js"],
     mode: "production",
     resolve: {
-        extensions: [".js", ".jsx"]
+        extensions: [".js", ".jsx"],
     },
     module: {
         rules: [
             {
                 test: /\.(jsx|js)?$/,
                 exclude: /node_modules/,
-                use: "babel-loader"
+                use: "babel-loader",
             },
             {
                 test: /\.css$/,
                 exclude: [/node_modules/, /bin/],
-                use: ["style-loader", "css-loader"]
-            }
-        ]
+                use: ["style-loader", "css-loader"],
+            },
+        ],
     },
     output: {
         path: __dirname + "/web",
-        filename: "houlgatefest.min.js"
+        filename: "houlgatefest.min.js",
     },
     optimization: {
         minimize: true,
@@ -38,7 +35,7 @@ module.exports = {
             NODE_ENV: "production",
             API_URL: null,
             HAS_STARTED: false,
-            SCORES_BOARD_URL: "https://keepthescore.co/board/kecveeapsar/"
-        })
-    ]
+            SCORES_BOARD_URL: "https://keepthescore.co/board/kecveeapsar/",
+        }),
+    ],
 };

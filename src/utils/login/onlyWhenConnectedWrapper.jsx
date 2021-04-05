@@ -1,11 +1,10 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import {register, unregister, getCredentials} from "../../login/store";
-
+import { register, unregister, getCredentials } from "../../login/store";
 
 class OnlyWhenConnectedWrapper extends React.Component {
-    constructor(){
+    constructor() {
         super();
 
         this.state = {};
@@ -21,8 +20,7 @@ class OnlyWhenConnectedWrapper extends React.Component {
 
     componentWillUnmount() {
         unregister(this.onLogin);
-        if (document.getElementById("loginPortal"))
-            this.onClickConnected();
+        if (document.getElementById("loginPortal")) this.onClickConnected();
     }
 
     onLogin(creds) {
@@ -34,11 +32,15 @@ class OnlyWhenConnectedWrapper extends React.Component {
     }
 
     render() {
-        return this.state.login ? <div className={this.props.className || ""}> {this.props.children} </div>
-            : <div className="Countdown">
-                Cette page n'est accessible qu'une fois <a onClick={this.onClickConnected}>connecté</a> !
-                N'hésite pas à <Link to="/register">créer un compte</Link>.
-            </div>;
+        return this.state.login ? (
+            <div className={this.props.className || ""}> {this.props.children} </div>
+        ) : (
+            <div className="Countdown">
+                Cette page n'est accessible qu'une fois{" "}
+                <a onClick={this.onClickConnected}>connecté</a> ! N'hésite pas à{" "}
+                <Link to="/register">créer un compte</Link>.
+            </div>
+        );
     }
 }
 
