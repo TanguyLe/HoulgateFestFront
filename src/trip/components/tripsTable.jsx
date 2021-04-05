@@ -118,7 +118,7 @@ const TripsTable = () => {
                             </Table.Cell>
                             <TripsButtons
                                 trip={trip}
-                                isPastYear={!currentEdition.targetDatetime || trip.date.year !== currentEdition.targetDatetime.year}
+                                isPastYear={(new Date(trip.date)).getFullYear() !== (new Date()).getFullYear()}
                                 isDriver={login === getUserById(trip.driver).username}
                             />
                         </Table.Row>
