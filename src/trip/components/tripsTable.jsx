@@ -46,7 +46,7 @@ const TripsButtons = (props) => {
     </div>);
     return <Table.Cell>
         {
-            !isDriver ? buttons :
+            isDriver ? buttons :
                 <Popup
                     flowing
                     trigger={buttons}
