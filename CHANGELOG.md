@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Prettier in the CI [PR78](https://github.com/TanguyLe/HoulgateFestBack/pull/78)
+- The history page [PR106](https://github.com/TanguyLe/HoulgateFestFront/pull/106)
 
 ### Fixed
 
