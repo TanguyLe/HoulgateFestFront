@@ -2,7 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {Icon, Responsive, Sidebar, Menu, Container, Image} from 'semantic-ui-react';
 
-import WhoAmI from "../../login/components/whoAmI"
+import WhoAmI from "../../login/components/whoAmI";
 
 
 export const leftItems = [
@@ -54,7 +54,7 @@ class NavBarChildren extends React.Component {
     render() {
         const {children, bigContainer} = this.props;
         if (bigContainer)
-            return <Container fluid style={{paddingTop: "6.2rem"}}>{children}</Container>;
+            return <Container fluid style={{padding: "6.2rem 2rem 0 2rem"}}>{children}</Container>;
         else
             return <Container text style={{paddingTop: "6.2rem"}}>{children}</Container>
     }
@@ -116,4 +116,3 @@ class NavBar extends React.Component {
 }
 
 export default NavBar;
-
