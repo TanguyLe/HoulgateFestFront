@@ -10,7 +10,11 @@ class HistoryPage extends React.Component {
                 <Header as="h2"> Gloryhoul of Fame </Header>
                 <Header as="h3">
                     <Icon name='heart'/>
-                    <Header.Content>2018: Naissance du HoulgateFest (8 au 10 Juin)</Header.Content>
+                    <Header.Content>
+                        <a href="https://www.facebook.com/events/412313352536608/" target="_blank">
+                            2018: Naissance du HoulgateFest (8 au 10 Juin)
+                        </a>
+                    </Header.Content>
                 </Header>
                 <Image style={{"paddingBottom": "10px"}} src="static/banners/2018.jpg" centered spaced/>
 
@@ -30,7 +34,11 @@ class HistoryPage extends React.Component {
                 </p>
                 <Header as="h3">
                     <Icon name='heart'/>
-                    <Header.Content>2019: HoulgateFest Le Retour (27 au 29 Juin)</Header.Content>
+                    <Header.Content>
+                        <a href="https://www.facebook.com/events/420496642092857/" target="_blank">
+                            2019: HoulgateFest Le Retour (27 au 29 Juin)
+                        </a>
+                    </Header.Content>
                 </Header>
                 <Image style={{"paddingBottom": "10px"}} src="static/banners/2019.jpg" centered spaced/>
 
@@ -57,7 +65,11 @@ class HistoryPage extends React.Component {
                 />
                 <Header as="h3">
                     <Icon name='heart'/>
-                    <Header.Content>2020: HoulgateFest et la Coupe de F (25 au 27 Septembre)</Header.Content>
+                    <Header.Content>
+                        <a href="https://www.facebook.com/events/1263546553855244/" target="_blank">
+                            2020: HoulgateFest et la Coupe de F (25 au 27 Septembre)
+                        </a>
+                    </Header.Content>
                 </Header>
                 <Image style={{"paddingBottom": "10px"}} src="static/banners/2020.png" centered spaced/>
 

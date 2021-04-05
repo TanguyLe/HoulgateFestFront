@@ -2,6 +2,9 @@ import React from "react";
 import { Image, Header, Icon, Popup } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
+
+const SHOTGUN_GUIDE_LINK = "https://docs.google.com/document/d/1jRcRhMVLP1m1uy9ijUc9OSCVMriq0QHsnq39ROFbdjA/edit?usp=sharing";
+
 class Homepage extends React.Component {
     render() {
         return (
@@ -75,18 +78,10 @@ class Homepage extends React.Component {
                     sur cette plateforme pour choisir votre espace de siestasse.
                 </p>
                 <p>
-                    D'ici là pensez à vous <Link to="/register">inscrire</Link> et vérifiez bien que
-                    vous pouvez vous connecter en amont. Le{" "}
-                    <a
-                        href={
-                            "https://docs.google.com/document/d/10UAgpsh7cdAsPlyEdn25XaX9jstU9zNsYuC5-c2NnP8/edit?usp=sharing"
-                        }
-                    >
-                        guide
-                    </a>{" "}
-                    devrait vous aider à vous préparer.
-                    <br />
-                    <b>Organisez-vous pour le shotgun !</b>
+                    D'ici là pensez à vous <Link to="/register">inscrire</Link> et vérifiez bien
+                    que vous pouvez vous connecter en amont.
+                    Le <a target="_blank" href={SHOTGUN_GUIDE_LINK}>guide</a> devrait vous aider à vous préparer.
+                    <br/><b>Organisez-vous pour le shotgun !</b>
                 </p>
                 <p>
                     Attention pour cette édition 2021 le HoulgateFest accueille 3 tribus et donc de
@@ -102,13 +97,10 @@ class Homepage extends React.Component {
                 </Header>
 
                 <p>
-                    Pour être notifié directement au moment du Shotgun, être au courant de toutes
-                    les actualités du HoulgateFest, soutenir votre tribu et surtout sélectionner les
-                    packs Bouffe et Alcool: rendez-vous sur{" "}
-                    <a href={"https://www.facebook.com/events/773462923524929"}>
-                        l’événement Facebook
-                    </a>{" "}
-                    ! <br />
+                    Pour être notifié directement au moment du Shotgun, être au courant de toutes les actualités du HoulgateFest,
+                    soutenir votre tribu et surtout sélectionner les packs Bouffe et Alcool:
+                    rendez-vous sur <a href="https://www.facebook.com/events/773462923524929" target="_blank">
+                    l’événement Facebook</a> ! <br/>
                 </p>
                 <p>
                     Sur ce site vous êtes à bonne adresse si vous voulez{" "}
