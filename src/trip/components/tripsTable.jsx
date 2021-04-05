@@ -6,11 +6,11 @@ import dateFormat from '../../utils/dateFormat';
 import TripsModal from "./tripsModal";
 
 const TripsButtons = (props) => {
-    const { trip, isDriver, isBack, setDeletePopup, handleDeleteTrip, deletePopup } = props;
+    const { trip, isDriver, setDeletePopup, handleDeleteTrip, deletePopup } = props;
 
     const buttons = (
         <div>
-            <TripsModal mode='edit' initialData={trip} disabled={isDriver} isBack={isBack}>
+            <TripsModal mode='edit' initialData={trip} disabled={isDriver}>
                 Modifier
             </TripsModal>
         <Portal
@@ -52,10 +52,9 @@ const TripsButtons = (props) => {
     </Table.Cell>
 };
 
-const TripsTable = ({ isBack }) => {
+const TripsTable = () => {
     const { login, trips, getUserById, deleteTrip } = useContext(TripContext);
 
-    const [title] = useState(isBack ? 'Trajets retour' : 'Trajets Aller');
     const [deletePopup, setDeletePopup] = useState(false);
 
     const handleDeleteTrip = async (id) => {
@@ -67,7 +66,7 @@ const TripsTable = ({ isBack }) => {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell colSpan='5'>
-                        {title} <TripsModal mode='add' isBack={isBack} primary/>
+                        Trajets Aller <TripsModal mode='add' primary/>
                     </Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
@@ -81,7 +80,7 @@ const TripsTable = ({ isBack }) => {
 
             <Table.Body>
                 { trips ?
-                    trips.filter(trip => trip.type === ( isBack ? "BACK" : "FORTH")).map((trip, tripIndex) => (
+                    trips.map((trip, tripIndex) => (
                         <Table.Row
                             key={`trip-${tripIndex}`}
                             warning={trip.passengers.length !== 0 && trip.seats > trip.passengers.length}
@@ -110,7 +109,6 @@ const TripsTable = ({ isBack }) => {
                             </Table.Cell>
                             <TripsButtons
                                 trip={trip}
-                                isBack={isBack}
                                 isDriver={login !== getUserById(trip.driver).username}
                                 setDeletePopup={setDeletePopup}
                                 deletePopup={deletePopup}

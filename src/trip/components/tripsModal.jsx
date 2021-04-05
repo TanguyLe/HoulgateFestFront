@@ -4,7 +4,7 @@ import { Button, Icon, Modal, Form, Input, Dropdown, Message } from 'semantic-ui
 import { TripContext } from '../TripContext';
 import dateFormat from '../../utils/dateFormat';
 
-const TripsModal = ({ mode, initialData, disabled, primary, isBack }) => {
+const TripsModal = ({ mode, initialData, disabled, primary }) => {
     const { login, users, createTrip, updateTrip, getUserByUsername } = useContext(TripContext);
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -16,8 +16,8 @@ const TripsModal = ({ mode, initialData, disabled, primary, isBack }) => {
         if (initialData) {
             const date = dateFormat(initialData.date).split(' ')[0];
             const time = dateFormat(initialData.date).split(' ')[1];
-            const { _id, driver, location, passengers, seats, type } = initialData;
-            return setInputs({ _id, date, time, driver, location, passengers, seats, type });
+            const { _id, driver, location, passengers, seats } = initialData;
+            return setInputs({ _id, date, time, driver, location, passengers, seats });
         } else {
             return setInputs({ location: '', seats: 1, date: '', time: '', passengers: [] });
         }
@@ -38,7 +38,13 @@ const TripsModal = ({ mode, initialData, disabled, primary, isBack }) => {
         if (inputs.passengers) {
             if (inputs.passengers.length > inputs.seats) {
                 setBtnEnabled(false);
-                return setError({ header: "Erreur", content: "Le nombre de passagers ne peut dépasser le nombre de sièges.", isHidden: false });
+                return setError(
+                    {
+                        header: "Erreur",
+                        content: "Le nombre de passagers ne peut dépasser le nombre de sièges.",
+                        isHidden: false
+                    }
+                );
             }
             setError({ header: null, content: null, isHidden: true })
         }
@@ -49,15 +55,17 @@ const TripsModal = ({ mode, initialData, disabled, primary, isBack }) => {
     const handleSubmit = async () => {
         const driver = getUserByUsername(login)._id;
         const { _id, location, seats, date, time, passengers } = inputs;
-        const fullDate = new Date(`${date} ${time}:00 GMT+00:00`);
-        const type = isBack ? "BACK" : "FORTH";
+        const fullDate = new Date(`${date} ${time}:00`);
+        console.log(date);
+        console.log(time);
+        console.log(fullDate);
         switch (mode) {
             case "add":
-                await createTrip({ driver, location, seats, date: fullDate, passengers, type });
+                await createTrip({ driver, location, seats, date: fullDate, passengers });
                 setOrResetInputs();
                 break;
             case "edit":
-                await updateTrip(_id, { driver, location, seats, date: fullDate, passengers, type });
+                await updateTrip(_id, { driver, location, seats, date: fullDate, passengers });
                 break;
             default:
                 break;
@@ -66,7 +74,6 @@ const TripsModal = ({ mode, initialData, disabled, primary, isBack }) => {
     };
 
     const actionType = mode === 'edit' ? 'Modifier' : 'Ajouter';
-    const tripType = !isBack ? 'aller' : 'retour';
 
     return (
         <Modal
@@ -91,7 +98,7 @@ const TripsModal = ({ mode, initialData, disabled, primary, isBack }) => {
                 </Button>}
             style={{ top: '25%' }} 
         >
-            <Modal.Header icon='car' content={`${actionType} trajet ${tripType}`} />
+            <Modal.Header icon='car' content={`${actionType} trajet aller`} />
             <Modal.Content>
                 <Form>
                     <Form.Field required>
