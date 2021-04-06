@@ -1,13 +1,13 @@
 let credentials = {
     login: "",
     accessToken: "",
-    refreshToken: ""
+    refreshToken: "",
 };
 
 let loginStore = [];
 
 export const register = (fct) => {
-    loginStore.push(fct)
+    loginStore.push(fct);
 };
 
 export const unregister = (fct) => {
@@ -23,7 +23,7 @@ export const dispatch = () => {
 
     loginStore.forEach((fct) => {
         fct(creds);
-    })
+    });
 };
 
 export const logout = () => {
@@ -45,5 +45,5 @@ export const login = (username, accessToken, refreshToken) => {
 };
 
 export const getCredentials = () => {
-    return credentials
+    return credentials;
 };

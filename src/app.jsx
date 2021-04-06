@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Homepage from "./mainLayout/homepage";
 
@@ -9,48 +9,49 @@ import SignUpPage from "./login/signUpPage";
 import ActivateAccount from "./login/activateAccountPage";
 import PasswordResetPage from "./login/passwordResetPage";
 import CreatePasswordResetPage from "./login/createPasswordResetPage";
-import DefaultLayout from './mainLayout/components/layout';
-import ContactPage from './contact/contactPage';
-import TripPage from './trip/tripPage';
+import DefaultLayout from "./mainLayout/components/layout";
+import ContactPage from "./contact/contactPage";
+import TripPage from "./trip/tripPage";
 import ScoresPage from "./scores/scoresPage";
-
 
 class App extends React.Component {
     render() {
-        return <Router>
+        return (
+            <Router>
                 <Switch>
                     <Route exact path="/">
-                        <DefaultLayout exact component={Homepage}/>
+                        <DefaultLayout exact component={Homepage} />
                     </Route>
                     <Route path="/shotgun">
-                        <DefaultLayout component={ShotgunPage} bigContainer auth/>
+                        <DefaultLayout component={ShotgunPage} bigContainer auth />
                     </Route>
                     <Route path="/trips">
-                        <DefaultLayout component={TripPage} bigContainer auth/>
+                        <DefaultLayout component={TripPage} bigContainer auth />
                     </Route>
                     <Route path="/scores">
-                        <DefaultLayout component={ScoresPage} bigContainer auth/>
+                        <DefaultLayout component={ScoresPage} bigContainer auth />
                     </Route>
                     <Route path="/contact">
-                        <DefaultLayout component={ContactPage}/>
+                        <DefaultLayout component={ContactPage} />
                     </Route>
                     <Route path="/register">
-                        <DefaultLayout component={SignUpPage} notCo/>
+                        <DefaultLayout component={SignUpPage} notCo />
                     </Route>
                     <Route path="/activateUser">
-                        <DefaultLayout component={ActivateAccount} notCo/>
+                        <DefaultLayout component={ActivateAccount} notCo />
                     </Route>
                     <Route path="/passwordReset">
-                        <DefaultLayout component={PasswordResetPage} notCo/>
+                        <DefaultLayout component={PasswordResetPage} notCo />
                     </Route>
                     <Route path="/createPasswordReset">
-                        <DefaultLayout component={CreatePasswordResetPage} notCo/>
+                        <DefaultLayout component={CreatePasswordResetPage} notCo />
                     </Route>
                     <Route path="*">
-                        <DefaultLayout component={NotFound}/>
+                        <DefaultLayout component={NotFound} />
                     </Route>
                 </Switch>
-        </Router>;
+            </Router>
+        );
     }
 }
 

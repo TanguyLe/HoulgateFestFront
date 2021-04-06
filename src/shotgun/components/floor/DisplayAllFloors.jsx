@@ -1,31 +1,29 @@
 import React from "react";
-import {map} from "lodash/fp";
+import { map } from "lodash/fp";
 
-const mapUncapped = map.convert({cap: false});
+const mapUncapped = map.convert({ cap: false });
 
 import Floor from "./index";
-import {FLOOR_GRID_STRUCT_INDEX_PREFIX} from "../../constants";
+import { FLOOR_GRID_STRUCT_INDEX_PREFIX } from "../../constants";
 
-let getHeight = () => window.innerWidth < 640 ? "auto" : "calc(100vh - 150px)";
+let getHeight = () => (window.innerWidth < 640 ? "auto" : "calc(100vh - 150px)");
 
 class DisplayAllFloors extends React.Component {
     constructor() {
         super();
 
         this.state = {
-            height: getHeight()
+            height: getHeight(),
         };
 
         this.onResize = this.onResize.bind(this);
     }
 
-
-
     onResize() {
         let target_height = getHeight();
 
         if (target_height !== this.state.height) {
-            this.setState({"height": target_height})
+            this.setState({ height: target_height });
         }
     }
 
@@ -35,7 +33,7 @@ class DisplayAllFloors extends React.Component {
 
     render() {
         return (
-            <div className="allFloors" style={{"height": this.state.height}}>
+            <div className="allFloors" style={{ height: this.state.height }}>
                 {mapUncapped((floor, index) => {
                     return (
                         <Floor

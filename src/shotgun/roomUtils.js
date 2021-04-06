@@ -4,7 +4,7 @@ export const getNbSeats = (place) => {
     place.floors.map((floor) => {
         floor.rooms.map((room) => {
             nbSeats += room.seats;
-        })
+        });
     });
 
     return nbSeats;

@@ -1,13 +1,14 @@
-import React from "react"
+import React from "react";
 
-import ContactForm from "./components/contactForm"
+import ContactForm from "./components/contactForm";
 
 let ContactPage = () => {
     return (
         <div>
             <h1> Contact </h1>
-            <ContactForm/>
-        </div>);
+            <ContactForm />
+        </div>
+    );
 };
 
-export default ContactPage
+export default ContactPage;

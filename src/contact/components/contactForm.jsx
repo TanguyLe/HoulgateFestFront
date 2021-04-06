@@ -1,9 +1,9 @@
 import React from "react";
-import {Form, Message, List, Icon} from 'semantic-ui-react';
-import {CONTACT_URL, CONTACT_DEF} from "../constants";
-import {postCallApi} from "../../utils/api/fetchMiddleware";
-import {upCaseFirstLetter} from "../../utils/miscFcts";
-import {withRouter} from "react-router-dom";
+import { Form, Message, List, Icon } from "semantic-ui-react";
+import { CONTACT_URL, CONTACT_DEF } from "../constants";
+import { postCallApi } from "../../utils/api/fetchMiddleware";
+import { upCaseFirstLetter } from "../../utils/miscFcts";
+import { withRouter } from "react-router-dom";
 
 class ContactForm extends React.Component {
     constructor() {
@@ -13,11 +13,11 @@ class ContactForm extends React.Component {
             this.initialState[elem] = {
                 value: "",
                 valid: true,
-                errorMsg: ""
-            }
+                errorMsg: "",
+            };
         });
         this.state = JSON.parse(JSON.stringify(this.initialState));
-        this.state.status = 'input';
+        this.state.status = "input";
         this.isFormValid = this.isFormValid.bind(this);
         this.isFieldValid = this.isFieldValid.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -35,12 +35,11 @@ class ContactForm extends React.Component {
         const name = event.target.name;
         const value = event.target.value;
 
-        this.validateField(name, value)
+        this.validateField(name, value);
     }
 
     handleKeyPress(event) {
-        if (this.isFormValid() && event.key === "Enter")
-            this.handleSubmit();
+        if (this.isFormValid() && event.key === "Enter") this.handleSubmit();
     }
 
     handleKeyUp(event) {
@@ -50,7 +49,7 @@ class ContactForm extends React.Component {
         clearTimeout(this.typing);
         if (event.key !== "Tab") {
             const validateThisField = () => this.validateField(name, value);
-            this.typing = setTimeout(validateThisField, 200)
+            this.typing = setTimeout(validateThisField, 200);
         }
     }
 
@@ -58,29 +57,26 @@ class ContactForm extends React.Component {
         clearTimeout(this.typing);
     }
 
-
     validateField(name, value) {
         const valid = this.isFieldValid(name, value);
         const newField = {
             valid: valid,
-            errorMsg: valid ? "" : CONTACT_DEF[name].regex.error
+            errorMsg: valid ? "" : CONTACT_DEF[name].regex.error,
         };
-        this.setState({[name]: Object.assign({}, this.state[name], newField)});
+        this.setState({ [name]: Object.assign({}, this.state[name], newField) });
     }
 
-
     isFieldValid(name, value) {
-        if (CONTACT_DEF[name].hasOwnProperty('regex')) {
+        if (CONTACT_DEF[name].hasOwnProperty("regex")) {
             return value.match(CONTACT_DEF[name].regex.def);
         }
         return true;
     }
 
-
     handleChange(event) {
         const name = event.target.name;
         const value = event.target.value;
-        this.setState({[name]: Object.assign({}, this.state[name], {value: value})});
+        this.setState({ [name]: Object.assign({}, this.state[name], { value: value }) });
     }
 
     reset() {
@@ -89,9 +85,12 @@ class ContactForm extends React.Component {
 
     isFormValid(emptyValuesOk = false) {
         for (let property in this.state)
-            if (property !== 'status')
+            if (property !== "status")
                 if (this.state.hasOwnProperty(property))
-                    if (!this.state[property].valid || (!emptyValuesOk && !this.state[property].value)) {
+                    if (
+                        !this.state[property].valid ||
+                        (!emptyValuesOk && !this.state[property].value)
+                    ) {
                         return false;
                     }
         return true;
@@ -100,83 +99,88 @@ class ContactForm extends React.Component {
     handleSubmit() {
         let mailContent = {};
         Object.keys(this.state).forEach((elem) => {
-            mailContent[elem] = this.state[elem].value
+            mailContent[elem] = this.state[elem].value;
         });
-        this.setState({status: 'loading'});
-        postCallApi(CONTACT_URL, {mailContent}, false)
+        this.setState({ status: "loading" });
+        postCallApi(CONTACT_URL, { mailContent }, false)
             .then((response) => {
-                if (!response.ok)
-                    throw Error();
-                this.setState({status: 'sent'});
+                if (!response.ok) throw Error();
+                this.setState({ status: "sent" });
                 setTimeout(this.reset());
                 return response;
             })
-            .catch(error => alert("Une erreur est survenue, veuillez réessayer :  " + error))
+            .catch((error) => alert("Une erreur est survenue, veuillez réessayer :  " + error));
     }
-
 
     render() {
         const isFormValid = this.isFormValid(true);
         return (
-            <Form error={!isFormValid} onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}
-                  success={(this.state.status === 'sent')}>
+            <Form
+                error={!isFormValid}
+                onSubmit={this.handleSubmit}
+                onKeyPress={this.handleKeyPress}
+                success={this.state.status === "sent"}
+            >
                 {Object.keys(CONTACT_DEF).map((name, index) => {
-                    if (CONTACT_DEF[name].htmlElem === 'Input')
+                    if (CONTACT_DEF[name].htmlElem === "Input")
                         return (
-                            <Form.Input required
-                                        error={!this.state[name].valid}
-                                        type={CONTACT_DEF[name].type}
-                                        key={'formKey' + index}
-                                        fluid
-                                        label={upCaseFirstLetter(CONTACT_DEF[name].label)}
-                                        name={name}
-                                        value={this.state[name].value}
-                                        onBlur={this.handleBlur}
-                                        onKeyUp={this.handleKeyUp}
-                                        onKeyDown={this.handleKeyDown}
-                                        onChange={this.handleChange}/>
+                            <Form.Input
+                                required
+                                error={!this.state[name].valid}
+                                type={CONTACT_DEF[name].type}
+                                key={"formKey" + index}
+                                fluid
+                                label={upCaseFirstLetter(CONTACT_DEF[name].label)}
+                                name={name}
+                                value={this.state[name].value}
+                                onBlur={this.handleBlur}
+                                onKeyUp={this.handleKeyUp}
+                                onKeyDown={this.handleKeyDown}
+                                onChange={this.handleChange}
+                            />
                         );
-                    else if (CONTACT_DEF[name].htmlElem === 'TextArea')
+                    else if (CONTACT_DEF[name].htmlElem === "TextArea")
                         return (
-                            <Form.TextArea required
-                                           error={!this.state[name].valid}
-                                           type={CONTACT_DEF[name].type}
-                                           key={'formKey' + index}
-                                           label={upCaseFirstLetter(CONTACT_DEF[name].label)}
-                                           name={name}
-                                           value={this.state[name].value}
-                                           onBlur={this.handleBlur}
-                                           onKeyUp={this.handleKeyUp}
-                                           onKeyDown={this.handleKeyDown}
-                                           onChange={this.handleChange}/>
+                            <Form.TextArea
+                                required
+                                error={!this.state[name].valid}
+                                type={CONTACT_DEF[name].type}
+                                key={"formKey" + index}
+                                label={upCaseFirstLetter(CONTACT_DEF[name].label)}
+                                name={name}
+                                value={this.state[name].value}
+                                onBlur={this.handleBlur}
+                                onKeyUp={this.handleKeyUp}
+                                onKeyDown={this.handleKeyDown}
+                                onChange={this.handleChange}
+                            />
                         );
-
                 })}
                 <Form.Group inline>
-                    <Form.Button type="submit" disabled={!this.isFormValid() || (this.state.status !== 'input')}>
+                    <Form.Button
+                        type="submit"
+                        disabled={!this.isFormValid() || this.state.status !== "input"}
+                    >
                         Envoyer
                     </Form.Button>
-                    <Form.Button type="reset" onClick={this.reset}>Réinitialiser</Form.Button>
+                    <Form.Button type="reset" onClick={this.reset}>
+                        Réinitialiser
+                    </Form.Button>
                 </Form.Group>
                 <Message error>
                     <List bulleted>
-                        {Object.keys(this.state).map(key => {
+                        {Object.keys(this.state).map((key) => {
                             const errorMsg = this.state[key].errorMsg;
                             if (errorMsg)
-                                return <List.Item key={'messageKey' + key}>{errorMsg}</List.Item>
+                                return <List.Item key={"messageKey" + key}>{errorMsg}</List.Item>;
                         })}
                     </List>
                 </Message>
-                <Message success>
-                    Ton message a bien été transmis !
+                <Message success>Ton message a bien été transmis !</Message>
+                <Message info icon hidden={this.state.status !== "loading"}>
+                    <Icon name="circle notched" loading />
+                    <Message.Content>Envoi du message en cours..</Message.Content>
                 </Message>
-                <Message info icon hidden={this.state.status !== 'loading'}>
-                    <Icon name='circle notched' loading/>
-                    <Message.Content>
-                        Envoi du message en cours..
-                    </Message.Content>
-                </Message>
-
             </Form>
         );
     }
