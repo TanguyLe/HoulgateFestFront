@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Prettier in the CI [PR78](https://github.com/TanguyLe/HoulgateFestBack/pull/78)
 
+### Fixed
+
+-   Improvement of the logging policy which should result in less undesired error messages [PR114](https://github.com/TanguyLe/HoulgateFestBack/pull/114)
+
 ## [v0.4.0] 2021-04-05
 
 ### Changed
