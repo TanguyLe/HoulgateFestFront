@@ -18,3 +18,6 @@ package-lock.json
 *.min.js.LICENSE
 *.min.js.LICENSE.txt
 /back/api/mail/emailConfig.js
+
+.vercel
+front-env.env

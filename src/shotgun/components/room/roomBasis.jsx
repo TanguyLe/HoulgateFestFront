@@ -22,7 +22,7 @@ class RoomBasis extends React.Component {
 
         let view = '';
         if (roommates)
-            view = <Popup trigger={user} content={"Avec: " + roommates}/>;
+            view = <Popup flowing trigger={user} content={"Avec: " + roommates}/>;
         else
             view = user;
 
