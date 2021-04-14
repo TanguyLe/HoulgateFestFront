@@ -1,5 +1,4 @@
 import React from "react";
-import Gravatar from "react-gravatar";
 import { Dropdown, Button, Form } from "semantic-ui-react";
 
 class BedsMultipleDropdown extends React.Component {
@@ -15,14 +14,7 @@ class BedsMultipleDropdown extends React.Component {
             this.optionsPerUserId[person._id] = {
                 key: person._id,
                 value: person._id,
-                text: person.username,
-                image: (
-                    <Gravatar
-                        email={`${person.username}@houlgatefest.com`}
-                        rating="pg"
-                        default="retro"
-                    />
-                ),
+                text: person.username
             };
         });
 
