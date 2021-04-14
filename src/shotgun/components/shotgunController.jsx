@@ -16,6 +16,7 @@ import {
 } from "../constants";
 
 import { getCallApi, postCallApi, putCallApi } from "../../utils/api/fetchMiddleware";
+import { getCredentials } from "../../login/store";
 
 const INTERVAL_DURATION = 15000;
 
@@ -64,7 +65,7 @@ class ShotgunContainer extends React.Component {
         const usersApiCall = await getCallApi(USERS_ENDPOINT, true);
         const users = (await usersApiCall.json()).data;
 
-        const currentUserUsername = window.localStorage.getItem("username");
+        const currentUserUsername = getCredentials().login;
 
         const currentUser = users.find((user) => user.username === currentUserUsername);
 

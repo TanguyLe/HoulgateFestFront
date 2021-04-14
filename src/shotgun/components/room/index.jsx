@@ -1,5 +1,4 @@
 import React from "react";
-import { isNil, get } from "lodash/fp";
 
 import RoomBasis from "./roomBasis";
 import ShotgunPortal from "../shotgunModal";
@@ -8,13 +7,32 @@ import {
     ROOM_STATUS_SHOTGUNNED,
     ROOM_STATUS_PRESHOTGUNNED,
 } from "../../constants";
+import { getCredentials, register, unregister } from "../../../login/store";
 
 class Room extends React.Component {
-    shouldComponentUpdate(nextProps, nextState) {
+    constructor() {
+        super();
+
+        this.state = { username: getCredentials().login };
+        this.onLoginChange = this.onLoginChange.bind(this);
+    }
+
+    shouldComponentUpdate(nextProps, nextState, _) {
         return (
             JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
             JSON.stringify(nextState) !== JSON.stringify(this.state)
         );
+    }
+    onLoginChange(newCreds) {
+        this.setState({ username: newCreds.login });
+    }
+
+    componentDidMount() {
+        register(this.onLoginChange);
+    }
+
+    componentWillUnmount() {
+        unregister(this.onLoginChange);
     }
 
     render() {
@@ -25,7 +43,7 @@ class Room extends React.Component {
         const roomId = this.props.id;
         const roomStatus = this.props.roomStatus;
 
-        const currentUserUsername = window.localStorage.getItem("username");
+        const currentUserUsername = this.state.username;
         const users = Object.values(this.props.userInfo);
         const currentUser = users.find((user) => user.username === currentUserUsername);
 

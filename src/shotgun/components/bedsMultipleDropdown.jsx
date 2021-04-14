@@ -1,5 +1,6 @@
 import React from "react";
 import { Dropdown, Button, Form } from "semantic-ui-react";
+import { getCredentials, register, unregister } from "../../login/store";
 
 class BedsMultipleDropdown extends React.Component {
     constructor(props) {
@@ -14,17 +15,22 @@ class BedsMultipleDropdown extends React.Component {
             this.optionsPerUserId[person._id] = {
                 key: person._id,
                 value: person._id,
-                text: person.username
+                text: person.username,
             };
         });
 
         this.state = {
             beds: new Array(props.numberOfBeds).fill(""),
             availablePersonsIds: availablePersonsIds,
+            username: getCredentials().login,
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.submit = this.submit.bind(this);
+        this.onLoginChange = this.onLoginChange.bind(this);
+    }
+    onLoginChange(newCreds) {
+        this.setState({ username: newCreds.login });
     }
 
     handleChange(event, updatedBedIndex, value) {
@@ -70,12 +76,16 @@ class BedsMultipleDropdown extends React.Component {
     }
 
     componentDidMount() {
-        const currentUsername = window.localStorage.getItem("username");
+        const currentUsername = this.state.username;
         const currentUserId = Object.values(this.optionsPerUserId).find(
             (person) => person.text === currentUsername
         ).key;
 
         this.handleChange("", 0, currentUserId);
+        register(this.onLoginChange);
+    }
+    componentWillUnmount() {
+        unregister(this.onLoginChange);
     }
 
     render() {
