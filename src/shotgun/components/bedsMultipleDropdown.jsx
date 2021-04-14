@@ -1,5 +1,5 @@
 import React from "react";
-import { Dropdown, Button, Form } from "semantic-ui-react";
+import { Dropdown, Form } from "semantic-ui-react";
 import { getCredentials, register, unregister } from "../../login/store";
 
 class BedsMultipleDropdown extends React.Component {
@@ -101,7 +101,7 @@ class BedsMultipleDropdown extends React.Component {
 
         return (
             <Form>
-                <Form.Group style={{ flexWrap: "wrap" }}>
+                <Form.Group widths="equal" style={{ flexWrap: "wrap" }}>
                     {[
                         ...[...new Array(this.props.numberOfBeds).keys()].map((bedIndex) => {
                             const userId = this.state.beds[bedIndex];
@@ -109,30 +109,29 @@ class BedsMultipleDropdown extends React.Component {
                                 userId === "" ? regularOptions : generateDropdownOption(userId);
 
                             return (
-                                <Form.Field key={`bed_${bedIndex}`}>
-                                    <Dropdown
-                                        upward
-                                        placeholder={`emplacement n°${bedIndex + 1}`}
-                                        selection
-                                        disabled={bedIndex === 0}
-                                        search
-                                        onChange={(event, { value }) =>
-                                            this.handleChange(event, bedIndex, value)
-                                        }
-                                        value={userId}
-                                        options={options}
-                                    />
-                                </Form.Field>
+                                <Dropdown
+                                    key={`bed_${bedIndex}`}
+                                    upward
+                                    placeholder={`emplacement n°${bedIndex + 1}`}
+                                    selection
+                                    disabled={bedIndex === 0}
+                                    search
+                                    onChange={(event, { value }) =>
+                                        this.handleChange(event, bedIndex, value)
+                                    }
+                                    value={userId}
+                                    options={options}
+                                />
                             );
                         }),
-                        <Button
+                        <Form.Button
                             key={"validationButton"}
                             disabled={submitDisabled}
                             color={submitDisabled === true ? null : "green"}
                             onClick={this.submit}
                         >
                             Confirmer
-                        </Button>,
+                        </Form.Button>,
                     ]}
                 </Form.Group>
             </Form>
