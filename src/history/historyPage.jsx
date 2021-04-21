@@ -108,7 +108,7 @@ class HistoryPage extends React.Component {
                         { path: "static/pictures/2020/edition3_3.jpg" },
                     ]}
                 />
-                <div style={{ float: "right", paddingBottom: "20px"}}>
+                <div style={{ float: "right", paddingBottom: "20px" }}>
                     <b> Hugo Bis </b>
                 </div>
             </div>
