@@ -5,21 +5,15 @@ import { Carousel } from "react-responsive-carousel";
 
 export class ImagesCarousel extends Component {
     render() {
-        return this.props.carousel ? (
-            <Carousel dynamicHeight={true}>
+        return <div style={{"width": "80%", "margin": "10px auto 50px"}}>
+            <Carousel autoPlay showThumbs={false} infiniteLoop interval={5000}>
                 {this.props.images.map((image) => (
-                    <div>
+                    <div key={"image-" + image.path}>
                         <Image src={image.path} />
                     </div>
                 ))}
             </Carousel>
-        ) : (
-            <Image.Group size="small">
-                {this.props.images.map((image) => (
-                    <Image src={image.path} />
-                ))}
-            </Image.Group>
-        );
+        </div>
     }
 }
 

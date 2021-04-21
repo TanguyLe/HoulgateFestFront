@@ -28,12 +28,19 @@ class HistoryPage extends React.Component {
                     personnes présentes sur place en 2018: une passion non dissimulée pour le
                     houblon, les spiritueux et la boisson bien distillée en général.
                 </p>
-                <p>Aucune trace de compétition.</p>
+                <p>Aucune trace de compétition. Le shotgun sur le site échoue lamentablement.</p>
                 <p>
                     Passage remarqué et remarquable de cette joyeuse équipée au Royalty,
                     établissement culinaire (ayant dû fermer pour 6 mois de travaux et près de 14
                     plaintes de la Mairie et des riverains suite à cet événement).
                 </p>
+                <ImagesCarousel
+                    images={[
+                        { path: "static/pictures/2018/edition1_1.jpg" },
+                        { path: "static/pictures/2018/edition1_2.jpg" },
+                        { path: "static/pictures/2018/edition1_3.jpg" },
+                    ]}
+                />
                 <Header as="h3">
                     <Icon name="heart" />
                     <Header.Content>
@@ -61,9 +68,9 @@ class HistoryPage extends React.Component {
                 </p>
                 <ImagesCarousel
                     images={[
-                        { path: "static/pictures/2019/IMG_20190629_234232.jpg" },
-                        { path: "static/pictures/2019/IMG_20190630_055110.jpg" },
-                        { path: "static/pictures/2019/IMG_20190630_111947.jpg" },
+                        { path: "static/pictures/2019/edition2_1.jpg" },
+                        { path: "static/pictures/2019/edition2_2.jpg" },
+                        { path: "static/pictures/2019/edition2_3.jpg" },
                     ]}
                 />
                 <Header as="h3">
@@ -95,14 +102,13 @@ class HistoryPage extends React.Component {
                     ramenèrent la coupe à la maison.
                 </p>
                 <ImagesCarousel
-                    carousel
                     images={[
-                        { path: "static/pictures/2019/IMG_20190629_234232.jpg" },
-                        { path: "static/pictures/2019/IMG_20190630_055110.jpg" },
-                        { path: "static/pictures/2019/IMG_20190630_111947.jpg" },
+                        { path: "static/pictures/2020/edition3_1.jpg" },
+                        { path: "static/pictures/2020/edition3_2.jpg" },
+                        { path: "static/pictures/2020/edition3_3.jpg" },
                     ]}
                 />
-                <div style={{ float: "right" }}>
+                <div style={{ float: "right", paddingBottom: "20px"}}>
                     <b> Hugo Bis </b>
                 </div>
             </div>
