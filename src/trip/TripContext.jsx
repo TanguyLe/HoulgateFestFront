@@ -1,8 +1,8 @@
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect } from "react";
 
-import { getCredentials, register, unregister } from '../login/store'
-import { getCallApi, postCallApi, putCallApi, deleteCallApi } from '../utils/api/fetchMiddleware'
-import { USERS_ENDPOINT, TRIPS_ENDPOINT } from './constants'
+import { getCredentials, register, unregister } from "../login/store";
+import { getCallApi, postCallApi, putCallApi, deleteCallApi } from "../utils/api/fetchMiddleware";
+import { USERS_ENDPOINT, TRIPS_ENDPOINT } from "./constants";
 
 export const TripContext = createContext();
 
@@ -11,8 +11,7 @@ const TripContextProvider = (props) => {
     const [users, setUsers] = useState();
     const [trips, setTrips] = useState();
 
-
-    const createTrip = async (trip) => { 
+    const createTrip = async (trip) => {
         const response = await postCallApi(TRIPS_ENDPOINT, trip);
         if (response.ok) {
             const jsonData = await response.json();
@@ -24,7 +23,9 @@ const TripContextProvider = (props) => {
         const response = await putCallApi(`${TRIPS_ENDPOINT}/${id}`, trip);
         if (response.ok) {
             const jsonData = await response.json();
-            setTrips(prevTrips => prevTrips.map(trip => trip._id === jsonData.data._id ? jsonData.data : trip));
+            setTrips((prevTrips) =>
+                prevTrips.map((trip) => (trip._id === jsonData.data._id ? jsonData.data : trip))
+            );
         }
     };
 
@@ -32,12 +33,12 @@ const TripContextProvider = (props) => {
         const response = await deleteCallApi(`${TRIPS_ENDPOINT}/${id}`);
         if (response.ok) {
             const jsonData = await response.json();
-            setTrips(prevTrips => prevTrips.filter(trip => trip._id !== jsonData.data._id));
+            setTrips((prevTrips) => prevTrips.filter((trip) => trip._id !== jsonData.data._id));
         }
     };
 
-    const getUserById = (id) => users.find(user => user._id === id);
-    const getUserByUsername = (username) => users.find(user => user.username === username);
+    const getUserById = (id) => users.find((user) => user._id === id);
+    const getUserByUsername = (username) => users.find((user) => user.username === username);
 
     const loadUsers = async () => {
         const response = await getCallApi(USERS_ENDPOINT);
@@ -57,8 +58,7 @@ const TripContextProvider = (props) => {
     };
 
     const onLoginChange = (creds) => {
-        if (creds.login !== login)
-            setLogin(creds.login);
+        if (creds.login !== login) setLogin(creds.login);
     };
 
     useEffect(() => {
@@ -66,16 +66,29 @@ const TripContextProvider = (props) => {
         onLoginChange(getCredentials());
         return () => {
             unregister(onLoginChange);
-        }
+        };
     }, []);
 
-    useEffect(() => { init () }, []);
+    useEffect(() => {
+        init();
+    }, []);
 
     return (
-        <TripContext.Provider value={{ login, users, trips, getUserById, getUserByUsername, createTrip, updateTrip, deleteTrip }}>
-            { props.children }
+        <TripContext.Provider
+            value={{
+                login,
+                users,
+                trips,
+                getUserById,
+                getUserByUsername,
+                createTrip,
+                updateTrip,
+                deleteTrip,
+            }}
+        >
+            {props.children}
         </TripContext.Provider>
     );
 };
- 
+
 export default TripContextProvider;

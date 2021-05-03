@@ -1,19 +1,38 @@
 import React from "react";
-import {isNil, get} from "lodash/fp";
 
 import RoomBasis from "./roomBasis";
 import ShotgunPortal from "../shotgunModal";
 import {
     ROOM_STATUS_LOADING,
     ROOM_STATUS_SHOTGUNNED,
-    ROOM_STATUS_PRESHOTGUNNED
+    ROOM_STATUS_PRESHOTGUNNED,
 } from "../../constants";
-
+import { getCredentials, register, unregister } from "../../../login/store";
 
 class Room extends React.Component {
-    shouldComponentUpdate(nextProps, nextState) {
-        return (JSON.stringify(nextProps) !== JSON.stringify(this.props)) ||
-            (JSON.stringify(nextState) !== JSON.stringify(this.state))
+    constructor() {
+        super();
+
+        this.state = { username: getCredentials().login };
+        this.onLoginChange = this.onLoginChange.bind(this);
+    }
+
+    shouldComponentUpdate(nextProps, nextState, _) {
+        return (
+            JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+            JSON.stringify(nextState) !== JSON.stringify(this.state)
+        );
+    }
+    onLoginChange(newCreds) {
+        this.setState({ username: newCreds.login });
+    }
+
+    componentDidMount() {
+        register(this.onLoginChange);
+    }
+
+    componentWillUnmount() {
+        unregister(this.onLoginChange);
     }
 
     render() {
@@ -24,18 +43,18 @@ class Room extends React.Component {
         const roomId = this.props.id;
         const roomStatus = this.props.roomStatus;
 
-        const currentUserUsername = window.localStorage.getItem("username");
+        const currentUserUsername = this.state.username;
         const users = Object.values(this.props.userInfo);
-        const currentUser = users.find(user => user.username === currentUserUsername);
+        const currentUser = users.find((user) => user.username === currentUserUsername);
 
-        const shotgunOnGoingForUser = (currentUser.hasPreShotgun || currentUser.hasShotgun);
+        const shotgunOnGoingForUser = currentUser.hasPreShotgun || currentUser.hasShotgun;
         const isUserRoom = shotgunOnGoingForUser ? roomId === currentUser.room : false;
 
-        const availablePersons = users.filter(person =>
-            ((person.hasShotgun === false) || (currentUser._id === person._id)),
+        const availablePersons = users.filter(
+            (person) => person.hasShotgun === false || currentUser._id === person._id
         );
 
-        let finalStatus =  roomStatus;
+        let finalStatus = roomStatus;
 
         /**
          * Logic here is rather simple in the end :
@@ -56,31 +75,25 @@ class Room extends React.Component {
                 buttonType = "green";
                 content = "Validé";
                 finalStatus = "shotgunSuccessful";
-            }
-            else {
+            } else {
                 buttonType = "red";
                 content = "Déjà shotgun";
                 disable = true;
             }
-
-        }
-        else if (roomStatus === ROOM_STATUS_PRESHOTGUNNED) {
+        } else if (roomStatus === ROOM_STATUS_PRESHOTGUNNED) {
             if (isUserRoom) {
                 content = "Finalise ton shotgun!";
                 finalStatus = "attributingBeds";
-            }
-            else {
+            } else {
                 buttonType = "orange";
                 content = "Shotgun en cours...";
                 disable = true;
             }
-        }
-        else if (roomStatus === ROOM_STATUS_LOADING){
+        } else if (roomStatus === ROOM_STATUS_LOADING) {
             buttonType = "grey";
             content = "Chargement...";
             disable = true;
-        }
-        else if (shotgunOnGoingForUser) {
+        } else if (shotgunOnGoingForUser) {
             // Remaining state is readyForShotgun, the case where no shotgun
             // is ongoing for the user is handled by the default
             disable = true;
@@ -96,7 +109,7 @@ class Room extends React.Component {
                 roommates={this.props.roommates}
                 userInfo={this.props.userInfo}
             >
-                {this.props.seats > 0 ?
+                {this.props.seats > 0 ? (
                     <ShotgunPortal
                         disabled={disable}
                         content={content}
@@ -106,10 +119,13 @@ class Room extends React.Component {
                         status={finalStatus}
                         availablePersons={availablePersons}
                         createShotgunFunction={this.props.createShotgunFunction || null}
-                        addPersonsInShotgunFunction={roommatesIds =>
+                        addPersonsInShotgunFunction={(roommatesIds) =>
                             this.props.addPersonsInShotgunFunction(this.props.id, roommatesIds)
                         }
-                    /> : ""}
+                    />
+                ) : (
+                    ""
+                )}
             </RoomBasis>
         );
     }

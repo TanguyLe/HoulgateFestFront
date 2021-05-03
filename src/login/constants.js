@@ -1,9 +1,11 @@
-import {SERVER_ENDPOINT, USERS_ENDPOINT} from "../constants";
+import { SERVER_ENDPOINT, USERS_ENDPOINT } from "../constants";
 
 export const LOGIN_URL = SERVER_ENDPOINT + "/login";
 export const PSWD_RESET_URL = SERVER_ENDPOINT + "/passwordReset";
-export const getPasswordResetUrl = (id, code) => (USERS_ENDPOINT + '/' + id + "/passwordReset?authorization=" + code);
-export const getActivateUserUrl = (id, code) => (USERS_ENDPOINT + '/' + id + "/activate?authorization=" + code);
+export const getPasswordResetUrl = (id, code) =>
+    USERS_ENDPOINT + "/" + id + "/passwordReset?authorization=" + code;
+export const getActivateUserUrl = (id, code) =>
+    USERS_ENDPOINT + "/" + id + "/activate?authorization=" + code;
 
 export const SIGN_UP_FORM_BLOCK_INDEX_PREFIX = "signUpFormBlock";
 export const PSWRD_RESET_BLOCK_INDEX_PREFIX = "passwordResetFormBlock";
@@ -38,21 +40,26 @@ const NEW_PASSWORD_FR = "Nouveau mot de passe";
 const NEW_PASSWORD_CONFIRM_FR = "Confirmation nouveau mot de passe";
 
 export const SIGN_UP_DEF = [
-    {[NAME]: EMAIL, [LABEL]: EMAIL_FR, [TYPE]: TEXT, [ERROR_MSG]: INVALID_EMAIL},
-    {[NAME]: USERNAME, [LABEL]: USERNAME_FR, [TYPE]: TEXT},
-    {[NAME]: PASSWORD, [LABEL]: PASSWORD_FR, [TYPE]: PASSWORD},
-    {[NAME]: CONFIRM, [LABEL]: CONFIRM_FR, [TYPE]: PASSWORD, [ERROR_MSG]: INVALID_CONFIRM}
+    { [NAME]: EMAIL, [LABEL]: EMAIL_FR, [TYPE]: TEXT, [ERROR_MSG]: INVALID_EMAIL },
+    { [NAME]: USERNAME, [LABEL]: USERNAME_FR, [TYPE]: TEXT },
+    { [NAME]: PASSWORD, [LABEL]: PASSWORD_FR, [TYPE]: PASSWORD },
+    { [NAME]: CONFIRM, [LABEL]: CONFIRM_FR, [TYPE]: PASSWORD, [ERROR_MSG]: INVALID_CONFIRM },
 ];
 
 export const RESET_PSWRD_DEF = [
-    {[NAME]: PASSWORD, [LABEL]: NEW_PASSWORD_FR, [TYPE]: PASSWORD},
-    {[NAME]: CONFIRM, [LABEL]: NEW_PASSWORD_CONFIRM_FR, [TYPE]: PASSWORD, [ERROR_MSG]: INVALID_CONFIRM},
+    { [NAME]: PASSWORD, [LABEL]: NEW_PASSWORD_FR, [TYPE]: PASSWORD },
+    {
+        [NAME]: CONFIRM,
+        [LABEL]: NEW_PASSWORD_CONFIRM_FR,
+        [TYPE]: PASSWORD,
+        [ERROR_MSG]: INVALID_CONFIRM,
+    },
 ];
 
 export const CREATE_PSWRD_RESET_DEF = [
-    {[NAME]: EMAIL, [LABEL]: EMAIL_FR, [TYPE]: TEXT, [ERROR_MSG]: INVALID_EMAIL}
+    { [NAME]: EMAIL, [LABEL]: EMAIL_FR, [TYPE]: TEXT, [ERROR_MSG]: INVALID_EMAIL },
 ];
 
 export const REGEXES = {
-    email: /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
+    email: /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i,
 };

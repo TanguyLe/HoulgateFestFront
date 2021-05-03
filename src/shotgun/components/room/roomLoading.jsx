@@ -6,7 +6,7 @@ class RoomLoading extends React.Component {
     render() {
         return (
             <RoomBasis {...this.props}>
-                <ShotgunPortal status={"loading"}/>
+                <ShotgunPortal status={"loading"} />
                 <div>LOADING</div>
             </RoomBasis>
         );

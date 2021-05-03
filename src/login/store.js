@@ -1,13 +1,13 @@
 let credentials = {
     login: "",
     accessToken: "",
-    refreshToken: ""
+    refreshToken: "",
 };
 
 let loginStore = [];
 
 export const register = (fct) => {
-    loginStore.push(fct)
+    loginStore.push(fct);
 };
 
 export const unregister = (fct) => {
@@ -23,7 +23,7 @@ export const dispatch = () => {
 
     loginStore.forEach((fct) => {
         fct(creds);
-    })
+    });
 };
 
 export const logout = () => {
@@ -31,7 +31,7 @@ export const logout = () => {
     window.localStorage.setItem("session", false);
 };
 
-export const login = (username, accessToken, refreshToken) => {
+export const silentLogin = (username, accessToken, refreshToken) => {
     credentials.login = username;
     credentials.accessToken = accessToken;
     credentials.refreshToken = refreshToken;
@@ -40,10 +40,14 @@ export const login = (username, accessToken, refreshToken) => {
     window.localStorage.setItem("accessToken", accessToken);
     window.localStorage.setItem("refreshToken", refreshToken);
     window.localStorage.setItem("session", true);
+};
+
+export const login = (username, accessToken, refreshToken) => {
+    silentLogin(username, accessToken, refreshToken);
 
     dispatch();
 };
 
 export const getCredentials = () => {
-    return credentials
+    return credentials;
 };
