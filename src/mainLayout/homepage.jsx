@@ -2,6 +2,9 @@ import React from "react";
 import { Image, Header, Icon, Popup } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
+const SHOTGUN_GUIDE_LINK =
+    "https://docs.google.com/document/d/1jRcRhMVLP1m1uy9ijUc9OSCVMriq0QHsnq39ROFbdjA/edit?usp=sharing";
+
 class Homepage extends React.Component {
     render() {
         return (
@@ -77,11 +80,7 @@ class Homepage extends React.Component {
                 <p>
                     D'ici là pensez à vous <Link to="/register">inscrire</Link> et vérifiez bien que
                     vous pouvez vous connecter en amont. Le{" "}
-                    <a
-                        href={
-                            "https://docs.google.com/document/d/10UAgpsh7cdAsPlyEdn25XaX9jstU9zNsYuC5-c2NnP8/edit?usp=sharing"
-                        }
-                    >
+                    <a target="_blank" href={SHOTGUN_GUIDE_LINK}>
                         guide
                     </a>{" "}
                     devrait vous aider à vous préparer.
@@ -105,7 +104,7 @@ class Homepage extends React.Component {
                     Pour être notifié directement au moment du Shotgun, être au courant de toutes
                     les actualités du HoulgateFest, soutenir votre tribu et surtout sélectionner les
                     packs Bouffe et Alcool: rendez-vous sur{" "}
-                    <a href={"https://www.facebook.com/events/773462923524929"}>
+                    <a href="https://www.facebook.com/events/773462923524929" target="_blank">
                         l’événement Facebook
                     </a>{" "}
                     ! <br />
