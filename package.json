@@ -34,7 +34,7 @@
         "@hot-loader/react-dom": "^16.8.6",
         "@types/react": "^15.0.0",
         "cors": "^2.8.4",
-        "express": "^4.16.3",
+        "express": "^4.17.3",
         "lodash": "^4.17.20",
         "query-string": "^6.0.0",
         "react": "^16.8.0",
