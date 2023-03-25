@@ -22,7 +22,7 @@
         }
     ],
     "engines": {
-        "node": "12.20.1"
+        "node": "18.x"
     },
     "repository": {
         "type": "git",
