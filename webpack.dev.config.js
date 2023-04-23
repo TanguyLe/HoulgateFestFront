@@ -7,7 +7,7 @@ module.exports = {
         extensions: [".js", ".jsx"],
         alias: { "react-dom": "@hot-loader/react-dom" },
     },
-    devtool: "#inline-source-map",
+    devtool: 'inline-source-map',
     module: {
         rules: [
             {
@@ -27,7 +27,7 @@ module.exports = {
         filename: "houlgatefest.min.js",
     },
     devServer: {
-        contentBase: "./web",
+        static: './web',
         hot: true,
         historyApiFallback: true,
     },
