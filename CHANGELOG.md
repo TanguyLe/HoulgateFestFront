@@ -21,7 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Improvement of the logging policy which should result in less undesired error messages [PR114](https://github.com/TanguyLe/HoulgateFestBack/pull/114)
 -   Dependencies and node update
 
-
 ## [v0.4.0] 2021-04-05
 
 ### Changed
