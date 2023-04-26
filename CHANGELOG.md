@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+
 -   Dependencies and node update to 18.x [PR145](https://github.com/TanguyLe/HoulgateFestFront/pull/145)
 -   Prettier CI: update to Node 18.x
 
