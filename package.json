@@ -79,6 +79,9 @@
         "webpack-cli": "^5.0.2",
         "webpack-dev-server": "^4.13.3"
     },
+    "overrides": {
+        "uglify-js": "3.17.4"
+    },
     "scripts": {
         "prettier-check": "prettier --check .",
         "prettier-run": "prettier --write .",
