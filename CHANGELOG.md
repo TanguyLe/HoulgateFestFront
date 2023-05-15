@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Switch carpooling to togetzer link [PR148](https://github.com/TanguyLe/HoulgateFestFront/pull/148)
+-   Switch carpooling to togetzer link [PR148](https://github.com/TanguyLe/HoulgateFestFront/pull/148)
 
 ### Fixed
 
