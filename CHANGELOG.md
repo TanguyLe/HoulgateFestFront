@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.6.0] 2023-05-15
+
+### Changed
+
+-   Switch carpooling to togetzer link [PR148](https://github.com/TanguyLe/HoulgateFestFront/pull/148)
+
+### Fixed
+
+-   Dependencies and node update to 16.x [PR145](https://github.com/TanguyLe/HoulgateFestFront/pull/145)
+-   Prettier CI: update to Node 16.x
+
 ## [v0.5.0] 2023-03-17
 
 ### Added
@@ -20,7 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Improvement of the logging policy which should result in less undesired error messages [PR114](https://github.com/TanguyLe/HoulgateFestBack/pull/114)
 -   Dependencies and node update
-
 
 ## [v0.4.0] 2021-04-05
 
