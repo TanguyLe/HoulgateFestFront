@@ -12,12 +12,12 @@ module.exports = {
         rules: [
             {
                 test: /\.(jsx|js)?$/,
-                exclude: [/node_modules/, /bin/],
+                exclude: /(node_modules|bin)/,
                 use: ["react-hot-loader/webpack", "babel-loader"],
             },
             {
                 test: /\.css$/,
-                exclude: [/bin/],
+                exclude: /bin/,
                 use: ["style-loader", "css-loader"],
             },
         ],
@@ -32,7 +32,6 @@ module.exports = {
         historyApiFallback: true,
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
         new webpack.EnvironmentPlugin({
             NODE_ENV: "development",
             API_URL: "http://localhost:3000",
