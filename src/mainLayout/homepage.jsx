@@ -85,8 +85,8 @@ class Homepage extends React.Component {
                 <p>
                     Les moins réactifs iront dormir sur la plage avec les mouettes ! Ils pourront
                     aussi apporter leurs plus belles toiles de tente et sacs de couchage pour monter
-                    un bidonville dans le jardin.
-                    Il sera démantelé à l’aube par Gérald Darmanin en personne…
+                    un bidonville dans le jardin. Il sera démantelé à l’aube par Gérald Darmanin en
+                    personne…
                     <Image
                         style={{ margin: "10px 0 10px 0" }}
                         src="static/flics.jpeg"
