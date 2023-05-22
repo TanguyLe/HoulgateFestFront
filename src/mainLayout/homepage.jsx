@@ -69,7 +69,7 @@ class Homepage extends React.Component {
                     cette année ! Il faut donc réserver son lit.
                 </p>
                 <p>
-                    Soyez présent le 26 Mai à 18h sur cette plateforme pour choisir la couchette la
+                    Soyez présent le 2 Juin à 18h sur cette plateforme pour choisir la couchette la
                     plus schtroumpfortable.
                 </p>
                 <p>
