@@ -1,49 +1,60 @@
 import React from "react";
-import { Image, Header, Icon, Popup } from "semantic-ui-react";
+import { Image, Header, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 const SHOTGUN_GUIDE_LINK =
-    "https://docs.google.com/document/d/1jRcRhMVLP1m1uy9ijUc9OSCVMriq0QHsnq39ROFbdjA/edit?usp=sharing";
+    "https://docs.google.com/document/d/19Yfhg8whi_AQRPlVCqYRUmmdQwRggpVxn1tbaPKCMkc/edit?usp=sharing";
 
 class Homepage extends React.Component {
     render() {
         return (
             <div className="WelcomePage">
-                <Header as="h2"> Bienvenue sur le site d'HoulgateFest 2021 ! </Header>
+                <Header as="h2"> Bienvenue sur le site d'HoulgateFest 2023 ! </Header>
                 <Header as="h3">
                     <Icon name="heart" />
-                    <Header.Content>HoulgateFest et la Gaule de Bois</Header.Content>
+                    <Header.Content>Schrtoumpfgatefest ou La Vie en Bleu</Header.Content>
                 </Header>
+
+                <div style={{ float: "left" }}>
+                    <Image
+                        style={{ margin: "10px 10px 10px 10px" }}
+                        size="medium"
+                        floated="left"
+                        src="static/banner.jpg"
+                        bordered
+                        spaced
+                    />
+                    <p>
+                        Quelque part, dans un coin reculé et à l'abris des regards indiscrets,
+                        existe un lieu secret peuplé de créatures fantastiques qué s'appelerio les
+                        Schrtoumpfs !
+                    </p>
+                    <p>
+                        Ces êtres bleus, mystérieux et pacifiques aiment se réunir au cours de
+                        festivités s’étalant sur plusieurs jours. On assiste alors à une véritable
+                        orgie de débauche ! Et cette année, ce sont tous les Schtroumpfs de France
+                        qui sont conviés à participer !
+                    </p>
+                </div>
+
+                <p>
+                    Mais attention, ce week-end ne sera pas de tout repos ! Il faudra relever des
+                    défis, mériter sa place, et surtout prendre garde à l’ignoble sorcier Gargamel
+                    et à son démoniaque félin Azraël !
+                </p>
+
+                <p>Tenterez-vous l’aventure ?</p>
 
                 <Image
                     style={{ margin: "10px 0 10px 0" }}
-                    src="static/Banniere_HF_2021.png"
+                    src="static/navi.jpeg"
                     centered
                     bordered
                     spaced
                 />
-
-                <p>
-                    Nous sommes en 50 avant Jésus-Christ. Toute cette p*tain de Gaule est occupée
-                    par les Romains.
-                </p>
-                <p>
-                    Toute ? Non ! Un village peuplé d’irréductibles Gaulois résiste encore et
-                    toujours à l’envahisseur. Houlgate, lieu de refuge pour une tribu gauloise, fait
-                    face aux virulents et purulents peuples du Nord. Des Vikings fiers d’avoir pris
-                    position bien fermement sur leur Manche, dure.
-                </p>
-                <p>
-                    Romains, Gaulois, Vikings, tous se disputent encore la suprématie de la Côte
-                    Fleurie !
-                </p>
-
-                <p>
-                    Cette année, décision est prise de résoudre ce problème : prenons le temps d’un
-                    weekend pour organiser une grande assemblée tri-tribu. Au terme de ces
-                    quarante-huit heures, une seule peuplade sera officiellement déclarée grande
-                    gagnante et ses membres pourront repartir avec la Gaule de Bois !
-                </p>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <i> Schrtroumpf Zadiste, toujours chaud pour une 86 tiède</i>
+                </div>
 
                 <Header as="h3">
                     <Icon name="calendar" />
@@ -51,31 +62,15 @@ class Homepage extends React.Component {
                 </Header>
 
                 <p>
-                    Cette édition 2021 se déroulera du <b>vendredi 11 au dimanche 13 Juin</b> (
-                    <i className="smalltext">
-                        sauf contre-indication dû à ce connard de virus - crevard de virus).
-                    </i>
-                    <br />
+                    L’édition 2023 aura lieu du <b>09/06/2023 au 11/06/2023 !</b>
                 </p>
-                <div style={{ display: "inline-block", width: "100%" }}>
-                    <Image src="static/tangus.jpg" size="tiny" floated={"left"} />
-                    <p
-                        style={{
-                            display: "inline",
-                            transform: "translateY(50%)",
-                            position: "absolute",
-                        }}
-                    >
-                        <i>
-                            "Une fois n’étant pas coutume, je vous ait laissé le choix dans la date"
-                            <br /> <b>Tangus</b>
-                        </i>
-                    </p>
-                </div>
                 <p>
-                    Et 3 tribus ça en fait du monde dans la chaumière normande, heureusement vous
-                    pouvez réserver votre lit ici. Donc soyez présent le <b>lundi 17 mai à 20h</b>{" "}
-                    sur cette plateforme pour choisir votre espace de siestasse.
+                    Comme dit plus haut, les Schtroumpfs de toute la France sont attendus au village
+                    cette année ! Il faut donc réserver son lit.
+                </p>
+                <p>
+                    Soyez présent le 2 Juin à 18h sur cette plateforme pour choisir la couchette la
+                    plus schtroumpfortable.
                 </p>
                 <p>
                     D'ici là pensez à vous <Link to="/register">inscrire</Link> et vérifiez bien que
@@ -88,11 +83,20 @@ class Homepage extends React.Component {
                     <b>Organisez-vous pour le shotgun !</b>
                 </p>
                 <p>
-                    Attention pour cette édition 2021 le HoulgateFest accueille 3 tribus et donc de
-                    nombreux invités. <br />
-                    Pour les moins réactifs vous pouvez également réserver un gîte ou une belle
-                    taverne non loin. Vous pouvez sinon prévoir toiles de tente et sacs de couchage
-                    pour monter le camp dans le jardin !
+                    Les moins réactifs iront dormir sur la plage avec les mouettes ! Ils pourront
+                    aussi apporter leurs plus belles toiles de tente et sacs de couchage pour monter
+                    un bidonville dans le jardin. Il sera démantelé à l’aube par Gérald Darmanin en
+                    personne…
+                    <Image
+                        style={{ margin: "10px 0 10px 0" }}
+                        src="static/flics.jpeg"
+                        centered
+                        bordered
+                        spaced
+                    />
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <i> Protéger et servir… l’apéro !</i>
+                    </div>
                 </p>
 
                 <Header as="h3">
@@ -101,40 +105,35 @@ class Homepage extends React.Component {
                 </Header>
 
                 <p>
-                    Pour être notifié directement au moment du Shotgun, être au courant de toutes
-                    les actualités du HoulgateFest, soutenir votre tribu et surtout sélectionner les
-                    packs Bouffe et Alcool: rendez-vous sur{" "}
-                    <a href="https://www.facebook.com/events/773462923524929" target="_blank">
-                        l’événement Facebook
-                    </a>{" "}
-                    ! <br />
+                    Pour être notifié directement au moment du Shotgun et au courant de toutes les
+                    actualités du Schtroumpfgatefest : rendez-vous sur le groupeWhatsApp de
+                    l’évènement !
                 </p>
+
                 <p>
                     Sur ce site vous êtes à bonne adresse si vous voulez{" "}
                     <Link to="/shotgun">shotgun votre chambre</Link>, débusquer{" "}
                     <Link to="/trips">un trajet en voiture</Link> ou suivre en direct le{" "}
-                    <Link to="/scores">tableau des scores</Link> de La Gaule de Bois. <br />
+                    <Link to="/scores">tableau des scores</Link>.
                 </p>
-                <p>
-                    Et si vous êtes adepte de plaisirs coquins: allez soutenir notre hôte en le
-                    suivant sur son{" "}
-                    <Popup
-                        flowing
-                        hoverable
-                        basic
-                        position="top left"
-                        content=<Image
-                            src="https://s1.qwant.com/thumbr/0x0/8/1/8ec2071cc6cb70917a6a1b7d4ec533/b_1_q_0_p_0.jpg?u=http%3A%2F%2Fs3.amazonaws.com%2Frapgenius%2F1776.jpg&q=0&b=1&p=0&a=1"
-                            centered
-                            bordered
-                            spaced
-                        />
-                        trigger={<a style={{ display: "inline-block" }}>Onlyfans</a>}
-                    />{" "}
-                    !
-                </p>
-                <div style={{ float: "right" }}>
-                    <b> Hugo Bis </b>
+
+                <div
+                    style={{ float: "left", width: "100%", display: "flex", alignItems: "center" }}
+                >
+                    <Image
+                        style={{ margin: "10px 10px 10px 10px" }}
+                        src="static/velo.jpeg"
+                        size="small"
+                        bordered
+                        floated="left"
+                        spaced
+                    />
+                    <div style={{ marginLeft: "auto" }}>
+                        <p>Le Schtroumpfgatefest, j’y vais en Y ahah !</p>
+                        <div style={{ float: "right" }}>
+                            <b> Les orgas </b>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
