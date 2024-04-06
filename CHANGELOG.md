@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update packages for vulnerabilities
 - Add auth required for the history page
-- KeepTheScore 2024
+- KeepTheScore 2024 [PR162](https://github.com/TanguyLe/HoulgateFestFront/pull/162)
 
 
 ## [v0.7.1] 2023-06-05
