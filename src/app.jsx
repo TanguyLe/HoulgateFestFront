@@ -24,7 +24,7 @@ class App extends React.Component {
                         <DefaultLayout exact component={Homepage} />
                     </Route>
                     <Route path="/history">
-                        <DefaultLayout component={HistoryPage} />
+                        <DefaultLayout component={HistoryPage} auth />
                     </Route>
                     <Route path="/shotgun">
                         <DefaultLayout component={ShotgunPage} bigContainer auth />
