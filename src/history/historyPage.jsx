@@ -22,8 +22,8 @@ class HistoryPage extends React.Component {
                     />
                     <p>
                         Aaah 2023, mes aïeux quelle époque ! La schtroumpferie a battu son plein
-                        lors d'un week-end plein de diableries, où nos amis les Schtroumpfs ont pu
-                        jouer à Qui-Est-ce, manger des Schtroumpfgaufres et se restaurer de bonnes
+                        lors d'un week-end full diableries, où nos amis les Schtroumpfs ont pu jouer
+                        à Qui-Est-ce, manger des Schtroumpfgaufres et se restaurer de bonnes
                         Schtroumpfpizzas.
                     </p>
                     <p>
@@ -34,12 +34,13 @@ class HistoryPage extends React.Component {
                         la piquance !".
                     </p>
                     <p>
-                        Enfin, des mélanges plus improbables les uns et les autres ont eu raison des
-                        plus vaillants d'entre nous. Pour ces premiers jeux individuels, c'est le
-                        RaphaSchtroumpf qui l'a emporté grâce à toute la pugnacité qui caractérise
-                        le Bébé Schrtoumpf !
+                        Enfin, des mélanges plus improbables les uns que les autres ont eu raison
+                        des plus vaillants d'entre nous. Pour ces premiers jeux individuels, c'est
+                        le RaphaSchtroumpf qui l'a emporté grâce à toute la pugnacité qui
+                        caractérise le Bébé Schrtoumpf !
                     </p>
                 </div>
+                <br />
                 <ImagesCarousel
                     images={[
                         { path: "static/pictures/2023/edition6_1.jpg" },
