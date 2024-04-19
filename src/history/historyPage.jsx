@@ -7,7 +7,36 @@ class HistoryPage extends React.Component {
         return (
             <div className="WelcomePage">
                 <Header as="h2"> Gloryhoul of Fame </Header>
-
+                <Header as="h3">
+                    <Icon name="heart" />
+                    <Header.Content>2023: Schtroumpfgatefest ! (9 au 11 Juin)</Header.Content>
+                </Header>
+                <Image
+                    style={{ paddingBottom: "10px" }}
+                    src="static/banners/2023.jpg"
+                    centered
+                    spaced
+                />
+                <p>
+                    Aaah 2023, mes aïeux quelle époque ! La schtroumpferie a battu son plein lors
+                    d'un week-end plein de diableries, où nos amis les Schtroumpfs ont pu jouer à
+                    Qui-Est-ce, manger des Schtroumpfgaufres et se restaurer de bonnes
+                    Schtroumpfpizzas. Les gagnants du fameux Où sont les Schtroumpfs ont pu se
+                    régaler et ramener chez eux une preuve de leur participation... Ce n'est pas
+                    tout ! Alléchés par l'odeur du piment fortifié, les Schtroumpfs se sont frottés
+                    à l'échelle de Schtroumpfville, et comme disait le Schtroumpf Naps, "C'était la
+                    piquance !". Enfin, des mélanges plus improbables les uns et les autres ont eu
+                    raison des plus vaillants d'entre nous. Pour ces premiers jeux individuels,
+                    c'est le RaphaSchtroumpf qui l'a emporté grâce à toute la pugnacité qui
+                    caractérise le Bébé Schrtoumpf !
+                </p>
+                <ImagesCarousel
+                    images={[
+                        { path: "static/pictures/2023/edition6_1.jpg" },
+                        { path: "static/pictures/2023/edition6_2.jpg" },
+                        { path: "static/pictures/2023/edition6_3.jpg" },
+                    ]}
+                />
                 <Header as="h3">
                     <Icon name="heart" />
                     <Header.Content>
