@@ -45,14 +45,15 @@ class Homepage extends React.Component {
 
                 <Image
                     style={{ margin: "10px 0 10px 0" }}
+                    size="medium"
                     src="static/carrousel1.jpg"
                     centered
                     bordered
                     spaced
                 />
-                {/*<div style={{ display: "flex", justifyContent: "center" }}>*/}
-                {/*    <i> Schrtroumpf Zadiste, toujours chaud pour une 86 tiède</i>*/}
-                {/*</div>*/}
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <i> Image Genérée par IA N°1 </i>
+                </div>
 
                 <Header as="h3">
                     <Icon name="calendar" />
@@ -88,13 +89,14 @@ class Homepage extends React.Component {
                     <Image
                         style={{ margin: "10px 0 10px 0" }}
                         src="static/carrousel2.jpg"
+                        size="medium"
                         centered
                         bordered
                         spaced
                     />
-                    {/*<div style={{ display: "flex", justifyContent: "center" }}>*/}
-                    {/*    <i> Protéger et servir… l’apéro !</i>*/}
-                    {/*</div>*/}
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <i> Image Genérée par IA N°2 </i>
+                    </div>
                 </p>
 
                 <Header as="h3">
@@ -114,22 +116,19 @@ class Homepage extends React.Component {
                     <Link to="/scores">tableau des scores</Link>.
                 </p>
 
-                <div
-                    style={{ float: "left", width: "100%", display: "flex", alignItems: "center" }}
-                >
-                    <Image
-                        style={{ margin: "10px 10px 10px 10px" }}
-                        src="static/carousel3.jpg"
-                        size="small"
-                        bordered
-                        floated="left"
-                        spaced
-                    />
-                    <div style={{ marginLeft: "auto" }}>
-                        <div style={{ float: "right" }}>
-                            <b> Les orgas </b>
-                        </div>
-                    </div>
+                <Image
+                    style={{ margin: "10px 10px 10px 10px" }}
+                    src="static/carrousel3.jpg"
+                    size="medium"
+                    bordered
+                    spaced
+                />
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <i> Image Genérée par IA N°3 </i>
+                </div>
+
+                <div style={{ float: "right" }}>
+                    <b> Les orgas </b>
                 </div>
             </div>
         );
