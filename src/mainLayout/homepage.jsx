@@ -30,22 +30,22 @@ class Homepage extends React.Component {
                     </p>
                     <p>
                         Mais c'est quoi Jammy, la vraie musique ? Le Rap de Jul, la techno qui
-                        tâche, ou uniquement Stromae et Maneskin ?? Plutôt Vita ou Vitalic ? Gaetan
+                        tâche, ou uniquement Stromae et Maneskin ?? Plutôt Vitaa ou Vitalic ? Gaetan
                         ou Fabien Roussel ? C'est bien ce que nous allons essayer de départager !
                     </p>
                 </div>
 
                 <p>
-                    Les trois équipes Instru, Electro et Voix vont donc s'affronter à travers des
-                    jeux variés pour faire rayonner sur Houlgate leurs genres respectifs, et
-                    repartir avec la coupe. (spoiler: il n'y en a pas)
+                    Les trois équipes <b>Instru</b>, <b>Electro</b> et <b>Voix</b> vont donc
+                    s'affronter à travers des jeux variés pour faire rayonner sur Houlgate leurs
+                    genres respectifs, et repartir avec la coupe. (
+                    <i>spoiler: elle est petite cmb</i>)
                 </p>
 
                 <p>Tenterez-vous l’aventure ?</p>
 
                 <Image
                     style={{ margin: "10px 0 10px 0" }}
-                    size="medium"
                     src="static/carrousel1.jpg"
                     centered
                     bordered
@@ -89,7 +89,6 @@ class Homepage extends React.Component {
                     <Image
                         style={{ margin: "10px 0 10px 0" }}
                         src="static/carrousel2.jpg"
-                        size="medium"
                         centered
                         bordered
                         spaced
@@ -119,7 +118,6 @@ class Homepage extends React.Component {
                 <Image
                     style={{ margin: "10px 10px 10px 10px" }}
                     src="static/carrousel3.jpg"
-                    size="medium"
                     bordered
                     spaced
                 />
