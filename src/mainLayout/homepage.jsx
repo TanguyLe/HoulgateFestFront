@@ -36,7 +36,7 @@ class Homepage extends React.Component {
                 </div>
 
                 <p>
-                    Les trois équipes <b>Instru</b>, <b>Electro</b> et <b>Voix</b> vont donc
+                    Les trois équipes <b>Instru</b>, <b>Synthé</b> et <b>Voix</b> vont donc
                     s'affronter à travers des jeux variés pour faire rayonner sur Houlgate leurs
                     genres respectifs, et repartir avec la coupe. (
                     <i>spoiler: elle est petite cmb</i>)

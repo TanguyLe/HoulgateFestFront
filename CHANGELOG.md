@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add auth required for the history page
 -   Add history page entry for 2023
 -   Update homepage for 2024
+-   Update covoit link
 -   KeepTheScore 2024 [PR162](https://github.com/TanguyLe/HoulgateFestFront/pull/162)
 
 ## [v0.7.1] 2023-06-05
