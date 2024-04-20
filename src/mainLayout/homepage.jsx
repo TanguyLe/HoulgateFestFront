@@ -9,10 +9,10 @@ class Homepage extends React.Component {
     render() {
         return (
             <div className="WelcomePage">
-                <Header as="h2"> Bienvenue sur le site d'HoulgateFest 2023 ! </Header>
+                <Header as="h2"> Bienvenue sur le site d'HoulgateFest ! </Header>
                 <Header as="h3">
                     <Icon name="heart" />
-                    <Header.Content>Schrtoumpfgatefest ou La Vie en Bleu</Header.Content>
+                    <Header.Content>Soundgatefest mets la musique à l'honneur !</Header.Content>
                 </Header>
 
                 <div style={{ float: "left" }}>
@@ -20,7 +20,7 @@ class Homepage extends React.Component {
                         style={{ margin: "10px 10px 10px 10px" }}
                         size="medium"
                         floated="left"
-                        src="static/banner.jpg"
+                        src="static/banners/2024.jpg"
                         bordered
                         spaced
                     />
@@ -47,14 +47,14 @@ class Homepage extends React.Component {
 
                 <Image
                     style={{ margin: "10px 0 10px 0" }}
-                    src="static/navi.jpeg"
+                    src="static/carrousel1.jpg"
                     centered
                     bordered
                     spaced
                 />
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                    <i> Schrtroumpf Zadiste, toujours chaud pour une 86 tiède</i>
-                </div>
+                {/*<div style={{ display: "flex", justifyContent: "center" }}>*/}
+                {/*    <i> Schrtroumpf Zadiste, toujours chaud pour une 86 tiède</i>*/}
+                {/*</div>*/}
 
                 <Header as="h3">
                     <Icon name="calendar" />
@@ -62,15 +62,15 @@ class Homepage extends React.Component {
                 </Header>
 
                 <p>
-                    L’édition 2023 aura lieu du <b>09/06/2023 au 11/06/2023 !</b>
+                    L’édition 2024 aura lieu du <b>31/05/2024 au 02/06/2024 !</b>
                 </p>
                 <p>
-                    Comme dit plus haut, les Schtroumpfs de toute la France sont attendus au village
-                    cette année ! Il faut donc réserver son lit.
+                    Comme dit plus haut, tous les zicos de France ou de Babylone sont attendus à
+                    Hougalte cette année ! Il faut donc réserver son lit.
                 </p>
                 <p>
-                    Soyez présent le 2 Juin à 18h sur cette plateforme pour choisir la couchette la
-                    plus schtroumpfortable.
+                    Soyez présent le 12 mai à 20h sur cette plateforme pour choisir votre meilleur
+                    hamac.
                 </p>
                 <p>
                     D'ici là pensez à vous <Link to="/register">inscrire</Link> et vérifiez bien que
@@ -83,20 +83,20 @@ class Homepage extends React.Component {
                     <b>Organisez-vous pour le shotgun !</b>
                 </p>
                 <p>
-                    Les moins réactifs iront dormir sur la plage avec les mouettes ! Ils pourront
-                    aussi apporter leurs plus belles toiles de tente et sacs de couchage pour monter
-                    un bidonville dans le jardin. Il sera démantelé à l’aube par Gérald Darmanin en
-                    personne…
+                    Les moins réactifs pourront aussi apporter leurs plus belles toiles de tente et
+                    Yukulele pour refaire le monde, leurs chaises de camping pour fumer leurs plus
+                    belles gitanes #cétaitmieuxavant, ou alors aller taper du pied au milieu des
+                    mouettes au doux son des vagues #DrumAndSeaBass 🐟
                     <Image
                         style={{ margin: "10px 0 10px 0" }}
-                        src="static/flics.jpeg"
+                        src="static/carrousel2.jpg"
                         centered
                         bordered
                         spaced
                     />
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                        <i> Protéger et servir… l’apéro !</i>
-                    </div>
+                    {/*<div style={{ display: "flex", justifyContent: "center" }}>*/}
+                    {/*    <i> Protéger et servir… l’apéro !</i>*/}
+                    {/*</div>*/}
                 </p>
 
                 <Header as="h3">
@@ -106,8 +106,7 @@ class Homepage extends React.Component {
 
                 <p>
                     Pour être notifié directement au moment du Shotgun et au courant de toutes les
-                    actualités du Schtroumpfgatefest : rendez-vous sur le groupeWhatsApp de
-                    l’évènement !
+                    actualités du Soundgatefest : rendez-vous sur le groupeWhatsApp de l’évènement !
                 </p>
 
                 <p>
@@ -122,14 +121,13 @@ class Homepage extends React.Component {
                 >
                     <Image
                         style={{ margin: "10px 10px 10px 10px" }}
-                        src="static/velo.jpeg"
+                        src="static/carrousel3.jpg"
                         size="small"
                         bordered
                         floated="left"
                         spaced
                     />
                     <div style={{ marginLeft: "auto" }}>
-                        <p>Le Schtroumpfgatefest, j’y vais en Y ahah !</p>
                         <div style={{ float: "right" }}>
                             <b> Les orgas </b>
                         </div>
