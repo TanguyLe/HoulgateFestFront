@@ -25,22 +25,20 @@ class Homepage extends React.Component {
                         spaced
                     />
                     <p>
-                        Quelque part, dans un coin reculé et à l'abris des regards indiscrets,
-                        existe un lieu secret peuplé de créatures fantastiques qué s'appelerio les
-                        Schrtoumpfs !
+                        À l'heure des AI musicales douteuses et du retour en force de la chanson
+                        paillarde, la musiqueu, la vraie, continue de battre fort dans nos coeurs.
                     </p>
                     <p>
-                        Ces êtres bleus, mystérieux et pacifiques aiment se réunir au cours de
-                        festivités s’étalant sur plusieurs jours. On assiste alors à une véritable
-                        orgie de débauche ! Et cette année, ce sont tous les Schtroumpfs de France
-                        qui sont conviés à participer !
+                        Mais c'est quoi Jammy, la vraie musique ? Le Rap de Jul, la techno qui
+                        tâche, ou uniquement Stromae et Maneskin ?? Plutôt Vita ou Vitalic ? Gaetan
+                        ou Fabien Roussel ? C'est bien ce que nous allons essayer de départager !
                     </p>
                 </div>
 
                 <p>
-                    Mais attention, ce week-end ne sera pas de tout repos ! Il faudra relever des
-                    défis, mériter sa place, et surtout prendre garde à l’ignoble sorcier Gargamel
-                    et à son démoniaque félin Azraël !
+                    Les trois équipes Instru, Electro et Voix vont donc s'affronter à travers des
+                    jeux variés pour faire rayonner sur Houlgate leurs genres respectifs, et
+                    repartir avec la coupe. (spoiler: il n'y en a pas)
                 </p>
 
                 <p>Tenterez-vous l’aventure ?</p>
@@ -121,7 +119,7 @@ class Homepage extends React.Component {
                 >
                     <Image
                         style={{ margin: "10px 10px 10px 10px" }}
-                        src="static/carrousel3.jpg"
+                        src="static/carousel3.jpg"
                         size="small"
                         bordered
                         floated="left"
