@@ -9,10 +9,10 @@ class Homepage extends React.Component {
     render() {
         return (
             <div className="WelcomePage">
-                <Header as="h2"> Bienvenue sur le site d'HoulgateFest 2023 ! </Header>
+                <Header as="h2"> Bienvenue sur le site d'HoulgateFest ! </Header>
                 <Header as="h3">
                     <Icon name="heart" />
-                    <Header.Content>Schrtoumpfgatefest ou La Vie en Bleu</Header.Content>
+                    <Header.Content>Soundgatefest met la musique à l'honneur !</Header.Content>
                 </Header>
 
                 <div style={{ float: "left" }}>
@@ -20,40 +20,39 @@ class Homepage extends React.Component {
                         style={{ margin: "10px 10px 10px 10px" }}
                         size="medium"
                         floated="left"
-                        src="static/banner.jpg"
+                        src="static/banners/2024.jpg"
                         bordered
                         spaced
                     />
                     <p>
-                        Quelque part, dans un coin reculé et à l'abris des regards indiscrets,
-                        existe un lieu secret peuplé de créatures fantastiques qué s'appelerio les
-                        Schrtoumpfs !
+                        À l'heure des IA musicales douteuses et du retour en force de la chanson
+                        paillarde, la musiqueu, la vraie, continue de battre fort dans nos coeurs.
                     </p>
                     <p>
-                        Ces êtres bleus, mystérieux et pacifiques aiment se réunir au cours de
-                        festivités s’étalant sur plusieurs jours. On assiste alors à une véritable
-                        orgie de débauche ! Et cette année, ce sont tous les Schtroumpfs de France
-                        qui sont conviés à participer !
+                        Mais c'est quoi Jamy, la vraie musique ? Le Rap de Jul, la techno qui tâche,
+                        ou uniquement Stromae et Maneskin ?? Plutôt Vitaa ou Vitalic ? Gaetan ou
+                        Fabien Roussel ? C'est bien ce que nous allons essayer de départager !
                     </p>
                 </div>
 
                 <p>
-                    Mais attention, ce week-end ne sera pas de tout repos ! Il faudra relever des
-                    défis, mériter sa place, et surtout prendre garde à l’ignoble sorcier Gargamel
-                    et à son démoniaque félin Azraël !
+                    Les trois équipes <b>Instru</b>, <b>Synthé</b> et <b>Voix</b> vont donc
+                    s'affronter à travers des jeux variés pour faire rayonner sur Houlgate leurs
+                    genres respectifs, et repartir avec la coupe. (
+                    <i>spoiler: elle est petite cmb</i>)
                 </p>
 
                 <p>Tenterez-vous l’aventure ?</p>
 
                 <Image
                     style={{ margin: "10px 0 10px 0" }}
-                    src="static/navi.jpeg"
+                    src="static/carrousel1.jpg"
                     centered
                     bordered
                     spaced
                 />
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    <i> Schrtroumpf Zadiste, toujours chaud pour une 86 tiède</i>
+                    <i> Image genérée par IA n°1 </i>
                 </div>
 
                 <Header as="h3">
@@ -62,15 +61,15 @@ class Homepage extends React.Component {
                 </Header>
 
                 <p>
-                    L’édition 2023 aura lieu du <b>09/06/2023 au 11/06/2023 !</b>
+                    L’édition 2024 aura lieu du <b>31/05/2024 au 02/06/2024 !</b>
                 </p>
                 <p>
-                    Comme dit plus haut, les Schtroumpfs de toute la France sont attendus au village
-                    cette année ! Il faut donc réserver son lit.
+                    Comme dit plus haut, tous les zicos de France ou de Babylone sont attendus à
+                    Houlgate cette année ! Il faut donc réserver son lit.
                 </p>
                 <p>
-                    Soyez présent le 2 Juin à 18h sur cette plateforme pour choisir la couchette la
-                    plus schtroumpfortable.
+                    Soyez présent le 12 mai à 20h sur cette plateforme pour choisir votre meilleur
+                    hamac.
                 </p>
                 <p>
                     D'ici là pensez à vous <Link to="/register">inscrire</Link> et vérifiez bien que
@@ -83,19 +82,19 @@ class Homepage extends React.Component {
                     <b>Organisez-vous pour le shotgun !</b>
                 </p>
                 <p>
-                    Les moins réactifs iront dormir sur la plage avec les mouettes ! Ils pourront
-                    aussi apporter leurs plus belles toiles de tente et sacs de couchage pour monter
-                    un bidonville dans le jardin. Il sera démantelé à l’aube par Gérald Darmanin en
-                    personne…
+                    Les moins réactifs pourront aussi apporter leurs plus belles toiles de tente et
+                    Yukulele pour refaire le monde, leurs chaises de camping pour fumer leurs plus
+                    belles gitanes #cétaitmieuxavant, ou alors aller taper du pied au milieu des
+                    mouettes au doux son des vagues #DrumAndSeaBass 🐟
                     <Image
                         style={{ margin: "10px 0 10px 0" }}
-                        src="static/flics.jpeg"
+                        src="static/carrousel2.jpg"
                         centered
                         bordered
                         spaced
                     />
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                        <i> Protéger et servir… l’apéro !</i>
+                        <i> Image genérée par IA n°2 </i>
                     </div>
                 </p>
 
@@ -106,8 +105,7 @@ class Homepage extends React.Component {
 
                 <p>
                     Pour être notifié directement au moment du Shotgun et au courant de toutes les
-                    actualités du Schtroumpfgatefest : rendez-vous sur le groupeWhatsApp de
-                    l’évènement !
+                    actualités du Soundgatefest : rendez-vous sur le groupeWhatsApp de l’évènement !
                 </p>
 
                 <p>
@@ -117,23 +115,18 @@ class Homepage extends React.Component {
                     <Link to="/scores">tableau des scores</Link>.
                 </p>
 
-                <div
-                    style={{ float: "left", width: "100%", display: "flex", alignItems: "center" }}
-                >
-                    <Image
-                        style={{ margin: "10px 10px 10px 10px" }}
-                        src="static/velo.jpeg"
-                        size="small"
-                        bordered
-                        floated="left"
-                        spaced
-                    />
-                    <div style={{ marginLeft: "auto" }}>
-                        <p>Le Schtroumpfgatefest, j’y vais en Y ahah !</p>
-                        <div style={{ float: "right" }}>
-                            <b> Les orgas </b>
-                        </div>
-                    </div>
+                <Image
+                    style={{ margin: "10px 10px 10px 10px" }}
+                    src="static/carrousel3.jpg"
+                    bordered
+                    spaced
+                />
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <i> Image genérée par IA n°3 </i>
+                </div>
+
+                <div style={{ float: "right" }}>
+                    <b> Les orgas </b>
                 </div>
             </div>
         );
