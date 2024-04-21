@@ -12,7 +12,7 @@ class Homepage extends React.Component {
                 <Header as="h2"> Bienvenue sur le site d'HoulgateFest ! </Header>
                 <Header as="h3">
                     <Icon name="heart" />
-                    <Header.Content>Soundgatefest mets la musique à l'honneur !</Header.Content>
+                    <Header.Content>Soundgatefest met la musique à l'honneur !</Header.Content>
                 </Header>
 
                 <div style={{ float: "left" }}>
@@ -25,13 +25,13 @@ class Homepage extends React.Component {
                         spaced
                     />
                     <p>
-                        À l'heure des AI musicales douteuses et du retour en force de la chanson
+                        À l'heure des IA musicales douteuses et du retour en force de la chanson
                         paillarde, la musiqueu, la vraie, continue de battre fort dans nos coeurs.
                     </p>
                     <p>
-                        Mais c'est quoi Jammy, la vraie musique ? Le Rap de Jul, la techno qui
-                        tâche, ou uniquement Stromae et Maneskin ?? Plutôt Vitaa ou Vitalic ? Gaetan
-                        ou Fabien Roussel ? C'est bien ce que nous allons essayer de départager !
+                        Mais c'est quoi Jamy, la vraie musique ? Le Rap de Jul, la techno qui tâche,
+                        ou uniquement Stromae et Maneskin ?? Plutôt Vitaa ou Vitalic ? Gaetan ou
+                        Fabien Roussel ? C'est bien ce que nous allons essayer de départager !
                     </p>
                 </div>
 
@@ -52,7 +52,7 @@ class Homepage extends React.Component {
                     spaced
                 />
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    <i> Image Genérée par IA N°1 </i>
+                    <i> Image genérée par IA n°1 </i>
                 </div>
 
                 <Header as="h3">
@@ -65,7 +65,7 @@ class Homepage extends React.Component {
                 </p>
                 <p>
                     Comme dit plus haut, tous les zicos de France ou de Babylone sont attendus à
-                    Hougalte cette année ! Il faut donc réserver son lit.
+                    Houlgate cette année ! Il faut donc réserver son lit.
                 </p>
                 <p>
                     Soyez présent le 12 mai à 20h sur cette plateforme pour choisir votre meilleur
@@ -94,7 +94,7 @@ class Homepage extends React.Component {
                         spaced
                     />
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                        <i> Image Genérée par IA N°2 </i>
+                        <i> Image genérée par IA n°2 </i>
                     </div>
                 </p>
 
@@ -122,7 +122,7 @@ class Homepage extends React.Component {
                     spaced
                 />
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    <i> Image Genérée par IA N°3 </i>
+                    <i> Image genérée par IA n°3 </i>
                 </div>
 
                 <div style={{ float: "right" }}>
