@@ -37,7 +37,7 @@ class HistoryPage extends React.Component {
                         Enfin, des mélanges plus improbables les uns que les autres ont eu raison
                         des plus vaillants d'entre nous. Pour ces premiers jeux individuels, c'est
                         le RaphaSchtroumpf qui l'a emporté grâce à toute la pugnacité qui
-                        caractérise le Bébé Schrtoumpf !
+                        caractérise le Bébé Schtroumpf !
                     </p>
                 </div>
                 <br />
