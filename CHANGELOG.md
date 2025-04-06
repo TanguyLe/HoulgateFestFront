@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Update the history page for 2024 [PR168](https://github.com/TanguyLe/HoulgateFestFront/pull/168)
 -   Update to node 18 [PR169](https://github.com/TanguyLe/HoulgateFestFront/pull/169)
+-   Update all deps for security [PR171](https://github.com/TanguyLe/HoulgateFestFront/pull/171)
 
 ## [v0.8.0] 2024-04-21
 
