@@ -84,9 +84,9 @@ class HistoryPage extends React.Component {
                 <br />
                 <ImagesCarousel
                     images={[
-                        { path: "static/pictures/2023/edition6_1.jpg" },
-                        { path: "static/pictures/2023/edition6_2.jpg" },
-                        { path: "static/pictures/2023/edition6_3.jpg" },
+                        { path: "static/pictures/2024/edition6_1.jpg" },
+                        { path: "static/pictures/2024/edition6_2.jpg" },
+                        { path: "static/pictures/2024/edition6_3.jpg" },
                     ]}
                 />
                 <Header as="h3">
