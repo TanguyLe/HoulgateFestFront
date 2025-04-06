@@ -1,17 +1,32 @@
 html {
     box-sizing: border-box;
     font-size: 17px;
+    scroll-behavior: smooth;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
 }
 
 body {
     margin: 0;
     height: 100%;
-    background: white;
+    background: #f8f9fa;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #343a40;
+    line-height: 1.6;
 }
 
 a {
     cursor: pointer;
     outline: 0;
+    color: #3b82f6;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #1d4ed8;
 }
 
 .layout {
@@ -33,13 +48,24 @@ a {
 }
 
 .paddingSides {
-    padding: 0 15px;
+    padding: 0 1.5rem;
 }
 
 .HoulgateFest {
-    font-family: Copperplate, Alegreya SC, serif;
-    min-width: 500px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    min-width: 320px;
     text-align: justify;
+}
+
+.HoulgateFest h2, .HoulgateFest h3, .HoulgateFest h4 {
+    font-family: 'Poppins', Copperplate, 'Alegreya SC', serif;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.HoulgateFest .ui.header {
+    font-family: 'Poppins', Copperplate, 'Alegreya SC', serif;
+    margin-top: 2rem;
 }
 
 /* Shotgun */
@@ -47,31 +73,56 @@ a {
 .HoulgateFest .allFloors {
     width: calc(100vw - 20px);
     justify-content: center;
-    padding-top: 1em;
+    padding-top: 1.5em;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 1.5rem;
 }
 
 .HoulgateFest .bigFloorContainer {
-    margin: 0 5px 0 5px;
+    margin: 0;
     position: relative;
-    width: calc(35% - 10px);
+    width: calc(35% - 1rem);
     min-width: 400px;
     min-height: 400px;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    background-color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+.HoulgateFest .bigFloorContainer:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .HoulgateFest .smallFloorContainer {
-    margin: 0 5px 0 5px;
+    margin: 0;
     position: relative;
-    width: calc(15% - 10px);
+    width: calc(15% - 1rem);
     min-width: 200px;
     min-height: 400px;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    background-color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+.HoulgateFest .smallFloorContainer:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .HoulgateFest .floorTitle {
     text-align: center;
-    font-size: 19px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 1rem 0;
+    background-color: #f7fafc;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 /* Shotgun Modal */
@@ -82,32 +133,40 @@ a {
     position: fixed !important;
     bottom: 0;
     z-index: 1000;
+    border-radius: 0.5rem 0.5rem 0 0;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
 }
 
 /* Connection Modal */
 
 .HoulgateFest .ConnectionModal {
-    width: 280px;
+    width: 300px;
     right: 0;
     position: fixed !important;
     top: 75px;
     z-index: 1000;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
 }
 
 .HoulgateFest .ConnectionModal .loginForm {
     margin: auto;
     max-width: calc(100% - 2em);
+    padding: 1rem;
 }
 
 /* Countdown */
 
 .HoulgateFest .Countdown {
     text-align: center;
-    margin: 10px auto;
-    padding-bottom: 20px;
-    font-size: 20px;
-    font-family: Copperplate, Alegreya SC, serif;
-    line-height: initial;
+    margin: 2rem auto;
+    padding-bottom: 2rem;
+    font-size: 1.25rem;
+    font-family: 'Poppins', Copperplate, 'Alegreya SC', serif;
+    line-height: 1.5;
+    color: #2d3748;
 }
 
 .HoulgateFest .CountdownCol {
@@ -115,27 +174,80 @@ a {
 }
 
 .HoulgateFest .CountdownColElement {
-    display: inline-block;
-    margin: 0 20px;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
+    display: inline-flex;
+    margin: 0 1.5rem;
     flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 100px;
+}
+
+.HoulgateFest .CountdownColElement span:first-child {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3b82f6;
 }
 
 .HoulgateFest .viewerText {
     padding-left: 30px;
     font-size: 20px;
+    color: #4a5568;
+}
+
+/* Welcome Page */
+.HoulgateFest .WelcomePage {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.HoulgateFest .WelcomePage p {
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+}
+
+.HoulgateFest .WelcomePage .ui.image {
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease;
+}
+
+.HoulgateFest .WelcomePage .ui.image:hover {
+    transform: scale(1.02);
+}
+
+.HoulgateFest .WelcomePage i {
+    color: #718096;
+    font-size: 0.875rem;
 }
 
 /* Semantic ui fixes */
 
+.ui.inverted.menu {
+    background: #1a202c; 
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);
+    border: none;
+}
+
+.ui.inverted.menu .item {
+    color: rgba(255,255,255,.8);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 1.2rem 1rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.ui.inverted.menu .item:hover {
+    background-color: rgba(255,255,255,.08);
+    color: white;
+}
+
 .ui.inverted.menu .item a {
+    color: rgba(255,255,255,.8);
+    transition: color 0.2s ease;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -144,6 +256,286 @@ a {
     user-select: none;
 }
 
+.ui.inverted.menu .item a:hover {
+    color: white;
+}
+
 .smalltext {
     font-size: 0.85em;
+    color: #718096;
+}
+
+/* Button styling */
+.ui.button {
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.ui.primary.button {
+    background-color: #3b82f6;
+}
+
+.ui.primary.button:hover {
+    background-color: #2563eb;
+}
+
+/* Form styling */
+.ui.form input,
+.ui.form textarea,
+.ui.form select {
+    border-radius: 0.375rem;
+    border: 1px solid #e2e8f0;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ui.form input:focus,
+.ui.form textarea:focus,
+.ui.form select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* Card styling */
+.ui.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ui.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Make the site responsive */
+@media (max-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+    
+    .HoulgateFest .CountdownColElement {
+        margin: 0 0.5rem;
+        padding: 0.75rem;
+        min-width: 80px;
+    }
+    
+    .HoulgateFest .CountdownColElement span:first-child {
+        font-size: 1.5rem;
+    }
+    
+    .HoulgateFest .WelcomePage {
+        padding: 0 0.75rem;
+    }
+}
+
+/* Add smooth animation for page transitions */
+.fade-enter {
+    opacity: 0;
+}
+.fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms;
+}
+.fade-exit {
+    opacity: 1;
+}
+.fade-exit-active {
+    opacity: 0;
+    transition: opacity 300ms;
+}
+
+/* Footer styling */
+.site-footer {
+    margin-top: 3rem;
+    padding: 1.5rem 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    margin-top: auto;
+}
+
+.site-footer .footer-content {
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+.site-footer .footer-content p {
+    margin: 0;
+}
+
+/* Navbar specific styling */
+.navbar-wrapper .logo-container {
+    padding: 0.5rem 1rem;
+}
+
+.navbar-wrapper .logo-image {
+    height: 50px;
+    width: auto;
+    transition: transform 0.2s ease;
+}
+
+.navbar-wrapper .logo-image:hover {
+    transform: scale(1.05);
+}
+
+.mobile-sidebar {
+    padding-top: 1rem !important;
+}
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+}
+
+/* Page transition */
+.page-transition {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Homepage specific styling */
+.welcome-banner {
+    text-align: center;
+    margin: 1rem 0 3rem;
+    padding: 1.5rem 0;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.welcome-banner .welcome-title {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.welcome-banner .welcome-subtitle {
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.main-image {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    transition: transform 0.3s ease !important;
+}
+
+.main-image:hover {
+    transform: scale(1.02);
+}
+
+.section-title {
+    margin-bottom: 1.5rem !important;
+    display: flex;
+    align-items: center;
+}
+
+.section-icon {
+    margin-right: 0.5rem !important;
+    color: #3b82f6;
+}
+
+.image-gallery {
+    margin: 2.5rem 0;
+    text-align: center;
+}
+
+.gallery-image {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    transition: transform 0.3s ease !important;
+}
+
+.gallery-image:hover {
+    transform: scale(1.02);
+}
+
+.image-caption {
+    margin-top: 0.75rem;
+    color: #718096;
+    font-size: 0.875rem;
+}
+
+.info-section {
+    margin: 2.5rem 0;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.event-card {
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+.event-card .header {
+    color: #3b82f6 !important;
+    font-size: 1.25rem !important;
+}
+
+.event-card .meta {
+    color: #718096 !important;
+    font-weight: 500;
+}
+
+.actions-container {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.signature {
+    margin: 2rem 0;
+    text-align: right;
+    font-size: 1.1rem;
+    color: #4a5568;
+}
+
+@media (max-width: 768px) {
+    .welcome-banner .welcome-title {
+        font-size: 1.75rem;
+    }
+    
+    .welcome-banner .welcome-subtitle {
+        font-size: 1rem;
+    }
+    
+    .info-section {
+        padding: 1.5rem 1rem;
+    }
+    
+    .actions-container {
+        flex-direction: column;
+    }
+    
+    .actions-container .button {
+        width: 100%;
+    }
+}
+
+/* App container */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }

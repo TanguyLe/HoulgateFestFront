@@ -13,20 +13,28 @@ class DefaultLayout extends React.Component {
             auth: auth,
             notCo: notCo,
         } = this.props;
+        
         return (
             <div className="DefaultLayout">
                 <NavBar leftItems={leftItems} rightItems={rightItems} bigContainer={bigContainer}>
-                    {auth ? (
-                        <OnlyWhenConnectedWrapper>
+                    <div className="page-transition fade-enter-active">
+                        {auth ? (
+                            <OnlyWhenConnectedWrapper>
+                                <Component />
+                            </OnlyWhenConnectedWrapper>
+                        ) : notCo ? (
+                            <OnlyWhenNotConnectedWrapper>
+                                <Component />
+                            </OnlyWhenNotConnectedWrapper>
+                        ) : (
                             <Component />
-                        </OnlyWhenConnectedWrapper>
-                    ) : notCo ? (
-                        <OnlyWhenNotConnectedWrapper>
-                            <Component />
-                        </OnlyWhenNotConnectedWrapper>
-                    ) : (
-                        <Component />
-                    )}
+                        )}
+                    </div>
+                    <footer className="site-footer">
+                        <div className="footer-content">
+                            <p>© {new Date().getFullYear()} HoulgateFest. Tous droits réservés.</p>
+                        </div>
+                    </footer>
                 </NavBar>
             </div>
         );

@@ -15,19 +15,18 @@ export const rightItems = [{ children: <WhoAmI />, key: "user" }];
 
 const NavBarMobile = ({ onToggle, rightItems }) => (
     <Menu fixed="top" inverted>
-        <Menu.Item onClick={onToggle}>
-            <Icon name="sidebar" />
+        <Menu.Item onClick={onToggle} className="menu-toggle">
+            <Icon name="sidebar" size="large" />
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item className="logo-container">
             <Link to="/">
-                {" "}
-                <Image src="static/logov3.png" size="small" />
+                <Image src="static/logov3.png" size="small" className="logo-image" />
             </Link>
         </Menu.Item>
         <Menu.Menu position="right">
             {rightItems.map((item) => {
-                item["as"] = "div";
-                return <Menu.Item {...item} />;
+                const newItem = { ...item, as: "div" };
+                return <Menu.Item {...newItem} key={newItem.key} />;
             })}
         </Menu.Menu>
     </Menu>
@@ -35,20 +34,19 @@ const NavBarMobile = ({ onToggle, rightItems }) => (
 
 const NavBarDesktop = ({ leftItems, rightItems }) => (
     <Menu fixed="top" inverted>
-        <Menu.Item>
+        <Menu.Item className="logo-container">
             <Link to="/">
-                {" "}
-                <Image src="static/logov3.png" size="small" />
+                <Image src="static/logov3.png" size="small" className="logo-image" />
             </Link>
         </Menu.Item>
         {leftItems.map((item) => {
-            item["as"] = "div";
-            return <Menu.Item {...item} />;
+            const newItem = { ...item, as: "div" };
+            return <Menu.Item {...newItem} key={newItem.key} />;
         })}
         <Menu.Menu position="right">
             {rightItems.map((item) => {
-                item["as"] = "div";
-                return <Menu.Item {...item} />;
+                const newItem = { ...item, as: "div" };
+                return <Menu.Item {...newItem} key={newItem.key} />;
             })}
         </Menu.Menu>
     </Menu>
@@ -59,13 +57,13 @@ class NavBarChildren extends React.Component {
         const { children, bigContainer } = this.props;
         if (bigContainer)
             return (
-                <Container fluid style={{ padding: "6.2rem 2rem 0 2rem" }}>
+                <Container fluid style={{ padding: "6.2rem 2rem 0 2rem", minHeight: "100vh" }}>
                     {children}
                 </Container>
             );
         else
             return (
-                <Container text style={{ paddingTop: "6.2rem" }}>
+                <Container text style={{ paddingTop: "6.2rem", minHeight: "100vh" }}>
                     {children}
                 </Container>
             );
@@ -89,13 +87,20 @@ class NavBar extends React.Component {
         const { children, leftItems, rightItems, bigContainer } = this.props;
         const { visible } = this.state;
         return (
-            <div>
+            <div className="navbar-wrapper">
                 <Responsive {...Responsive.onlyMobile}>
                     <Sidebar.Pushable>
-                        <Sidebar as={Menu} animation="overlay" inverted vertical visible={visible}>
+                        <Sidebar 
+                            as={Menu} 
+                            animation="overlay" 
+                            inverted 
+                            vertical 
+                            visible={visible}
+                            className="mobile-sidebar"
+                        >
                             {leftItems.map((item) => {
-                                item["as"] = "div";
-                                return <Menu.Item {...item} onClick={this.handlePusher} />;
+                                const newItem = { ...item, as: "div" };
+                                return <Menu.Item {...newItem} onClick={this.handlePusher} key={newItem.key} />;
                             })}
                         </Sidebar>
                         <Sidebar.Pusher
