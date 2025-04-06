@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
--   Update the history page for 2024 [PR151](https://github.com/TanguyLe/HoulgateFestFront/pull/163)
+-   Update the history page for 2024 [PR151](https://github.com/TanguyLe/HoulgateFestFront/pull/168)
 
 ## [v0.8.0] 2024-04-21
 
