@@ -22,9 +22,9 @@ class HistoryPage extends React.Component {
                     />
                     <p>
                         2024, c’est déjà 12 ans depuis la fin du monde des Mayas ! Et pourtant, les
-                        houlgatefestois ont bien festé, une fois de plus dans ce week-end de
-                        dinguos ! Au programme de cette édition, la musique à l’honneur ! Et quand
-                        la musique est bonne, bonne bonne la fête est bonne bonne bonne ! Parole du
+                        houlgatefestois ont bien festé, une fois de plus dans ce week-end de dinguos
+                        ! Au programme de cette édition, la musique à l’honneur ! Et quand la
+                        musique est bonne, bonne bonne la fête est bonne bonne bonne ! Parole du
                         Didier Snake.
                     </p>
                     <p>
