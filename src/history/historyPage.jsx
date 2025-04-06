@@ -21,23 +21,23 @@ class HistoryPage extends React.Component {
                         spaced
                     />
                     <p>
-                        2024, c’est déjà 12 ans depuis la fin du monde des Mayas !
-                        Et pourtant, les houlgatefestois ont bien festés, 
-                        une fois de plus dans ce week-end de dinguos !
-                        Au programme de cette édition, la musique à l’honneur !
-                        Et quand la musique est bonne, bonne bonne la fête est bonne bonne bonne !
-                        Parole du Didier Snake
+                        2024, c’est déjà 12 ans depuis la fin du monde des Mayas ! Et pourtant, les
+                        houlgatefestois ont bien festés, une fois de plus dans ce week-end de
+                        dinguos ! Au programme de cette édition, la musique à l’honneur ! Et quand
+                        la musique est bonne, bonne bonne la fête est bonne bonne bonne ! Parole du
+                        Didier Snake
                     </p>
                     <p>
-                        Les duos et solos ont rivalisés de talent sur la piste pour nous présenter 
-                        des chansons qui ont atterries droits dans nos cœurs #commeuneflèche lors 
-                        du merveilleux HoulgateVoice. Les oreilles ravies, ce sont les papilles qui 
-                        ont désormais pu l’être grâce à une dégustation de frometon pas piquée des hannetons.
+                        Les duos et solos ont rivalisés de talent sur la piste pour nous présenter
+                        des chansons qui ont atterries droits dans nos cœurs #commeuneflèche lors du
+                        merveilleux HoulgateVoice. Les oreilles ravies, ce sont les papilles qui ont
+                        désormais pu l’être grâce à une dégustation de frometon pas piquée des
+                        hannetons.
                     </p>
                     <p>
-                        Enfin, comment ne pas les louer (eeh-eh-eeh-eh-eh), les fameux quizz et restaurant 
-                        du samedi soir (joyeux anniversaire Tanguy !) ont réunis les convives de SoundgateFest 
-                        et les ont mis en Y 👆🏼☝🏼
+                        Enfin, comment ne pas les louer (eeh-eh-eeh-eh-eh), les fameux quizz et
+                        restaurant du samedi soir (joyeux anniversaire Tanguy !) ont réunis les
+                        convives de SoundgateFest et les ont mis en Y 👆🏼☝🏼
                     </p>
                 </div>
                 <br />
