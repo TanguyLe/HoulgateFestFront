@@ -1,4 +1,4 @@
-let webpack = require("webpack");
+const webpack = require("webpack");
 
 module.exports = {
     entry: ["react-hot-loader/patch", "./src/houlgatefest.js"],
