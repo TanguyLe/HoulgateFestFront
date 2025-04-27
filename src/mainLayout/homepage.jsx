@@ -12,7 +12,7 @@ class Homepage extends React.Component {
                 <Header as="h2"> Bienvenue sur le site d'HoulgateFest ! </Header>
                 <Header as="h3">
                     <Icon name="heart" />
-                    <Header.Content>Soundgatefest met la musique à l'honneur !</Header.Content>
+                    <Header.Content>DoublegateFest met l’alchimie à l’honneur ! </Header.Content>
                 </Header>
 
                 <div style={{ float: "left" }}>
@@ -20,26 +20,26 @@ class Homepage extends React.Component {
                         style={{ margin: "10px 10px 10px 10px" }}
                         size="medium"
                         floated="left"
-                        src="static/banners/2024.jpg"
+                        src="static/banners/2025.jpg"
                         bordered
                         spaced
                     />
                     <p>
-                        À l'heure des IA musicales douteuses et du retour en force de la chanson
-                        paillarde, la musiqueu, la vraie, continue de battre fort dans nos coeurs.
+                        Dans un monde où les contrastes s'harmonisent, l'heure est venue de célébrer
+                        le "Duo Choc" ! Une rencontre explosive entre deux esprits, deux talents,
+                        deux univers qui s'unissent pour créer une alliance sans pareille.
                     </p>
                     <p>
-                        Mais c'est quoi Jamy, la vraie musique ? Le Rap de Jul, la techno qui tâche,
-                        ou uniquement Stromae et Maneskin ?? Plutôt Vitaa ou Vitalic ? Gaetan ou
-                        Fabien Roussel ? C'est bien ce que nous allons essayer de départager !
+                        Que ce soit à travers la musique, le cinéma ou la gastronomie, laissez-vous
+                        emporter par cette magie qui se produit lorsque les opposés s'attirent.
                     </p>
                 </div>
 
                 <p>
-                    Les trois équipes <b>Instru</b>, <b>Synthé</b> et <b>Voix</b> vont donc
-                    s'affronter à travers des jeux variés pour faire rayonner sur Houlgate leurs
-                    genres respectifs, et repartir avec la coupe. (
-                    <i>spoiler: elle est petite cmb</i>)
+                    Préparez-vous à une soirée inoubliable, où chaque duo apportera son propre éclat
+                    à notre fête colorée ! Nos duos vont donc s’affronter dans des jeux variés pour
+                    faire rayonner sur Houlgate leurs personnalités flamboyantes et repartir, qui
+                    sait… avec un cadeau probablement exceptionnel !
                 </p>
 
                 <p>Tenterez-vous l’aventure ?</p>
@@ -61,15 +61,16 @@ class Homepage extends React.Component {
                 </Header>
 
                 <p>
-                    L’édition 2024 aura lieu du <b>31/05/2024 au 02/06/2024 !</b>
+                    L’édition 2025 aura lieu du <b>20/06/2025 au 22/06/2025 !</b>
                 </p>
                 <p>
-                    Comme dit plus haut, tous les zicos de France ou de Babylone sont attendus à
-                    Houlgate cette année ! Il faut donc réserver son lit.
+                    Comme dit plus haut, tous nos duos sont attendus avec impatience à Houlgate,
+                    qu’ils viennent du passé ou de votre assiette ! Cependant, seul votre lit est à
+                    réserver sur ce site !
                 </p>
                 <p>
-                    Soyez présent le 12 mai à 20h sur cette plateforme pour choisir votre meilleur
-                    hamac.
+                    Soyez présents le 1er juin à 20h sur cette plateforme pour choisir votre
+                    meilleur hamac !
                 </p>
                 <p>
                     D'ici là pensez à vous <Link to="/register">inscrire</Link> et vérifiez bien que
@@ -83,9 +84,10 @@ class Homepage extends React.Component {
                 </p>
                 <p>
                     Les moins réactifs pourront aussi apporter leurs plus belles toiles de tente et
-                    Yukulele pour refaire le monde, leurs chaises de camping pour fumer leurs plus
-                    belles gitanes #cétaitmieuxavant, ou alors aller taper du pied au milieu des
-                    mouettes au doux son des vagues #DrumAndSeaBass 🐟
+                    leurs meilleurs costumes de duo ! Après tout, la surprise fait toujours son
+                    effet. Sinon, vous pourrez toujours refaire le monde autour du feu en brûlant
+                    vos fausses moustaches, parce que vous avez toujours été imberbe !
+                    #PosticheMoustachu
                     <Image
                         style={{ margin: "10px 0 10px 0" }}
                         src="static/carrousel2.jpg"
@@ -105,7 +107,8 @@ class Homepage extends React.Component {
 
                 <p>
                     Pour être notifié directement au moment du Shotgun et au courant de toutes les
-                    actualités du Soundgatefest : rendez-vous sur le groupeWhatsApp de l’évènement !
+                    actualités du DoublegateFest : rendez-vous sur le groupeWhatsApp de l’évènement
+                    !
                 </p>
 
                 <p>

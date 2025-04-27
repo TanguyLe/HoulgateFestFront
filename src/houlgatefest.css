@@ -37,7 +37,6 @@ a {
 }
 
 .HoulgateFest {
-    font-family: Copperplate, Alegreya SC, serif;
     min-width: 500px;
     text-align: justify;
 }
@@ -106,7 +105,6 @@ a {
     margin: 10px auto;
     padding-bottom: 20px;
     font-size: 20px;
-    font-family: Copperplate, Alegreya SC, serif;
     line-height: initial;
 }
 
