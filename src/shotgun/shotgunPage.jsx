@@ -19,10 +19,10 @@ class ShotgunPage extends React.Component {
 
     updateActualDate() {
         this.setState({ loading: true }, () =>
-            getParisDatetimeFromAPI().then((jsonData) =>
+            getParisDatetimeFromAPI().then((date) =>
                 this.setState({
                     loading: false,
-                    currentDatetime: new Date(jsonData.datetime),
+                    currentDatetime: date,
                 })
             )
         );
