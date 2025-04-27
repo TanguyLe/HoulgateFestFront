@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+-   Remove the ugly font [PR174](https://github.com/TanguyLe/HoulgateFestFront/pull/174)
+-   Update the homepage for 2025 [PR173](https://github.com/TanguyLe/HoulgateFestFront/pull/173)
 -   Update the history page for 2024 [PR168](https://github.com/TanguyLe/HoulgateFestFront/pull/168)
 -   Update to node 18 [PR169](https://github.com/TanguyLe/HoulgateFestFront/pull/169)
 -   Update all deps for security [PR171](https://github.com/TanguyLe/HoulgateFestFront/pull/171)
