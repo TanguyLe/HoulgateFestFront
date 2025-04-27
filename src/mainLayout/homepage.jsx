@@ -27,20 +27,19 @@ class Homepage extends React.Component {
                     <p>
                         Dans un monde où les contrastes s'harmonisent, l'heure est venue de célébrer
                         le "Duo Choc" ! Une rencontre explosive entre deux esprits, deux talents,
-                        deux univers qui s'unissent pour créer une alchimie sans pareille.
+                        deux univers qui s'unissent pour créer une alliance sans pareille.
                     </p>
                     <p>
                         Que ce soit à travers la musique, le cinéma ou la gastronomie, laissez-vous
                         emporter par cette magie qui se produit lorsque les opposés s'attirent.
-                        Préparez-vous à une soirée inoubliable, où chaque duo apportera son propre
-                        éclat à notre fête colorée !
                     </p>
                 </div>
 
                 <p>
-                    Nos duos vont donc s’affronter dans des jeux variés pour faire rayonner sur
-                    Houlgate leurs personnalités flamboyantes et repartir, qui sait… avec un cadeau
-                    probablement exceptionnel !
+                    Préparez-vous à une soirée inoubliable, où chaque duo apportera son propre éclat
+                    à notre fête colorée ! Nos duos vont donc s’affronter dans des jeux variés pour
+                    faire rayonner sur Houlgate leurs personnalités flamboyantes et repartir, qui
+                    sait… avec un cadeau probablement exceptionnel !
                 </p>
 
                 <p>Tenterez-vous l’aventure ?</p>
