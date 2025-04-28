@@ -39,7 +39,7 @@ class ShotgunPage extends React.Component {
                 });
             else {
                 const targetDatetime = responseJson.data.shotgunDate;
-                const parisDatetimeFromApi = (await getParisDatetimeFromAPI()).datetime;
+                const parisDatetimeFromApi = await getParisDatetimeFromAPI();
 
                 this.setState({
                     loading: false,
