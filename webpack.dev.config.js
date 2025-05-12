@@ -36,7 +36,8 @@ module.exports = {
             NODE_ENV: "development",
             API_URL: "http://localhost:3000",
             HAS_STARTED: false,
-            SCORES_BOARD_URL: "https://keepthescore.com/board/fzvyjsnjltzyr",
+            SCORES_BOARD_URL: null,
+            TOGETZER_IFRAME_URL: null,
         }),
     ],
 };
