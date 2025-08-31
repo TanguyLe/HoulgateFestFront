@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Update node from `18` to `22`
+-   Update node from `18` to `22`
 
 ## [v0.9.2] 2025-05-12
 
