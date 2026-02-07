@@ -75,7 +75,7 @@
         "require": "^2.4.20",
         "style-loader": "^3.3.4",
         "terser-webpack-plugin": "^5.3.14",
-        "webpack": "^5.98.0",
+        "webpack": "^5.105.0",
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^5.2.2"
     },
