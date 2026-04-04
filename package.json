@@ -35,7 +35,7 @@
         "@types/react": "^15.7.31",
         "cors": "^2.8.5",
         "express": "^4.22.1",
-        "lodash": "^4.17.23",
+        "lodash": "^4.18.1",
         "query-string": "^6.14.1",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
