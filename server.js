@@ -2,7 +2,6 @@ const express = require("express"),
     app = express(),
     port = process.env.PORT || 8000,
     path = require("path"),
-    cors = require("cors"),
     helmet = require("helmet");
 
 const webPath = path.join(__dirname, "web");
@@ -53,6 +52,5 @@ app.use(
         },
     })
 );
-app.use(cors());
 app.use(serveFront);
 app.listen(port, () => console.log("HoulgateFestFront server started on: " + port));
