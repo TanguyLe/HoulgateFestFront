@@ -1,6 +1,7 @@
 import React from "react";
 
 import SignUpForm from "./components/forms/signUpForm";
+import { Alert, PageHeader } from "../ui/components";
 
 class SignUpPage extends React.Component {
     constructor() {
@@ -23,18 +24,26 @@ class SignUpPage extends React.Component {
     render() {
         let display =
             this.state.status === "registration" ? (
-                <SignUpForm onRegistration={this.onRegistration} />
-            ) : this.state.status === "registered" ? (
-                <div>
-                    Merci de t'être inscrit, tu devrais avoir reçu un mail pour activer ton compte!
-                    <br /> Pour <a onClick={this.onClickRegister}> revenir au formulaire.</a>
+                <div className="card">
+                    <SignUpForm onRegistration={this.onRegistration} />
                 </div>
+            ) : this.state.status === "registered" ? (
+                <Alert tone="success" title="Bienvenue dans la bande !">
+                    Merci de t'être inscrit, tu devrais avoir reçu un mail pour activer ton compte.{" "}
+                    <a onClick={this.onClickRegister}>Revenir au formulaire</a>
+                </Alert>
             ) : (
-                "Il y a eu une erreur lors de ton inscription, tu nous en vois désolés...n'hésites pas à nous contacter à houlgatefest@gmail.com"
+                <Alert tone="error" title="Inscription impossible">
+                    Il y a eu une erreur lors de ton inscription, tu nous en vois désolés… N'hésite
+                    pas à nous contacter à houlgatefest@gmail.com
+                </Alert>
             );
+
         return (
             <div className="signUpPage">
-                <h1> Inscription </h1>
+                <PageHeader eyebrow="Rejoins la fête" title="Inscription">
+                    Un compte suffit pour shotgun ton lit, trouver un trajet et suivre les scores.
+                </PageHeader>
                 {display}
             </div>
         );

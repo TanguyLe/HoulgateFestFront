@@ -1,137 +1,167 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Icon, Sidebar, Menu, Container, Image } from "semantic-ui-react";
+import { Link, NavLink } from "react-router-dom";
 
+import withRouter from "../../utils/withRouter";
 import WhoAmI from "../../login/components/whoAmI";
+import Icon from "../../ui/icon";
+import { Toaster } from "../../ui/components";
 
-export const leftItems = [
-    { children: <Link to="/history">Historique</Link>, key: "history" },
-    { children: <Link to="/shotgun">Shotgun</Link>, key: "shotgun" },
-    { children: <Link to="/trips">Trajets</Link>, key: "trips" },
-    { children: <Link to="/scores">Scores</Link>, key: "scores" },
-    { children: <Link to="/checklist">Checklist</Link>, key: "checklist" },
-    { children: <Link to="/contact">Contact</Link>, key: "contact" },
+export const NAV_ITEMS = [
+    { to: "/shotgun", label: "Shotgun", icon: "bed" },
+    { to: "/trips", label: "Trajets", icon: "car" },
+    { to: "/scores", label: "Scores", icon: "trophy" },
+    { to: "/history", label: "Historique", icon: "history" },
+    { to: "/checklist", label: "Checklist", icon: "check" },
+    { to: "/contact", label: "Contact", icon: "mail" },
 ];
-export const rightItems = [{ children: <WhoAmI />, key: "user" }];
 
-const NavBarMobile = ({ onToggle, rightItems }) => (
-    <Menu fixed="top" inverted>
-        <Menu.Item onClick={onToggle}>
-            <Icon name="sidebar" />
-        </Menu.Item>
-        <Menu.Item>
-            <Link to="/">
-                {" "}
-                <Image src="static/logov3.png" size="small" />
-            </Link>
-        </Menu.Item>
-        <Menu.Menu position="right">
-            {rightItems.map(({ key, ...item }) => (
-                <Menu.Item key={key} {...item} as="div" />
-            ))}
-        </Menu.Menu>
-    </Menu>
-);
-
-const NavBarDesktop = ({ leftItems, rightItems }) => (
-    <Menu fixed="top" inverted>
-        <Menu.Item>
-            <Link to="/">
-                {" "}
-                <Image src="static/logov3.png" size="small" />
-            </Link>
-        </Menu.Item>
-        {leftItems.map(({ key, ...item }) => (
-            <Menu.Item key={key} {...item} as="div" />
+const NavLinks = () => (
+    <ul className="nav">
+        {NAV_ITEMS.map((item) => (
+            <li key={item.to}>
+                <NavLink
+                    to={item.to}
+                    className={({ isActive }) => "nav__link" + (isActive ? " is-active" : "")}
+                >
+                    {item.label}
+                </NavLink>
+            </li>
         ))}
-        <Menu.Menu position="right">
-            {rightItems.map(({ key, ...item }) => (
-                <Menu.Item key={key} {...item} as="div" />
-            ))}
-        </Menu.Menu>
-    </Menu>
+    </ul>
 );
 
-class NavBarChildren extends React.Component {
+const THEME_KEY = "theme";
+
+const currentTheme = () =>
+    document.documentElement.dataset.theme ||
+    (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+
+// Flips between light and dark and remembers the choice (applied before paint in index.html)
+class ThemeToggle extends React.Component {
+    constructor() {
+        super();
+
+        this.state = { theme: currentTheme() };
+        this.toggle = this.toggle.bind(this);
+    }
+
+    toggle() {
+        const theme = this.state.theme === "dark" ? "light" : "dark";
+
+        document.documentElement.dataset.theme = theme;
+        try {
+            window.localStorage.setItem(THEME_KEY, theme);
+        } catch (e) {
+            // Private mode: the choice just won't survive a reload
+        }
+        this.setState({ theme });
+    }
+
     render() {
-        const { children, bigContainer } = this.props;
-        if (bigContainer)
-            return (
-                <Container fluid style={{ padding: "6.2rem 2rem 0 2rem" }}>
-                    {children}
-                </Container>
-            );
-        else
-            return (
-                <Container text style={{ paddingTop: "6.2rem" }}>
-                    {children}
-                </Container>
-            );
+        const toDark = this.state.theme !== "dark";
+
+        return (
+            <button
+                type="button"
+                className="btn btn--ghost btn--icon"
+                onClick={this.toggle}
+                aria-label={toDark ? "Passer en thème sombre" : "Passer en thème clair"}
+                title={toDark ? "Thème sombre" : "Thème clair"}
+            >
+                <Icon name={toDark ? "moon" : "sun"} />
+            </button>
+        );
     }
 }
 
-// semantic-ui-react 2 dropped Responsive: the mobile bar is shown below its old tablet breakpoint
-const mobileQuery = window.matchMedia("(max-width: 767px)");
+export const Wordmark = () => (
+    <Link to="/" className="wordmark" aria-label="HoulgateFest, accueil">
+        Houlgate<em>Fest</em>
+    </Link>
+);
 
-class NavBar extends React.Component {
-    state = {
-        visible: false,
-        isMobile: mobileQuery.matches,
-    };
+/**
+ * Persistent shell around every page: sticky glass top bar, full-screen mobile drawer,
+ * footer and the toast outlet. Mounted once so WhoAmI restores the session only once.
+ */
+class AppShell extends React.Component {
+    constructor() {
+        super();
 
-    componentDidMount() {
-        mobileQuery.addEventListener("change", this.handleMediaChange);
+        this.state = { drawerOpen: false };
+        this.toggleDrawer = this.toggleDrawer.bind(this);
     }
 
-    componentWillUnmount() {
-        mobileQuery.removeEventListener("change", this.handleMediaChange);
+    componentDidUpdate(prevProps) {
+        if (prevProps.location.pathname !== this.props.location.pathname) {
+            window.scrollTo(0, 0);
+            if (this.state.drawerOpen) this.setState({ drawerOpen: false });
+        }
     }
 
-    handleMediaChange = (event) => this.setState({ isMobile: event.matches });
-
-    handlePusher = () => {
-        const { visible } = this.state;
-
-        if (visible) this.setState({ visible: false });
-    };
-
-    handleToggle = () => this.setState({ visible: !this.state.visible });
+    toggleDrawer() {
+        this.setState({ drawerOpen: !this.state.drawerOpen });
+    }
 
     render() {
-        const { children, leftItems, rightItems, bigContainer } = this.props;
-        const { visible, isMobile } = this.state;
+        const { drawerOpen } = this.state;
+
         return (
-            <div>
-                {isMobile ? (
-                    <Sidebar.Pushable>
-                        <Sidebar as={Menu} animation="overlay" inverted vertical visible={visible}>
-                            {leftItems.map(({ key, ...item }) => (
-                                <Menu.Item
-                                    key={key}
-                                    {...item}
-                                    as="div"
-                                    onClick={this.handlePusher}
-                                />
-                            ))}
-                        </Sidebar>
-                        <Sidebar.Pusher
-                            dimmed={visible}
-                            onClick={this.handlePusher}
-                            style={{ minHeight: "100vh" }}
+            <div className="shell">
+                <a className="visually-hidden" href="#main">
+                    Aller au contenu
+                </a>
+                <header className="topbar">
+                    <div className="topbar__inner">
+                        <button
+                            type="button"
+                            className="btn btn--ghost btn--icon topbar__burger"
+                            onClick={this.toggleDrawer}
+                            aria-expanded={drawerOpen}
+                            aria-controls="drawer"
+                            aria-label={drawerOpen ? "Fermer le menu" : "Ouvrir le menu"}
                         >
-                            <NavBarMobile onToggle={this.handleToggle} rightItems={rightItems} />
-                            <NavBarChildren bigContainer={bigContainer}>{children}</NavBarChildren>
-                        </Sidebar.Pusher>
-                    </Sidebar.Pushable>
-                ) : (
-                    <>
-                        <NavBarDesktop leftItems={leftItems} rightItems={rightItems} />
-                        <NavBarChildren bigContainer={bigContainer}>{children}</NavBarChildren>
-                    </>
-                )}
+                            <Icon name={drawerOpen ? "x" : "menu"} />
+                        </button>
+                        <Wordmark />
+                        <nav aria-label="Navigation principale">
+                            <NavLinks />
+                        </nav>
+                        <div className="topbar__user">
+                            <ThemeToggle />
+                            <WhoAmI />
+                        </div>
+                    </div>
+                </header>
+                <nav
+                    id="drawer"
+                    className={"drawer" + (drawerOpen ? " is-open" : "")}
+                    aria-label="Menu mobile"
+                >
+                    <NavLinks />
+                </nav>
+
+                <main id="main">{this.props.children}</main>
+
+                <footer className="footer">
+                    <div className="footer__inner">
+                        <span>
+                            HoulgateFest · depuis 2018 · fait main par{" "}
+                            <Link to="/contact">les orgas</Link>
+                        </span>
+                        <div className="footer__links">
+                            {NAV_ITEMS.map((item) => (
+                                <Link key={item.to} to={item.to}>
+                                    {item.label}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </footer>
+                <Toaster />
             </div>
         );
     }
 }
 
-export default NavBar;
+export default withRouter(AppShell);

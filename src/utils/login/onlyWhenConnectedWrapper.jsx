@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { register, unregister, getCredentials } from "../../login/store";
+import Icon from "../../ui/icon";
 
 class OnlyWhenConnectedWrapper extends React.Component {
     constructor() {
@@ -14,13 +15,10 @@ class OnlyWhenConnectedWrapper extends React.Component {
     componentDidMount() {
         register(this.onLogin);
         this.setState(getCredentials());
-
-        this.loginPortalOpener = document.getElementById("loginPortalOpener");
     }
 
     componentWillUnmount() {
         unregister(this.onLogin);
-        if (document.getElementById("loginPortal")) this.onClickConnected();
     }
 
     onLogin(creds) {
@@ -28,17 +26,33 @@ class OnlyWhenConnectedWrapper extends React.Component {
     }
 
     onClickConnected() {
-        this.loginPortalOpener.click();
+        // The login dialog lives in the top bar, we just press its opener
+        const opener = document.getElementById("loginPortalOpener");
+        if (opener) opener.click();
     }
 
     render() {
         return this.state.login ? (
-            <div className={this.props.className || ""}> {this.props.children} </div>
+            <div className={this.props.className || ""}>{this.props.children}</div>
         ) : (
-            <div className="Countdown">
-                Cette page n'est accessible qu'une fois{" "}
-                <a onClick={this.onClickConnected}>connecté</a> ! N'hésite pas à{" "}
-                <Link to="/register">créer un compte</Link>.
+            <div className="locked">
+                <span className="locked__badge">
+                    <Icon name="lock" size={30} />
+                </span>
+                <h1>Réservé aux festivaliers</h1>
+                <p>Cette page n'est accessible qu'une fois connecté. Pas encore de compte ?</p>
+                <div className="locked__actions">
+                    <button
+                        type="button"
+                        className="btn btn--primary btn--lg"
+                        onClick={this.onClickConnected}
+                    >
+                        Se connecter
+                    </button>
+                    <Link to="/register" className="btn btn--lg">
+                        Créer un compte
+                    </Link>
+                </div>
             </div>
         );
     }

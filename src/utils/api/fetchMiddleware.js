@@ -8,6 +8,7 @@ import {
     getAuthUpdatedParams,
 } from "./paramsFcts";
 import { UNKNOWN_ERROR_MSG } from "../../labels";
+import { notify } from "../../ui/toast";
 
 export const refreshLogin = (showAlert = true) => {
     let creds = getCredentials();
@@ -28,7 +29,7 @@ export const refreshLogin = (showAlert = true) => {
             login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
         });
 
-    if (showAlert) return promise.catch((error) => alert(UNKNOWN_ERROR_MSG + error));
+    if (showAlert) return promise.catch((error) => notify.error(UNKNOWN_ERROR_MSG + error));
 
     return promise;
 };

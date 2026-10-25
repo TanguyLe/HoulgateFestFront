@@ -9,6 +9,7 @@ import SignUpPage from "./login/signUpPage";
 import ActivateAccount from "./login/activateAccountPage";
 import PasswordResetPage from "./login/passwordResetPage";
 import CreatePasswordResetPage from "./login/createPasswordResetPage";
+import AppShell from "./mainLayout/components/menu";
 import DefaultLayout from "./mainLayout/components/layout";
 import ContactPage from "./contact/contactPage";
 import ChecklistPage from "./checklist/checklistPage";
@@ -21,51 +22,69 @@ class App extends React.Component {
     render() {
         return (
             <Router>
-                <Routes>
-                    <Route path="/" element={<DefaultLayout exact component={Homepage} />} />
-                    <Route
-                        path="/history/*"
-                        element={<DefaultLayout component={HistoryPage} auth />}
-                    />
-                    <Route
-                        path="/shotgun/*"
-                        element={<DefaultLayout component={ShotgunPage} bigContainer auth />}
-                    />
-                    <Route
-                        path="/trips/*"
-                        element={<DefaultLayout component={TripPage} bigContainer auth />}
-                    />
-                    <Route
-                        path="/scores/*"
-                        element={<DefaultLayout component={ScoresPage} bigContainer auth />}
-                    />
-                    <Route
-                        path="/admin/*"
-                        element={<DefaultLayout component={AdminPage} bigContainer auth />}
-                    />
-                    <Route
-                        path="/checklist/*"
-                        element={<DefaultLayout component={ChecklistPage} />}
-                    />
-                    <Route path="/contact/*" element={<DefaultLayout component={ContactPage} />} />
-                    <Route
-                        path="/register/*"
-                        element={<DefaultLayout component={SignUpPage} notCo />}
-                    />
-                    <Route
-                        path="/activateUser/*"
-                        element={<DefaultLayout component={ActivateAccount} notCo />}
-                    />
-                    <Route
-                        path="/passwordReset/*"
-                        element={<DefaultLayout component={PasswordResetPage} notCo />}
-                    />
-                    <Route
-                        path="/createPasswordReset/*"
-                        element={<DefaultLayout component={CreatePasswordResetPage} notCo />}
-                    />
-                    <Route path="*" element={<DefaultLayout component={NotFound} />} />
-                </Routes>
+                <AppShell>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={<DefaultLayout component={Homepage} width="full" />}
+                        />
+                        <Route
+                            path="/history/*"
+                            element={<DefaultLayout component={HistoryPage} auth />}
+                        />
+                        <Route
+                            path="/shotgun/*"
+                            element={<DefaultLayout component={ShotgunPage} width="wide" auth />}
+                        />
+                        <Route
+                            path="/trips/*"
+                            element={<DefaultLayout component={TripPage} auth />}
+                        />
+                        <Route
+                            path="/scores/*"
+                            element={<DefaultLayout component={ScoresPage} auth />}
+                        />
+                        <Route
+                            path="/admin/*"
+                            element={<DefaultLayout component={AdminPage} width="wide" auth />}
+                        />
+                        <Route
+                            path="/checklist/*"
+                            element={<DefaultLayout component={ChecklistPage} width="narrow" />}
+                        />
+                        <Route
+                            path="/contact/*"
+                            element={<DefaultLayout component={ContactPage} width="narrow" />}
+                        />
+                        <Route
+                            path="/register/*"
+                            element={<DefaultLayout component={SignUpPage} width="narrow" notCo />}
+                        />
+                        <Route
+                            path="/activateUser/*"
+                            element={
+                                <DefaultLayout component={ActivateAccount} width="narrow" notCo />
+                            }
+                        />
+                        <Route
+                            path="/passwordReset/*"
+                            element={
+                                <DefaultLayout component={PasswordResetPage} width="narrow" notCo />
+                            }
+                        />
+                        <Route
+                            path="/createPasswordReset/*"
+                            element={
+                                <DefaultLayout
+                                    component={CreatePasswordResetPage}
+                                    width="narrow"
+                                    notCo
+                                />
+                            }
+                        />
+                        <Route path="*" element={<DefaultLayout component={NotFound} />} />
+                    </Routes>
+                </AppShell>
             </Router>
         );
     }

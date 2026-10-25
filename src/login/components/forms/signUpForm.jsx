@@ -1,5 +1,7 @@
 import React from "react";
-import { Form, Message, List } from "semantic-ui-react";
+import { Field } from "../../../ui/components";
+import Icon from "../../../ui/icon";
+import { notify } from "../../../ui/toast";
 
 import {
     NAME,
@@ -9,7 +11,6 @@ import {
     SIGN_UP_DEF,
     REGEXES,
     ERROR_MSG,
-    REGISTRATION_ERROR_MSG_PREFIX,
 } from "../../constants";
 import { USERS_ENDPOINT } from "../../../constants";
 import { upCaseFirstLetter } from "../../../utils/miscFcts";
@@ -40,7 +41,7 @@ class SignUpForm extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleClickReset = this.handleClickReset.bind(this);
@@ -123,7 +124,7 @@ class SignUpForm extends React.Component {
             })
             .catch((error) => {
                 this.captcha.current.reset();
-                alert(UNKNOWN_ERROR_MSG + error);
+                notify.error(UNKNOWN_ERROR_MSG + error);
             });
     }
 
@@ -151,8 +152,9 @@ class SignUpForm extends React.Component {
         this.validateField(name, value);
     }
 
-    handleKeyPress(event) {
-        if (this.isFormValid() && event.key === "Enter") this.handleClickSubmit();
+    handleSubmit(event) {
+        event.preventDefault();
+        if (this.isFormValid()) this.handleClickSubmit();
     }
 
     handleKeyUp(event) {
@@ -171,25 +173,19 @@ class SignUpForm extends React.Component {
     }
 
     render() {
-        const isFormValid = this.isFormValid(true);
-
         return (
-            <Form
-                error={!isFormValid || !!this.state.captcha.errorMsg}
-                onSubmit={this.handleSubmit}
-                onKeyPress={this.handleKeyPress}
-            >
+            <form className="form" onSubmit={this.handleSubmit} noValidate>
                 {SIGN_UP_DEF.map((elem, index) => {
-                    let name = elem[NAME];
+                    const name = elem[NAME];
                     return (
-                        <Form.Input
+                        <Field
                             required
-                            error={!this.state[name].valid}
                             key={SIGN_UP_FORM_BLOCK_INDEX_PREFIX + index}
+                            error={this.state[name].errorMsg || !this.state[name].valid}
                             type={elem[TYPE]}
-                            fluid
                             label={upCaseFirstLetter(elem[LABEL])}
                             name={name}
+                            autoFocus={index === 0}
                             value={this.state[name].value}
                             onBlur={this.handleBlur}
                             onKeyUp={this.handleKeyUp}
@@ -198,36 +194,32 @@ class SignUpForm extends React.Component {
                         />
                     );
                 })}
-                <Form.Field>
+                <div className="field">
                     <Captcha ref={this.captcha} onToken={this.handleCaptchaToken} />
-                </Form.Field>
-                <Form.Group inline>
-                    <Form.Button
+                    {this.state.captcha.errorMsg && (
+                        <span className="field__error">
+                            <Icon name="alert" size={14} />
+                            {this.state.captcha.errorMsg}
+                        </span>
+                    )}
+                </div>
+                <div className="form__actions">
+                    <button
                         type="submit"
+                        className="btn btn--primary btn--lg"
                         disabled={!this.isFormValid()}
-                        onClick={this.handleClickSubmit}
                     >
-                        Inscription
-                    </Form.Button>
-                    <Form.Button type="reset" onClick={this.handleClickReset}>
-                        Reset
-                    </Form.Button>
-                </Form.Group>
-                <Message error>
-                    <List bulleted>
-                        {Object.keys(this.state).map((key) => {
-                            const errorMsg = this.state[key].errorMsg;
-
-                            if (errorMsg)
-                                return (
-                                    <List.Item key={REGISTRATION_ERROR_MSG_PREFIX + key}>
-                                        {errorMsg}
-                                    </List.Item>
-                                );
-                        })}
-                    </List>
-                </Message>
-            </Form>
+                        Créer mon compte
+                    </button>
+                    <button
+                        type="button"
+                        className="btn btn--ghost btn--lg"
+                        onClick={this.handleClickReset}
+                    >
+                        Réinitialiser
+                    </button>
+                </div>
+            </form>
         );
     }
 }

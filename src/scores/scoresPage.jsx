@@ -1,6 +1,6 @@
 import React from "react";
-import { Icon, Message } from "semantic-ui-react";
 
+import { Alert, PageHeader } from "../ui/components";
 import { EDITIONS_ENDPOINT } from "../shotgun/constants";
 import { getCallApi } from "../utils/api/fetchMiddleware";
 
@@ -24,30 +24,32 @@ class ScoresPage extends React.Component {
             .catch(() => this.setState({ loading: false }));
     }
 
-    render() {
-        if (this.state.loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement du tableau des scores...</Message.Content>
-                </Message>
-            );
+    renderBoard() {
+        if (this.state.loading) return <Alert loading>Chargement du tableau des scores…</Alert>;
 
         if (!this.state.scoresBoardUrl)
             return (
-                <Message info>
-                    <Message.Content>
-                        Le tableau des scores n'est pas encore disponible cette année. Reviens plus
-                        tard !
-                    </Message.Content>
-                </Message>
+                <Alert>
+                    Le tableau des scores n'est pas encore disponible cette année. Reviens plus tard
+                    !
+                </Alert>
             );
 
         return (
-            <iframe
-                style={{ height: "900px", width: "100%", border: "none" }}
-                src={this.state.scoresBoardUrl}
-            />
+            <div className="embed">
+                <iframe title="Tableau des scores" src={this.state.scoresBoardUrl} />
+            </div>
+        );
+    }
+
+    render() {
+        return (
+            <div>
+                <PageHeader eyebrow="En direct" title="Tableau des scores">
+                    Le classement des duos, mis à jour tout au long du week-end.
+                </PageHeader>
+                {this.renderBoard()}
+            </div>
         );
     }
 }

@@ -1,16 +1,17 @@
 import React from "react";
 
 import CreatePasswordResetForm from "./components/forms/createPasswordResetForm";
+import { PageHeader } from "../ui/components";
 
-class CreatePasswordResetPage extends React.Component {
-    render() {
-        return (
-            <div className="createPasswordresetPage">
-                <h1> Changement de Mot de Passe </h1>
-                <CreatePasswordResetForm />
-            </div>
-        );
-    }
-}
+const CreatePasswordResetPage = () => (
+    <div className="createPasswordresetPage">
+        <PageHeader eyebrow="Trou de mémoire ?" title="Mot de passe oublié">
+            Donne-nous ton email, on t’envoie un lien pour en choisir un nouveau.
+        </PageHeader>
+        <div className="card">
+            <CreatePasswordResetForm />
+        </div>
+    </div>
+);
 
 export default CreatePasswordResetPage;

@@ -89,36 +89,21 @@ export default class Countdown extends React.Component {
 
     render() {
         const countDown = this.state.timeLeft;
+        const units = [
+            [countDown.days, "jour", "jours"],
+            [countDown.hours, "heure", "heures"],
+            [countDown.min, "minute", "minutes"],
+            [countDown.sec, "seconde", "secondes"],
+        ];
 
         return (
-            <div className="Countdown">
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.days)}</strong>
-                        <span>{countDown.days === 1 ? "Jour" : "Jours"}</span>
-                    </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.hours)}</strong>
-                        <span>{countDown.hours === 1 ? "Heure" : "Heures"}</span>
-                    </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.min)}</strong>
-                        <span>{countDown.min === 1 ? "Minute" : "Minutes"}</span>
-                    </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.sec)}</strong>
-                        <span>{countDown.sec === 1 ? "Seconde" : "Secondes"}</span>
-                    </span>
-                </span>
+            <div className="countdown" role="timer" aria-live="off">
+                {units.map(([value, singular, plural]) => (
+                    <div className="countdown__unit" key={plural}>
+                        <span className="countdown__value">{this.addLeadingZeros(value)}</span>
+                        <span className="countdown__label">{value === 1 ? singular : plural}</span>
+                    </div>
+                ))}
             </div>
         );
     }

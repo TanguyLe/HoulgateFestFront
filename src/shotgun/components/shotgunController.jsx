@@ -1,5 +1,4 @@
 import React from "react";
-import { Icon, Message } from "semantic-ui-react";
 
 import DisplayAllFloors from "./floor/DisplayAllFloors";
 import { getParisDatetimeFromAPI, objectMap } from "../../utils/miscFcts";
@@ -23,6 +22,8 @@ import {
     putCallApi,
 } from "../../utils/api/fetchMiddleware";
 import { getCredentials } from "../../login/store";
+import { Alert } from "../../ui/components";
+import { notify } from "../../ui/toast";
 
 const INTERVAL_DURATION = 15000;
 
@@ -238,7 +239,7 @@ class ShotgunContainer extends React.Component {
                 ////////////////////////////////////////////////////////////////////
 
                 // The shotgun was denied, several possible reasons, may need to elaborate in the future.
-                alert("Cette pièce n'est plus disponible, ou tu as déjà shotgun.");
+                notify.error("Cette pièce n'est plus disponible, ou tu as déjà shotgun.");
             }
             await this.intervalFunction();
         });
@@ -265,8 +266,8 @@ class ShotgunContainer extends React.Component {
                 this.updateState([usersUpdater, roomUpdater]);
             } else {
                 // The shotgun was denied, several possible reasons, may need to elaborate in the future.
-                alert(
-                    "Trop tard! Cette pièce est soit déjà shotgun, soit toi ou un de " +
+                notify.error(
+                    "Trop tard ! Cette pièce est soit déjà shotgun, soit toi ou un de " +
                         "tes camarades est déjà inscrit dans une pièce.",
                 );
             }
@@ -282,7 +283,7 @@ class ShotgunContainer extends React.Component {
             const cancelShotgun = await deleteCallApi(getShotgunRoomUrl(roomId), {}, true);
 
             if (cancelShotgun.status === 200) this.updateState([{ shotgunId: null }]);
-            else alert("L'annulation a échoué, recharge la page et réessaie.");
+            else notify.error("L'annulation a échoué, recharge la page et réessaie.");
 
             await this.intervalFunction();
         });
@@ -300,33 +301,78 @@ class ShotgunContainer extends React.Component {
         return this.state.villaLesGenets.floors.map(replaceFloor);
     }
 
-    render() {
-        if (this.state.loading)
+    getMyStatus() {
+        const me = Object.values(this.state.userInfo).find(
+            (user) => user.username === getCredentials().login,
+        );
+        if (!me || !me.room) return null;
+
+        const room = this.state.roomsIndexed[me.room];
+        const roomName = room ? room.name || room.text : "ta chambre";
+
+        if (me.hasShotgun)
             return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement des pièces...</Message.Content>
-                </Message>
+                <Alert tone="success" title={"Ton lit est réservé : " + roomName}>
+                    Rendez-vous à Houlgate ! Clique sur ta chambre pour voir avec qui tu dors.
+                </Alert>
             );
+        if (me.hasPreShotgun)
+            return (
+                <Alert tone="warning" title={"Finalise ton shotgun : " + roomName}>
+                    Clique sur ta chambre et attribue les lits avant qu’elle ne soit libérée.
+                </Alert>
+            );
+
+        return null;
+    }
+
+    render() {
+        if (this.state.loading) return <Alert loading>Chargement des pièces…</Alert>;
 
         if (this.state.error)
             return (
-                <Message error>
-                    <Message.Content>
-                        Erreur de chargement des pièces, tu n'aurais pas du voir ça. Vérifie ta
-                        connection internet et recharge la page.
-                    </Message.Content>
-                </Message>
+                <Alert tone="error" title="Erreur de chargement des pièces">
+                    Tu n'aurais pas dû voir ça. Vérifie ta connexion internet et recharge la page.
+                </Alert>
             );
 
+        const floors = this.getFloorsToRender();
+        const freeSeats = floors.reduce(
+            (total, floor) =>
+                total +
+                floor.rooms
+                    .filter((room) => room.status === ROOM_STATUS_READY)
+                    .reduce((sum, room) => sum + room.seats, 0),
+            0,
+        );
+
         return (
-            <DisplayAllFloors
-                floors={this.getFloorsToRender()}
-                userInfo={this.state.userInfo}
-                createShotgunFunction={this.createShotgun}
-                addPersonsInShotgunFunction={this.addPersonsInShotgun}
-                cancelShotgunFunction={this.cancelShotgun}
-            />
+            <div className="shotgun">
+                <div className="shotgun__bar">
+                    <div className="shotgun__counter">
+                        <span className="shotgun__counter-value">{freeSeats}</span>
+                        <span>
+                            places libres
+                            <br />
+                            <small>mise à jour toutes les {INTERVAL_DURATION / 1000}s</small>
+                        </span>
+                    </div>
+                    <ul className="legend" aria-label="Légende">
+                        <li data-state="available">Libre</li>
+                        <li data-state="pending">Shotgun en cours</li>
+                        <li data-state="taken">Pris</li>
+                        <li data-state="mine">À toi</li>
+                    </ul>
+                </div>
+                {this.getMyStatus()}
+                <DisplayAllFloors
+                    floors={floors}
+                    userInfo={this.state.userInfo}
+                    createShotgunFunction={this.createShotgun}
+                    addPersonsInShotgunFunction={this.addPersonsInShotgun}
+                    cancelShotgunFunction={this.cancelShotgun}
+                />
+            </div>
         );
     }
 }

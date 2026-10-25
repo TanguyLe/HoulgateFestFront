@@ -1,6 +1,19 @@
 import React from "react";
-import { Popup } from "semantic-ui-react";
 
+const STATE_LABELS = {
+    available: "Shotgun !",
+    locked: "Libre",
+    loading: "…",
+    pending: "En cours",
+    "pending-mine": "À finaliser",
+    taken: "Pris",
+    mine: "Ton lit",
+};
+
+/**
+ * One room of the floor plan. Rooms without seats are drawn as plain architecture,
+ * bedrooms as tiles that become a button when the current user can act on them.
+ */
 class RoomBasis extends React.Component {
     constructor() {
         super();
@@ -9,48 +22,59 @@ class RoomBasis extends React.Component {
     }
 
     getUsername(userId) {
-        return this.props.userInfo[userId].username;
+        return this.props.userInfo[userId] ? this.props.userInfo[userId].username : "?";
     }
 
     render() {
-        let preDisplay = this.props.seats ? this.props.seats + " places" : null;
-        let user = this.props.user ? "par " + this.getUsername(this.props.user) : "";
-        user = <div>{user}</div>;
+        const { position, name, seats, user, roommates, state, actionLabel, onClick, children } =
+            this.props;
 
-        let roommates = this.props.roommates
-            ? this.props.roommates.map((userId) => this.getUsername(userId)).join(", ")
-            : null;
+        const style = {
+            gridColumnStart: position.columnStart,
+            gridColumnEnd: position.columnEnd,
+            gridRowStart: position.rowStart,
+            gridRowEnd: position.rowEnd,
+        };
 
-        let view;
-        if (roommates) view = <Popup flowing trigger={user} content={"Avec: " + roommates} />;
-        else view = user;
+        if (!seats)
+            return (
+                <div className="room room--space" style={style}>
+                    <span className="room__name">{name}</span>
+                </div>
+            );
+
+        const owner = user ? this.getUsername(user) : null;
+        const mates = roommates && roommates.length ? roommates.map(this.getUsername) : [];
+        const Tag = onClick ? "button" : "div";
 
         return (
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    height: "100%",
-                    userSelect: "none",
-                    alignItems: "center",
-                    textAlign: "center",
-                    overflow: "hidden",
-                    border: "1px solid #353535",
-                    gridColumnStart: this.props.position.columnStart,
-                    gridColumnEnd: this.props.position.columnEnd,
-                    gridRowStart: this.props.position.rowStart,
-                    gridRowEnd: this.props.position.rowEnd,
-                }}
+            <Tag
+                type={onClick ? "button" : undefined}
+                className="room room--bed"
+                data-state={state}
+                style={style}
+                onClick={onClick}
+                title={mates.length ? "Avec : " + mates.join(", ") : undefined}
+                aria-label={
+                    name + ", " + seats + " places, " + (actionLabel || STATE_LABELS[state])
+                }
             >
-                <span style={{ overflowWrap: " break-word", width: "100%" }}>
-                    {this.props.name}
+                <span className="room__status">{STATE_LABELS[state]}</span>
+                <span className="room__name">{name}</span>
+                <span className="room__seats" aria-hidden>
+                    {[...Array(seats).keys()].map((seat) => (
+                        <i key={seat} />
+                    ))}
+                    <b>{seats}</b>
                 </span>
-                {preDisplay}
-                <br />
-                {view}
-                {this.props.children}
-            </div>
+                {owner && (
+                    <span className="room__owner">
+                        {owner}
+                        {mates.length ? " +" + mates.length : ""}
+                    </span>
+                )}
+                {children}
+            </Tag>
         );
     }
 }

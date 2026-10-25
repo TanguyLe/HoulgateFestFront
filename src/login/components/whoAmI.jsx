@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Icon } from "semantic-ui-react";
 
 import LoginModal from "./loginModal";
+import Icon from "../../ui/icon";
 import { getCallApi } from "../../utils/api/fetchMiddleware";
 import { EDITIONS_ENDPOINT } from "../../shotgun/constants";
 import { getMe } from "../../admin/adminApi";
@@ -57,20 +57,35 @@ class WhoAmI extends React.Component {
     }
 
     render() {
-        return !this.state.login ? (
-            <div className="rowFlex">
-                <LoginModal />
-            </div>
-        ) : (
-            <div className="rowFlex">
+        const username = this.state.login;
+
+        if (!username) return <LoginModal />;
+
+        return (
+            <div className="user-pill">
+                <span className="avatar" aria-hidden>
+                    {username.charAt(0)}
+                </span>
+                <span className="user-pill__name">{username}</span>
                 {this.state.isAdmin && (
-                    <Link to="/admin" className="paddingSides" title="Administration">
-                        <Icon name="settings" />
-                        Admin
+                    <Link
+                        to="/admin"
+                        className="btn btn--ghost btn--icon btn--sm"
+                        title="Administration"
+                        aria-label="Administration"
+                    >
+                        <Icon name="users" size={18} />
                     </Link>
                 )}
-                <div className="paddingSides">{this.state.login}</div>
-                <Button content="Déconnexion" onClick={logout} />
+                <button
+                    type="button"
+                    className="btn btn--ghost btn--icon btn--sm"
+                    onClick={logout}
+                    title="Déconnexion"
+                    aria-label="Déconnexion"
+                >
+                    <Icon name="logOut" size={18} />
+                </button>
             </div>
         );
     }

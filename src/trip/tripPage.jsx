@@ -1,14 +1,16 @@
 import React from "react";
 
-const TripPage = () => {
-    return (
-        <div>
-            <iframe
-                style={{ border: "none", width: "412px", height: "172px" }}
-                src={process.env.TOGETZER_IFRAME_URL}
-            ></iframe>
+import { PageHeader } from "../ui/components";
+
+const TripPage = () => (
+    <div>
+        <PageHeader eyebrow="Covoiturage" title="Trajets">
+            Propose tes places libres ou trouve une voiture pour rejoindre Houlgate.
+        </PageHeader>
+        <div className="embed embed--compact">
+            <iframe title="Trajets Togetzer" src={process.env.TOGETZER_IFRAME_URL} />
         </div>
-    );
-};
+    </div>
+);
 
 export default TripPage;

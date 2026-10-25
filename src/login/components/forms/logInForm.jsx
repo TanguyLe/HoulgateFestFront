@@ -1,28 +1,22 @@
 import React from "react";
-import { Segment, Form, Button, Divider } from "semantic-ui-react";
 
 import { login } from "../../store";
 import { LOGIN_URL } from "../../constants";
 import { UNKNOWN_ERROR_MSG } from "../../../labels";
 import { postCallApi } from "../../../utils/api/fetchMiddleware";
+import { Field } from "../../../ui/components";
+import { notify } from "../../../ui/toast";
 
 export default class LogIn extends React.Component {
     constructor() {
         super();
-        // The component is destroyed at closing by semantic-ui portal, which is not the expected behavior
-        // It is consequently coded without reset
-        this.state = { email: "", password: "", wrongField: "" };
+        // The form lives in a dialog that is unmounted on close, so it never needs a reset
+        this.state = { email: "", password: "", wrongField: "", wrongMsg: "", loading: false };
 
-        this.onClickLogin = this.onClickLogin.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.onClickRegister = this.onClickRegister.bind(this);
         this.onClickPasswordReset = this.onClickPasswordReset.bind(this);
-    }
-
-    componentDidMount() {
-        const emailInput = document.querySelector("#emailInput");
-        setTimeout(() => emailInput.focus(), 0);
     }
 
     onClickPasswordReset() {
@@ -30,26 +24,39 @@ export default class LogIn extends React.Component {
         this.props.toClose();
     }
 
-    onClickLogin() {
-        let failure = false;
+    onSubmit(event) {
+        event.preventDefault();
 
-        postCallApi(LOGIN_URL, this.state, false)
+        let failure = false;
+        this.setState({ loading: true });
+
+        postCallApi(LOGIN_URL, { email: this.state.email, password: this.state.password }, false)
             .then((response) => {
                 if (!response.ok) failure = true;
                 return response;
             })
             .then((response) => response.json())
             .then((jsonData) => {
+                this.setState({ loading: false });
+
                 if (failure) {
-                    this.setState({ wrongField: jsonData.wrongField });
+                    this.setState({ wrongField: jsonData.wrongField, wrongMsg: jsonData.message });
 
                     if (jsonData.wrongField === "activation")
-                        alert(
-                            "Le compte n'est pas activé! Veuillez utiliser le lien que vous avez reçu par mail.",
+                        notify.error(
+                            "Le compte n'est pas activé ! Utilise le lien que tu as reçu par mail.",
                         );
-                } else login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
+                } else {
+                    // Close first: login() re-renders WhoAmI, which unmounts this dialog
+                    this.props.toClose();
+                    login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
+                    notify.success("Bienvenue " + jsonData.username + " !");
+                }
             })
-            .catch((error) => alert(UNKNOWN_ERROR_MSG));
+            .catch(() => {
+                this.setState({ loading: false });
+                notify.error(UNKNOWN_ERROR_MSG);
+            });
     }
 
     handleChange(event) {
@@ -58,51 +65,57 @@ export default class LogIn extends React.Component {
         else this.setState({ [event.target.name]: event.target.value });
     }
 
-    handleKeyPress(event) {
-        if (event.key === "Enter") this.onClickLogin();
-    }
-
     onClickRegister() {
         this.props.history.push("/register");
         this.props.toClose();
     }
 
     render() {
+        const { wrongField, wrongMsg, loading } = this.state;
+
         return (
-            <Form>
-                <Form.Input
-                    type="text"
-                    error={this.state.wrongField === "email"}
-                    fluid
+            <form className="form" onSubmit={this.onSubmit} noValidate>
+                <Field
+                    type="email"
                     id="emailInput"
                     label="Email"
                     name="email"
+                    autoComplete="email"
+                    autoFocus
+                    error={wrongField === "email" && (wrongMsg || true)}
                     value={this.state.email}
-                    onKeyPress={this.handleKeyPress}
                     onChange={this.handleChange}
                 />
-
-                <Form.Input
+                <Field
                     type="password"
-                    error={this.state.wrongField === "password"}
-                    fluid
                     label="Mot de passe"
                     name="password"
+                    autoComplete="current-password"
+                    error={wrongField === "password" && (wrongMsg || true)}
                     value={this.state.password}
-                    onKeyPress={this.handleKeyPress}
                     onChange={this.handleChange}
                 />
-                <a onClick={this.onClickPasswordReset}> Mot de passe oublié ? </a>
-                <Segment>
-                    <Button primary fluid onClick={this.onClickLogin}>
-                        Je me connecte
-                    </Button>
-                    <Divider horizontal>Ou</Divider>
-                    <Button secondary fluid onClick={this.onClickRegister}>
-                        Je m'inscris
-                    </Button>
-                </Segment>
-            </Form>
+                <a className="login__forgot" onClick={this.onClickPasswordReset}>
+                    Mot de passe oublié ?
+                </a>
+                <button
+                    type="submit"
+                    className="btn btn--primary btn--lg btn--block"
+                    disabled={loading}
+                >
+                    {loading ? "Connexion…" : "Je me connecte"}
+                </button>
+                <div className="login__divider">
+                    <span>pas encore de compte ?</span>
+                </div>
+                <button
+                    type="button"
+                    className="btn btn--lg btn--block"
+                    onClick={this.onClickRegister}
+                >
+                    Je m'inscris
+                </button>
+            </form>
         );
     }
 }

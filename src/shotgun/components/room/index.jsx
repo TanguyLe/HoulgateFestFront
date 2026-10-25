@@ -1,12 +1,13 @@
 import React from "react";
 
 import RoomBasis from "./roomBasis";
-import ShotgunPortal from "../shotgunModal";
+import ShotgunDialog from "../shotgunModal";
 import PreShotgunTimer from "../preShotgunTimer";
 import {
     ROOM_STATUS_LOADING,
     ROOM_STATUS_SHOTGUNNED,
     ROOM_STATUS_PRESHOTGUNNED,
+    ROOM_STATUS_READY,
 } from "../../constants";
 import { getCredentials, register, unregister } from "../../../login/store";
 
@@ -14,7 +15,7 @@ class Room extends React.Component {
     constructor() {
         super();
 
-        this.state = { username: getCredentials().login };
+        this.state = { username: getCredentials().login, open: false };
         this.onLoginChange = this.onLoginChange.bind(this);
     }
 
@@ -37,8 +38,8 @@ class Room extends React.Component {
     }
 
     render() {
-        let buttonType = "blue";
-        let content = "Shotgun!";
+        let tileState = "available";
+        let content = "Shotgun !";
         let disable = false;
 
         const roomId = this.props.id;
@@ -64,66 +65,89 @@ class Room extends React.Component {
         /**
          * Logic here is rather simple in the end :
          * 1) Room is shotgunned
-         *  a. By the user => Successful green button
-         *  b. By someone else => Disabled red button
+         *  a. By the user => "mine", opens the confirmation
+         *  b. By someone else => "taken", inert
          * 2) Room is preShotgunned
-         *  a. By the user => Encouraging blue button
-         *  b. By someone else => Disabled orange button
-         * 3) Room is loading => Disabled grey button
+         *  a. By the user => "pending-mine", opens the beds attribution
+         *  b. By someone else => "pending", inert
+         * 3) Room is loading => "loading", inert
          * 4) Room is ready (means empty)
-         *  a. User is taken => Disabled blue button
-         *  b. User is free => Enable blue button
+         *  a. User is taken => "locked", inert
+         *  b. User is free => "available", click shotguns
          */
 
         if (roomStatus === ROOM_STATUS_SHOTGUNNED) {
             if (isUserRoom) {
-                buttonType = "green";
-                content = "Validé";
+                tileState = "mine";
+                content = "Voir";
                 finalStatus = "shotgunSuccessful";
             } else {
-                buttonType = "red";
-                content = "Déjà shotgun";
+                tileState = "taken";
                 disable = true;
             }
         } else if (roomStatus === ROOM_STATUS_PRESHOTGUNNED) {
             if (isUserRoom) {
-                content = "Finalise ton shotgun!";
+                tileState = "pending-mine";
+                content = "Finalise !";
                 finalStatus = "attributingBeds";
             } else {
-                buttonType = "orange";
-                content = "Shotgun en cours...";
+                tileState = "pending";
                 disable = true;
             }
         } else if (roomStatus === ROOM_STATUS_LOADING) {
-            buttonType = "grey";
-            content = "Chargement...";
+            tileState = "loading";
             disable = true;
         } else if (shotgunOnGoingForUser) {
             // Remaining state is readyForShotgun, the case where no shotgun
             // is ongoing for the user is handled by the default
+            tileState = "locked";
             disable = true;
         }
 
+        const onClick = disable
+            ? undefined
+            : (event) => {
+                  this.setState({ open: true });
+                  if (roomStatus === ROOM_STATUS_READY && this.props.createShotgunFunction)
+                      this.props.createShotgunFunction(event);
+              };
+
+        // The dialog only makes sense once the room is ours, it stays hidden while loading
+        const showDialog =
+            this.state.open &&
+            !disable &&
+            (finalStatus === "attributingBeds" || finalStatus === "shotgunSuccessful");
+
         return (
-            <RoomBasis
-                {...this.props}
-                seats={this.props.seats}
-                position={this.props.position}
-                name={this.props.name}
-                user={this.props.user}
-                roommates={this.props.roommates}
-                userInfo={this.props.userInfo}
-            >
-                {this.props.seats > 0 ? (
-                    <ShotgunPortal
-                        disabled={disable}
-                        content={content}
-                        buttonType={buttonType}
+            <>
+                <RoomBasis
+                    seats={this.props.seats}
+                    position={this.props.position}
+                    name={this.props.name}
+                    user={this.props.user}
+                    roommates={this.props.roommates}
+                    userInfo={this.props.userInfo}
+                    state={tileState}
+                    actionLabel={disable ? null : content}
+                    onClick={this.props.seats > 0 ? onClick : undefined}
+                >
+                    {roomStatus === ROOM_STATUS_PRESHOTGUNNED && this.props.preShotgunExpiry ? (
+                        <PreShotgunTimer
+                            expiry={this.props.preShotgunExpiry}
+                            label={isUserRoom ? "Il te reste" : "Expire dans"}
+                        />
+                    ) : null}
+                </RoomBasis>
+                {showDialog && (
+                    <ShotgunDialog
                         seats={this.props.seats}
                         name={this.props.name}
                         status={finalStatus}
                         availablePersons={availablePersons}
-                        createShotgunFunction={this.props.createShotgunFunction || null}
+                        roommates={(this.props.roommates || []).map((id) =>
+                            this.props.userInfo[id] ? this.props.userInfo[id].username : "?",
+                        )}
+                        onClose={() => this.setState({ open: false })}
                         addPersonsInShotgunFunction={(roommatesIds) =>
                             this.props.addPersonsInShotgunFunction(this.props.id, roommatesIds)
                         }
@@ -133,18 +157,8 @@ class Room extends React.Component {
                                 : null
                         }
                     />
-                ) : (
-                    ""
                 )}
-                {roomStatus === ROOM_STATUS_PRESHOTGUNNED && this.props.preShotgunExpiry ? (
-                    <PreShotgunTimer
-                        expiry={this.props.preShotgunExpiry}
-                        label={isUserRoom ? "Il te reste" : "Expire dans"}
-                    />
-                ) : (
-                    ""
-                )}
-            </RoomBasis>
+            </>
         );
     }
 }
