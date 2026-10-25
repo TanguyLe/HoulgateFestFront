@@ -1,5 +1,4 @@
 import React from "react";
-import { parse } from "query-string";
 import { withRouter } from "react-router-dom";
 
 import { getCallApi } from "../utils/api/fetchMiddleware";
@@ -17,10 +16,10 @@ class ActivateAccount extends React.Component {
     }
 
     componentDidMount() {
-        const parsed = parse(this.props.location.search);
+        const params = new URLSearchParams(this.props.location.search);
 
-        this.id = parsed.id;
-        this.code = parsed.code;
+        this.id = params.get("id");
+        this.code = params.get("code");
 
         if (this.id && this.code) {
             this.activateUrl = getActivateUserUrl(this.id, this.code);

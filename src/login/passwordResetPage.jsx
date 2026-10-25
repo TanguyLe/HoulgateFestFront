@@ -1,5 +1,4 @@
 import React from "react";
-import { parse } from "query-string";
 import { withRouter } from "react-router-dom";
 
 import PasswordResetForm from "./components/forms/passwordResetForm";
@@ -15,10 +14,10 @@ class PasswordResetPage extends React.Component {
     }
 
     componentDidMount() {
-        const parsed = parse(this.props.location.search);
+        const params = new URLSearchParams(this.props.location.search);
 
-        this.id = parsed.id;
-        this.code = parsed.code;
+        this.id = params.get("id");
+        this.code = params.get("code");
 
         if (this.id && this.code)
             this.setState({ resetUrl: getPasswordResetUrl(this.id, this.code) });
