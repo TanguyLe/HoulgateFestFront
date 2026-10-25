@@ -2,9 +2,24 @@ const express = require("express"),
     app = express(),
     port = process.env.PORT || 8000,
     path = require("path"),
-    cors = require("cors");
+    cors = require("cors"),
+    helmet = require("helmet");
 
 const webPath = path.join(__dirname, "web");
+
+const originOf = (url) => {
+    try {
+        return new URL(url).origin;
+    } catch {
+        return null;
+    }
+};
+// The bundle calls the API and embeds the scores board and Togetzer iframes, set at build time
+const apiOrigin = originOf(process.env.API_URL);
+const frameOrigins = [process.env.SCORES_BOARD_URL, process.env.TOGETZER_IFRAME_URL]
+    .map(originOf)
+    .filter(Boolean);
+const semanticCdn = "https://cdnjs.cloudflare.com";
 
 serveFront = (req, res) => {
     if ([".png", ".js", ".jpg", ".ico"].includes(path.extname(req.path)))
@@ -17,6 +32,27 @@ serveFront = (req, res) => {
     else res.sendFile(path.join(webPath, "index.html"));
 };
 
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            useDefaults: false,
+            directives: {
+                defaultSrc: ["'self'"],
+                scriptSrc: ["'self'"],
+                // style attributes set by React components and the carousel
+                styleSrc: ["'self'", "'unsafe-inline'", semanticCdn],
+                fontSrc: ["'self'", "data:", semanticCdn],
+                imgSrc: ["'self'", "data:"],
+                connectSrc: ["'self'", ...(apiOrigin ? [apiOrigin] : [])],
+                frameSrc: frameOrigins.length ? frameOrigins : ["'none'"],
+                frameAncestors: ["'none'"],
+                objectSrc: ["'none'"],
+                baseUri: ["'self'"],
+                formAction: ["'self'"],
+            },
+        },
+    })
+);
 app.use(cors());
 app.use(serveFront);
 app.listen(port, () => console.log("HoulgateFestFront server started on: " + port));
