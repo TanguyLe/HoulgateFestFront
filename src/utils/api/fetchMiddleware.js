@@ -9,7 +9,7 @@ import {
 } from "./paramsFcts";
 import { UNKNOWN_ERROR_MSG } from "../../labels";
 
-export const refreshLogin = (alert = true) => {
+export const refreshLogin = (showAlert = true) => {
     let creds = getCredentials();
 
     let params = genPostParams({ refreshToken: creds.refreshToken });
@@ -28,15 +28,15 @@ export const refreshLogin = (alert = true) => {
             login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
         });
 
-    if (alert) return promise.catch((error) => alert(UNKNOWN_ERROR_MSG + error));
+    if (showAlert) return promise.catch((error) => alert(UNKNOWN_ERROR_MSG + error));
 
     return promise;
 };
 
-export const autoRefreshFetch = (requestUrl, params, alert = true) => {
+export const autoRefreshFetch = (requestUrl, params, showAlert = true) => {
     return fetch(requestUrl, params).then((response) => {
         if (!response.ok && response.status === 401)
-            return refreshLogin(alert)
+            return refreshLogin(showAlert)
                 .then(() => {
                     params = getAuthUpdatedParams(params);
                 })
@@ -45,26 +45,26 @@ export const autoRefreshFetch = (requestUrl, params, alert = true) => {
     });
 };
 
-export const getCallApi = (endpoint, auth = true, alert = true) => {
-    if (auth) return autoRefreshFetch(endpoint, genGetParams(auth), alert);
+export const getCallApi = (endpoint, auth = true, showAlert = true) => {
+    if (auth) return autoRefreshFetch(endpoint, genGetParams(auth), showAlert);
 
     return fetch(endpoint, genGetParams(auth));
 };
 
-export const postCallApi = (endpoint, body, auth = true, alert = true) => {
-    if (auth) return autoRefreshFetch(endpoint, genPostParams(body, auth), alert);
+export const postCallApi = (endpoint, body, auth = true, showAlert = true) => {
+    if (auth) return autoRefreshFetch(endpoint, genPostParams(body, auth), showAlert);
 
     return fetch(endpoint, genPostParams(body, auth));
 };
 
-export const putCallApi = (endpoint, body, auth = true, alert = true) => {
-    if (auth) return autoRefreshFetch(endpoint, genPutParams(body, auth), alert);
+export const putCallApi = (endpoint, body, auth = true, showAlert = true) => {
+    if (auth) return autoRefreshFetch(endpoint, genPutParams(body, auth), showAlert);
 
     return fetch(endpoint, genPutParams(body, auth));
 };
 
-export const deleteCallApi = (endpoint, body, auth = true, alert = true) => {
-    if (auth) return autoRefreshFetch(endpoint, genDeleteParams(body, auth), alert);
+export const deleteCallApi = (endpoint, body, auth = true, showAlert = true) => {
+    if (auth) return autoRefreshFetch(endpoint, genDeleteParams(body, auth), showAlert);
 
     return fetch(endpoint, genDeleteParams(body, auth));
 };
