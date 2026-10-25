@@ -4,7 +4,7 @@ import { Button } from "semantic-ui-react";
 import LoginModal from "./loginModal";
 import { getCallApi } from "../../utils/api/fetchMiddleware";
 import { EDITIONS_ENDPOINT } from "../../shotgun/constants";
-import { silentLogin, getCredentials, login, logout, register, unregister } from "../store";
+import { silentLogin, getCredentials, dispatch, logout, register, unregister } from "../store";
 
 class WhoAmI extends React.Component {
     constructor() {
@@ -29,7 +29,8 @@ class WhoAmI extends React.Component {
             try {
                 // This will try a regular call, and if needed a refresh login
                 await getCallApi(EDITIONS_ENDPOINT + "?current=true", true, false);
-                login(username, accessToken, refreshToken);
+                // Not login() with the tokens read above: a refresh during the call replaced them
+                dispatch();
             } catch {
                 // If we can't, it means the refresh token is invalid and we better logout
                 logout();
