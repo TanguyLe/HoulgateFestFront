@@ -1,0 +1,22 @@
+name: CI
+
+# main is deployed to production on every push, so every PR must leave it deployable.
+on:
+    pull_request:
+        branches: [main]
+    push:
+        branches: [main]
+
+jobs:
+    check:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: package.json
+                  cache: npm
+            - run: npm ci
+            - run: npm run prettier-check
+            - run: npm run build

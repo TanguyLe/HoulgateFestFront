@@ -1,5 +1,10 @@
 # Changelog
 
+> **This changelog is no longer maintained.** Since the switch to trunk-based development,
+> every PR merged into `main` is deployed to production directly, without versioned releases.
+> See the [merged pull requests](https://github.com/TanguyLe/HoulgateFestFront/pulls?q=is%3Apr+is%3Amerged) for later changes.
+> The entries below are kept for history.
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
