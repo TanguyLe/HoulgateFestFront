@@ -13,7 +13,8 @@ module.exports = {
             {
                 test: /\.(jsx|js)?$/,
                 exclude: /node_modules/,
-                use: "babel-loader",
+                // Babel 8's preset-react emits dev-only JSX (jsxDEV) unless its env is production
+                use: { loader: "babel-loader", options: { envName: "production" } },
             },
             {
                 test: /\.css$/,
