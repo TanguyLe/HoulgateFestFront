@@ -111,6 +111,7 @@ export class Floor extends React.Component {
                                     this.props.createShotgunFunction(event, room._id)
                                 }
                                 addPersonsInShotgunFunction={this.props.addPersonsInShotgunFunction}
+                                cancelShotgunFunction={this.props.cancelShotgunFunction}
                             />
                         );
                     })}

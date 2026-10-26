@@ -45,6 +45,7 @@ class DisplayAllFloors extends React.Component {
                                 this.props.createShotgunFunction(event, room, floor)
                             }
                             addPersonsInShotgunFunction={this.props.addPersonsInShotgunFunction}
+                            cancelShotgunFunction={this.props.cancelShotgunFunction}
                         />
                     );
                 })}
