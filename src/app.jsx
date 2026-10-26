@@ -14,6 +14,7 @@ import ContactPage from "./contact/contactPage";
 import TripPage from "./trip/tripPage";
 import ScoresPage from "./scores/scoresPage";
 import HistoryPage from "./history/historyPage";
+import AdminPage from "./admin/adminPage";
 
 class App extends React.Component {
     render() {
@@ -34,6 +35,9 @@ class App extends React.Component {
                     </Route>
                     <Route path="/scores">
                         <DefaultLayout component={ScoresPage} bigContainer auth />
+                    </Route>
+                    <Route path="/admin">
+                        <DefaultLayout component={AdminPage} bigContainer auth />
                     </Route>
                     <Route path="/contact">
                         <DefaultLayout component={ContactPage} />
