@@ -50,8 +50,10 @@ class Room extends React.Component {
         const shotgunOnGoingForUser = currentUser.hasPreShotgun || currentUser.hasShotgun;
         const isUserRoom = shotgunOnGoingForUser ? roomId === currentUser.room : false;
 
+        // the API refuses to book accounts that aren't activated, so don't offer them as roommates
         const availablePersons = users.filter(
-            (person) => person.hasShotgun === false || currentUser._id === person._id
+            (person) =>
+                (person.activated && person.hasShotgun === false) || currentUser._id === person._id
         );
 
         let finalStatus = roomStatus;
