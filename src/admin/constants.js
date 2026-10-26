@@ -8,3 +8,4 @@ export const getAdminActivationEmailUrl = (userId) => getAdminUserUrl(userId) + 
 export const getAdminEditionUrl = (editionId) => ADMIN_EDITIONS_URL + "/" + editionId;
 export const ADMIN_SHOTGUNS_URL = SERVER_ENDPOINT + "/admin/shotguns";
 export const ADMIN_HISTORIZE_URL = ADMIN_SHOTGUNS_URL + "/historize";
+export const getAdminShotgunUrl = (shotgunId) => ADMIN_SHOTGUNS_URL + "/" + shotgunId;
