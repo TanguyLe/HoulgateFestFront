@@ -135,11 +135,12 @@ class ShotgunContainer extends React.Component {
         );
     }
 
-    async intervalFunction() {
+    async intervalFunction(callback) {
+        // Not in parallel: both may refresh the login, and a refresh token can only be used once
         const floorsUpdater = await this.getFloorsUpdater();
         const usersUpdater = await this.getUsersUpdater();
 
-        this.updateState([floorsUpdater, usersUpdater]);
+        this.updateState([floorsUpdater, usersUpdater], callback);
     }
 
     async componentDidMount() {
@@ -179,17 +180,13 @@ class ShotgunContainer extends React.Component {
                             roomsIndexed: roomsIndexed,
                         },
                     ],
-                    async () => {
-                        const floorsUpdater = await this.getFloorsUpdater();
-                        const usersUpdater = await this.getUsersUpdater();
-
-                        this.updateState([floorsUpdater, usersUpdater], () => {
+                    () =>
+                        this.intervalFunction(() => {
                             this.refrechInterval = setInterval(
                                 this.intervalFunction,
                                 INTERVAL_DURATION,
                             );
-                        });
-                    },
+                        }),
                 );
             }
         });

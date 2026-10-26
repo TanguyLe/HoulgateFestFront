@@ -48,6 +48,10 @@ export class Floor extends React.Component {
         this.calcSizes();
     }
 
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.onResize);
+    }
+
     shouldComponentUpdate(nextProps, nextState) {
         return (
             JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
