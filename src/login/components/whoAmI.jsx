@@ -74,7 +74,7 @@ class WhoAmI extends React.Component {
                         title="Administration"
                         aria-label="Administration"
                     >
-                        <Icon name="users" size={18} />
+                        <Icon name="sliders" size={18} />
                     </Link>
                 )}
                 <button

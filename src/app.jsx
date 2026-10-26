@@ -46,7 +46,7 @@ class App extends React.Component {
                         />
                         <Route
                             path="/admin/*"
-                            element={<DefaultLayout component={AdminPage} width="wide" auth />}
+                            element={<DefaultLayout component={AdminPage} auth />}
                         />
                         <Route
                             path="/checklist/*"

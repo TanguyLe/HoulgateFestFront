@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Input, Label, Table } from "semantic-ui-react";
 
+import Icon from "../../ui/icon";
 import { toDateInput, toDatetimeInput, fromDateInput, fromDatetimeInput } from "../adminApi";
 
 const toDraft = (edition) => ({
@@ -33,7 +33,8 @@ class EditionRow extends React.Component {
         if (prevProps.edition !== this.props.edition) this.reset();
     }
 
-    handleChange(event, { name, value }) {
+    handleChange(event) {
+        const { name, value } = event.target;
         this.setState({ draft: Object.assign({}, this.state.draft, { [name]: value }) });
     }
 
@@ -68,92 +69,105 @@ class EditionRow extends React.Component {
         const { draft, saving } = this.state;
         const isNew = !edition._id;
         const dirty = this.isDirty();
+        const label = isNew ? "nouvelle édition" : "édition " + edition.year;
 
         return (
-            <Table.Row positive={isCurrent} warning={dirty && !isNew}>
-                <Table.Cell>
-                    <Input
-                        name="year"
-                        type="number"
-                        value={draft.year}
-                        onChange={this.handleChange}
-                        placeholder="Année"
-                        style={{ width: "7em" }}
-                    />
-                    {isNew && (
-                        <Label horizontal style={{ marginLeft: "0.5em" }}>
-                            Nouvelle
-                        </Label>
-                    )}
-                    {isCurrent && (
-                        <Label color="green" horizontal style={{ marginLeft: "0.5em" }}>
-                            En cours
-                        </Label>
-                    )}
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
+            <tr data-tone={dirty && !isNew ? "warning" : isCurrent ? "success" : undefined}>
+                <td>
+                    <div className="admin-toolbar">
+                        <input
+                            className="field__control admin-input-year"
+                            name="year"
+                            type="number"
+                            value={draft.year}
+                            onChange={this.handleChange}
+                            placeholder="Année"
+                            aria-label={"Année, " + label}
+                        />
+                        {isNew && <span className="chip chip--sm">Nouvelle</span>}
+                        {isCurrent && <span className="chip chip--sm chip--success">En cours</span>}
+                    </div>
+                </td>
+                <td>
+                    <input
+                        className="field__control"
                         name="weekendDate"
                         type="date"
                         value={draft.weekendDate}
                         onChange={this.handleChange}
+                        aria-label={"Date du weekend, " + label}
                     />
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
+                </td>
+                <td>
+                    <input
+                        className="field__control"
                         name="shotgunDate"
                         type="datetime-local"
                         value={draft.shotgunDate}
                         onChange={this.handleChange}
+                        aria-label={"Date et heure du shotgun, " + label}
                     />
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
+                </td>
+                <td>
+                    <input
+                        className="field__control"
                         name="scoresBoardUrl"
                         type="url"
                         value={draft.scoresBoardUrl}
                         onChange={this.handleChange}
                         placeholder="https://..."
-                        fluid
+                        aria-label={"Lien du tableau des scores, " + label}
                     />
-                </Table.Cell>
-                <Table.Cell collapsing textAlign="right">
-                    {isNew ? (
-                        <Button
-                            primary
-                            icon="plus"
-                            content="Créer"
-                            loading={saving}
-                            disabled={saving || !this.isValid()}
-                            onClick={this.save}
-                        />
-                    ) : (
-                        <Button.Group>
-                            <Button
-                                primary
-                                icon="save"
-                                title="Enregistrer"
-                                loading={saving}
-                                disabled={saving || !dirty || !this.isValid()}
+                </td>
+                <td>
+                    <div className="table__actions">
+                        {isNew ? (
+                            <button
+                                type="button"
+                                className="btn btn--primary btn--sm"
+                                disabled={saving || !this.isValid()}
                                 onClick={this.save}
-                            />
-                            <Button
-                                icon="undo"
-                                title="Annuler les modifications"
-                                disabled={saving || !dirty}
-                                onClick={this.reset}
-                            />
-                            <Button
-                                negative
-                                icon="trash"
-                                title="Supprimer"
-                                disabled={saving}
-                                onClick={() => onDelete(edition)}
-                            />
-                        </Button.Group>
-                    )}
-                </Table.Cell>
-            </Table.Row>
+                            >
+                                <Icon name="plus" size={16} />
+                                Créer
+                            </button>
+                        ) : (
+                            <>
+                                <button
+                                    type="button"
+                                    className="btn btn--primary btn--icon btn--sm"
+                                    title="Enregistrer"
+                                    aria-label={"Enregistrer l'" + label}
+                                    disabled={saving || !dirty || !this.isValid()}
+                                    onClick={this.save}
+                                >
+                                    <Icon name="save" size={16} />
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn--icon btn--sm"
+                                    title="Annuler les modifications"
+                                    aria-label={"Annuler les modifications de l'" + label}
+                                    disabled={saving || !dirty}
+                                    onClick={this.reset}
+                                >
+                                    <Icon name="undo" size={16} />
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn--ghost btn--icon btn--sm"
+                                    title="Supprimer"
+                                    aria-label={"Supprimer l'" + label}
+                                    disabled={saving}
+                                    onClick={() => onDelete(edition)}
+                                >
+                                    <Icon name="trash" size={16} />
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </td>
+            </tr>
         );
     }
 }

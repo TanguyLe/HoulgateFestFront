@@ -516,3 +516,234 @@ select.field__control {
     justify-content: center;
     gap: var(--space-3);
 }
+
+/* ---------- Danger button, status chips ---------- */
+
+.btn--danger {
+    --btn-bg: var(--danger);
+    --btn-fg: #fff;
+    --btn-border: var(--danger);
+}
+
+.btn--danger:hover:not(:disabled) {
+    color: #fff;
+    border-color: var(--danger);
+    filter: brightness(0.92);
+}
+
+.chip--sm {
+    padding: 0.15rem 0.6rem;
+    font-size: var(--text-xs);
+}
+
+.chip--success {
+    background: var(--success-soft);
+    border-color: transparent;
+    color: var(--success);
+}
+
+.chip--warning {
+    background: var(--highlight-soft);
+    border-color: transparent;
+    color: var(--highlight-ink);
+}
+
+/* ---------- Tabs ---------- */
+
+.tabs__list {
+    display: flex;
+    gap: var(--space-1);
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-bottom: 1.5px solid var(--border);
+}
+
+.tabs__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    border: 0;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1.5px;
+    background: none;
+    color: var(--text-muted);
+    font: 600 var(--text-sm) / 1 var(--font-body);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.tabs__tab:hover {
+    color: var(--text);
+}
+
+.tabs__tab[aria-selected="true"] {
+    border-bottom-color: var(--accent);
+    color: var(--text);
+}
+
+.tabs__panel {
+    padding-top: var(--space-5);
+}
+
+/* ---------- Switch ---------- */
+
+.switch {
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.switch input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+}
+
+.switch__track {
+    position: relative;
+    width: 2.6rem;
+    height: 1.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--border-strong);
+    transition: background var(--dur-fast);
+}
+
+.switch__track::after {
+    content: "";
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.switch input:checked + .switch__track {
+    background: var(--success);
+}
+
+.switch input:checked + .switch__track::after {
+    transform: translateX(1.1rem);
+}
+
+.switch input:focus-visible + .switch__track {
+    box-shadow: var(--focus-ring);
+}
+
+.switch input:disabled + .switch__track {
+    opacity: 0.45;
+}
+
+.switch:has(input:disabled) {
+    cursor: not-allowed;
+}
+
+/* ---------- Data table (scrolls sideways on small screens) ---------- */
+
+.table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+}
+
+.table th,
+.table td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.table th {
+    background: var(--surface-muted);
+    color: var(--text-soft);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.table tr[data-tone="success"] td {
+    background: var(--success-soft);
+}
+
+.table tr[data-tone="warning"] td {
+    background: var(--highlight-soft);
+}
+
+.table tr[data-tone="danger"] td {
+    background: var(--danger-soft);
+}
+
+.table__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    white-space: nowrap;
+}
+
+.table .field__control {
+    min-height: 2.5rem;
+    padding: var(--space-2) var(--space-3);
+}
+
+.dialog__body {
+    margin-bottom: var(--space-5);
+    color: var(--text-soft);
+}
+
+/* ---------- Checkbox list (pick several people) ---------- */
+
+fieldset.field {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.check-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: var(--space-2);
+    max-height: 16rem;
+    overflow-y: auto;
+    padding: var(--space-3);
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--bg-raised);
+}
+
+.field--error .check-list {
+    border-color: var(--danger);
+}
+
+.check-list__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    cursor: pointer;
+}
+
+.check-list__item input {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0;
+    accent-color: var(--accent);
+}

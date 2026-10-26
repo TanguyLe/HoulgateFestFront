@@ -1122,3 +1122,40 @@ button.room--bed[data-state="available"]:hover {
     color: var(--text-muted);
     text-decoration: line-through;
 }
+
+/* ---------- Admin ---------- */
+
+.admin-stack {
+    display: grid;
+    gap: var(--space-5);
+}
+
+.admin-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.admin-toolbar .field__control {
+    width: auto;
+    min-width: 12rem;
+}
+
+.admin-toolbar__count {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+}
+
+.admin-stack h2 {
+    margin: 0;
+    font-size: var(--text-xl);
+}
+
+.admin-stack p {
+    margin: 0;
+}
+
+.admin-input-year {
+    width: 6.5rem;
+}

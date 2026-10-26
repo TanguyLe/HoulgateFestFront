@@ -149,6 +149,110 @@ export class Dialog extends React.Component {
     }
 }
 
+/**
+ * Dialog asking to confirm an action. Mount it only while open, like Dialog.
+ * `danger` styles the confirm button as destructive.
+ */
+export const ConfirmDialog = ({ title, confirmLabel, danger, onConfirm, onClose, children }) => (
+    <Dialog id="confirm-dialog" title={title} onClose={onClose}>
+        {children && <div className="dialog__body">{children}</div>}
+        <div className="form__actions">
+            <button type="button" className="btn" onClick={onClose}>
+                Annuler
+            </button>
+            <button
+                type="button"
+                className={cx("btn", danger ? "btn--danger" : "btn--primary")}
+                onClick={onConfirm}
+                autoFocus
+            >
+                {confirmLabel || "Confirmer"}
+            </button>
+        </div>
+    </Dialog>
+);
+
+/**
+ * Accessible tabs: `tabs` is a list of { key, label, icon }, the active panel is the children.
+ * Arrow keys, Home and End move between tabs (WAI-ARIA tabs pattern).
+ */
+export class Tabs extends React.Component {
+    constructor() {
+        super();
+
+        this.onKeyDown = this.onKeyDown.bind(this);
+    }
+
+    onKeyDown(event) {
+        const { tabs, active, onChange } = this.props;
+        const index = tabs.findIndex((tab) => tab.key === active);
+        const moves = {
+            ArrowRight: index + 1,
+            ArrowLeft: index - 1,
+            Home: 0,
+            End: tabs.length - 1,
+        };
+
+        if (!(event.key in moves)) return;
+        event.preventDefault();
+
+        const next = tabs[(moves[event.key] + tabs.length) % tabs.length];
+        onChange(next.key);
+        document.getElementById("tab-" + next.key).focus();
+    }
+
+    render() {
+        const { tabs, active, onChange, label, children } = this.props;
+
+        return (
+            <div className="tabs">
+                <div className="tabs__list" role="tablist" aria-label={label}>
+                    {tabs.map((tab) => (
+                        <button
+                            key={tab.key}
+                            id={"tab-" + tab.key}
+                            type="button"
+                            role="tab"
+                            className="tabs__tab"
+                            aria-selected={tab.key === active}
+                            aria-controls={"tabpanel-" + tab.key}
+                            tabIndex={tab.key === active ? 0 : -1}
+                            onClick={() => onChange(tab.key)}
+                            onKeyDown={this.onKeyDown}
+                        >
+                            {tab.icon && <Icon name={tab.icon} size={18} />}
+                            {tab.label}
+                        </button>
+                    ))}
+                </div>
+                <div
+                    className="tabs__panel"
+                    role="tabpanel"
+                    id={"tabpanel-" + active}
+                    aria-labelledby={"tab-" + active}
+                >
+                    {children}
+                </div>
+            </div>
+        );
+    }
+}
+
+// On/off toggle: a native checkbox with the switch role, `label` is read by screen readers
+export const Switch = ({ checked, disabled, label, onChange }) => (
+    <label className="switch">
+        <input
+            type="checkbox"
+            role="switch"
+            checked={checked}
+            disabled={disabled}
+            onChange={(event) => onChange(event.target.checked)}
+        />
+        <span className="switch__track" aria-hidden />
+        <span className="visually-hidden">{label}</span>
+    </label>
+);
+
 const TOAST_ICONS = { info: "info", success: "check", error: "alert" };
 
 export class Toaster extends React.Component {
