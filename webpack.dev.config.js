@@ -39,6 +39,8 @@ module.exports = {
             HAS_STARTED: false,
             SCORES_BOARD_URL: null,
             TOGETZER_IFRAME_URL: null,
+            // Cloudflare's test site key in dev: the captcha always passes
+            TURNSTILE_SITE_KEY: "1x00000000000000000000AA",
         }),
     ],
 };
