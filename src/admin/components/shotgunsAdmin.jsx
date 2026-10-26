@@ -1,8 +1,15 @@
 import React from "react";
 import { Button, Confirm, Dropdown, Header, Icon, Label, Message, Table } from "semantic-ui-react";
 
-import { ADMIN_EDITIONS_URL, ADMIN_SHOTGUNS_URL, ADMIN_HISTORIZE_URL } from "../constants";
-import { adminGet, adminPost } from "../adminApi";
+import {
+    ADMIN_EDITIONS_URL,
+    ADMIN_SHOTGUNS_URL,
+    ADMIN_HISTORIZE_URL,
+    ADMIN_USERS_URL,
+    getAdminShotgunUrl,
+} from "../constants";
+import { adminDelete, adminGet, adminPost, adminPut } from "../adminApi";
+import ShotgunEditModal from "./shotgunEditModal";
 
 // The shotguns usually belong to the last edition whose shotgun has opened
 const getDefaultEditionId = (editions) => {
@@ -23,6 +30,11 @@ class ShotgunsAdmin extends React.Component {
             historyCounts: {},
             editions: [],
             editionId: null,
+            users: [],
+            editing: null,
+            editError: "",
+            deleting: null,
+            saving: false,
             confirming: false,
             historizing: false,
             error: "",
@@ -30,11 +42,17 @@ class ShotgunsAdmin extends React.Component {
         };
 
         this.historize = this.historize.bind(this);
+        this.saveShotgun = this.saveShotgun.bind(this);
+        this.deleteShotgun = this.deleteShotgun.bind(this);
     }
 
     componentDidMount() {
-        Promise.all([adminGet(ADMIN_SHOTGUNS_URL), adminGet(ADMIN_EDITIONS_URL)])
-            .then(([shotguns, editions]) => {
+        Promise.all([
+            adminGet(ADMIN_SHOTGUNS_URL),
+            adminGet(ADMIN_EDITIONS_URL),
+            adminGet(ADMIN_USERS_URL),
+        ])
+            .then(([shotguns, editions, users]) => {
                 editions.sort((a, b) => b.year - a.year);
                 this.setState({
                     loading: false,
@@ -42,6 +60,7 @@ class ShotgunsAdmin extends React.Component {
                     historyCounts: shotguns.historyCounts,
                     editions: editions,
                     editionId: getDefaultEditionId(editions),
+                    users: users,
                 });
             })
             .catch((error) => this.setState({ loading: false, error: error.message }));
@@ -51,27 +70,66 @@ class ShotgunsAdmin extends React.Component {
         return this.state.editions.find((edition) => edition._id === this.state.editionId);
     }
 
+    // The edition or the deletion may also have freed or expired other shotguns: reload them all
+    reloadShotguns(success) {
+        return adminGet(ADMIN_SHOTGUNS_URL).then((shotguns) =>
+            this.setState({
+                shotguns: shotguns.shotguns,
+                historyCounts: shotguns.historyCounts,
+                error: "",
+                success: success,
+            })
+        );
+    }
+
+    saveShotgun(change) {
+        const shotgun = this.state.editing;
+        this.setState({ saving: true });
+
+        adminPut(getAdminShotgunUrl(shotgun._id), change)
+            .then(() => {
+                this.setState({ editing: null, editError: "" });
+                return this.reloadShotguns(
+                    "Shotgun de la chambre " + shotgun.room.text + " modifié."
+                );
+            })
+            .catch((error) => this.setState({ editError: error.message }))
+            .finally(() => this.setState({ saving: false }));
+    }
+
+    deleteShotgun() {
+        const shotgun = this.state.deleting;
+        this.setState({ deleting: null, saving: true });
+
+        adminDelete(getAdminShotgunUrl(shotgun._id))
+            .then((result) =>
+                this.reloadShotguns(
+                    "Shotgun de la chambre " +
+                        (shotgun.room ? shotgun.room.text : "?") +
+                        " supprimé, " +
+                        result.usersReset +
+                        " utilisateur(s) libéré(s)."
+                )
+            )
+            .catch((error) => this.setState({ error: error.message, success: "" }))
+            .finally(() => this.setState({ saving: false }));
+    }
+
     historize() {
         const edition = this.getEdition();
         this.setState({ confirming: false, historizing: true });
 
         adminPost(ADMIN_HISTORIZE_URL, { editionId: edition._id })
             .then((result) =>
-                adminGet(ADMIN_SHOTGUNS_URL).then((shotguns) =>
-                    this.setState({
-                        shotguns: shotguns.shotguns,
-                        historyCounts: shotguns.historyCounts,
-                        error: "",
-                        success:
-                            result.historized +
-                            " shotgun(s) historisé(s) pour " +
-                            edition.year +
-                            ", " +
-                            result.droppedPreShotguns +
-                            " pré-shotgun(s) abandonné(s), " +
-                            result.usersReset +
-                            " utilisateur(s) libéré(s).",
-                    })
+                this.reloadShotguns(
+                    result.historized +
+                        " shotgun(s) historisé(s) pour " +
+                        edition.year +
+                        ", " +
+                        result.droppedPreShotguns +
+                        " pré-shotgun(s) abandonné(s), " +
+                        result.usersReset +
+                        " utilisateur(s) libéré(s)."
                 )
             )
             .catch((error) => this.setState({ error: error.message, success: "" }))
@@ -81,6 +139,7 @@ class ShotgunsAdmin extends React.Component {
     render() {
         const { loading, shotguns, historyCounts, editions, editionId } = this.state;
         const { confirming, historizing, error, success } = this.state;
+        const { users, editing, editError, deleting, saving } = this.state;
 
         if (loading)
             return (
@@ -115,6 +174,7 @@ class ShotgunsAdmin extends React.Component {
                                 <Table.HeaderCell>Propriétaire</Table.HeaderCell>
                                 <Table.HeaderCell>Colocataires</Table.HeaderCell>
                                 <Table.HeaderCell collapsing>Statut</Table.HeaderCell>
+                                <Table.HeaderCell collapsing>Actions</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
@@ -142,6 +202,27 @@ class ShotgunsAdmin extends React.Component {
                                             </Label>
                                         )}
                                     </Table.Cell>
+                                    <Table.Cell style={{ whiteSpace: "nowrap" }}>
+                                        <Button
+                                            compact
+                                            size="small"
+                                            icon="edit"
+                                            title="Modifier les personnes"
+                                            disabled={saving || !shotgun.room}
+                                            onClick={() =>
+                                                this.setState({ editing: shotgun, editError: "" })
+                                            }
+                                        />
+                                        <Button
+                                            compact
+                                            negative
+                                            size="small"
+                                            icon="trash"
+                                            title="Supprimer"
+                                            disabled={saving}
+                                            onClick={() => this.setState({ deleting: shotgun })}
+                                        />
+                                    </Table.Cell>
                                 </Table.Row>
                             ))}
                         </Table.Body>
@@ -149,6 +230,35 @@ class ShotgunsAdmin extends React.Component {
                 ) : (
                     <p>Aucun shotgun en cours.</p>
                 )}
+
+                {editing && (
+                    <ShotgunEditModal
+                        shotgun={editing}
+                        shotguns={shotguns}
+                        users={users}
+                        saving={saving}
+                        error={editError}
+                        onSave={this.saveShotgun}
+                        onClose={() => this.setState({ editing: null })}
+                    />
+                )}
+                <Confirm
+                    open={deleting !== null}
+                    header={
+                        deleting
+                            ? "Supprimer le " +
+                              (deleting.status === "shotgunned" ? "shotgun" : "pré-shotgun") +
+                              " de la chambre " +
+                              (deleting.room ? deleting.room.text : "?") +
+                              " ?"
+                            : ""
+                    }
+                    content="La chambre et toutes ses personnes seront libérées. Personne n'est prévenu par email."
+                    cancelButton="Annuler"
+                    confirmButton={{ content: "Supprimer", negative: true }}
+                    onCancel={() => this.setState({ deleting: null })}
+                    onConfirm={this.deleteShotgun}
+                />
 
                 <Header as="h3">Historiser les shotguns</Header>
                 <p>
