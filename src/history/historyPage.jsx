@@ -177,7 +177,7 @@ class HistoryPage extends React.Component {
                 </Header>
                 <Image
                     style={{ paddingBottom: "10px" }}
-                    src="static/banners/2020.png"
+                    src="static/banners/2020.jpg"
                     centered
                     spaced
                 />

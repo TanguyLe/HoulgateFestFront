@@ -1,7 +1,4 @@
 import React from "react";
-import { map } from "lodash/fp";
-
-const mapUncapped = map.convert({ cap: false });
 
 import Floor from "./index";
 import { FLOOR_GRID_STRUCT_INDEX_PREFIX } from "../../constants";
@@ -31,10 +28,14 @@ class DisplayAllFloors extends React.Component {
         window.addEventListener("resize", this.onResize);
     }
 
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.onResize);
+    }
+
     render() {
         return (
             <div className="allFloors" style={{ height: this.state.height }}>
-                {mapUncapped((floor, index) => {
+                {this.props.floors.map((floor, index) => {
                     return (
                         <Floor
                             key={FLOOR_GRID_STRUCT_INDEX_PREFIX + index}
@@ -46,7 +47,7 @@ class DisplayAllFloors extends React.Component {
                             addPersonsInShotgunFunction={this.props.addPersonsInShotgunFunction}
                         />
                     );
-                }, this.props.floors)}
+                })}
             </div>
         );
     }
