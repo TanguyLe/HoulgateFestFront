@@ -107,15 +107,15 @@ class CreatePasswordResetForm extends React.Component {
                                     {
                                         valid: false,
                                         errorMsg: jsonData.message,
-                                    }
+                                    },
                                 ),
-                            }
-                        )
+                            },
+                        ),
                     );
 
                     if (jsonData.wrongField === "activation")
                         alert(
-                            "Le compte n'est pas activé! Veuillez utiliser le lien que vous avez reçu par mail."
+                            "Le compte n'est pas activé! Veuillez utiliser le lien que vous avez reçu par mail.",
                         );
                 } else this.setState({ status: "sent" });
             })

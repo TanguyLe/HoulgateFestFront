@@ -54,8 +54,8 @@ class EditionsAdmin extends React.Component {
             .then((created) =>
                 this.setEditions(
                     this.state.editions.concat(created),
-                    "Édition " + created.year + " créée."
-                )
+                    "Édition " + created.year + " créée.",
+                ),
             )
             .catch((error) => this.showError(error));
     }
@@ -65,10 +65,10 @@ class EditionsAdmin extends React.Component {
             .then((updated) =>
                 this.setEditions(
                     this.state.editions.map((edition) =>
-                        edition._id === editionId ? updated : edition
+                        edition._id === editionId ? updated : edition,
                     ),
-                    "Édition " + updated.year + " enregistrée."
-                )
+                    "Édition " + updated.year + " enregistrée.",
+                ),
             )
             .catch((error) => this.showError(error));
     }
@@ -81,8 +81,8 @@ class EditionsAdmin extends React.Component {
             .then(() =>
                 this.setEditions(
                     this.state.editions.filter((edition) => edition._id !== toDelete._id),
-                    "Édition " + toDelete.year + " supprimée."
-                )
+                    "Édition " + toDelete.year + " supprimée.",
+                ),
             )
             .catch((error) => this.showError(error));
     }

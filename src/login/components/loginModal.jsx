@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import withRouter from "../../utils/withRouter";
 import { Button, Header, Segment, TransitionablePortal } from "semantic-ui-react";
 
 import LogInForm from "./forms/logInForm";
@@ -35,8 +35,14 @@ class LoginPortal extends React.Component {
                 open={this.state.open}
                 onOpen={this.handleOpen}
                 onClose={this.handleClose}
+                // A controlled TransitionablePortal ignores its own trigger click: open it from here
                 trigger={
-                    <Button content="Connexion" id="loginPortalOpener" disabled={this.state.open} />
+                    <Button
+                        content="Connexion"
+                        id="loginPortalOpener"
+                        disabled={this.state.open}
+                        onClick={this.handleOpen}
+                    />
                 }
             >
                 <Segment className="ConnectionModal">

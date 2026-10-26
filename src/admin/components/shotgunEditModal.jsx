@@ -20,7 +20,7 @@ class ShotgunEditModal extends React.Component {
                 .filter((other) => other._id !== shotgun._id)
                 .flatMap((other) => [other.user, ...other.roommates])
                 .filter(Boolean)
-                .map((user) => user._id)
+                .map((user) => user._id),
         );
 
         return users

@@ -45,7 +45,7 @@ export default class LogIn extends React.Component {
 
                     if (jsonData.wrongField === "activation")
                         alert(
-                            "Le compte n'est pas activé! Veuillez utiliser le lien que vous avez reçu par mail."
+                            "Le compte n'est pas activé! Veuillez utiliser le lien que vous avez reçu par mail.",
                         );
                 } else login(jsonData.username, jsonData.accessToken, jsonData.refreshToken);
             })

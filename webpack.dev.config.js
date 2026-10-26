@@ -1,11 +1,11 @@
 const webpack = require("webpack");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 module.exports = {
-    entry: ["react-hot-loader/patch", "./src/houlgatefest.js"],
+    entry: ["./src/houlgatefest.js"],
     mode: "development",
     resolve: {
         extensions: [".js", ".jsx"],
-        alias: { "react-dom": "@hot-loader/react-dom" },
     },
     devtool: "inline-source-map",
     module: {
@@ -13,7 +13,7 @@ module.exports = {
             {
                 test: /\.(jsx|js)?$/,
                 exclude: /(node_modules|bin)/,
-                use: ["react-hot-loader/webpack", "babel-loader"],
+                use: { loader: "babel-loader", options: { plugins: ["react-refresh/babel"] } },
             },
             {
                 test: /\.css$/,
@@ -32,6 +32,7 @@ module.exports = {
         historyApiFallback: true,
     },
     plugins: [
+        new ReactRefreshWebpackPlugin(),
         new webpack.EnvironmentPlugin({
             NODE_ENV: "development",
             API_URL: "http://localhost:3000",

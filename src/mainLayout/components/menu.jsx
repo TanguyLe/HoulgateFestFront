@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Icon, Responsive, Sidebar, Menu, Container, Image } from "semantic-ui-react";
+import { Icon, Sidebar, Menu, Container, Image } from "semantic-ui-react";
 
 import WhoAmI from "../../login/components/whoAmI";
 
@@ -25,10 +25,9 @@ const NavBarMobile = ({ onToggle, rightItems }) => (
             </Link>
         </Menu.Item>
         <Menu.Menu position="right">
-            {rightItems.map((item) => {
-                item["as"] = "div";
-                return <Menu.Item {...item} />;
-            })}
+            {rightItems.map(({ key, ...item }) => (
+                <Menu.Item key={key} {...item} as="div" />
+            ))}
         </Menu.Menu>
     </Menu>
 );
@@ -41,15 +40,13 @@ const NavBarDesktop = ({ leftItems, rightItems }) => (
                 <Image src="static/logov3.png" size="small" />
             </Link>
         </Menu.Item>
-        {leftItems.map((item) => {
-            item["as"] = "div";
-            return <Menu.Item {...item} />;
-        })}
+        {leftItems.map(({ key, ...item }) => (
+            <Menu.Item key={key} {...item} as="div" />
+        ))}
         <Menu.Menu position="right">
-            {rightItems.map((item) => {
-                item["as"] = "div";
-                return <Menu.Item {...item} />;
-            })}
+            {rightItems.map(({ key, ...item }) => (
+                <Menu.Item key={key} {...item} as="div" />
+            ))}
         </Menu.Menu>
     </Menu>
 );
@@ -72,10 +69,24 @@ class NavBarChildren extends React.Component {
     }
 }
 
+// semantic-ui-react 2 dropped Responsive: the mobile bar is shown below its old tablet breakpoint
+const mobileQuery = window.matchMedia("(max-width: 767px)");
+
 class NavBar extends React.Component {
     state = {
         visible: false,
+        isMobile: mobileQuery.matches,
     };
+
+    componentDidMount() {
+        mobileQuery.addEventListener("change", this.handleMediaChange);
+    }
+
+    componentWillUnmount() {
+        mobileQuery.removeEventListener("change", this.handleMediaChange);
+    }
+
+    handleMediaChange = (event) => this.setState({ isMobile: event.matches });
 
     handlePusher = () => {
         const { visible } = this.state;
@@ -87,16 +98,20 @@ class NavBar extends React.Component {
 
     render() {
         const { children, leftItems, rightItems, bigContainer } = this.props;
-        const { visible } = this.state;
+        const { visible, isMobile } = this.state;
         return (
             <div>
-                <Responsive {...Responsive.onlyMobile}>
+                {isMobile ? (
                     <Sidebar.Pushable>
                         <Sidebar as={Menu} animation="overlay" inverted vertical visible={visible}>
-                            {leftItems.map((item) => {
-                                item["as"] = "div";
-                                return <Menu.Item {...item} onClick={this.handlePusher} />;
-                            })}
+                            {leftItems.map(({ key, ...item }) => (
+                                <Menu.Item
+                                    key={key}
+                                    {...item}
+                                    as="div"
+                                    onClick={this.handlePusher}
+                                />
+                            ))}
                         </Sidebar>
                         <Sidebar.Pusher
                             dimmed={visible}
@@ -107,11 +122,12 @@ class NavBar extends React.Component {
                             <NavBarChildren bigContainer={bigContainer}>{children}</NavBarChildren>
                         </Sidebar.Pusher>
                     </Sidebar.Pushable>
-                </Responsive>
-                <Responsive minWidth={Responsive.onlyTablet.minWidth}>
-                    <NavBarDesktop leftItems={leftItems} rightItems={rightItems} />
-                    <NavBarChildren bigContainer={bigContainer}>{children}</NavBarChildren>
-                </Responsive>
+                ) : (
+                    <>
+                        <NavBarDesktop leftItems={leftItems} rightItems={rightItems} />
+                        <NavBarChildren bigContainer={bigContainer}>{children}</NavBarChildren>
+                    </>
+                )}
             </div>
         );
     }

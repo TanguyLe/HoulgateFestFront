@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import withRouter from "../../utils/withRouter";
 
 import { register, unregister } from "../../login/store";
 

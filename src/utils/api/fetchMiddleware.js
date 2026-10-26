@@ -19,7 +19,7 @@ export const refreshLogin = (showAlert = true) => {
             if (!response.ok)
                 throw Error(
                     "Erreur lors du refresh de ton login, " +
-                        "essaie de recharger la page et de te déconnecter/reconnecter."
+                        "essaie de recharger la page et de te déconnecter/reconnecter.",
                 );
             return response;
         })

@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import withRouter from "../utils/withRouter";
 
 import PasswordResetForm from "./components/forms/passwordResetForm";
 import { getPasswordResetUrl } from "./constants";

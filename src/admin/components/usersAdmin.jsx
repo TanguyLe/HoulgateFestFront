@@ -80,7 +80,7 @@ class UsersAdmin extends React.Component {
                 this.setState({
                     users: this.state.users.map((u) => (u._id === updated._id ? updated : u)),
                     error: "",
-                })
+                }),
             )
             .catch((error) => this.setState({ error: error.message }))
             .finally(() => this.setSaving(user._id, false));
@@ -93,7 +93,7 @@ class UsersAdmin extends React.Component {
                 this.setState({
                     error: "",
                     success: "Email d'activation renvoyé à " + user.email + ".",
-                })
+                }),
             )
             .catch((error) => this.setState({ error: error.message, success: "" }))
             .finally(() => this.setSaving(user._id, false));
@@ -113,7 +113,7 @@ class UsersAdmin extends React.Component {
                 FILTERS[this.state.filter].test(user) &&
                 (!search ||
                     (user.username || "").toLowerCase().includes(search) ||
-                    user.email.toLowerCase().includes(search))
+                    user.email.toLowerCase().includes(search)),
         );
     }
 

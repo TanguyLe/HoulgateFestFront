@@ -82,7 +82,11 @@ export default class ShotgunPortal extends React.Component {
                 compact
                 content={this.props.content}
                 disabled={this.props.disabled || this.state.open}
-                onClick={directShotgun ? this.props.createShotgunFunction : () => {}}
+                // A controlled TransitionablePortal ignores its own trigger click: open it from here
+                onClick={(...args) => {
+                    if (directShotgun) this.props.createShotgunFunction(...args);
+                    this.handleOpen();
+                }}
             />
         );
 

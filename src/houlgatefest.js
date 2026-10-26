@@ -1,14 +1,8 @@
 require("./houlgatefest.css");
 
 import React from "react";
-import ReactDOM from "react-dom";
-import { AppContainer } from "react-hot-loader";
+import { createRoot } from "react-dom/client";
 
 import App from "./app";
 
-ReactDOM.render(
-    <AppContainer>
-        <App />
-    </AppContainer>,
-    document.getElementById("app")
-);
+createRoot(document.getElementById("app")).render(<App />);

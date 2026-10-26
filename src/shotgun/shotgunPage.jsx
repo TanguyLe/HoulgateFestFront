@@ -23,8 +23,8 @@ class ShotgunPage extends React.Component {
                 this.setState({
                     loading: false,
                     currentDatetime: date,
-                })
-            )
+                }),
+            ),
         );
     }
 

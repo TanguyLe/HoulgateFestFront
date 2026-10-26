@@ -19,7 +19,7 @@ export default class Countdown extends React.Component {
             nextCurrentDatetime.setSeconds(nextCurrentDatetime.getSeconds() + 1);
             const timeLeft = Countdown.calculateCountdown(
                 this.props.targetDatetime,
-                nextCurrentDatetime
+                nextCurrentDatetime,
             );
             timeLeft
                 ? this.setState({
