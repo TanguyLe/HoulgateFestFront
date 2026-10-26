@@ -2,6 +2,7 @@ import React from "react";
 
 import RoomBasis from "./roomBasis";
 import ShotgunPortal from "../shotgunModal";
+import PreShotgunTimer from "../preShotgunTimer";
 import {
     ROOM_STATUS_LOADING,
     ROOM_STATUS_SHOTGUNNED,
@@ -124,6 +125,14 @@ class Room extends React.Component {
                         addPersonsInShotgunFunction={(roommatesIds) =>
                             this.props.addPersonsInShotgunFunction(this.props.id, roommatesIds)
                         }
+                    />
+                ) : (
+                    ""
+                )}
+                {roomStatus === ROOM_STATUS_PRESHOTGUNNED && this.props.preShotgunExpiry ? (
+                    <PreShotgunTimer
+                        expiry={this.props.preShotgunExpiry}
+                        label={isUserRoom ? "Il te reste" : "Expire dans"}
                     />
                 ) : (
                     ""

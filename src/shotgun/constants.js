@@ -8,6 +8,9 @@ export const ROOM_STATUS_LOADING = "loading";
 export const ROOM_STATUS_PRESHOTGUNNED = "preShotgunned";
 export const ROOM_STATUS_READY = "readyForShotgun";
 
+// Must match SHOTGUN_TIMEOUT_MS in the back: a pre-shotgun not completed within it is deleted
+export const PRESHOTGUN_TIMEOUT_MS = 2 * 60 * 1000;
+
 export const PASSING_TYPE = "passing";
 export const BATHROOM_TYPE = "bathroom";
 export const KITCHEN_TYPE = "kitchen";

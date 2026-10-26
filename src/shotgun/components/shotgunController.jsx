@@ -2,7 +2,7 @@ import React from "react";
 import { Icon, Message } from "semantic-ui-react";
 
 import DisplayAllFloors from "./floor/DisplayAllFloors";
-import { objectMap } from "../../utils/miscFcts";
+import { getParisDatetimeFromAPI, objectMap } from "../../utils/miscFcts";
 import { villaLesGenets } from "../villaLesGenetsDef";
 import { USERS_ENDPOINT } from "../../constants";
 import {
@@ -13,6 +13,7 @@ import {
     ROOM_STATUS_SHOTGUNNED,
     ROOM_STATUS_PRESHOTGUNNED,
     ROOM_STATUS_READY,
+    PRESHOTGUN_TIMEOUT_MS,
 } from "../constants";
 
 import { getCallApi, postCallApi, putCallApi } from "../../utils/api/fetchMiddleware";
@@ -37,6 +38,9 @@ class ShotgunContainer extends React.Component {
             userInfo: {},
             roomsIndexed: {},
         };
+
+        // Server time minus client time, so the pre-shotgun expiries don't depend on the client's clock
+        this.clockOffset = 0;
 
         this.addPersonsInShotgun = this.addPersonsInShotgun.bind(this);
         this.createShotgun = this.createShotgun.bind(this);
@@ -92,8 +96,23 @@ class ShotgunContainer extends React.Component {
         const updateRoom = (room) => {
             let related_shotgun = shotgunsList.find((shotgun) => shotgun.room._id === room._id);
             if (!related_shotgun)
-                return Object.assign({}, room, { status: ROOM_STATUS_READY, user: "" });
-            else return Object.assign({}, room, related_shotgun, related_shotgun.room);
+                return Object.assign({}, room, {
+                    status: ROOM_STATUS_READY,
+                    user: "",
+                    preShotgunExpiry: null,
+                });
+
+            // The room's own createdAt overrides the shotgun's one below, so the expiry is computed first
+            // and converted to the client's clock
+            const preShotgunExpiry =
+                related_shotgun.status === ROOM_STATUS_PRESHOTGUNNED
+                    ? new Date(related_shotgun.createdAt).getTime() +
+                      PRESHOTGUN_TIMEOUT_MS -
+                      this.clockOffset
+                    : null;
+            return Object.assign({}, room, related_shotgun, related_shotgun.room, {
+                preShotgunExpiry,
+            });
         };
 
         return { roomsIndexed: objectMap(this.state.roomsIndexed, updateRoom), loading: false };
@@ -128,6 +147,9 @@ class ShotgunContainer extends React.Component {
          * Fetches the rooms' definition and the floors' definition, updates once with the eventual shotguns and
          * the user, and then start the time-outed refreshes.
          */
+        const serverTimestamp = await getParisDatetimeFromAPI();
+        if (typeof serverTimestamp === "number") this.clockOffset = serverTimestamp - Date.now();
+
         await getCallApi(ROOMS_ENDPOINT, true).then(async (response) => {
             if (response.status === 400) this.setState({ error: true, loading: false });
             else {
