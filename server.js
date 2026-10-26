@@ -19,6 +19,8 @@ const frameOrigins = [process.env.SCORES_BOARD_URL, process.env.TOGETZER_IFRAME_
     .map(originOf)
     .filter(Boolean);
 const semanticCdn = "https://cdnjs.cloudflare.com";
+// The sign up captcha (Cloudflare Turnstile) loads its script and runs in an iframe
+const turnstile = "https://challenges.cloudflare.com";
 
 serveFront = (req, res) => {
     if ([".png", ".js", ".jpg", ".ico"].includes(path.extname(req.path)))
@@ -37,13 +39,13 @@ app.use(
             useDefaults: false,
             directives: {
                 defaultSrc: ["'self'"],
-                scriptSrc: ["'self'"],
+                scriptSrc: ["'self'", turnstile],
                 // style attributes set by React components and the carousel
                 styleSrc: ["'self'", "'unsafe-inline'", semanticCdn],
                 fontSrc: ["'self'", "data:", semanticCdn],
                 imgSrc: ["'self'", "data:"],
                 connectSrc: ["'self'", ...(apiOrigin ? [apiOrigin] : [])],
-                frameSrc: frameOrigins.length ? frameOrigins : ["'none'"],
+                frameSrc: [...frameOrigins, turnstile],
                 frameAncestors: ["'none'"],
                 objectSrc: ["'none'"],
                 baseUri: ["'self'"],

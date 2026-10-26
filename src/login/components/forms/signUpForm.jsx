@@ -15,6 +15,7 @@ import { USERS_ENDPOINT } from "../../../constants";
 import { upCaseFirstLetter } from "../../../utils/miscFcts";
 import { postCallApi } from "../../../utils/api/fetchMiddleware";
 import { UNKNOWN_ERROR_MSG } from "../../../labels";
+import Captcha from "../../../utils/captcha";
 
 class SignUpForm extends React.Component {
     constructor() {
@@ -29,7 +30,10 @@ class SignUpForm extends React.Component {
                 errorMsg: "",
             };
         });
+        // the captcha token is sent and checked by the back like the other fields
+        this.initialState.captcha = { value: "", valid: true, errorMsg: "" };
 
+        this.captcha = React.createRef();
         this.typing = () => {};
 
         this.state = JSON.parse(JSON.stringify(this.initialState));
@@ -44,6 +48,7 @@ class SignUpForm extends React.Component {
         this.validateField = this.validateField.bind(this);
         this.isFormValid = this.isFormValid.bind(this);
         this.isFieldValid = this.isFieldValid.bind(this);
+        this.handleCaptchaToken = this.handleCaptchaToken.bind(this);
     }
 
     resetState() {
@@ -52,6 +57,14 @@ class SignUpForm extends React.Component {
 
     handleClickReset() {
         this.resetState();
+        this.captcha.current.reset();
+    }
+
+    handleCaptchaToken(token) {
+        // the error of the last submission stays displayed until the next one
+        this.setState((state) => ({
+            captcha: Object.assign({}, state.captcha, { value: token || "", valid: true }),
+        }));
     }
 
     isFieldValid(name, value) {
@@ -78,16 +91,24 @@ class SignUpForm extends React.Component {
             formValues[key] = this.state[key].value;
         });
 
+        this.setState((state) => ({
+            captcha: Object.assign({}, state.captcha, { errorMsg: "" }),
+        }));
+
         postCallApi(USERS_ENDPOINT, formValues, false)
-            .then((response) => {
-                if (!response.ok) throw Error();
-                return response;
-            })
-            .then((response) => response.json())
+            .then((response) =>
+                response.json().then((jsonData) => {
+                    // refused fields come with a 400, other failures are unexpected
+                    if (!response.ok && !jsonData.errors) throw Error();
+                    return jsonData;
+                }),
+            )
             .then((jsonData) => {
                 if (!jsonData.errors && !jsonData.errmsg) {
                     this.props.onRegistration("registered");
                 } else {
+                    // the token was used by this submission, another one is needed
+                    this.captcha.current.reset();
                     let newState = {};
                     Object.keys(jsonData.errors).map((key) => {
                         Object.assign(newState, {
@@ -100,7 +121,10 @@ class SignUpForm extends React.Component {
                     this.setState(newState);
                 }
             })
-            .catch((error) => alert(UNKNOWN_ERROR_MSG + error));
+            .catch((error) => {
+                this.captcha.current.reset();
+                alert(UNKNOWN_ERROR_MSG + error);
+            });
     }
 
     validateField(name, value) {
@@ -151,7 +175,7 @@ class SignUpForm extends React.Component {
 
         return (
             <Form
-                error={!isFormValid}
+                error={!isFormValid || !!this.state.captcha.errorMsg}
                 onSubmit={this.handleSubmit}
                 onKeyPress={this.handleKeyPress}
             >
@@ -174,6 +198,9 @@ class SignUpForm extends React.Component {
                         />
                     );
                 })}
+                <Form.Field>
+                    <Captcha ref={this.captcha} onToken={this.handleCaptchaToken} />
+                </Form.Field>
                 <Form.Group inline>
                     <Form.Button
                         type="submit"
