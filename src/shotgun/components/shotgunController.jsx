@@ -164,10 +164,10 @@ class ShotgunContainer extends React.Component {
                         this.updateState([floorsUpdater, usersUpdater], () => {
                             this.refrechInterval = setInterval(
                                 this.intervalFunction,
-                                INTERVAL_DURATION
+                                INTERVAL_DURATION,
                             );
                         });
-                    }
+                    },
                 );
             }
         });
@@ -188,7 +188,7 @@ class ShotgunContainer extends React.Component {
             const shotgunServerUpdate = await postCallApi(
                 getShotgunRoomUrl(roomId),
                 { roomId: roomId },
-                true
+                true,
             );
 
             if (shotgunServerUpdate.status === 200) {
@@ -229,7 +229,7 @@ class ShotgunContainer extends React.Component {
             const addUserToShotgun = await putCallApi(
                 getShotgunRoomUrl(roomId),
                 { roomId: roomId, roommates: roommatesIds, shotgunId },
-                true
+                true,
             );
 
             if (addUserToShotgun.status === 200) {
@@ -242,7 +242,7 @@ class ShotgunContainer extends React.Component {
                 // The shotgun was denied, several possible reasons, may need to elaborate in the future.
                 alert(
                     "Trop tard! Cette pièce est soit déjà shotgun, soit toi ou un de " +
-                        "tes camarades est déjà inscrit dans une pièce."
+                        "tes camarades est déjà inscrit dans une pièce.",
                 );
             }
             await this.intervalFunction();

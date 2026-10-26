@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import withRouter from "../utils/withRouter";
 
 import { getCallApi } from "../utils/api/fetchMiddleware";
 import { login } from "./store";
@@ -34,7 +34,7 @@ class ActivateAccount extends React.Component {
                 .then((jsonData) => {
                     this.setState(
                         { status: "loaded", activated: jsonData.activated },
-                        login(jsonData.username, jsonData.accessToken, jsonData.refreshToken)
+                        login(jsonData.username, jsonData.accessToken, jsonData.refreshToken),
                     );
                 })
                 .catch((error) => alert(error));

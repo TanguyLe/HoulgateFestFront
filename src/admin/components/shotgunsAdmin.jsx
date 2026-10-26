@@ -78,7 +78,7 @@ class ShotgunsAdmin extends React.Component {
                 historyCounts: shotguns.historyCounts,
                 error: "",
                 success: success,
-            })
+            }),
         );
     }
 
@@ -90,7 +90,7 @@ class ShotgunsAdmin extends React.Component {
             .then(() => {
                 this.setState({ editing: null, editError: "" });
                 return this.reloadShotguns(
-                    "Shotgun de la chambre " + shotgun.room.text + " modifié."
+                    "Shotgun de la chambre " + shotgun.room.text + " modifié.",
                 );
             })
             .catch((error) => this.setState({ editError: error.message }))
@@ -108,8 +108,8 @@ class ShotgunsAdmin extends React.Component {
                         (shotgun.room ? shotgun.room.text : "?") +
                         " supprimé, " +
                         result.usersReset +
-                        " utilisateur(s) libéré(s)."
-                )
+                        " utilisateur(s) libéré(s).",
+                ),
             )
             .catch((error) => this.setState({ error: error.message, success: "" }))
             .finally(() => this.setState({ saving: false }));
@@ -129,8 +129,8 @@ class ShotgunsAdmin extends React.Component {
                         result.droppedPreShotguns +
                         " pré-shotgun(s) abandonné(s), " +
                         result.usersReset +
-                        " utilisateur(s) libéré(s)."
-                )
+                        " utilisateur(s) libéré(s).",
+                ),
             )
             .catch((error) => this.setState({ error: error.message, success: "" }))
             .finally(() => this.setState({ historizing: false }));

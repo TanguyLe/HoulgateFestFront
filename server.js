@@ -50,7 +50,7 @@ app.use(
                 formAction: ["'self'"],
             },
         },
-    })
+    }),
 );
 app.use(serveFront);
 app.listen(port, () => console.log("HoulgateFestFront server started on: " + port));

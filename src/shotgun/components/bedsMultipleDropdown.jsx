@@ -69,7 +69,7 @@ class BedsMultipleDropdown extends React.Component {
         // Then the available persons
 
         const currentAvailablePersonsIds = state.availablePersonsIds.filter((e) =>
-            nextIds.includes(e)
+            nextIds.includes(e),
         );
 
         return { beds: currentBeds, availablePersonsIds: currentAvailablePersonsIds };
@@ -78,7 +78,7 @@ class BedsMultipleDropdown extends React.Component {
     componentDidMount() {
         const currentUsername = this.state.username;
         const currentUserId = Object.values(this.optionsPerUserId).find(
-            (person) => person.text === currentUsername
+            (person) => person.text === currentUsername,
         ).key;
 
         this.handleChange("", 0, currentUserId);
@@ -90,7 +90,7 @@ class BedsMultipleDropdown extends React.Component {
 
     render() {
         const regularOptions = this.state.availablePersonsIds.map(
-            (id) => this.optionsPerUserId[id]
+            (id) => this.optionsPerUserId[id],
         );
         const generateDropdownOption = (username) => [
             ...regularOptions,
