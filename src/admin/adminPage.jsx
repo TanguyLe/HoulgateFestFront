@@ -3,6 +3,7 @@ import { Header, Icon, Message, Tab } from "semantic-ui-react";
 
 import EditionsAdmin from "./components/editionsAdmin";
 import UsersAdmin from "./components/usersAdmin";
+import ShotgunsAdmin from "./components/shotgunsAdmin";
 import { getMe } from "./adminApi";
 
 class AdminPage extends React.Component {
@@ -52,6 +53,14 @@ class AdminPage extends React.Component {
                 render: () => (
                     <Tab.Pane>
                         <UsersAdmin me={this.state.me} />
+                    </Tab.Pane>
+                ),
+            },
+            {
+                menuItem: { key: "shotguns", icon: "bed", content: "Shotguns" },
+                render: () => (
+                    <Tab.Pane>
+                        <ShotgunsAdmin />
                     </Tab.Pane>
                 ),
             },
