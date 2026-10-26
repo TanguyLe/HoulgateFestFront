@@ -10,6 +10,7 @@ export default class ShotgunPortal extends React.Component {
 
         this.state = {
             open: false,
+            confirmingCancel: false,
         };
 
         this.handleClose = this.handleClose.bind(this);
@@ -22,7 +23,51 @@ export default class ShotgunPortal extends React.Component {
     }
 
     handleClose() {
-        this.setState({ open: false });
+        this.setState({ open: false, confirmingCancel: false });
+    }
+
+    // For the owner of a pre-shotgunned or shotgunned room. Confirmed in place: a Confirm modal
+    // would be a click outside the portal and close it.
+    getCancelButtons(status) {
+        if (!this.props.cancelShotgunFunction) return "";
+        if (status !== "attributingBeds" && status !== "shotgunSuccessful") return "";
+
+        const what = status === "attributingBeds" ? "pré-shotgun" : "shotgun";
+
+        if (!this.state.confirmingCancel)
+            return (
+                <Button
+                    basic
+                    negative
+                    compact
+                    icon="cancel"
+                    content={"Annuler mon " + what}
+                    onClick={() => this.setState({ confirmingCancel: true })}
+                />
+            );
+
+        return (
+            <div>
+                <p>
+                    La chambre et toutes ses personnes seront libérées, et n'importe qui pourra la
+                    shotgun. Personne n'est prévenu par email.
+                </p>
+                <Button
+                    negative
+                    compact
+                    content={"Oui, annuler mon " + what}
+                    onClick={() => {
+                        this.handleClose();
+                        this.props.cancelShotgunFunction();
+                    }}
+                />
+                <Button
+                    compact
+                    content="Non"
+                    onClick={() => this.setState({ confirmingCancel: false })}
+                />
+            </div>
+        );
     }
 
     getMessage(status) {
@@ -55,8 +100,8 @@ export default class ShotgunPortal extends React.Component {
                                 es maitenant responsable si quelqu'un veut échanger :)
                             </p>
                             <p>
-                                Si c'est une erreur de ta part, pas d'autre solution qu'un petit
-                                mail à houlgatefest@gmail.com, et saches que c'est pas malin!
+                                Si c'est une erreur, la personne qui a shotgun la chambre peut
+                                l'annuler, et saches que c'est pas malin!
                             </p>
                         </Message.Content>
                     </Message>
@@ -103,6 +148,7 @@ export default class ShotgunPortal extends React.Component {
                         {this.props.name}: {this.props.seats} places{" "}
                     </h3>
                     {this.getMessage(this.props.status)}
+                    {this.getCancelButtons(this.props.status)}
                 </Segment>
             </TransitionablePortal>
         );

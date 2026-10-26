@@ -16,7 +16,12 @@ import {
     PRESHOTGUN_TIMEOUT_MS,
 } from "../constants";
 
-import { getCallApi, postCallApi, putCallApi } from "../../utils/api/fetchMiddleware";
+import {
+    deleteCallApi,
+    getCallApi,
+    postCallApi,
+    putCallApi,
+} from "../../utils/api/fetchMiddleware";
 import { getCredentials } from "../../login/store";
 
 const INTERVAL_DURATION = 15000;
@@ -43,6 +48,7 @@ class ShotgunContainer extends React.Component {
         this.clockOffset = 0;
 
         this.addPersonsInShotgun = this.addPersonsInShotgun.bind(this);
+        this.cancelShotgun = this.cancelShotgun.bind(this);
         this.createShotgun = this.createShotgun.bind(this);
         this.intervalFunction = this.intervalFunction.bind(this);
         this.updateState = this.updateState.bind(this);
@@ -271,6 +277,20 @@ class ShotgunContainer extends React.Component {
         });
     }
 
+    async cancelShotgun(roomId) {
+        let roomUpdater = this.getRoomUpdater(roomId, { status: ROOM_STATUS_LOADING });
+
+        this.updateState([roomUpdater], async () => {
+            // Deletes the shotgun, or the pre-shotgun, and frees the room and everyone in it
+            const cancelShotgun = await deleteCallApi(getShotgunRoomUrl(roomId), {}, true);
+
+            if (cancelShotgun.status === 200) this.updateState([{ shotgunId: null }]);
+            else alert("L'annulation a échoué, recharge la page et réessaie.");
+
+            await this.intervalFunction();
+        });
+    }
+
     getFloorsToRender() {
         const replaceRoom = (roomId) => {
             return this.state.roomsIndexed[roomId];
@@ -308,6 +328,7 @@ class ShotgunContainer extends React.Component {
                 userInfo={this.state.userInfo}
                 createShotgunFunction={this.createShotgun}
                 addPersonsInShotgunFunction={this.addPersonsInShotgun}
+                cancelShotgunFunction={this.cancelShotgun}
             />
         );
     }

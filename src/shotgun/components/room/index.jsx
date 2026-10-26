@@ -50,6 +50,8 @@ class Room extends React.Component {
 
         const shotgunOnGoingForUser = currentUser.hasPreShotgun || currentUser.hasShotgun;
         const isUserRoom = shotgunOnGoingForUser ? roomId === currentUser.room : false;
+        // the roommates' room is theirs too, but only the owner can cancel the shotgun
+        const isUserOwner = isUserRoom && this.props.user === currentUser._id;
 
         // the API refuses to book accounts that aren't activated, so don't offer them as roommates
         const availablePersons = users.filter(
@@ -124,6 +126,11 @@ class Room extends React.Component {
                         createShotgunFunction={this.props.createShotgunFunction || null}
                         addPersonsInShotgunFunction={(roommatesIds) =>
                             this.props.addPersonsInShotgunFunction(this.props.id, roommatesIds)
+                        }
+                        cancelShotgunFunction={
+                            isUserOwner
+                                ? () => this.props.cancelShotgunFunction(this.props.id)
+                                : null
                         }
                     />
                 ) : (
