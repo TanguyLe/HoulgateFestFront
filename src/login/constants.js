@@ -35,6 +35,8 @@ export const CREATE_PSWRD_RESET_ERROR_MSG_PREFIX = "createPasswordReset" + ERROR
 
 const INVALID_EMAIL = "L'adresse email doit être valide.";
 const INVALID_CONFIRM = "Les deux mots de passe doivent être identiques.";
+// Same policy as the back, which enforces it
+const INVALID_PASSWORD = "Le mot de passe doit faire entre 8 et 72 caractères.";
 
 const NEW_PASSWORD_FR = "Nouveau mot de passe";
 const NEW_PASSWORD_CONFIRM_FR = "Confirmation nouveau mot de passe";
@@ -42,12 +44,17 @@ const NEW_PASSWORD_CONFIRM_FR = "Confirmation nouveau mot de passe";
 export const SIGN_UP_DEF = [
     { [NAME]: EMAIL, [LABEL]: EMAIL_FR, [TYPE]: TEXT, [ERROR_MSG]: INVALID_EMAIL },
     { [NAME]: USERNAME, [LABEL]: USERNAME_FR, [TYPE]: TEXT },
-    { [NAME]: PASSWORD, [LABEL]: PASSWORD_FR, [TYPE]: PASSWORD },
+    { [NAME]: PASSWORD, [LABEL]: PASSWORD_FR, [TYPE]: PASSWORD, [ERROR_MSG]: INVALID_PASSWORD },
     { [NAME]: CONFIRM, [LABEL]: CONFIRM_FR, [TYPE]: PASSWORD, [ERROR_MSG]: INVALID_CONFIRM },
 ];
 
 export const RESET_PSWRD_DEF = [
-    { [NAME]: PASSWORD, [LABEL]: NEW_PASSWORD_FR, [TYPE]: PASSWORD },
+    {
+        [NAME]: PASSWORD,
+        [LABEL]: NEW_PASSWORD_FR,
+        [TYPE]: PASSWORD,
+        [ERROR_MSG]: INVALID_PASSWORD,
+    },
     {
         [NAME]: CONFIRM,
         [LABEL]: NEW_PASSWORD_CONFIRM_FR,
@@ -62,4 +69,5 @@ export const CREATE_PSWRD_RESET_DEF = [
 
 export const REGEXES = {
     email: /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i,
+    password: /^[\s\S]{8,72}$/,
 };
