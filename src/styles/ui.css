@@ -465,11 +465,20 @@ select.field__control {
 
 /* ---------- Lock screen (auth-only pages) ---------- */
 
-/* left-aligned like every page header: the site reads as one printed sheet */
+/*
+ * Left-aligned like every page header: the site reads as one printed sheet. It sits in the
+ * content column itself, whatever page width wraps it.
+ */
 .locked {
     display: grid;
     justify-items: start;
     gap: var(--space-4);
+    width: 100%;
+    max-width: var(--content-width);
+    margin-inline: auto;
+}
+
+.locked > * {
     max-width: var(--prose-width);
 }
 

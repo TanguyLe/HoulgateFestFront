@@ -191,10 +191,6 @@
     max-width: calc(var(--prose-width) + 2 * var(--space-5));
 }
 
-.page--wide {
-    max-width: 100rem;
-}
-
 .page.page--full {
     max-width: none;
     padding: 0;

@@ -34,7 +34,7 @@ class App extends React.Component {
                         />
                         <Route
                             path="/shotgun/*"
-                            element={<DefaultLayout component={ShotgunPage} width="wide" auth />}
+                            element={<DefaultLayout component={ShotgunPage} auth />}
                         />
                         <Route
                             path="/trips/*"

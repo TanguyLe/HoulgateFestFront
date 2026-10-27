@@ -653,7 +653,8 @@
 
 .floors {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    /* two floors per row in the content column: room names stay on one line next to their action */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
     align-items: start;
     gap: var(--space-4);
 }
