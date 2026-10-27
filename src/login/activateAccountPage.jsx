@@ -4,6 +4,8 @@ import withRouter from "../utils/withRouter";
 import { getCallApi } from "../utils/api/fetchMiddleware";
 import { login } from "./store";
 import { getActivateUserUrl } from "./constants";
+import { Alert, PageHeader } from "../ui/components";
+import { notify } from "../ui/toast";
 
 class ActivateAccount extends React.Component {
     constructor() {
@@ -32,28 +34,45 @@ class ActivateAccount extends React.Component {
                 })
                 .then((response) => response.json())
                 .then((jsonData) => {
+                    if (jsonData.activated) notify.success("Compte activé, bienvenue !");
                     this.setState(
                         { status: "loaded", activated: jsonData.activated },
                         login(jsonData.username, jsonData.accessToken, jsonData.refreshToken),
                     );
                 })
-                .catch((error) => alert(error));
+                .catch((error) => {
+                    this.setState({ status: "loaded", activated: false });
+                    notify.error(error);
+                });
         } else this.setState({ status: "failed" });
     }
 
     render() {
-        let display = "";
-        if (this.state.status === "loading") display = "Activation en cours...";
+        const { status, activated } = this.state;
+        let display;
+
+        if (status === "loading" || status === "activating")
+            display = (
+                <Alert loading title="Activation en cours…">
+                    On vérifie ton lien, ça ne prend qu’une seconde.
+                </Alert>
+            );
+        else if (activated)
+            display = (
+                <Alert tone="success" title="Ton compte est activé !">
+                    Tu es connecté, direction le shotgun.
+                </Alert>
+            );
         else
-            display =
-                "Ton compte est " +
-                (this.state.activated
-                    ? "activé!"
-                    : "désactivé. (Il y a une erreur, vérifie le lien)");
+            display = (
+                <Alert tone="error" title="Ton compte n’a pas pu être activé">
+                    Il y a une erreur, vérifie le lien reçu par mail.
+                </Alert>
+            );
 
         return (
             <div className="activateAccountPage">
-                <h1> Activation de compte </h1>
+                <PageHeader title="Activation du compte" />
                 {display}
             </div>
         );

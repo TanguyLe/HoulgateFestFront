@@ -1,156 +1,109 @@
 import React from "react";
-import { Button, Segment, TransitionablePortal, Icon, Message } from "semantic-ui-react";
 
 import BedsMultipleDropdown from "./bedsMultipleDropdown";
-import { ROOM_STATUS_READY } from "../constants";
+import Icon from "../../ui/icon";
+import { Alert, Dialog } from "../../ui/components";
 
-export default class ShotgunPortal extends React.Component {
+class ShotgunDialog extends React.Component {
     constructor() {
         super();
 
-        this.state = {
-            open: false,
-            confirmingCancel: false,
-        };
-
-        this.handleClose = this.handleClose.bind(this);
-        this.handleOpen = this.handleOpen.bind(this);
-        this.getMessage = this.getMessage.bind(this);
+        this.state = { confirmingCancel: false };
     }
 
-    handleOpen() {
-        this.setState({ open: true });
-    }
-
-    handleClose() {
-        this.setState({ open: false, confirmingCancel: false });
-    }
-
-    // For the owner of a pre-shotgunned or shotgunned room. Confirmed in place: a Confirm modal
-    // would be a click outside the portal and close it.
-    getCancelButtons(status) {
-        if (!this.props.cancelShotgunFunction) return "";
-        if (status !== "attributingBeds" && status !== "shotgunSuccessful") return "";
+    // For the owner of a pre-shotgunned or shotgunned room. Confirmed in place rather than in a
+    // second dialog, which would fight this one over Escape and backdrop clicks.
+    renderCancel() {
+        const { status, onClose, cancelShotgunFunction } = this.props;
+        if (!cancelShotgunFunction) return null;
 
         const what = status === "attributingBeds" ? "pré-shotgun" : "shotgun";
 
         if (!this.state.confirmingCancel)
             return (
-                <Button
-                    basic
-                    negative
-                    compact
-                    icon="cancel"
-                    content={"Annuler mon " + what}
-                    onClick={() => this.setState({ confirmingCancel: true })}
-                />
+                <div className="form__actions">
+                    <button
+                        type="button"
+                        className="btn btn--ghost btn--sm"
+                        onClick={() => this.setState({ confirmingCancel: true })}
+                    >
+                        <Icon name="x" size={16} />
+                        Annuler mon {what}
+                    </button>
+                </div>
             );
 
         return (
-            <div>
+            <Alert tone="error" title={"Annuler ton " + what + " ?"}>
                 <p>
-                    La chambre et toutes ses personnes seront libérées, et n'importe qui pourra la
-                    shotgun. Personne n'est prévenu par email.
+                    La chambre et toutes ses personnes seront libérées, et n’importe qui pourra la
+                    shotgun. Personne n’est prévenu par email.
                 </p>
-                <Button
-                    negative
-                    compact
-                    content={"Oui, annuler mon " + what}
-                    onClick={() => {
-                        this.handleClose();
-                        this.props.cancelShotgunFunction();
-                    }}
-                />
-                <Button
-                    compact
-                    content="Non"
-                    onClick={() => this.setState({ confirmingCancel: false })}
-                />
-            </div>
+                <div className="form__actions">
+                    <button
+                        type="button"
+                        className="btn btn--danger btn--sm"
+                        onClick={() => {
+                            onClose();
+                            cancelShotgunFunction();
+                        }}
+                    >
+                        Oui, annuler mon {what}
+                    </button>
+                    <button
+                        type="button"
+                        className="btn btn--sm"
+                        onClick={() => this.setState({ confirmingCancel: false })}
+                    >
+                        Non
+                    </button>
+                </div>
+            </Alert>
         );
-    }
-
-    getMessage(status) {
-        switch (status) {
-            case "loading":
-                return (
-                    <Message info icon>
-                        <Icon name="circle notched" loading />
-                        <Message.Content>Shotgun en cours...</Message.Content>
-                    </Message>
-                );
-            case "attributingBeds":
-                return (
-                    <BedsMultipleDropdown
-                        numberOfBeds={this.props.seats}
-                        availablePersons={this.props.availablePersons}
-                        onSubmit={this.props.addPersonsInShotgunFunction}
-                    />
-                );
-            case "shotgunSuccessful":
-                return (
-                    <Message success>
-                        <Message.Content>
-                            <p>
-                                Félicitations, tu as bien shotgun avec tes amis
-                                {this.props.friends
-                                    ? "(" + this.props.friends.join(", ") + ")"
-                                    : ""}
-                                . Réjouis toi de voir ton nom gravé dans le marbre sur ce site. Tu
-                                es maitenant responsable si quelqu'un veut échanger :)
-                            </p>
-                            <p>
-                                Si c'est une erreur, la personne qui a shotgun la chambre peut
-                                l'annuler, et saches que c'est pas malin!
-                            </p>
-                        </Message.Content>
-                    </Message>
-                );
-            case "shotgunFailed":
-                return (
-                    <Message error>
-                        <Message.Content>
-                            Ton shotgun a échoué :/ Dépêche-toi de tenter une autre chambre!
-                        </Message.Content>
-                    </Message>
-                );
-        }
-        return "";
     }
 
     render() {
-        const directShotgun = this.props.status === ROOM_STATUS_READY;
-
-        let trigger = (
-            <Button
-                color={this.props.buttonType}
-                compact
-                content={this.props.content}
-                disabled={this.props.disabled || this.state.open}
-                // A controlled TransitionablePortal ignores its own trigger click: open it from here
-                onClick={(...args) => {
-                    if (directShotgun) this.props.createShotgunFunction(...args);
-                    this.handleOpen();
-                }}
-            />
-        );
+        const { name, seats, status, availablePersons, roommates, onClose } = this.props;
 
         return (
-            <TransitionablePortal
-                open={!this.props.disabled && this.state.open}
-                onOpen={this.handleOpen}
-                onClose={this.handleClose}
-                trigger={trigger}
+            <Dialog
+                id="shotgunDialog"
+                title={name}
+                subtitle={seats + " places"}
+                onClose={onClose}
+                wide={status === "attributingBeds"}
             >
-                <Segment className="ShotgunModal">
-                    <h3>
-                        {" "}
-                        {this.props.name}: {this.props.seats} places{" "}
-                    </h3>
-                    {this.getMessage(this.props.status)}
-                    {this.getCancelButtons(this.props.status)}
-                </Segment>
-            </TransitionablePortal>
+                {status === "attributingBeds" ? (
+                    <>
+                        <Alert tone="warning" title="La chambre est à toi… pour l’instant !">
+                            Choisis vite qui dort avec toi et confirme, sinon la chambre sera
+                            libérée.
+                        </Alert>
+                        <BedsMultipleDropdown
+                            numberOfBeds={seats}
+                            availablePersons={availablePersons}
+                            onSubmit={this.props.addPersonsInShotgunFunction}
+                        />
+                    </>
+                ) : (
+                    <Alert tone="success" title="Félicitations, ton shotgun est validé !">
+                        <p>
+                            {roommates.length
+                                ? "Tu dors ici avec " + roommates.join(", ") + ". "
+                                : "Tu dors ici. "}
+                            Réjouis-toi de voir ton nom gravé dans le marbre sur ce site. Tu es
+                            maintenant responsable si quelqu’un veut échanger :)
+                        </p>
+                        <p>
+                            Si c’est une erreur, la personne qui a shotgun la chambre peut
+                            l’annuler, et sache que c’est pas malin !
+                        </p>
+                    </Alert>
+                )}
+                {this.renderCancel()}
+            </Dialog>
         );
     }
 }
+
+export default ShotgunDialog;

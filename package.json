@@ -35,9 +35,7 @@
         "helmet": "^8.3.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "react-responsive-carousel": "^3.2.23",
-        "react-router-dom": "^7.18.4",
-        "semantic-ui-react": "^2.1.5"
+        "react-router-dom": "^7.18.4"
     },
     "devDependencies": {
         "@babel/core": "^8.0.9",
@@ -63,6 +61,8 @@
     "scripts": {
         "prettier-check": "prettier --check .",
         "prettier-run": "prettier --write .",
+        "typography-check": "node scripts/frenchTypography.js --check",
+        "typography-fix": "node scripts/frenchTypography.js --fix",
         "dev": "webpack-dev-server --hot --config webpack.dev.config --port 8000",
         "devStartShotgun": "cross-env-shell HAS_STARTED=true npm run dev",
         "devBuild": "webpack --config webpack.dev.config",

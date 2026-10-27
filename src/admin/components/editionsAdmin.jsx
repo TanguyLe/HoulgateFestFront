@@ -1,9 +1,10 @@
 import React from "react";
-import { Confirm, Header, Icon, Message, Table } from "semantic-ui-react";
 
 import EditionRow from "./editionRow";
 import { ADMIN_EDITIONS_URL, getAdminEditionUrl } from "../constants";
 import { adminGet, adminPost, adminPut, adminDelete } from "../adminApi";
+import { Alert, ConfirmDialog } from "../../ui/components";
+import { notify } from "../../ui/toast";
 
 const newEditionFor = (editions) => ({
     year: editions.length
@@ -15,8 +16,7 @@ class EditionsAdmin extends React.Component {
     constructor() {
         super();
 
-        this.state = { loading: true, editions: [], newEdition: {}, error: "", success: "" };
-        this.state.toDelete = null;
+        this.state = { loading: true, editions: [], newEdition: {}, error: "", toDelete: null };
 
         this.load = this.load.bind(this);
         this.create = this.create.bind(this);
@@ -35,18 +35,14 @@ class EditionsAdmin extends React.Component {
             editions: editions,
             newEdition: newEditionFor(editions),
             error: "",
-            success: success,
         });
-    }
-
-    showError(error) {
-        this.setState({ loading: false, error: error.message, success: "" });
+        if (success) notify.success(success);
     }
 
     load() {
         adminGet(ADMIN_EDITIONS_URL)
             .then((editions) => this.setEditions(editions))
-            .catch((error) => this.showError(error));
+            .catch((error) => this.setState({ loading: false, error: error.message }));
     }
 
     create(body) {
@@ -57,7 +53,7 @@ class EditionsAdmin extends React.Component {
                     "Édition " + created.year + " créée.",
                 ),
             )
-            .catch((error) => this.showError(error));
+            .catch((error) => notify.error(error.message));
     }
 
     update(editionId, body) {
@@ -70,7 +66,7 @@ class EditionsAdmin extends React.Component {
                     "Édition " + updated.year + " enregistrée.",
                 ),
             )
-            .catch((error) => this.showError(error));
+            .catch((error) => notify.error(error.message));
     }
 
     confirmDelete() {
@@ -84,82 +80,68 @@ class EditionsAdmin extends React.Component {
                     "Édition " + toDelete.year + " supprimée.",
                 ),
             )
-            .catch((error) => this.showError(error));
+            .catch((error) => notify.error(error.message));
     }
 
     render() {
-        const { loading, editions, newEdition, error, success, toDelete } = this.state;
+        const { loading, editions, newEdition, error, toDelete } = this.state;
         const currentYear = new Date().getFullYear();
 
-        if (loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement des éditions...</Message.Content>
-                </Message>
-            );
+        if (loading) return <Alert loading>Chargement des éditions…</Alert>;
+
+        if (error) return <Alert tone="error">{error}</Alert>;
 
         return (
-            <div>
-                <Message info size="small">
-                    L'édition en cours est celle de l'année actuelle ({currentYear}) : sa date de
+            <div className="admin-stack">
+                <Alert>
+                    L’édition en cours est celle de l’année actuelle ({currentYear}) : sa date de
                     shotgun ouvre les réservations et décide du compte à rebours, et son tableau des
                     scores est affiché sur la page Scores.
-                </Message>
-                {error && (
-                    <Message error content={error} onDismiss={() => this.setState({ error: "" })} />
-                )}
-                {success && (
-                    <Message
-                        success
-                        content={success}
-                        onDismiss={() => this.setState({ success: "" })}
-                    />
-                )}
-                <Table compact celled>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>Année</Table.HeaderCell>
-                            <Table.HeaderCell>Date du weekend</Table.HeaderCell>
-                            <Table.HeaderCell>Date et heure du shotgun</Table.HeaderCell>
-                            <Table.HeaderCell>Lien du tableau des scores</Table.HeaderCell>
-                            <Table.HeaderCell />
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        <EditionRow edition={newEdition} onSave={this.create} />
-                        {editions.map((edition) => (
-                            <EditionRow
-                                key={edition._id}
-                                edition={edition}
-                                isCurrent={edition.year === currentYear}
-                                onSave={(body) => this.update(edition._id, body)}
-                                onDelete={(edition) => this.setState({ toDelete: edition })}
-                            />
-                        ))}
-                    </Table.Body>
-                </Table>
+                </Alert>
                 {!editions.some((edition) => edition.year === currentYear) && (
-                    <Message warning>
-                        <Header as="h4">Pas d'édition pour {currentYear}</Header>
-                        Sans édition pour l'année en cours, le shotgun reste fermé.
-                    </Message>
+                    <Alert tone="warning" title={"Pas d’édition pour " + currentYear}>
+                        Sans édition pour l’année en cours, le shotgun reste fermé.
+                    </Alert>
                 )}
-                <Confirm
-                    open={toDelete !== null}
-                    header={toDelete ? "Supprimer l'édition " + toDelete.year + " ?" : ""}
-                    content={
-                        toDelete
-                            ? "Weekend du " +
-                              new Date(toDelete.weekendDate).toLocaleDateString("fr-FR") +
-                              ". Cette action est définitive."
-                            : ""
-                    }
-                    cancelButton="Annuler"
-                    confirmButton={{ content: "Supprimer", negative: true }}
-                    onCancel={() => this.setState({ toDelete: null })}
-                    onConfirm={this.confirmDelete}
-                />
+                <div className="table-wrap">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Année</th>
+                                <th scope="col">Date du week-end</th>
+                                <th scope="col">Date et heure du shotgun</th>
+                                <th scope="col">Lien du tableau des scores</th>
+                                <th scope="col">
+                                    <span className="visually-hidden">Actions</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <EditionRow edition={newEdition} onSave={this.create} />
+                            {editions.map((edition) => (
+                                <EditionRow
+                                    key={edition._id}
+                                    edition={edition}
+                                    isCurrent={edition.year === currentYear}
+                                    onSave={(body) => this.update(edition._id, body)}
+                                    onDelete={(edition) => this.setState({ toDelete: edition })}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                {toDelete && (
+                    <ConfirmDialog
+                        title={"Supprimer l’édition " + toDelete.year + " ?"}
+                        confirmLabel="Supprimer"
+                        danger
+                        onConfirm={this.confirmDelete}
+                        onClose={() => this.setState({ toDelete: null })}
+                    >
+                        Week-end du {new Date(toDelete.weekendDate).toLocaleDateString("fr-FR")}.
+                        Cette action est définitive.
+                    </ConfirmDialog>
+                )}
             </div>
         );
     }

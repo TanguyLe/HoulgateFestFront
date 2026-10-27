@@ -3,6 +3,7 @@ import withRouter from "../utils/withRouter";
 
 import PasswordResetForm from "./components/forms/passwordResetForm";
 import { getPasswordResetUrl } from "./constants";
+import { Alert, PageHeader } from "../ui/components";
 
 class PasswordResetPage extends React.Component {
     constructor() {
@@ -31,16 +32,23 @@ class PasswordResetPage extends React.Component {
         let display;
         if (this.state.status === "form")
             display = (
-                <PasswordResetForm
-                    resetUrl={this.state.resetUrl}
-                    onPasswordChanged={this.onPasswordChanged}
-                />
+                <div className="card">
+                    <PasswordResetForm
+                        resetUrl={this.state.resetUrl}
+                        onPasswordChanged={this.onPasswordChanged}
+                    />
+                </div>
             );
-        else display = "Ton mot de passe a été changé!";
+        else
+            display = (
+                <Alert tone="success" title="C’est fait !">
+                    Ton mot de passe a été changé, tu peux te connecter.
+                </Alert>
+            );
 
         return (
             <div className="passwordResetPage">
-                <h1> Changement de Mot de Passe </h1>
+                <PageHeader title="Nouveau mot de passe" />
                 {display}
             </div>
         );

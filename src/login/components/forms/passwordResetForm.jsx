@@ -1,5 +1,6 @@
 import React from "react";
-import { Form, Message, List } from "semantic-ui-react";
+import { Field } from "../../../ui/components";
+import { notify } from "../../../ui/toast";
 
 import {
     NAME,
@@ -9,7 +10,6 @@ import {
     RESET_PSWRD_DEF,
     REGEXES,
     ERROR_MSG,
-    PSWRD_RESET_ERROR_MSG_PREFIX,
     CONFIRM,
 } from "../../constants";
 import { upCaseFirstLetter } from "../../../utils/miscFcts";
@@ -36,7 +36,7 @@ class PasswordResetForm extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleClickReset = this.handleClickReset.bind(this);
@@ -100,7 +100,7 @@ class PasswordResetForm extends React.Component {
                     this.setState(newState);
                 }
             })
-            .catch((error) => alert(UNKNOWN_ERROR_MSG + error));
+            .catch((error) => notify.error(UNKNOWN_ERROR_MSG + error));
     }
 
     validateField(name, value) {
@@ -127,8 +127,9 @@ class PasswordResetForm extends React.Component {
         this.validateField(name, value);
     }
 
-    handleKeyPress(event) {
-        if (this.isFormValid() && event.key === "Enter") this.handleClickSubmit();
+    handleSubmit(event) {
+        event.preventDefault();
+        if (this.isFormValid()) this.handleClickSubmit();
     }
 
     handleKeyUp(event) {
@@ -147,25 +148,19 @@ class PasswordResetForm extends React.Component {
     }
 
     render() {
-        const isFormValid = this.isFormValid(true);
-
         return (
-            <Form
-                error={!isFormValid}
-                onSubmit={this.handleSubmit}
-                onKeyPress={this.handleKeyPress}
-            >
+            <form className="form" onSubmit={this.handleSubmit} noValidate>
                 {RESET_PSWRD_DEF.map((elem, index) => {
-                    let name = elem[NAME];
+                    const name = elem[NAME];
                     return (
-                        <Form.Input
+                        <Field
                             required
-                            error={!this.state[name].valid}
                             key={PSWRD_RESET_BLOCK_INDEX_PREFIX + index}
+                            error={this.state[name].errorMsg || !this.state[name].valid}
                             type={elem[TYPE]}
-                            fluid
                             label={upCaseFirstLetter(elem[LABEL])}
                             name={name}
+                            autoFocus={index === 0}
                             value={this.state[name].value}
                             onBlur={this.handleBlur}
                             onKeyUp={this.handleKeyUp}
@@ -174,30 +169,16 @@ class PasswordResetForm extends React.Component {
                         />
                     );
                 })}
-                <Form.Group inline>
-                    <Form.Button
+                <div className="form__actions">
+                    <button
                         type="submit"
+                        className="btn btn--primary btn--lg btn--block"
                         disabled={!this.isFormValid()}
-                        onClick={this.handleClickSubmit}
                     >
-                        Changement de mot de passe
-                    </Form.Button>
-                </Form.Group>
-                <Message error>
-                    <List bulleted>
-                        {Object.keys(this.state).map((key) => {
-                            const errorMsg = this.state[key].errorMsg;
-
-                            if (errorMsg)
-                                return (
-                                    <List.Item key={PSWRD_RESET_ERROR_MSG_PREFIX + key}>
-                                        {errorMsg}
-                                    </List.Item>
-                                );
-                        })}
-                    </List>
-                </Message>
-            </Form>
+                        Changer mon mot de passe
+                    </button>
+                </div>
+            </form>
         );
     }
 }

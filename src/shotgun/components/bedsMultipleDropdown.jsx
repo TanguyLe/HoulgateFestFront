@@ -1,5 +1,4 @@
 import React from "react";
-import { Dropdown, Form } from "semantic-ui-react";
 import { getCredentials, register, unregister } from "../../login/store";
 
 class BedsMultipleDropdown extends React.Component {
@@ -51,8 +50,9 @@ class BedsMultipleDropdown extends React.Component {
     }
 
     submit(event) {
-        this.props.onSubmit(this.state.beds.slice(1, this.state.beds.length));
         event.preventDefault();
+        if (this.state.beds.indexOf("") === -1)
+            this.props.onSubmit(this.state.beds.slice(1, this.state.beds.length));
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -92,49 +92,61 @@ class BedsMultipleDropdown extends React.Component {
         const regularOptions = this.state.availablePersonsIds.map(
             (id) => this.optionsPerUserId[id],
         );
-        const generateDropdownOption = (username) => [
-            ...regularOptions,
-            this.optionsPerUserId[username],
-        ];
-
-        const submitDisabled = this.state.beds.indexOf("") !== -1;
+        const missing = this.state.beds.filter((bed) => bed === "").length;
 
         return (
-            <Form>
-                <Form.Group widths="equal" style={{ flexWrap: "wrap" }}>
-                    {[
-                        ...[...new Array(this.props.numberOfBeds).keys()].map((bedIndex) => {
-                            const userId = this.state.beds[bedIndex];
-                            const options =
-                                userId === "" ? regularOptions : generateDropdownOption(userId);
+            <form className="beds" onSubmit={this.submit}>
+                <ol className="beds__list">
+                    {[...new Array(this.props.numberOfBeds).keys()].map((bedIndex) => {
+                        const userId = this.state.beds[bedIndex];
+                        const options =
+                            userId === ""
+                                ? regularOptions
+                                : [this.optionsPerUserId[userId], ...regularOptions];
 
-                            return (
-                                <Dropdown
-                                    key={`bed_${bedIndex}`}
-                                    upward
-                                    placeholder={`emplacement n°${bedIndex + 1}`}
-                                    selection
-                                    disabled={bedIndex === 0}
-                                    search
-                                    onChange={(event, { value }) =>
-                                        this.handleChange(event, bedIndex, value)
-                                    }
-                                    value={userId}
-                                    options={options}
-                                />
-                            );
-                        }),
-                        <Form.Button
-                            key={"validationButton"}
-                            disabled={submitDisabled}
-                            color={submitDisabled === true ? null : "green"}
-                            onClick={this.submit}
-                        >
-                            Confirmer
-                        </Form.Button>,
-                    ]}
-                </Form.Group>
-            </Form>
+                        return (
+                            <li key={`bed_${bedIndex}`} className="beds__row">
+                                <span className="beds__index">{bedIndex + 1}</span>
+                                {bedIndex === 0 ? (
+                                    <span className="beds__me">
+                                        {this.state.username} <small>(toi)</small>
+                                    </span>
+                                ) : (
+                                    <select
+                                        className="field__control"
+                                        aria-label={`Emplacement n°${bedIndex + 1}`}
+                                        value={userId}
+                                        onChange={(event) =>
+                                            this.handleChange(event, bedIndex, event.target.value)
+                                        }
+                                    >
+                                        <option value="" disabled>
+                                            Choisis un·e camarade…
+                                        </option>
+                                        {options
+                                            .slice()
+                                            .sort((a, b) => a.text.localeCompare(b.text))
+                                            .map((option) => (
+                                                <option key={option.key} value={option.value}>
+                                                    {option.text}
+                                                </option>
+                                            ))}
+                                    </select>
+                                )}
+                            </li>
+                        );
+                    })}
+                </ol>
+                <button
+                    type="submit"
+                    className="btn btn--success btn--lg btn--block"
+                    disabled={missing > 0}
+                >
+                    {missing > 0
+                        ? `Encore ${missing} lit${missing > 1 ? "s" : ""} à attribuer`
+                        : "Confirmer la chambre"}
+                </button>
+            </form>
         );
     }
 }

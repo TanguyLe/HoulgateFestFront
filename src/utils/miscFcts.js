@@ -1,5 +1,6 @@
 import { UNKNOWN_ERROR_MSG } from "../labels";
 import { SERVER_ENDPOINT } from "../constants";
+import { notify } from "../ui/toast";
 
 export const TIME_URL = SERVER_ENDPOINT + "/time/paris";
 
@@ -18,5 +19,5 @@ export const getParisDatetimeFromAPI = async () => {
     return fetch(TIME_URL)
         .then((response) => response.json())
         .then((json) => json.timestamp)
-        .catch((error) => alert(UNKNOWN_ERROR_MSG + error));
+        .catch((error) => notify.error(UNKNOWN_ERROR_MSG + error));
 };

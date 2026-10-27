@@ -1,5 +1,9 @@
 import React from "react";
-import { Button, Dropdown, Form, Message, Modal } from "semantic-ui-react";
+
+import Icon from "../../ui/icon";
+import { Alert, Dialog } from "../../ui/components";
+
+const userLabel = (user) => user.username || user.email;
 
 // Edits the owner and the roommates of a shotgun. Only the activated users who aren't in another
 // shotgun are offered: the back refuses the others.
@@ -8,12 +12,14 @@ class ShotgunEditModal extends React.Component {
         super(props);
 
         this.state = {
-            user: props.shotgun.user ? props.shotgun.user._id : null,
+            user: props.shotgun.user ? props.shotgun.user._id : "",
             roommates: props.shotgun.roommates.map((roommate) => roommate._id),
         };
+
+        this.toggleRoommate = this.toggleRoommate.bind(this);
     }
 
-    getOptions(excluded) {
+    getCandidates(excluded) {
         const { shotgun, shotguns, users } = this.props;
         const busy = new Set(
             shotguns
@@ -23,9 +29,14 @@ class ShotgunEditModal extends React.Component {
                 .map((user) => user._id),
         );
 
-        return users
-            .filter((user) => user.activated && !busy.has(user._id) && !excluded.includes(user._id))
-            .map((user) => ({ key: user._id, value: user._id, text: user.username || user.email }));
+        return users.filter(
+            (user) => user.activated && !busy.has(user._id) && !excluded.includes(user._id),
+        );
+    }
+
+    toggleRoommate(userId, checked) {
+        const roommates = this.state.roommates.filter((id) => id !== userId);
+        this.setState({ roommates: checked ? roommates.concat(userId) : roommates });
     }
 
     render() {
@@ -36,63 +47,88 @@ class ShotgunEditModal extends React.Component {
         const tooMany = 1 + roommates.length > nbBeds;
 
         return (
-            <Modal open size="small" onClose={onClose}>
-                <Modal.Header>
-                    {(isPreShotgun ? "Pré-shotgun" : "Shotgun") +
-                        " de la chambre " +
-                        (shotgun.room ? shotgun.room.text : "?")}
-                </Modal.Header>
-                <Modal.Content>
-                    {error && <Message error content={error} />}
-                    <Form>
-                        <Form.Field>
-                            <label>Propriétaire</label>
-                            <Dropdown
-                                selection
-                                search
-                                placeholder="Propriétaire"
-                                value={user}
-                                options={this.getOptions(roommates)}
-                                onChange={(event, { value }) => this.setState({ user: value })}
-                            />
-                        </Form.Field>
-                        {isPreShotgun ? (
-                            <Message info size="small">
-                                Un pré-shotgun n'a pas encore de colocataires : seul le propriétaire
-                                peut être changé.
-                            </Message>
-                        ) : (
-                            <Form.Field error={tooMany}>
-                                <label>
-                                    Colocataires ({1 + roommates.length}/{nbBeds} lits)
-                                </label>
-                                <Dropdown
-                                    selection
-                                    search
-                                    multiple
-                                    placeholder="Colocataires"
-                                    value={roommates}
-                                    options={this.getOptions([user])}
-                                    onChange={(event, { value }) =>
-                                        this.setState({ roommates: value })
-                                    }
-                                />
-                            </Form.Field>
-                        )}
-                    </Form>
-                </Modal.Content>
-                <Modal.Actions>
-                    <Button content="Annuler" disabled={saving} onClick={onClose} />
-                    <Button
-                        primary
-                        icon="save"
-                        content="Enregistrer"
-                        loading={saving}
-                        disabled={saving || !user || tooMany}
-                        onClick={() => onSave({ user: user, roommates: roommates })}
-                    />
-                </Modal.Actions>
-            </Modal>
+            <Dialog
+                id="shotgun-edit"
+                title={(isPreShotgun ? "Pré-shotgun" : "Shotgun") + " de la chambre"}
+                subtitle={shotgun.room ? shotgun.room.text : "?"}
+                onClose={onClose}
+            >
+                <form
+                    className="form"
+                    onSubmit={(event) => {
+                        event.preventDefault();
+                        onSave({ user: user, roommates: roommates });
+                    }}
+                >
+                    {error && <Alert tone="error">{error}</Alert>}
+                    <div className="field">
+                        <label className="field__label" htmlFor="shotgun-edit-owner">
+                            Propriétaire
+                        </label>
+                        <select
+                            id="shotgun-edit-owner"
+                            className="field__control"
+                            value={user}
+                            onChange={(event) => this.setState({ user: event.target.value })}
+                        >
+                            {!user && <option value="">Choisir…</option>}
+                            {this.getCandidates(roommates).map((candidate) => (
+                                <option key={candidate._id} value={candidate._id}>
+                                    {userLabel(candidate)}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    {isPreShotgun ? (
+                        <Alert>
+                            Un pré-shotgun n’a pas encore de colocataires : seul le propriétaire
+                            peut être changé.
+                        </Alert>
+                    ) : (
+                        <fieldset className={"field" + (tooMany ? " field--error" : "")}>
+                            <legend className="field__label">
+                                Colocataires ({1 + roommates.length}/{nbBeds} lits)
+                            </legend>
+                            <div className="check-list">
+                                {this.getCandidates([user]).map((candidate) => (
+                                    <label className="check-list__item" key={candidate._id}>
+                                        <input
+                                            type="checkbox"
+                                            checked={roommates.includes(candidate._id)}
+                                            onChange={(event) =>
+                                                this.toggleRoommate(
+                                                    candidate._id,
+                                                    event.target.checked,
+                                                )
+                                            }
+                                        />
+                                        {userLabel(candidate)}
+                                    </label>
+                                ))}
+                            </div>
+                            {tooMany && (
+                                <span className="field__error">
+                                    <Icon name="alert" size={14} />
+                                    Plus de personnes que de lits.
+                                </span>
+                            )}
+                        </fieldset>
+                    )}
+                    <div className="form__actions">
+                        <button type="button" className="btn" disabled={saving} onClick={onClose}>
+                            Annuler
+                        </button>
+                        <button
+                            type="submit"
+                            className="btn btn--primary"
+                            disabled={saving || !user || tooMany}
+                        >
+                            <Icon name="save" size={16} />
+                            {saving ? "Enregistrement…" : "Enregistrer"}
+                        </button>
+                    </div>
+                </form>
+            </Dialog>
         );
     }
 }

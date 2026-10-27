@@ -6,6 +6,9 @@ in a house.
 
 It is meant to work alongside its backend : https://github.com/TanguyLe/HoulgateFestBack.
 
+The UI is built on a small in-house design system (plain CSS tokens, light/dark themes, no UI
+library). See [DESIGN.md](DESIGN.md) for the decisions and for how to update the site for a new edition.
+
 ## Workflow & deployment
 
 This repository is trunk-based: `main` is the only long-lived branch and it is what runs in production.

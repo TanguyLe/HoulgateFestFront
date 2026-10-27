@@ -1,150 +1,107 @@
 import React from "react";
 
-import RoomBasis from "./roomBasis";
-import ShotgunPortal from "../shotgunModal";
+import Icon from "../../../ui/icon";
+import ShotgunDialog from "../shotgunModal";
 import PreShotgunTimer from "../preShotgunTimer";
-import {
-    ROOM_STATUS_LOADING,
-    ROOM_STATUS_SHOTGUNNED,
-    ROOM_STATUS_PRESHOTGUNNED,
-} from "../../constants";
-import { getCredentials, register, unregister } from "../../../login/store";
+import { getRoomState } from "../../roomState";
 
+/**
+ * One bedroom in the list of its floor: the whole row is the button when the user can act on it.
+ * `number` matches the room on the floor plan. The page decides which room's dialog is open,
+ * so the status bar can open the user's room too.
+ */
 class Room extends React.Component {
-    constructor() {
-        super();
-
-        this.state = { username: getCredentials().login };
-        this.onLoginChange = this.onLoginChange.bind(this);
+    shouldComponentUpdate(nextProps) {
+        return JSON.stringify(nextProps) !== JSON.stringify(this.props);
     }
 
-    shouldComponentUpdate(nextProps, nextState, _) {
-        return (
-            JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
-            JSON.stringify(nextState) !== JSON.stringify(this.state)
-        );
-    }
-    onLoginChange(newCreds) {
-        this.setState({ username: newCreds.login });
-    }
-
-    componentDidMount() {
-        register(this.onLoginChange);
-    }
-
-    componentWillUnmount() {
-        unregister(this.onLoginChange);
+    getUsername(userId) {
+        return this.props.userInfo[userId] ? this.props.userInfo[userId].username : "?";
     }
 
     render() {
-        let buttonType = "blue";
-        let content = "Shotgun!";
-        let disable = false;
+        const { room, number, me, userInfo, open, onOpen } = this.props;
+        const view = getRoomState(room, me);
 
-        const roomId = this.props.id;
-        const roomStatus = this.props.roomStatus;
-
-        const currentUserUsername = this.state.username;
-        const users = Object.values(this.props.userInfo);
-        const currentUser = users.find((user) => user.username === currentUserUsername);
-
-        const shotgunOnGoingForUser = currentUser.hasPreShotgun || currentUser.hasShotgun;
-        const isUserRoom = shotgunOnGoingForUser ? roomId === currentUser.room : false;
-        // the roommates' room is theirs too, but only the owner can cancel the shotgun
-        const isUserOwner = isUserRoom && this.props.user === currentUser._id;
+        const people = room.user
+            ? [room.user, ...(room.roommates || [])].map((id) => this.getUsername(id))
+            : [];
+        // only the owner can cancel, the roommates' room is theirs too
+        const isOwner = Boolean(me) && room.user === me._id;
 
         // the API refuses to book accounts that aren't activated, so don't offer them as roommates
-        const availablePersons = users.filter(
-            (person) =>
-                (person.activated && person.hasShotgun === false) || currentUser._id === person._id,
+        const availablePersons = Object.values(userInfo).filter(
+            (person) => (person.activated && person.hasShotgun === false) || person._id === me._id,
         );
 
-        let finalStatus = roomStatus;
-
-        /**
-         * Logic here is rather simple in the end :
-         * 1) Room is shotgunned
-         *  a. By the user => Successful green button
-         *  b. By someone else => Disabled red button
-         * 2) Room is preShotgunned
-         *  a. By the user => Encouraging blue button
-         *  b. By someone else => Disabled orange button
-         * 3) Room is loading => Disabled grey button
-         * 4) Room is ready (means empty)
-         *  a. User is taken => Disabled blue button
-         *  b. User is free => Enable blue button
-         */
-
-        if (roomStatus === ROOM_STATUS_SHOTGUNNED) {
-            if (isUserRoom) {
-                buttonType = "green";
-                content = "Validé";
-                finalStatus = "shotgunSuccessful";
-            } else {
-                buttonType = "red";
-                content = "Déjà shotgun";
-                disable = true;
-            }
-        } else if (roomStatus === ROOM_STATUS_PRESHOTGUNNED) {
-            if (isUserRoom) {
-                content = "Finalise ton shotgun!";
-                finalStatus = "attributingBeds";
-            } else {
-                buttonType = "orange";
-                content = "Shotgun en cours...";
-                disable = true;
-            }
-        } else if (roomStatus === ROOM_STATUS_LOADING) {
-            buttonType = "grey";
-            content = "Chargement...";
-            disable = true;
-        } else if (shotgunOnGoingForUser) {
-            // Remaining state is readyForShotgun, the case where no shotgun
-            // is ongoing for the user is handled by the default
-            disable = true;
-        }
+        const onClick = view.action
+            ? (event) => {
+                  onOpen(room._id);
+                  if (view.state === "available") this.props.createShotgunFunction(event);
+              }
+            : undefined;
+        const Tag = onClick ? "button" : "div";
 
         return (
-            <RoomBasis
-                {...this.props}
-                seats={this.props.seats}
-                position={this.props.position}
-                name={this.props.name}
-                user={this.props.user}
-                roommates={this.props.roommates}
-                userInfo={this.props.userInfo}
-            >
-                {this.props.seats > 0 ? (
-                    <ShotgunPortal
-                        disabled={disable}
-                        content={content}
-                        buttonType={buttonType}
-                        seats={this.props.seats}
-                        name={this.props.name}
-                        status={finalStatus}
+            <li className="room-row" data-state={view.state}>
+                <Tag
+                    type={onClick ? "button" : undefined}
+                    className="room-row__main"
+                    onClick={onClick}
+                    aria-label={
+                        room.name +
+                        ", " +
+                        room.seats +
+                        " lits, " +
+                        view.label +
+                        (view.action ? " : " + view.action : "")
+                    }
+                >
+                    <span className="room-row__num" aria-hidden>
+                        {number}
+                    </span>
+                    <span className="room-row__body">
+                        <span className="room-row__name">{room.name}</span>
+                        <span className="room-row__meta">
+                            <span>
+                                <Icon name="bed" size={14} /> {room.seats}
+                            </span>
+                            {people.length ? <span>{people.join(", ")}</span> : null}
+                            {view.state.startsWith("pending") && room.preShotgunExpiry ? (
+                                <PreShotgunTimer
+                                    expiry={room.preShotgunExpiry}
+                                    label={
+                                        view.state === "pending-mine"
+                                            ? "il te reste"
+                                            : "expire dans"
+                                    }
+                                />
+                            ) : null}
+                        </span>
+                    </span>
+                    <span className="room-row__action">
+                        {view.state === "loading" ? <span className="spinner" /> : null}
+                        {view.action || view.label}
+                        {view.action ? <Icon name="arrowRight" size={16} /> : null}
+                    </span>
+                </Tag>
+                {open && view.dialog && (
+                    <ShotgunDialog
+                        seats={room.seats}
+                        name={room.name}
+                        status={view.dialog}
                         availablePersons={availablePersons}
-                        createShotgunFunction={this.props.createShotgunFunction || null}
+                        roommates={(room.roommates || []).map((id) => this.getUsername(id))}
+                        onClose={() => onOpen(null)}
                         addPersonsInShotgunFunction={(roommatesIds) =>
-                            this.props.addPersonsInShotgunFunction(this.props.id, roommatesIds)
+                            this.props.addPersonsInShotgunFunction(room._id, roommatesIds)
                         }
                         cancelShotgunFunction={
-                            isUserOwner
-                                ? () => this.props.cancelShotgunFunction(this.props.id)
-                                : null
+                            isOwner ? () => this.props.cancelShotgunFunction(room._id) : null
                         }
                     />
-                ) : (
-                    ""
                 )}
-                {roomStatus === ROOM_STATUS_PRESHOTGUNNED && this.props.preShotgunExpiry ? (
-                    <PreShotgunTimer
-                        expiry={this.props.preShotgunExpiry}
-                        label={isUserRoom ? "Il te reste" : "Expire dans"}
-                    />
-                ) : (
-                    ""
-                )}
-            </RoomBasis>
+            </li>
         );
     }
 }

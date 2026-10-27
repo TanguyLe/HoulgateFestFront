@@ -9,7 +9,7 @@ export const genParams = (method, body, auth = true) => {
     if (auth) {
         let creds = getCredentials();
 
-        if (!creds.login) throw Error("Vous n'êtes pas connecté");
+        if (!creds.login) throw Error("Tu n’es pas connecté");
 
         header["authorization"] = "JWT " + creds.accessToken;
     }

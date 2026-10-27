@@ -1,7 +1,7 @@
 import React from "react";
-import { Icon, Message } from "semantic-ui-react";
 
 import DisplayAllFloors from "./floor/DisplayAllFloors";
+import PreShotgunTimer from "./preShotgunTimer";
 import { getParisDatetimeFromAPI, objectMap } from "../../utils/miscFcts";
 import { villaLesGenets } from "../villaLesGenetsDef";
 import { USERS_ENDPOINT } from "../../constants";
@@ -23,6 +23,8 @@ import {
     putCallApi,
 } from "../../utils/api/fetchMiddleware";
 import { getCredentials } from "../../login/store";
+import { Alert } from "../../ui/components";
+import { notify } from "../../ui/toast";
 
 const INTERVAL_DURATION = 15000;
 
@@ -42,6 +44,8 @@ class ShotgunContainer extends React.Component {
             shotgunId: null,
             userInfo: {},
             roomsIndexed: {},
+            // the room whose dialog is open, from its row or from the status bar
+            openRoomId: null,
         };
 
         // Server time minus client time, so the pre-shotgun expiries don't depend on the client's clock
@@ -238,7 +242,7 @@ class ShotgunContainer extends React.Component {
                 ////////////////////////////////////////////////////////////////////
 
                 // The shotgun was denied, several possible reasons, may need to elaborate in the future.
-                alert("Cette pièce n'est plus disponible, ou tu as déjà shotgun.");
+                notify.error("Cette pièce n’est plus disponible, ou tu as déjà shotgun.");
             }
             await this.intervalFunction();
         });
@@ -265,8 +269,8 @@ class ShotgunContainer extends React.Component {
                 this.updateState([usersUpdater, roomUpdater]);
             } else {
                 // The shotgun was denied, several possible reasons, may need to elaborate in the future.
-                alert(
-                    "Trop tard! Cette pièce est soit déjà shotgun, soit toi ou un de " +
+                notify.error(
+                    "Trop tard ! Cette pièce est soit déjà shotgun, soit toi ou un de " +
                         "tes camarades est déjà inscrit dans une pièce.",
                 );
             }
@@ -282,7 +286,7 @@ class ShotgunContainer extends React.Component {
             const cancelShotgun = await deleteCallApi(getShotgunRoomUrl(roomId), {}, true);
 
             if (cancelShotgun.status === 200) this.updateState([{ shotgunId: null }]);
-            else alert("L'annulation a échoué, recharge la page et réessaie.");
+            else notify.error("L’annulation a échoué, recharge la page et réessaie.");
 
             await this.intervalFunction();
         });
@@ -300,33 +304,106 @@ class ShotgunContainer extends React.Component {
         return this.state.villaLesGenets.floors.map(replaceFloor);
     }
 
-    render() {
-        if (this.state.loading)
+    getMe() {
+        return Object.values(this.state.userInfo).find(
+            (user) => user.username === getCredentials().login,
+        );
+    }
+
+    // What the user has to do next, always in sight in the status bar
+    renderMyStatus(me) {
+        const room = me && me.room ? this.state.roomsIndexed[me.room] : null;
+
+        if (!room || !(me.hasShotgun || me.hasPreShotgun))
             return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement des pièces...</Message.Content>
-                </Message>
+                <div className="shotgun__me">
+                    <strong>Pas encore de lit</strong>
+                    <span>Choisis une chambre libre ci-dessous.</span>
+                </div>
             );
+
+        const pending = room.status === ROOM_STATUS_PRESHOTGUNNED;
+
+        return (
+            <div className="shotgun__me" data-state={pending ? "pending-mine" : "mine"}>
+                <span className="shotgun__me-text">
+                    <strong>
+                        {pending ? "À finaliser" : "Ton lit"}
+                        {pending && room.preShotgunExpiry ? (
+                            <PreShotgunTimer expiry={room.preShotgunExpiry} label=" ·" />
+                        ) : null}
+                    </strong>
+                    <span>{room.name || room.text}</span>
+                </span>
+                <button
+                    type="button"
+                    className={"btn btn--sm " + (pending ? "btn--primary" : "")}
+                    onClick={() => this.setState({ openRoomId: room._id })}
+                >
+                    {pending ? (
+                        <>
+                            <span className="hide-sm">Attribuer les lits</span>
+                            <span className="show-sm">Finaliser</span>
+                        </>
+                    ) : (
+                        "Voir"
+                    )}
+                </button>
+            </div>
+        );
+    }
+
+    render() {
+        if (this.state.loading) return <Alert loading>Chargement des chambres…</Alert>;
 
         if (this.state.error)
             return (
-                <Message error>
-                    <Message.Content>
-                        Erreur de chargement des pièces, tu n'aurais pas du voir ça. Vérifie ta
-                        connection internet et recharge la page.
-                    </Message.Content>
-                </Message>
+                <Alert tone="error" title="Erreur de chargement des chambres">
+                    Tu n’aurais pas dû voir ça. Vérifie ta connexion internet et recharge la page.
+                </Alert>
             );
 
+        const me = this.getMe();
+        const floors = this.getFloorsToRender();
+        const freeSeats = floors.reduce(
+            (total, floor) =>
+                total +
+                floor.rooms
+                    .filter((room) => room.status === ROOM_STATUS_READY)
+                    .reduce((sum, room) => sum + room.seats, 0),
+            0,
+        );
+
         return (
-            <DisplayAllFloors
-                floors={this.getFloorsToRender()}
-                userInfo={this.state.userInfo}
-                createShotgunFunction={this.createShotgun}
-                addPersonsInShotgunFunction={this.addPersonsInShotgun}
-                cancelShotgunFunction={this.cancelShotgun}
-            />
+            <div className="shotgun">
+                <div className="shotgun__bar">
+                    <div className="shotgun__counter">
+                        <span className="shotgun__counter-value">{freeSeats}</span>
+                        <span>
+                            lits libres
+                            <small>actualisé toutes les {INTERVAL_DURATION / 1000} s</small>
+                        </span>
+                    </div>
+                    {this.renderMyStatus(me)}
+                </div>
+                {/* the key to the colours, read before the floors during the rush */}
+                <ul className="legend" aria-label="Légende du plan">
+                    <li data-state="available">Libre</li>
+                    <li data-state="pending">Shotgun en cours</li>
+                    <li data-state="taken">Prise</li>
+                    <li data-state="mine">À toi</li>
+                </ul>
+                <DisplayAllFloors
+                    floors={floors}
+                    me={me}
+                    userInfo={this.state.userInfo}
+                    openRoomId={this.state.openRoomId}
+                    onOpenRoom={(roomId) => this.setState({ openRoomId: roomId })}
+                    createShotgunFunction={this.createShotgun}
+                    addPersonsInShotgunFunction={this.addPersonsInShotgun}
+                    cancelShotgunFunction={this.cancelShotgun}
+                />
+            </div>
         );
     }
 }

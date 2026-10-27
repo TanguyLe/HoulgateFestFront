@@ -1,0 +1,109 @@
+/*
+ * Design tokens.
+ * Two inks and paper, like a French poster: cream paper, brown-black ink and one accent,
+ * the Channel teal. Sun yellow is a state colour only (pending shotgun, warnings), never
+ * decoration. Components only consume the semantic tokens (--bg, --text, --accent...)
+ * so the dark theme is a single override block.
+ */
+
+:root {
+    /* Raw palette */
+    --cream-50: #fffbf3;
+    --cream-100: #f8efdd;
+    --cream-200: #efe1c4;
+    --cream-300: #e2cfa8;
+    --ink-950: #120d09;
+    --ink-900: #1f1712;
+    --ink-700: #4a3e34;
+    --ink-500: #7b6c5f;
+    --sun-300: #ffd27a;
+    --sun-500: #f2a51a;
+    --sun-700: #a86a00;
+    --sea-300: #8cc3cf;
+    --sea-500: #2f6f7e;
+    --sea-700: #1d4954;
+    --green-500: #2e9b5f;
+    --green-700: #1d6a40;
+    --red-500: #d23b3b;
+
+    /* Typography */
+    --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    /* display text uses Archivo barely widened: a French affiche, not an extra-wide US gig poster */
+    --display-stretch: 104%;
+    --font-body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-md: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+    --text-2xl: clamp(1.6rem, 1.3rem + 1.2vw, 2.25rem);
+    --text-3xl: clamp(2.2rem, 1.6rem + 2.6vw, 3.75rem);
+    --text-hero: clamp(3rem, 1.8rem + 6vw, 7.5rem);
+
+    /* Spacing & shape */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4.5rem;
+    /* print corners: barely softened, every page in the same language */
+    --radius-sm: 2px;
+    --radius-md: 3px;
+    --radius-lg: 4px;
+    --radius-pill: 999px;
+    --content-width: 72rem;
+    --prose-width: 42rem;
+    --header-height: 4.25rem;
+
+    /* Motion */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-fast: 140ms;
+    --dur-med: 260ms;
+
+    /*
+     * Semantic tokens. light-dark() follows `color-scheme`, which follows the OS
+     * unless the visitor picked a theme (data-theme on <html>, see ThemeToggle).
+     */
+    color-scheme: light dark;
+    --bg: light-dark(var(--cream-100), #12100e);
+    --bg-raised: light-dark(var(--cream-50), #1b1815);
+    --surface: light-dark(#ffffff, #221e1a);
+    --surface-muted: light-dark(var(--cream-200), #2c2722);
+    --text: light-dark(var(--ink-900), #f6eedf);
+    --text-muted: light-dark(var(--ink-500), #b2a594);
+    --text-soft: light-dark(var(--ink-700), #d9ccb8);
+    --border: light-dark(rgb(31 23 18 / 0.12), rgb(246 238 223 / 0.1));
+    --border-strong: light-dark(rgb(31 23 18 / 0.28), rgb(246 238 223 / 0.24));
+    --accent: light-dark(var(--sea-500), var(--sea-300));
+    --accent-hover: light-dark(var(--sea-700), #b3dbe3);
+    --accent-contrast: light-dark(#ffffff, var(--ink-900));
+    --accent-soft: light-dark(rgb(47 111 126 / 0.12), rgb(140 195 207 / 0.14));
+    /* the shotgun's "free" colour is the accent */
+    --brand-2: var(--accent);
+    --brand-2-soft: var(--accent-soft);
+    /* state colour: pending shotgun and warnings */
+    --highlight: light-dark(var(--sun-500), var(--sun-300));
+    --highlight-ink: light-dark(var(--sun-700), var(--sun-300));
+    --highlight-soft: light-dark(rgb(242 165 26 / 0.18), rgb(255 210 122 / 0.14));
+    --success: light-dark(var(--green-500), #5cc98b);
+    --success-soft: light-dark(rgb(46 155 95 / 0.14), rgb(92 201 139 / 0.14));
+    --danger: light-dark(var(--red-500), #ff7a7a);
+    --danger-soft: light-dark(rgb(210 59 59 / 0.12), rgb(255 122 122 / 0.14));
+    --focus-ring: 0 0 0 3px light-dark(rgb(47 111 126 / 0.45), rgb(140 195 207 / 0.5));
+    /* flat print: no drop shadows, layers are told apart by ink borders */
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --header-bg: var(--bg);
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+}

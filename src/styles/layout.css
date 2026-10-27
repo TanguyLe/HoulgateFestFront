@@ -1,0 +1,247 @@
+/* ---------- App shell ---------- */
+
+.shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-height);
+    border-bottom: 1px solid var(--border);
+    background: var(--header-bg);
+}
+
+.topbar__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    height: 100%;
+    max-width: calc(var(--content-width) + 2 * var(--space-5));
+    margin: 0 auto;
+    padding: 0 var(--space-5);
+}
+
+.wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    font-family: var(--font-display);
+    font-stretch: var(--display-stretch);
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.wordmark:hover {
+    color: var(--text);
+}
+
+.nav {
+    display: flex;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.5rem 0.9rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        background var(--dur-fast),
+        color var(--dur-fast);
+}
+
+.nav__link:hover {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
+}
+
+/* an ink underline, like the rules of the page, rather than a filled block */
+.nav__link.is-active {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.35em;
+}
+
+.topbar__user {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
+}
+
+.topbar__burger {
+    display: none;
+}
+
+.user-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+.user-pill__name {
+    max-width: 9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Mobile drawer */
+
+.drawer {
+    position: fixed;
+    inset: var(--header-height) 0 0 0;
+    z-index: 49;
+    display: none;
+    padding: var(--space-5);
+    background: var(--bg);
+    animation: fade-in var(--dur-med) var(--ease-out);
+}
+
+.drawer.is-open {
+    display: block;
+}
+
+.drawer .nav {
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.drawer .nav__link {
+    width: 100%;
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-md);
+    font-family: var(--font-display);
+    font-stretch: var(--display-stretch);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--text);
+}
+
+.drawer .nav__link.is-active {
+    color: var(--text);
+}
+
+@media (max-width: 860px) {
+    .topbar .nav {
+        display: none;
+    }
+
+    .topbar__burger {
+        display: inline-flex;
+    }
+
+    .topbar__inner {
+        gap: var(--space-3);
+        padding: 0 var(--space-4);
+    }
+
+    .user-pill__name {
+        display: none;
+    }
+}
+
+/* the wide wordmark would push the account buttons out on small phones */
+@media (max-width: 420px) {
+    .wordmark {
+        font-size: 1.15rem;
+    }
+
+    .topbar__inner {
+        gap: var(--space-2);
+        padding: 0 var(--space-3);
+    }
+
+    .topbar .btn--icon {
+        width: 2.25rem;
+        min-height: 2.25rem;
+    }
+}
+
+/* ---------- Page containers ---------- */
+
+.page {
+    flex: 1;
+    width: 100%;
+    max-width: calc(var(--content-width) + 2 * var(--space-5));
+    margin: 0 auto;
+    padding: var(--space-7) var(--space-5) var(--space-8);
+}
+
+.page--narrow {
+    max-width: calc(var(--prose-width) + 2 * var(--space-5));
+}
+
+.page.page--full {
+    max-width: none;
+    padding: 0;
+}
+
+@media (max-width: 640px) {
+    .page {
+        padding: var(--space-6) var(--space-4) var(--space-7);
+    }
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+    background: var(--bg);
+}
+
+.footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    /* the rule spans the content width, like every other rule of the page */
+    width: calc(100% - 2 * var(--space-5));
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: var(--space-6) 0;
+    border-top: 2px solid var(--text);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+}
+
+/* same gutter as the programme on small screens (after the rule above, so it wins) */
+@media (max-width: 860px) {
+    .footer__inner {
+        width: calc(100% - 2 * var(--space-4));
+    }
+}
+
+.footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+}
+
+.footer__links a {
+    color: var(--text-soft);
+    text-decoration: none;
+}
+
+.footer__links a:hover {
+    color: var(--accent);
+}
