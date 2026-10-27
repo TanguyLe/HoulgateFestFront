@@ -9,6 +9,7 @@ export const leftItems = [
     { children: <Link to="/shotgun">Shotgun</Link>, key: "shotgun" },
     { children: <Link to="/trips">Trajets</Link>, key: "trips" },
     { children: <Link to="/scores">Scores</Link>, key: "scores" },
+    { children: <Link to="/checklist">Checklist</Link>, key: "checklist" },
     { children: <Link to="/contact">Contact</Link>, key: "contact" },
 ];
 export const rightItems = [{ children: <WhoAmI />, key: "user" }];
