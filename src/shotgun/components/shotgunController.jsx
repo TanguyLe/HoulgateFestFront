@@ -1,6 +1,7 @@
 import React from "react";
 
 import DisplayAllFloors from "./floor/DisplayAllFloors";
+import PreShotgunTimer from "./preShotgunTimer";
 import { getParisDatetimeFromAPI, objectMap } from "../../utils/miscFcts";
 import { villaLesGenets } from "../villaLesGenetsDef";
 import { USERS_ENDPOINT } from "../../constants";
@@ -43,6 +44,8 @@ class ShotgunContainer extends React.Component {
             shotgunId: null,
             userInfo: {},
             roomsIndexed: {},
+            // the room whose dialog is open, from its row or from the status bar
+            openRoomId: null,
         };
 
         // Server time minus client time, so the pre-shotgun expiries don't depend on the client's clock
@@ -301,41 +304,66 @@ class ShotgunContainer extends React.Component {
         return this.state.villaLesGenets.floors.map(replaceFloor);
     }
 
-    getMyStatus() {
-        const me = Object.values(this.state.userInfo).find(
+    getMe() {
+        return Object.values(this.state.userInfo).find(
             (user) => user.username === getCredentials().login,
         );
-        if (!me || !me.room) return null;
+    }
 
-        const room = this.state.roomsIndexed[me.room];
-        const roomName = room ? room.name || room.text : "ta chambre";
+    // What the user has to do next, always in sight in the status bar
+    renderMyStatus(me) {
+        const room = me && me.room ? this.state.roomsIndexed[me.room] : null;
 
-        if (me.hasShotgun)
+        if (!room || !(me.hasShotgun || me.hasPreShotgun))
             return (
-                <Alert tone="success" title={"Ton lit est réservé : " + roomName}>
-                    Rendez-vous à Houlgate ! Clique sur ta chambre pour voir avec qui tu dors.
-                </Alert>
-            );
-        if (me.hasPreShotgun)
-            return (
-                <Alert tone="warning" title={"Finalise ton shotgun : " + roomName}>
-                    Clique sur ta chambre et attribue les lits avant qu’elle ne soit libérée.
-                </Alert>
+                <div className="shotgun__me">
+                    <strong>Pas encore de lit</strong>
+                    <span>Choisis une chambre libre ci-dessous.</span>
+                </div>
             );
 
-        return null;
+        const pending = room.status === ROOM_STATUS_PRESHOTGUNNED;
+
+        return (
+            <div className="shotgun__me" data-state={pending ? "pending-mine" : "mine"}>
+                <span className="shotgun__me-text">
+                    <strong>
+                        {pending ? "À finaliser" : "Ton lit"}
+                        {pending && room.preShotgunExpiry ? (
+                            <PreShotgunTimer expiry={room.preShotgunExpiry} label=" ·" />
+                        ) : null}
+                    </strong>
+                    <span>{room.name || room.text}</span>
+                </span>
+                <button
+                    type="button"
+                    className={"btn btn--sm " + (pending ? "btn--primary" : "")}
+                    onClick={() => this.setState({ openRoomId: room._id })}
+                >
+                    {pending ? (
+                        <>
+                            <span className="hide-sm">Attribuer les lits</span>
+                            <span className="show-sm">Finaliser</span>
+                        </>
+                    ) : (
+                        "Voir"
+                    )}
+                </button>
+            </div>
+        );
     }
 
     render() {
-        if (this.state.loading) return <Alert loading>Chargement des pièces…</Alert>;
+        if (this.state.loading) return <Alert loading>Chargement des chambres…</Alert>;
 
         if (this.state.error)
             return (
-                <Alert tone="error" title="Erreur de chargement des pièces">
+                <Alert tone="error" title="Erreur de chargement des chambres">
                     Tu n'aurais pas dû voir ça. Vérifie ta connexion internet et recharge la page.
                 </Alert>
             );
 
+        const me = this.getMe();
         const floors = this.getFloorsToRender();
         const freeSeats = floors.reduce(
             (total, floor) =>
@@ -352,26 +380,28 @@ class ShotgunContainer extends React.Component {
                     <div className="shotgun__counter">
                         <span className="shotgun__counter-value">{freeSeats}</span>
                         <span>
-                            places libres
-                            <br />
-                            <small>mise à jour toutes les {INTERVAL_DURATION / 1000}s</small>
+                            lits libres
+                            <small>actualisé toutes les {INTERVAL_DURATION / 1000} s</small>
                         </span>
                     </div>
-                    <ul className="legend" aria-label="Légende">
-                        <li data-state="available">Libre</li>
-                        <li data-state="pending">Shotgun en cours</li>
-                        <li data-state="taken">Pris</li>
-                        <li data-state="mine">À toi</li>
-                    </ul>
+                    {this.renderMyStatus(me)}
                 </div>
-                {this.getMyStatus()}
                 <DisplayAllFloors
                     floors={floors}
+                    me={me}
                     userInfo={this.state.userInfo}
+                    openRoomId={this.state.openRoomId}
+                    onOpenRoom={(roomId) => this.setState({ openRoomId: roomId })}
                     createShotgunFunction={this.createShotgun}
                     addPersonsInShotgunFunction={this.addPersonsInShotgun}
                     cancelShotgunFunction={this.cancelShotgun}
                 />
+                <ul className="legend" aria-label="Légende du plan">
+                    <li data-state="available">Libre</li>
+                    <li data-state="pending">Shotgun en cours</li>
+                    <li data-state="taken">Prise</li>
+                    <li data-state="mine">À toi</li>
+                </ul>
             </div>
         );
     }

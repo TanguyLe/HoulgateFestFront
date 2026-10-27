@@ -31,6 +31,7 @@
     display: inline-flex;
     align-items: baseline;
     font-family: var(--font-display);
+    font-stretch: var(--display-stretch);
     font-size: 1.45rem;
     font-weight: 800;
     letter-spacing: -0.03em;
@@ -61,7 +62,7 @@
     align-items: center;
     gap: var(--space-2);
     padding: 0.5rem 0.9rem;
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-sm);
     color: var(--text-soft);
     font-size: var(--text-sm);
     font-weight: 600;
@@ -101,6 +102,7 @@
     background: var(--highlight);
     color: var(--ink-900);
     font-family: var(--font-display);
+    font-stretch: var(--display-stretch);
     font-weight: 800;
     text-transform: uppercase;
 }
@@ -150,6 +152,7 @@
     padding: var(--space-4) var(--space-5);
     border-radius: var(--radius-md);
     font-family: var(--font-display);
+    font-stretch: var(--display-stretch);
     font-size: var(--text-2xl);
     font-weight: 700;
     color: var(--text);
@@ -178,6 +181,27 @@
     }
 }
 
+/* the wide wordmark would push the account buttons out on small phones */
+@media (max-width: 420px) {
+    .wordmark {
+        font-size: 1.15rem;
+    }
+
+    .topbar__inner {
+        gap: var(--space-2);
+        padding: 0 var(--space-3);
+    }
+
+    .topbar .btn--icon {
+        width: 2.25rem;
+        min-height: 2.25rem;
+    }
+
+    .user-pill .avatar {
+        display: none;
+    }
+}
+
 /* ---------- Page containers ---------- */
 
 .page {
@@ -199,6 +223,8 @@
 .page.page--full {
     max-width: none;
     padding: 0;
+    /* the tilted marquee's corners would otherwise widen the page; clip keeps sticky working */
+    overflow-x: clip;
 }
 
 @media (max-width: 640px) {

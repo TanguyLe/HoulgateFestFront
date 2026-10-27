@@ -106,8 +106,8 @@ class ShotgunPage extends React.Component {
         return (
             <div>
                 <PageHeader eyebrow="Villa Les Genêts" title="Shotgun des chambres">
-                    Clique sur une chambre libre pour la réserver, puis attribue les lits à tes
-                    camarades. Premier arrivé, premier couché.
+                    Premier arrivé, premier couché : réserve une chambre libre, puis attribue ses
+                    lits à tes camarades.
                 </PageHeader>
                 {this.renderContent()}
             </div>

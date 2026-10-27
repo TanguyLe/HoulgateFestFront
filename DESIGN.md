@@ -13,19 +13,19 @@ loud and fun on the homepage, and dead simple on the shotgun.
 
 ## Decisions
 
-| Decision                                                   | Why                                                                                                                                                    |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Drop Semantic UI and `react-responsive-carousel`           | Unmaintained, incompatible with modern React, ~600 KB of CSS from a CDN. JS bundle goes from 730 KiB to ~410 KiB.                                      |
-| Plain CSS with custom properties, no Tailwind or CSS-in-JS | No build changes, nothing to learn, five small files in `src/styles/`.                                                                                 |
-| Semantic tokens + `light-dark()`                           | Dark mode for free: components only use `--bg`, `--text`, `--accent`… The visitor can force a theme (toggle in the top bar, stored in `localStorage`). |
-| Fraunces (display) + Inter (text)                          | Fraunces echoes the old serif logo but is warm and modern; Inter for legibility. The PNG logo is replaced by a text wordmark.                          |
-| One persistent app shell                                   | The top bar, drawer, footer and toasts are mounted once around the router, so the session is restored once and the menu state survives navigation.     |
-| Toasts instead of `window.alert()`                         | Non-blocking, styled, and they don't freeze the shotgun page during the rush.                                                                          |
-| Real modal dialogs (bottom sheets on mobile)               | Login and the shotgun steps used fixed-position `Segment`s. `Dialog` handles focus, Escape, backdrop and scroll lock.                                  |
-| Content as data                                            | `src/content/edition.js` (current edition) and `src/history/editions.js` (past editions). Next year's homepage is a data change, not a JSX change.     |
-| Floor plan keeps real proportions via CSS `aspect-ratio`   | Replaces the JS resize listeners. Each room is a size container, so tiles drop details as they shrink.                                                 |
-| The whole room tile is the button                          | Bigger tap targets during the shotgun, and no more clipped buttons in small rooms.                                                                     |
-| Native `<select>` for bed attribution                      | Native mobile pickers, accessible, no dropdown lib.                                                                                                    |
+| Decision                                                             | Why                                                                                                                                                                                                       |
+| -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Drop Semantic UI and `react-responsive-carousel`                     | Unmaintained, incompatible with modern React, ~600 KB of CSS from a CDN. JS bundle goes from 730 KiB to ~410 KiB.                                                                                         |
+| Plain CSS with custom properties, no Tailwind or CSS-in-JS           | No build changes, nothing to learn, five small files in `src/styles/`.                                                                                                                                    |
+| Semantic tokens + `light-dark()`                                     | Dark mode for free: components only use `--bg`, `--text`, `--accent`… The visitor can force a theme (toggle in the top bar, stored in `localStorage`).                                                    |
+| Archivo only: its wide black cut for display, normal width for text  | A grotesque drawn for posters: the wide headlines read like a printed festival bill, not a web template. One variable family (`wdth` + `wght`), one request. The PNG logo is replaced by a text wordmark. |
+| One persistent app shell                                             | The top bar, drawer, footer and toasts are mounted once around the router, so the session is restored once and the menu state survives navigation.                                                        |
+| Toasts instead of `window.alert()`                                   | Non-blocking, styled, and they don't freeze the shotgun page during the rush.                                                                                                                             |
+| Real modal dialogs (bottom sheets on mobile)                         | Login and the shotgun steps used fixed-position `Segment`s. `Dialog` handles focus, Escape, backdrop and scroll lock.                                                                                     |
+| Content as data                                                      | `src/content/edition.js` (current edition) and `src/history/editions.js` (past editions). Next year's homepage is a data change, not a JSX change.                                                        |
+| Shotgun: a small schematic plan per floor plus a list of its rooms   | The real-proportion plan made bedrooms tiny next to corridors and bathrooms. The plan now only locates the rooms (numbered, decorative), the list carries names, beds, occupants, countdowns and actions. |
+| The whole room row is the button, the next step sits in a sticky bar | Big tap targets during the rush. Free beds, the user's room and its countdown stay in sight while scrolling, and the bar reopens the user's room.                                                         |
+| Native `<select>` for bed attribution                                | Native mobile pickers, accessible, no dropdown lib.                                                                                                                                                       |
 
 ## Map
 
@@ -38,7 +38,7 @@ src/styles/pages.css    home, history, embeds, shotgun (countdown, floors, rooms
 src/ui/                 Icon, Alert, Field, Dialog, Gallery, PageHeader, Toaster, notify()
 ```
 
-Room states (`data-state` on tiles and legend): `available`, `locked`, `pending`, `pending-mine`,
+Room states (`data-state` on plan rooms, room rows and legend, computed by `src/shotgun/roomState.js`): `available`, `locked`, `pending`, `pending-mine`,
 `taken`, `mine`, `loading`. Their colours live in one block in `pages.css`.
 
 ## Updating for a new edition

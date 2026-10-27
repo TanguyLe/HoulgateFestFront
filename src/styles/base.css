@@ -43,10 +43,10 @@ h3,
 h4 {
     margin: 0 0 var(--space-3);
     font-family: var(--font-display);
-    font-optical-sizing: auto;
-    font-weight: 750;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
+    font-stretch: var(--display-stretch);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.01em;
     text-wrap: balance;
 }
 

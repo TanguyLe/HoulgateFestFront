@@ -11,7 +11,7 @@
     min-height: 2.75rem;
     padding: 0 var(--space-5);
     border: 1.5px solid var(--btn-border);
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-sm);
     background: var(--btn-bg);
     color: var(--btn-fg);
     font: 600 var(--text-sm) / 1 var(--font-body);
@@ -648,6 +648,8 @@ select.field__control {
 /* ---------- Data table (scrolls sideways on small screens) ---------- */
 
 .table-wrap {
+    /* positioned so the visually hidden headers stay inside the scroll area */
+    position: relative;
     overflow-x: auto;
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
