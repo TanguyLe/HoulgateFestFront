@@ -36,7 +36,6 @@ module.exports = {
             NODE_ENV: "production",
             API_URL: null,
             HAS_STARTED: false,
-            SCORES_BOARD_URL: null,
             TOGETZER_IFRAME_URL: null,
             TURNSTILE_SITE_KEY: null,
         }),

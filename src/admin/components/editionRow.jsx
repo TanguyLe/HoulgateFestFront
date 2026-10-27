@@ -7,12 +7,14 @@ const toDraft = (edition) => ({
     year: edition.year !== undefined ? String(edition.year) : "",
     weekendDate: toDateInput(edition.weekendDate),
     shotgunDate: toDatetimeInput(edition.shotgunDate),
+    scoresBoardUrl: edition.scoresBoardUrl || "",
 });
 
 const fromDraft = (draft) => ({
     year: Number(draft.year),
     weekendDate: fromDateInput(draft.weekendDate),
     shotgunDate: fromDatetimeInput(draft.shotgunDate),
+    scoresBoardUrl: draft.scoresBoardUrl.trim(),
 });
 
 // One edition as an editable table row, also used (without `edition._id`) to create a new one
@@ -45,8 +47,13 @@ class EditionRow extends React.Component {
     }
 
     isValid() {
-        const { year, weekendDate, shotgunDate } = this.state.draft;
-        return /^\d{4}$/.test(year) && weekendDate && shotgunDate;
+        const { year, weekendDate, shotgunDate, scoresBoardUrl } = this.state.draft;
+        return (
+            /^\d{4}$/.test(year) &&
+            weekendDate &&
+            shotgunDate &&
+            (!scoresBoardUrl.trim() || /^https:\/\/\S+$/.test(scoresBoardUrl.trim()))
+        );
     }
 
     save() {
@@ -98,6 +105,16 @@ class EditionRow extends React.Component {
                         type="datetime-local"
                         value={draft.shotgunDate}
                         onChange={this.handleChange}
+                    />
+                </Table.Cell>
+                <Table.Cell>
+                    <Input
+                        name="scoresBoardUrl"
+                        type="url"
+                        value={draft.scoresBoardUrl}
+                        onChange={this.handleChange}
+                        placeholder="https://..."
+                        fluid
                     />
                 </Table.Cell>
                 <Table.Cell collapsing textAlign="right">

@@ -13,11 +13,11 @@ const originOf = (url) => {
         return null;
     }
 };
-// The bundle calls the API and embeds the scores board and Togetzer iframes, set at build time
+// The bundle calls the API and embeds the Togetzer iframe, set at build time
 const apiOrigin = originOf(process.env.API_URL);
-const frameOrigins = [process.env.SCORES_BOARD_URL, process.env.TOGETZER_IFRAME_URL]
-    .map(originOf)
-    .filter(Boolean);
+const togetzerOrigin = originOf(process.env.TOGETZER_IFRAME_URL);
+// The scores board URL is set on each edition from the admin interface, and the API only accepts
+// https ones, so any https page can be framed
 const semanticCdn = "https://cdnjs.cloudflare.com";
 // The sign up captcha (Cloudflare Turnstile) loads its script and runs in an iframe
 const turnstile = "https://challenges.cloudflare.com";
@@ -45,7 +45,7 @@ app.use(
                 fontSrc: ["'self'", "data:", semanticCdn],
                 imgSrc: ["'self'", "data:"],
                 connectSrc: ["'self'", ...(apiOrigin ? [apiOrigin] : [])],
-                frameSrc: [...frameOrigins, turnstile],
+                frameSrc: ["https:", ...(togetzerOrigin ? [togetzerOrigin] : []), turnstile],
                 frameAncestors: ["'none'"],
                 objectSrc: ["'none'"],
                 baseUri: ["'self'"],
