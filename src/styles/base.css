@@ -49,6 +49,13 @@ h3 {
     font-size: var(--text-xl);
 }
 
+/* French ordinals (1er, 2e): raised without opening up the line */
+sup {
+    font-size: 0.62em;
+    line-height: 0;
+    vertical-align: 0.6em;
+}
+
 p {
     margin: 0 0 var(--space-4);
     text-wrap: pretty;
@@ -79,8 +86,8 @@ img {
 }
 
 ::selection {
-    background: var(--highlight);
-    color: var(--ink-900);
+    background: var(--accent);
+    color: var(--accent-contrast);
 }
 
 .visually-hidden {

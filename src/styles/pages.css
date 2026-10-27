@@ -3,15 +3,28 @@
    ========================================================= */
 
 .hero {
-    padding: var(--space-7) var(--space-5);
+    position: relative;
+    padding: calc(var(--space-7) + 1rem) var(--space-5) var(--space-7);
     border-bottom: 2px solid var(--text);
+}
+
+/* Bunting across the top, taken from the badges: the one ornament of the site */
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 26px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='26'%3E%3Cpath d='M0 2 Q36 7 72 2' stroke='%234a3e34' stroke-width='1.5' fill='none'/%3E%3Cpath d='M4 3h20l-10 19z' fill='%232f6f7e'/%3E%3Cpath d='M40 5h20l-10 19z' fill='%234a3e34'/%3E%3C/svg%3E")
+        0 0 / 72px 26px repeat-x;
 }
 
 .hero__inner {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    align-items: center;
-    gap: var(--space-7);
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--space-6);
     max-width: var(--content-width);
     margin: 0 auto;
 }
@@ -22,17 +35,11 @@
 }
 
 .hero__title {
-    margin-bottom: var(--space-2);
-    font-size: min(var(--text-hero), 14cqi);
+    margin-bottom: var(--space-3);
+    font-size: min(var(--text-hero), 13cqi);
     font-weight: 900;
-    line-height: 0.92;
-    letter-spacing: -0.03em;
-}
-
-.hero__title em {
-    display: block;
-    font-style: normal;
-    color: var(--accent);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
 }
 
 .hero__tagline {
@@ -45,7 +52,7 @@
     display: grid;
     grid-template-columns: repeat(3, auto);
     justify-content: start;
-    gap: var(--space-2) var(--space-6);
+    gap: var(--space-2) var(--space-7);
     margin: 0 0 var(--space-6);
     padding: var(--space-3) 0;
     border-top: 1px solid var(--text);
@@ -59,8 +66,10 @@
 
 .hero__facts dd {
     margin: 0;
-    font-size: var(--text-lg);
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-stretch: var(--display-stretch);
+    font-size: var(--text-xl);
+    font-weight: 800;
 }
 
 .hero__actions {
@@ -69,28 +78,24 @@
     gap: var(--space-3);
 }
 
+/* The edition badge, small and flat like a stamp on the poster */
 .hero__badge {
-    width: 100%;
-    max-width: 28rem;
+    width: 9.5rem;
     height: auto;
-    justify-self: end;
     border: 2px solid var(--text);
 }
 
 @media (max-width: 860px) {
     .hero {
-        padding: var(--space-5) var(--space-4) var(--space-6);
+        padding: calc(var(--space-6) + 1rem) var(--space-4) var(--space-6);
     }
 
     .hero__inner {
-        grid-template-columns: 1fr;
-        gap: var(--space-5);
+        gap: var(--space-4);
     }
 
     .hero__badge {
-        order: -1;
-        justify-self: start;
-        max-width: 14rem;
+        width: 5.5rem;
     }
 
     .hero__facts {
@@ -98,39 +103,32 @@
     }
 }
 
-/* Keywords of the theme, scrolling like a festival banner */
+/* The theme in a few words: a static band of colour, set like a line of the poster */
 
-.marquee {
-    overflow: hidden;
-    padding: var(--space-3) 0;
+.keywords {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-1) 0;
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    list-style: none;
     border-bottom: 2px solid var(--text);
     background: var(--accent);
     color: var(--accent-contrast);
-}
-
-.marquee__track {
-    display: flex;
-    width: max-content;
-    animation: marquee 38s linear infinite;
-}
-
-.marquee__item {
-    padding: 0 var(--space-5);
     font-family: var(--font-display);
     font-stretch: var(--display-stretch);
-    font-size: var(--text-xl);
-    font-weight: 900;
-    white-space: nowrap;
+    font-size: var(--text-lg);
+    font-weight: 800;
+    text-align: center;
 }
 
-.marquee__item + .marquee__item {
+.keywords li {
+    padding: 0 var(--space-4);
+}
+
+.keywords li + li {
     border-left: 2px solid currentColor;
-}
-
-@keyframes marquee {
-    to {
-        transform: translateX(-50%);
-    }
 }
 
 /* Programme */
@@ -148,21 +146,11 @@
     font-size: var(--text-2xl);
 }
 
-.programme figure {
-    margin: 0;
-}
-
-.programme figure img {
+.programme img {
     display: block;
     width: 100%;
     height: auto;
     border: 2px solid var(--text);
-}
-
-.programme figcaption {
-    margin-top: var(--space-2);
-    font-size: var(--text-xs);
-    color: var(--text-muted);
 }
 
 .programme__story {
@@ -202,13 +190,19 @@
 
 .programme__pictures {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-    gap: var(--space-5);
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-6);
 }
 
 .programme__pictures p {
-    grid-column: 1 / -1;
     max-width: var(--prose-width);
+}
+
+.programme__credit {
+    grid-column: 1 / -1;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
 }
 
 .programme__end {
@@ -382,9 +376,7 @@
     align-items: center;
     gap: var(--space-3);
     color: var(--text-muted);
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-size: var(--text-sm);
 }
 
 .login__divider::before,
@@ -490,15 +482,13 @@
 }
 
 .countdown__unit:last-child .countdown__value {
-    color: var(--highlight);
+    color: var(--accent);
 }
 
 .countdown__label {
     font-size: var(--text-xs);
     font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgb(255 251 243 / 0.6);
+    color: rgb(255 251 243 / 0.7);
 }
 
 /* Status bar: free beds and the user's next step, always in sight during the rush */
@@ -719,7 +709,7 @@
     outline-offset: -2px;
 }
 
-/* white on amber is too faint: the pending numbers use dark ink */
+/* white on sun yellow is too faint: the pending numbers use dark ink */
 .plan-room[data-state^="pending"],
 .room-row[data-state^="pending"] .room-row__num {
     color: var(--ink-900);

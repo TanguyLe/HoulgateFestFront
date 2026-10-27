@@ -41,7 +41,7 @@ class PasswordResetPage extends React.Component {
             );
         else
             display = (
-                <Alert tone="success" title="C’est fait !">
+                <Alert tone="success" title="C’est fait !">
                     Ton mot de passe a été changé, tu peux te connecter.
                 </Alert>
             );

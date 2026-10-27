@@ -142,7 +142,7 @@ class ContactForm extends React.Component {
             .catch((error) => {
                 if (this.captcha.current) this.captcha.current.reset();
                 this.setState({ status: "input" });
-                notify.error("Une erreur est survenue, veuillez réessayer : " + error);
+                notify.error("Une erreur est survenue, réessaie : " + error);
             });
     }
 
@@ -163,7 +163,7 @@ class ContactForm extends React.Component {
         if (status === "sent")
             return (
                 <div className="form">
-                    <Alert tone="success" title="Message envoyé !">
+                    <Alert tone="success" title="Message envoyé !">
                         Ton message a bien été transmis, on te répond vite.
                     </Alert>
                     <div className="form__actions">

@@ -1,8 +1,9 @@
 /*
  * Design tokens.
- * The palette is lifted from the edition badges: cream paper, brown ink, beer amber,
- * bunting coral and Channel-sea teal. Components only consume the semantic tokens
- * (--bg, --text, --accent...) so the dark theme is a single override block.
+ * Two inks and paper, like a French poster: cream paper, brown-black ink and one accent,
+ * the Channel teal. Sun yellow is a state colour only (pending shotgun, warnings), never
+ * decoration. Components only consume the semantic tokens (--bg, --text, --accent...)
+ * so the dark theme is a single override block.
  */
 
 :root {
@@ -15,12 +16,9 @@
     --ink-900: #1f1712;
     --ink-700: #4a3e34;
     --ink-500: #7b6c5f;
-    --amber-300: #ffd27a;
-    --amber-500: #f2a51a;
-    --amber-700: #a86a00;
-    --coral-400: #f07a63;
-    --coral-500: #e5533c;
-    --coral-700: #a8321f;
+    --sun-300: #ffd27a;
+    --sun-500: #f2a51a;
+    --sun-700: #a86a00;
     --sea-300: #8cc3cf;
     --sea-500: #2f6f7e;
     --sea-700: #1d4954;
@@ -30,8 +28,8 @@
 
     /* Typography */
     --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
-    /* display text uses Archivo's wide cut: a printed festival poster, not a web template */
-    --display-stretch: 118%;
+    /* display text uses Archivo barely widened: a French affiche, not an extra-wide US gig poster */
+    --display-stretch: 104%;
     --font-body: "Archivo", "Helvetica Neue", Arial, sans-serif;
     --text-xs: 0.75rem;
     --text-sm: 0.875rem;
@@ -78,14 +76,16 @@
     --text-soft: light-dark(var(--ink-700), #d9ccb8);
     --border: light-dark(rgb(31 23 18 / 0.12), rgb(246 238 223 / 0.1));
     --border-strong: light-dark(rgb(31 23 18 / 0.28), rgb(246 238 223 / 0.24));
-    --accent: light-dark(var(--coral-500), var(--coral-400));
-    --accent-hover: light-dark(var(--coral-700), #ff9a85);
+    --accent: light-dark(var(--sea-500), var(--sea-300));
+    --accent-hover: light-dark(var(--sea-700), #b3dbe3);
     --accent-contrast: light-dark(#ffffff, var(--ink-900));
-    --accent-soft: light-dark(rgb(229 83 60 / 0.12), rgb(240 122 99 / 0.16));
-    --brand-2: light-dark(var(--sea-500), var(--sea-300));
-    --brand-2-soft: light-dark(rgb(47 111 126 / 0.12), rgb(140 195 207 / 0.14));
-    --highlight: light-dark(var(--amber-500), var(--amber-300));
-    --highlight-ink: light-dark(var(--amber-700), var(--amber-300));
+    --accent-soft: light-dark(rgb(47 111 126 / 0.12), rgb(140 195 207 / 0.14));
+    /* the shotgun's "free" colour is the accent */
+    --brand-2: var(--accent);
+    --brand-2-soft: var(--accent-soft);
+    /* state colour: pending shotgun and warnings */
+    --highlight: light-dark(var(--sun-500), var(--sun-300));
+    --highlight-ink: light-dark(var(--sun-700), var(--sun-300));
     --highlight-soft: light-dark(rgb(242 165 26 / 0.18), rgb(255 210 122 / 0.14));
     --success: light-dark(var(--green-500), #5cc98b);
     --success-soft: light-dark(rgb(46 155 95 / 0.14), rgb(92 201 139 / 0.14));

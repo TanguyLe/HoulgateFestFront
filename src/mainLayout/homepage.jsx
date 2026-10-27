@@ -2,24 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { CURRENT_EDITION as edition } from "../content/edition";
-
-const Marquee = ({ words }) => {
-    // Rendered twice so the CSS translate loop is seamless
-    const row = words.map((word) => (
-        <span key={word} className="marquee__item">
-            {word}
-        </span>
-    ));
-
-    return (
-        <div className="marquee" aria-hidden>
-            <div className="marquee__track">
-                {row}
-                {row}
-            </div>
-        </div>
-    );
-};
+import { withOrdinals } from "../utils/frenchText";
 
 // The orgas' own words, laid out like the printed programme of the weekend
 const Homepage = () => (
@@ -27,28 +10,25 @@ const Homepage = () => (
         <section className="hero">
             <div className="hero__inner">
                 <div className="hero__copy">
-                    <h1 className="hero__title">
-                        {edition.name.replace(/Fest$/, "")}
-                        <em>Fest</em>
-                    </h1>
+                    <h1 className="hero__title">{edition.name}</h1>
                     <p className="hero__tagline">{edition.tagline}</p>
                     <dl className="hero__facts">
                         <div>
-                            <dt>Le week-end</dt>
+                            <dt>Quand</dt>
                             <dd>{edition.dates.label}</dd>
-                        </div>
-                        <div>
-                            <dt>Le shotgun des lits</dt>
-                            <dd>{edition.shotgun.label}</dd>
                         </div>
                         <div>
                             <dt>Où</dt>
                             <dd>Villa Les Genêts, Houlgate</dd>
                         </div>
+                        <div>
+                            <dt>Shotgun des lits</dt>
+                            <dd>{withOrdinals(edition.shotgun.label)}</dd>
+                        </div>
                     </dl>
                     <div className="hero__actions">
                         <Link to="/register" className="btn btn--primary btn--lg">
-                            Je m'inscris
+                            Je m’inscris
                         </Link>
                         <Link to="/shotgun" className="btn btn--lg">
                             Aller au shotgun
@@ -65,7 +45,11 @@ const Homepage = () => (
             </div>
         </section>
 
-        <Marquee words={edition.keywords} />
+        <ul className="keywords" aria-label="Le thème en quelques mots">
+            {edition.keywords.map((word) => (
+                <li key={word}>{word}</li>
+            ))}
+        </ul>
 
         <article className="programme">
             <section className="programme__story">
@@ -77,31 +61,28 @@ const Homepage = () => (
                         <p key={paragraph.slice(0, 24)}>{paragraph}</p>
                     ))}
                     <p>
-                        <strong>Tenterez-vous l’aventure ?</strong>
+                        <strong>Tenterez-vous l’aventure ?</strong>
                     </p>
                 </div>
-                <figure>
-                    <img src={edition.images[0].src} alt="" loading="lazy" />
-                    <figcaption>{edition.images[0].caption}</figcaption>
-                </figure>
+                <img src={edition.images[0]} alt="" loading="lazy" />
             </section>
 
             <section className="programme__facts">
                 <div>
-                    <h2>C’est quand ?</h2>
+                    <h2>C’est quand ?</h2>
                     <p className="programme__big">{edition.dates.label}</p>
                     <p>
                         Comme dit plus haut, tous nos duos sont attendus avec impatience à Houlgate,
-                        qu’ils viennent du passé ou de votre assiette ! Cependant, seul votre lit
-                        est à réserver sur ce site !
+                        qu’ils viennent du passé ou de votre assiette ! Cependant, seul votre lit
+                        est à réserver sur ce site !
                     </p>
                 </div>
                 <div>
                     <h2>Le shotgun</h2>
-                    <p className="programme__big">{edition.shotgun.label}</p>
+                    <p className="programme__big">{withOrdinals(edition.shotgun.label)}</p>
                     <p>
-                        Soyez présents {edition.shotgun.long} sur cette plateforme pour choisir
-                        votre meilleur hamac ! D’ici là pensez à vous{" "}
+                        Soyez présents {withOrdinals(edition.shotgun.long)} sur cette plateforme
+                        pour choisir votre meilleur hamac ! D’ici là pensez à vous{" "}
                         <Link to="/register">inscrire</Link> et vérifiez bien que vous pouvez vous
                         connecter en amont. Le{" "}
                         <a target="_blank" rel="noopener noreferrer" href={edition.guideUrl}>
@@ -110,27 +91,25 @@ const Homepage = () => (
                         devrait vous aider à vous préparer.
                     </p>
                     <p>
-                        <strong>Organisez-vous pour le shotgun !</strong>
+                        <strong>Organisez-vous pour le shotgun !</strong>
                     </p>
                 </div>
                 <div>
                     <h2>Restez informés</h2>
                     <p>
                         Pour être notifié directement au moment du shotgun et au courant de toutes
-                        les actualités du {edition.name} : rendez-vous sur le groupe WhatsApp de
-                        l’évènement !
+                        les actualités du {edition.name} : rendez-vous sur le groupe WhatsApp de
+                        l’évènement !
                     </p>
                 </div>
             </section>
 
             <section className="programme__pictures">
-                {edition.images.slice(1).map((image) => (
-                    <figure key={image.src}>
-                        <img src={image.src} alt="" loading="lazy" />
-                        <figcaption>{image.caption}</figcaption>
-                    </figure>
-                ))}
+                <img src={edition.images[1]} alt="" loading="lazy" />
                 <p>{edition.tentNote} #PosticheMoustachu</p>
+                <p className="programme__credit">
+                    Illustrations : les orgas et une IA un peu trop motivée.
+                </p>
             </section>
 
             <section className="programme__end">

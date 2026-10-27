@@ -94,13 +94,13 @@ class EditionsAdmin extends React.Component {
         return (
             <div className="admin-stack">
                 <Alert>
-                    L'édition en cours est celle de l'année actuelle ({currentYear}) : sa date de
+                    L’édition en cours est celle de l’année actuelle ({currentYear}) : sa date de
                     shotgun ouvre les réservations et décide du compte à rebours, et son tableau des
                     scores est affiché sur la page Scores.
                 </Alert>
                 {!editions.some((edition) => edition.year === currentYear) && (
-                    <Alert tone="warning" title={"Pas d'édition pour " + currentYear}>
-                        Sans édition pour l'année en cours, le shotgun reste fermé.
+                    <Alert tone="warning" title={"Pas d’édition pour " + currentYear}>
+                        Sans édition pour l’année en cours, le shotgun reste fermé.
                     </Alert>
                 )}
                 <div className="table-wrap">
@@ -132,7 +132,7 @@ class EditionsAdmin extends React.Component {
                 </div>
                 {toDelete && (
                     <ConfirmDialog
-                        title={"Supprimer l'édition " + toDelete.year + " ?"}
+                        title={"Supprimer l’édition " + toDelete.year + " ?"}
                         confirmLabel="Supprimer"
                         danger
                         onConfirm={this.confirmDelete}

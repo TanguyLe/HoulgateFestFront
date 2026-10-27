@@ -30,8 +30,8 @@ class ScoresPage extends React.Component {
         if (!this.state.scoresBoardUrl)
             return (
                 <Alert>
-                    Le tableau des scores n'est pas encore disponible cette année. Reviens plus tard
-                    !
+                    Le tableau des scores n’est pas encore disponible cette année. Reviens plus
+                    tard !
                 </Alert>
             );
 

@@ -69,7 +69,7 @@ class UsersAdmin extends React.Component {
     sendActivationEmail(user) {
         this.setSaving(user._id, true);
         adminPost(getAdminActivationEmailUrl(user._id))
-            .then(() => notify.success("Email d'activation renvoyé à " + user.email + "."))
+            .then(() => notify.success("Email d’activation renvoyé à " + user.email + "."))
             .catch((error) => notify.error(error.message))
             .finally(() => this.setSaving(user._id, false));
     }
@@ -171,9 +171,9 @@ class UsersAdmin extends React.Component {
                                                     <button
                                                         type="button"
                                                         className="btn btn--ghost btn--icon btn--sm"
-                                                        title="Renvoyer l'email d'activation"
+                                                        title="Renvoyer l’email d’activation"
                                                         aria-label={
-                                                            "Renvoyer l'email d'activation à " +
+                                                            "Renvoyer l’email d’activation à " +
                                                             user.username
                                                         }
                                                         disabled={saving[user._id]}
@@ -212,7 +212,7 @@ class UsersAdmin extends React.Component {
                     <ConfirmDialog
                         title={
                             (adminChange.isAdmin ? "Donner" : "Retirer") +
-                            " les droits d'admin à " +
+                            " les droits d’admin à " +
                             adminChange.user.username +
                             " ?"
                         }
@@ -222,7 +222,7 @@ class UsersAdmin extends React.Component {
                     >
                         {adminChange.isAdmin
                             ? "Un admin peut modifier les éditions et les utilisateurs."
-                            : "Cet utilisateur n'aura plus accès à l'administration."}
+                            : "Cet utilisateur n’aura plus accès à l’administration."}
                     </ConfirmDialog>
                 )}
             </div>

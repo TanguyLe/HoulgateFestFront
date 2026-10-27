@@ -242,7 +242,7 @@ class ShotgunContainer extends React.Component {
                 ////////////////////////////////////////////////////////////////////
 
                 // The shotgun was denied, several possible reasons, may need to elaborate in the future.
-                notify.error("Cette pièce n'est plus disponible, ou tu as déjà shotgun.");
+                notify.error("Cette pièce n’est plus disponible, ou tu as déjà shotgun.");
             }
             await this.intervalFunction();
         });
@@ -270,7 +270,7 @@ class ShotgunContainer extends React.Component {
             } else {
                 // The shotgun was denied, several possible reasons, may need to elaborate in the future.
                 notify.error(
-                    "Trop tard ! Cette pièce est soit déjà shotgun, soit toi ou un de " +
+                    "Trop tard ! Cette pièce est soit déjà shotgun, soit toi ou un de " +
                         "tes camarades est déjà inscrit dans une pièce.",
                 );
             }
@@ -286,7 +286,7 @@ class ShotgunContainer extends React.Component {
             const cancelShotgun = await deleteCallApi(getShotgunRoomUrl(roomId), {}, true);
 
             if (cancelShotgun.status === 200) this.updateState([{ shotgunId: null }]);
-            else notify.error("L'annulation a échoué, recharge la page et réessaie.");
+            else notify.error("L’annulation a échoué, recharge la page et réessaie.");
 
             await this.intervalFunction();
         });
@@ -359,7 +359,7 @@ class ShotgunContainer extends React.Component {
         if (this.state.error)
             return (
                 <Alert tone="error" title="Erreur de chargement des chambres">
-                    Tu n'aurais pas dû voir ça. Vérifie ta connexion internet et recharge la page.
+                    Tu n’aurais pas dû voir ça. Vérifie ta connexion internet et recharge la page.
                 </Alert>
             );
 

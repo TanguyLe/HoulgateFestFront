@@ -64,7 +64,7 @@ class ShotgunPage extends React.Component {
     }
 
     renderContent() {
-        if (this.state.loading) return <Alert loading>Vérification de l'heure…</Alert>;
+        if (this.state.loading) return <Alert loading>Vérification de l’heure…</Alert>;
 
         // This is set within webpack
         if (process.env.HAS_STARTED) return <ShotgunController />;
@@ -72,7 +72,7 @@ class ShotgunPage extends React.Component {
         if (this.state.targetDatetime === null)
             return (
                 <Alert title="Patience…">
-                    La date de shotgun n'a pas encore été définie cette année. Reviens plus tard !
+                    La date de shotgun n’a pas encore été définie cette année. Reviens plus tard !
                 </Alert>
             );
 
@@ -80,7 +80,7 @@ class ShotgunPage extends React.Component {
             return (
                 <div className="countdown-card">
                     <p className="countdown-card__date">
-                        Ouverture du shotgun : {formatShotgunDate(this.state.targetDatetime)}
+                        Ouverture du shotgun : {formatShotgunDate(this.state.targetDatetime)}
                     </p>
                     <Countdown
                         onTime={this.updateActualDate}
@@ -88,7 +88,7 @@ class ShotgunPage extends React.Component {
                         currentDatetime={this.state.currentDatetime}
                     />
                     <p className="countdown-card__hint">
-                        Reste sur cette page : le plan de la villa s’affichera tout seul à l’heure
+                        Reste sur cette page : le plan de la villa s’affichera tout seul à l’heure
                         H. Connecte-toi bien avant, et prépare la liste de tes camarades de chambre.
                     </p>
                 </div>
@@ -101,7 +101,7 @@ class ShotgunPage extends React.Component {
         return (
             <div>
                 <PageHeader title="Shotgun des chambres">
-                    Premier arrivé, premier couché : réserve une chambre libre, puis attribue ses
+                    Premier arrivé, premier couché : réserve une chambre libre, puis attribue ses
                     lits à tes camarades.
                 </PageHeader>
                 {this.renderContent()}

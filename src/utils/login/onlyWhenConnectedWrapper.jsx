@@ -40,7 +40,7 @@ class OnlyWhenConnectedWrapper extends React.Component {
                     <Icon name="lock" size={30} />
                 </span>
                 <h1>Réservé aux festivaliers</h1>
-                <p>Cette page n'est accessible qu'une fois connecté. Pas encore de compte ?</p>
+                <p>Cette page n’est accessible qu’une fois connecté. Pas encore de compte ?</p>
                 <div className="locked__actions">
                     <button
                         type="button"

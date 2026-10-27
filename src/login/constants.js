@@ -24,7 +24,7 @@ const PASSWORD = "password";
 export const CONFIRM = "confirm";
 
 const EMAIL_FR = "email";
-const USERNAME_FR = "nom d'utilisateur";
+const USERNAME_FR = "nom d’utilisateur";
 const PASSWORD_FR = "mot de passe";
 const CONFIRM_FR = "confirmation mot de passe";
 
@@ -33,7 +33,7 @@ export const REGISTRATION_ERROR_MSG_PREFIX = "registration" + ERROR_MSG_INDEX_PR
 export const PSWRD_RESET_ERROR_MSG_PREFIX = "passwordReset" + ERROR_MSG_INDEX_PREFIX;
 export const CREATE_PSWRD_RESET_ERROR_MSG_PREFIX = "createPasswordReset" + ERROR_MSG_INDEX_PREFIX;
 
-const INVALID_EMAIL = "L'adresse email doit être valide.";
+const INVALID_EMAIL = "L’adresse email doit être valide.";
 const INVALID_CONFIRM = "Les deux mots de passe doivent être identiques.";
 // Same policy as the back, which enforces it
 const INVALID_PASSWORD = "Le mot de passe doit faire entre 8 et 72 caractères.";

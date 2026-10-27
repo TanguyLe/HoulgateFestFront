@@ -30,7 +30,7 @@ class LoginPortal extends React.Component {
                 {/* The id is used by OnlyWhenConnectedWrapper to open the dialog from a page */}
                 <button
                     type="button"
-                    className="btn btn--dark btn--sm"
+                    className="btn btn--sm"
                     id="loginPortalOpener"
                     onClick={this.handleToggle}
                 >

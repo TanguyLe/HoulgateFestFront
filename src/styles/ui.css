@@ -280,18 +280,6 @@ select.field__control {
     white-space: nowrap;
 }
 
-.chip--accent {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--accent-contrast);
-}
-
-.chip--amber {
-    background: var(--highlight);
-    border-color: var(--highlight);
-    color: var(--ink-900);
-}
-
 /* ---------- Page header ---------- */
 
 .page-header {
@@ -430,7 +418,7 @@ select.field__control {
 }
 
 .toast--error > .icon {
-    color: var(--coral-400);
+    color: #ff7a7a;
 }
 .toast--success > .icon {
     color: #5cc98b;
@@ -494,8 +482,8 @@ select.field__control {
     width: 4.5rem;
     height: 4.5rem;
     border-radius: 50%;
-    background: var(--highlight-soft);
-    color: var(--highlight-ink);
+    background: var(--accent-soft);
+    color: var(--accent);
 }
 
 .locked__actions {

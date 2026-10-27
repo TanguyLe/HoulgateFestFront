@@ -115,7 +115,7 @@ class CreatePasswordResetForm extends React.Component {
 
                     if (jsonData.wrongField === "activation")
                         notify.error(
-                            "Le compte n'est pas activé! Veuillez utiliser le lien que vous avez reçu par mail.",
+                            "Le compte n’est pas activé ! Utilise le lien que tu as reçu par mail.",
                         );
                 } else this.setState({ status: "sent" });
             })
@@ -174,8 +174,8 @@ class CreatePasswordResetForm extends React.Component {
     render() {
         if (this.state.status === "sent")
             return (
-                <Alert tone="success" title="C’est parti !">
-                    Nous venons de t'envoyer un mail pour changer ton mot de passe.
+                <Alert tone="success" title="C’est parti !">
+                    Nous venons de t’envoyer un mail pour changer ton mot de passe.
                 </Alert>
             );
 

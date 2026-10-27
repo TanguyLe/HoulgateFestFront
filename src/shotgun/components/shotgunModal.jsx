@@ -36,8 +36,8 @@ class ShotgunDialog extends React.Component {
         return (
             <Alert tone="error" title={"Annuler ton " + what + " ?"}>
                 <p>
-                    La chambre et toutes ses personnes seront libérées, et n'importe qui pourra la
-                    shotgun. Personne n'est prévenu par email.
+                    La chambre et toutes ses personnes seront libérées, et n’importe qui pourra la
+                    shotgun. Personne n’est prévenu par email.
                 </p>
                 <div className="form__actions">
                     <button
@@ -75,7 +75,7 @@ class ShotgunDialog extends React.Component {
             >
                 {status === "attributingBeds" ? (
                     <>
-                        <Alert tone="warning" title="La chambre est à toi… pour l’instant !">
+                        <Alert tone="warning" title="La chambre est à toi… pour l’instant !">
                             Choisis vite qui dort avec toi et confirme, sinon la chambre sera
                             libérée.
                         </Alert>
@@ -86,17 +86,17 @@ class ShotgunDialog extends React.Component {
                         />
                     </>
                 ) : (
-                    <Alert tone="success" title="Félicitations, ton shotgun est validé !">
+                    <Alert tone="success" title="Félicitations, ton shotgun est validé !">
                         <p>
                             {roommates.length
                                 ? "Tu dors ici avec " + roommates.join(", ") + ". "
                                 : "Tu dors ici. "}
                             Réjouis-toi de voir ton nom gravé dans le marbre sur ce site. Tu es
-                            maintenant responsable si quelqu'un veut échanger :)
+                            maintenant responsable si quelqu’un veut échanger :)
                         </p>
                         <p>
-                            Si c'est une erreur, la personne qui a shotgun la chambre peut
-                            l'annuler, et sache que c'est pas malin !
+                            Si c’est une erreur, la personne qui a shotgun la chambre peut
+                            l’annuler, et sache que c’est pas malin !
                         </p>
                     </Alert>
                 )}

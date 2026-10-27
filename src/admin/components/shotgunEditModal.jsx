@@ -81,7 +81,7 @@ class ShotgunEditModal extends React.Component {
                     </div>
                     {isPreShotgun ? (
                         <Alert>
-                            Un pré-shotgun n'a pas encore de colocataires : seul le propriétaire
+                            Un pré-shotgun n’a pas encore de colocataires : seul le propriétaire
                             peut être changé.
                         </Alert>
                     ) : (

@@ -34,7 +34,7 @@ class ActivateAccount extends React.Component {
                 })
                 .then((response) => response.json())
                 .then((jsonData) => {
-                    if (jsonData.activated) notify.success("Compte activé, bienvenue !");
+                    if (jsonData.activated) notify.success("Compte activé, bienvenue !");
                     this.setState(
                         { status: "loaded", activated: jsonData.activated },
                         login(jsonData.username, jsonData.accessToken, jsonData.refreshToken),
@@ -59,7 +59,7 @@ class ActivateAccount extends React.Component {
             );
         else if (activated)
             display = (
-                <Alert tone="success" title="Ton compte est activé !">
+                <Alert tone="success" title="Ton compte est activé !">
                     Tu es connecté, direction le shotgun.
                 </Alert>
             );

@@ -76,7 +76,7 @@ class ThemeToggle extends React.Component {
 
 export const Wordmark = () => (
     <Link to="/" className="wordmark" aria-label="HoulgateFest, accueil">
-        Houlgate<em>Fest</em>
+        HoulgateFest
     </Link>
 );
 
@@ -145,10 +145,7 @@ class AppShell extends React.Component {
 
                 <footer className="footer">
                     <div className="footer__inner">
-                        <span>
-                            HoulgateFest · depuis 2018 · fait main par{" "}
-                            <Link to="/contact">les orgas</Link>
-                        </span>
+                        <span>HoulgateFest · depuis 2018</span>
                         <div className="footer__links">
                             {NAV_ITEMS.map((item) => (
                                 <Link key={item.to} to={item.to}>

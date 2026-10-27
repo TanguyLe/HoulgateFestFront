@@ -61,6 +61,8 @@
     "scripts": {
         "prettier-check": "prettier --check .",
         "prettier-run": "prettier --write .",
+        "typography-check": "node scripts/frenchTypography.js --check",
+        "typography-fix": "node scripts/frenchTypography.js --fix",
         "dev": "webpack-dev-server --hot --config webpack.dev.config --port 8000",
         "devStartShotgun": "cross-env-shell HAS_STARTED=true npm run dev",
         "devBuild": "webpack --config webpack.dev.config",

@@ -5,7 +5,7 @@ export const CONTACT_URL = SERVER_ENDPOINT + "/contact";
 export const regexes = {
     mail: {
         def: /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i,
-        error: "L'adresse mail n'est pas valide",
+        error: "L’adresse mail n’est pas valide",
     },
     word: {
         def: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u,
@@ -13,7 +13,7 @@ export const regexes = {
     },
     phone: {
         def: /(\+?[0-9]{1,3}|0)[0-9]{9}$/i,
-        error: "Le format du numéro n'est pas valide.",
+        error: "Le format du numéro n’est pas valide.",
     },
 };
 

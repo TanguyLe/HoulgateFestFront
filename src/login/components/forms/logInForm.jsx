@@ -44,7 +44,7 @@ export default class LogIn extends React.Component {
 
                     if (jsonData.wrongField === "activation")
                         notify.error(
-                            "Le compte n'est pas activé ! Utilise le lien que tu as reçu par mail.",
+                            "Le compte n’est pas activé ! Utilise le lien que tu as reçu par mail.",
                         );
                 } else {
                     // Close first: login() re-renders WhoAmI, which unmounts this dialog
@@ -96,7 +96,7 @@ export default class LogIn extends React.Component {
                     onChange={this.handleChange}
                 />
                 <a className="login__forgot" onClick={this.onClickPasswordReset}>
-                    Mot de passe oublié ?
+                    Mot de passe oublié ?
                 </a>
                 <button
                     type="submit"
@@ -106,14 +106,14 @@ export default class LogIn extends React.Component {
                     {loading ? "Connexion…" : "Je me connecte"}
                 </button>
                 <div className="login__divider">
-                    <span>pas encore de compte ?</span>
+                    <span>pas encore de compte ?</span>
                 </div>
                 <button
                     type="button"
                     className="btn btn--lg btn--block"
                     onClick={this.onClickRegister}
                 >
-                    Je m'inscris
+                    Je m’inscris
                 </button>
             </form>
         );

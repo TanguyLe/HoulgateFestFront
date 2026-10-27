@@ -17,14 +17,14 @@ const Edition = ({ edition }) => (
                         {edition.dates} {edition.year}
                     </span>
                     {edition.winner && (
-                        <span className="chip chip--amber">
+                        <span className="chip">
                             <Icon name="trophy" size={14} />
                             {edition.winner}
                         </span>
                     )}
                 </div>
                 <h2>
-                    <span className="visually-hidden">{edition.year} : </span>
+                    <span className="visually-hidden">{edition.year} : </span>
                     {edition.title}
                 </h2>
                 {edition.link && (
@@ -52,8 +52,7 @@ const Edition = ({ edition }) => (
 const HistoryPage = () => (
     <div className="history">
         <PageHeader title="Gloryhoul of Fame">
-            Sept éditions, des tribus, des sorciers, des Schtroumpfs et beaucoup trop de houblon.
-            Voici la légende.
+            Sept éditions, des tribus, des sorciers, des Schtroumpfs. Voici la légende.
         </PageHeader>
         <nav className="history__jump" aria-label="Aller à une édition">
             {EDITIONS.map((edition) => (

@@ -41,12 +41,6 @@
     color: var(--text);
 }
 
-.wordmark em {
-    font-style: italic;
-    font-weight: 600;
-    color: var(--accent);
-}
-
 .nav {
     display: flex;
     gap: var(--space-1);
@@ -199,8 +193,6 @@
 .page.page--full {
     max-width: none;
     padding: 0;
-    /* the tilted marquee's corners would otherwise widen the page; clip keeps sticky working */
-    overflow-x: clip;
 }
 
 @media (max-width: 640px) {
@@ -212,8 +204,8 @@
 /* ---------- Footer ---------- */
 
 .footer {
-    border-top: 1px solid var(--border);
-    background: var(--bg-raised);
+    border-top: 2px solid var(--text);
+    background: var(--bg);
 }
 
 .footer__inner {

@@ -232,8 +232,8 @@ class ShotgunsAdmin extends React.Component {
 
                 <h2>Historiser les shotguns</h2>
                 <p>
-                    Archive les shotguns dans l'historique de l'édition choisie, puis libère toutes
-                    les chambres et tous les utilisateurs pour l'édition suivante. Les pré-shotguns
+                    Archive les shotguns dans l’historique de l’édition choisie, puis libère toutes
+                    les chambres et tous les utilisateurs pour l’édition suivante. Les pré-shotguns
                     (réservations pas terminées) sont abandonnés.
                 </p>
                 <div className="admin-toolbar">
@@ -265,8 +265,8 @@ class ShotgunsAdmin extends React.Component {
                 </div>
                 {edition && alreadyHistorized > 0 && shotguns.length > 0 && (
                     <Alert tone="warning">
-                        L'édition {edition.year} a déjà {alreadyHistorized} shotgun(s) dans
-                        l'historique : ceux des mêmes propriétaires seront remplacés.
+                        L’édition {edition.year} a déjà {alreadyHistorized} shotgun(s) dans
+                        l’historique : ceux des mêmes propriétaires seront remplacés.
                     </Alert>
                 )}
                 {editing && (
@@ -294,7 +294,7 @@ class ShotgunsAdmin extends React.Component {
                         onConfirm={this.deleteShotgun}
                         onClose={() => this.setState({ deleting: null })}
                     >
-                        La chambre et toutes ses personnes seront libérées. Personne n'est prévenu
+                        La chambre et toutes ses personnes seront libérées. Personne n’est prévenu
                         par email.
                     </ConfirmDialog>
                 )}
@@ -310,7 +310,7 @@ class ShotgunsAdmin extends React.Component {
                         {preShotguns.length
                             ? " et " + preShotguns.length + " pré-shotgun(s) abandonné(s)"
                             : ""}
-                        . Toutes les chambres seront libérées : personne ne pourra plus voir ces
+                        . Toutes les chambres seront libérées : personne ne pourra plus voir ces
                         shotguns sur la page Shotgun.
                     </ConfirmDialog>
                 )}

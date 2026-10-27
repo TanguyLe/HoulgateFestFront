@@ -28,13 +28,13 @@ class SignUpPage extends React.Component {
                     <SignUpForm onRegistration={this.onRegistration} />
                 </div>
             ) : this.state.status === "registered" ? (
-                <Alert tone="success" title="Bienvenue dans la bande !">
-                    Merci de t'être inscrit, tu devrais avoir reçu un mail pour activer ton compte.{" "}
+                <Alert tone="success" title="Bienvenue dans la bande !">
+                    Merci de t’être inscrit, tu devrais avoir reçu un mail pour activer ton compte.{" "}
                     <a onClick={this.onClickRegister}>Revenir au formulaire</a>
                 </Alert>
             ) : (
                 <Alert tone="error" title="Inscription impossible">
-                    Il y a eu une erreur lors de ton inscription, tu nous en vois désolés… N'hésite
+                    Il y a eu une erreur lors de ton inscription, tu nous en vois désolés… N’hésite
                     pas à nous contacter à houlgatefest@gmail.com
                 </Alert>
             );

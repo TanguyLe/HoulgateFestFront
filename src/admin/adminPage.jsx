@@ -50,7 +50,7 @@ class AdminPage extends React.Component {
                 <Tabs
                     tabs={TABS}
                     active={this.state.tab}
-                    label="Sections de l'administration"
+                    label="Sections de l’administration"
                     onChange={(tab) => this.setState({ tab: tab })}
                 >
                     {this.renderTab()}
