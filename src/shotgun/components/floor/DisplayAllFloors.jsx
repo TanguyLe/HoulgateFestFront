@@ -9,6 +9,7 @@ const DisplayAllFloors = ({ floors, createShotgunFunction, ...floorProps }) => (
             <Floor
                 key={FLOOR_GRID_STRUCT_INDEX_PREFIX + index}
                 floorData={floor}
+                floorIndex={index}
                 createShotgunFunction={(event, room) => createShotgunFunction(event, room, floor)}
                 {...floorProps}
             />

@@ -32,9 +32,9 @@ const CheckList = ({ items }) => (
 const ChecklistPage = () => (
     <>
         <PageHeader title="Checklist" />
-        <h2>Avant le weekend</h2>
+        <h2>Avant le week-end</h2>
         <CheckList items={BEFORE_ITEMS} />
-        <h2>Pour le weekend</h2>
+        <h2>Pour le week-end</h2>
         <CheckList items={PACKING_ITEMS} />
     </>
 );

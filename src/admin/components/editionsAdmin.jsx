@@ -108,7 +108,7 @@ class EditionsAdmin extends React.Component {
                         <thead>
                             <tr>
                                 <th scope="col">Année</th>
-                                <th scope="col">Date du weekend</th>
+                                <th scope="col">Date du week-end</th>
                                 <th scope="col">Date et heure du shotgun</th>
                                 <th scope="col">Lien du tableau des scores</th>
                                 <th scope="col">
@@ -138,7 +138,7 @@ class EditionsAdmin extends React.Component {
                         onConfirm={this.confirmDelete}
                         onClose={() => this.setState({ toDelete: null })}
                     >
-                        Weekend du {new Date(toDelete.weekendDate).toLocaleDateString("fr-FR")}.
+                        Week-end du {new Date(toDelete.weekendDate).toLocaleDateString("fr-FR")}.
                         Cette action est définitive.
                     </ConfirmDialog>
                 )}

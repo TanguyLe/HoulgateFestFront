@@ -95,7 +95,7 @@ class EditionRow extends React.Component {
                         type="date"
                         value={draft.weekendDate}
                         onChange={this.handleChange}
-                        aria-label={"Date du weekend, " + label}
+                        aria-label={"Date du week-end, " + label}
                     />
                 </td>
                 <td>

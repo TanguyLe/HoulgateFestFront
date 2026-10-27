@@ -14,7 +14,9 @@ export class Floor extends React.Component {
     }
 
     render() {
-        const { floorData, me } = this.props;
+        const { floorData, floorIndex, me } = this.props;
+        // floor names have spaces, which aria-labelledby would read as several ids
+        const titleId = "floor-title-" + floorIndex;
         const bedrooms = floorData.rooms.filter(isBedroom);
         const numbers = new Map(bedrooms.map((room, index) => [room._id, index + 1]));
 
@@ -30,9 +32,9 @@ export class Floor extends React.Component {
         };
 
         return (
-            <section className="floor" aria-labelledby={"floor-" + floorData.name}>
+            <section className="floor" aria-labelledby={titleId}>
                 <header className="floor__header">
-                    <h2 id={"floor-" + floorData.name}>{floorData.name}</h2>
+                    <h2 id={titleId}>{floorData.name}</h2>
                     <span className={"floor__free" + (freeSeats ? "" : " is-full")}>
                         {freeSeats ? freeSeats + " lits libres" : "Complet"}
                     </span>

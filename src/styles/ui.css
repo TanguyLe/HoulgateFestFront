@@ -35,9 +35,13 @@
     transform: translateY(1px) scale(0.98);
 }
 
+/* disabled is neutral ink on grey, whatever the button's colour: a faded green reads as success */
 .btn:disabled,
 .btn[aria-disabled="true"] {
-    opacity: 0.45;
+    --btn-bg: var(--surface-muted);
+    --btn-fg: var(--text-muted);
+    --btn-border: var(--border-strong);
+    box-shadow: none;
     cursor: not-allowed;
     transform: none;
 }

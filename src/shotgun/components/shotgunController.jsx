@@ -386,6 +386,13 @@ class ShotgunContainer extends React.Component {
                     </div>
                     {this.renderMyStatus(me)}
                 </div>
+                {/* the key to the colours, read before the floors during the rush */}
+                <ul className="legend" aria-label="Légende du plan">
+                    <li data-state="available">Libre</li>
+                    <li data-state="pending">Shotgun en cours</li>
+                    <li data-state="taken">Prise</li>
+                    <li data-state="mine">À toi</li>
+                </ul>
                 <DisplayAllFloors
                     floors={floors}
                     me={me}
@@ -396,12 +403,6 @@ class ShotgunContainer extends React.Component {
                     addPersonsInShotgunFunction={this.addPersonsInShotgun}
                     cancelShotgunFunction={this.cancelShotgun}
                 />
-                <ul className="legend" aria-label="Légende du plan">
-                    <li data-state="available">Libre</li>
-                    <li data-state="pending">Shotgun en cours</li>
-                    <li data-state="taken">Prise</li>
-                    <li data-state="mine">À toi</li>
-                </ul>
             </div>
         );
     }
