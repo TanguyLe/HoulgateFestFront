@@ -48,7 +48,7 @@ class PasswordResetPage extends React.Component {
 
         return (
             <div className="passwordResetPage">
-                <PageHeader eyebrow="Mot de passe" title="Nouveau mot de passe" />
+                <PageHeader title="Nouveau mot de passe" />
                 {display}
             </div>
         );

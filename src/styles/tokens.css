@@ -92,12 +92,11 @@
     --danger: light-dark(var(--red-500), #ff7a7a);
     --danger-soft: light-dark(rgb(210 59 59 / 0.12), rgb(255 122 122 / 0.14));
     --focus-ring: 0 0 0 3px light-dark(rgb(47 111 126 / 0.45), rgb(140 195 207 / 0.5));
-    --shadow-sm: 0 1px 2px rgb(31 23 18 / 0.06), 0 1px 1px rgb(31 23 18 / 0.04);
-    --shadow-md:
-        0 10px 30px -12px light-dark(rgb(31 23 18 / 0.25), rgb(0 0 0 / 0.6)),
-        0 2px 6px rgb(31 23 18 / 0.06);
-    --shadow-lg: 0 30px 60px -20px light-dark(rgb(31 23 18 / 0.45), rgb(0 0 0 / 0.8));
-    --header-bg: light-dark(rgb(248 239 221 / 0.78), rgb(18 16 14 / 0.72));
+    /* flat print: no drop shadows, layers are told apart by ink borders */
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --header-bg: var(--bg);
 }
 
 :root[data-theme="light"] {

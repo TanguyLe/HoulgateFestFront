@@ -18,12 +18,6 @@ const PATHS = {
             <path d="M16 2v4M8 2v4M3 10h18" />
         </>
     ),
-    pin: (
-        <>
-            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-            <circle cx="12" cy="10" r="3" />
-        </>
-    ),
     bed: <path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9" />,
     car: (
         <>
@@ -61,31 +55,14 @@ const PATHS = {
             <path d="M12 16v-4M12 8h.01" />
         </>
     ),
-    clock: (
-        <>
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 6v6l4 2" />
-        </>
-    ),
-    sparkles: <path d="m12 3 1.9 5.8L20 10.7l-6.1 1.9L12 18.5l-1.9-5.9L4 10.7l6.1-1.9Z" />,
     external: (
         <path d="M15 3h6v6M10 14 21 3m-3 10v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-    ),
-    message: <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />,
-    book: (
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15Zm16-2.5v5H6.5A2.5 2.5 0 0 1 4 19.5" />
     ),
     history: <path d="M3 12a9 9 0 1 0 3-6.7L3 8m0-5v5h5m4-1v5l3 2" />,
     users: (
         <>
             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.87m-3-12a4 4 0 0 1 0 7.75" />
             <circle cx="9" cy="7" r="4" />
-        </>
-    ),
-    user: (
-        <>
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
         </>
     ),
     sliders: <path d="M21 4h-7M10 4H3m18 8h-9m-4 0H3m18 8h-5m-4 0H3M14 2v4m-6 4v4m8 4v4" />,

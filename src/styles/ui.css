@@ -46,7 +46,6 @@
     --btn-bg: var(--accent);
     --btn-fg: var(--accent-contrast);
     --btn-border: var(--accent);
-    box-shadow: 0 6px 18px -8px var(--accent);
 }
 
 .btn--primary:hover:not(:disabled) {
@@ -273,7 +272,7 @@ select.field__control {
     align-items: center;
     gap: var(--space-2);
     padding: 0.35rem 0.85rem;
-    border-radius: var(--radius-pill);
+    border-radius: 4px;
     background: var(--surface);
     border: 1px solid var(--border);
     font-size: var(--text-sm);
@@ -291,18 +290,6 @@ select.field__control {
     background: var(--highlight);
     border-color: var(--highlight);
     color: var(--ink-900);
-}
-
-.eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    margin-bottom: var(--space-3);
-    font-size: var(--text-xs);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent);
 }
 
 /* ---------- Page header ---------- */
@@ -331,7 +318,6 @@ select.field__control {
     place-items: center;
     padding: var(--space-4);
     background: rgb(18 13 9 / 0.55);
-    backdrop-filter: blur(6px);
     animation: fade-in var(--dur-med) var(--ease-out);
 }
 
@@ -341,6 +327,7 @@ select.field__control {
     max-height: calc(100vh - 2rem);
     overflow: auto;
     padding: var(--space-6);
+    border: 2px solid var(--text);
     border-radius: var(--radius-lg);
     background: var(--surface);
     box-shadow: var(--shadow-lg);
@@ -420,6 +407,7 @@ select.field__control {
     gap: var(--space-3);
     align-items: flex-start;
     padding: var(--space-4);
+    border: 2px solid var(--cream-50);
     border-radius: var(--radius-md);
     background: var(--ink-900);
     color: var(--cream-50);

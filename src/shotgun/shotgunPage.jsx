@@ -7,7 +7,6 @@ import ShotgunController from "./components/shotgunController";
 
 import { getCallApi } from "../utils/api/fetchMiddleware";
 import { Alert, PageHeader } from "../ui/components";
-import Icon from "../ui/icon";
 
 const formatShotgunDate = (date) => {
     const label = date.toLocaleString("fr-FR", {
@@ -80,12 +79,8 @@ class ShotgunPage extends React.Component {
         if (this.state.currentDatetime < this.state.targetDatetime)
             return (
                 <div className="countdown-card">
-                    <div className="eyebrow">
-                        <Icon name="clock" size={14} />
-                        Ouverture du shotgun
-                    </div>
                     <p className="countdown-card__date">
-                        {formatShotgunDate(this.state.targetDatetime)}
+                        Ouverture du shotgun : {formatShotgunDate(this.state.targetDatetime)}
                     </p>
                     <Countdown
                         onTime={this.updateActualDate}
@@ -105,7 +100,7 @@ class ShotgunPage extends React.Component {
     render() {
         return (
             <div>
-                <PageHeader eyebrow="Villa Les Genêts" title="Shotgun des chambres">
+                <PageHeader title="Shotgun des chambres">
                     Premier arrivé, premier couché : réserve une chambre libre, puis attribue ses
                     lits à tes camarades.
                 </PageHeader>

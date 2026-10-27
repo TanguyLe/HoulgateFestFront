@@ -46,7 +46,7 @@ class AdminPage extends React.Component {
 
         return (
             <>
-                <PageHeader eyebrow="Coulisses" title="Administration" />
+                <PageHeader title="Administration" />
                 <Tabs
                     tabs={TABS}
                     active={this.state.tab}

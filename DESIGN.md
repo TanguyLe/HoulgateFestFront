@@ -5,11 +5,12 @@ small in-house design system. This file records the decisions so the next editio
 
 ## Direction
 
-**"Affiche de fête normande"**: a printed festival poster on cream paper. The palette is taken
-straight from the edition badges (cream, brown ink, beer amber, bunting coral, Channel teal),
-with oversized soft-serif headlines, a bunting garland and slightly tilted "sticker" photos.
-The site is mostly used once a year, on a phone, in a rush (the shotgun). So it should be
-loud and fun on the homepage, and dead simple on the shotgun.
+**"Programme imprimé"**: the weekend's printed programme, ink on cream paper. The palette is
+taken from the edition badges (cream, brown ink, coral, Channel teal), with wide black
+headlines and nothing else: no shadows, gradients, blur, grain, tilted photos, icon cards or
+small caps labels above titles. Those read as a generated template; ink rules and the
+orgas' own words do the work. The site is mostly used once a year, on a phone, in a rush
+(the shotgun). So the homepage is the programme of the weekend, and the shotgun is dead simple.
 
 ## Decisions
 

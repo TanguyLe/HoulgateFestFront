@@ -63,9 +63,6 @@ class WhoAmI extends React.Component {
 
         return (
             <div className="user-pill">
-                <span className="avatar" aria-hidden>
-                    {username.charAt(0)}
-                </span>
                 <span className="user-pill__name">{username}</span>
                 {this.state.isAdmin && (
                     <Link

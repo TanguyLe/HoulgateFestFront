@@ -41,7 +41,7 @@ class SignUpPage extends React.Component {
 
         return (
             <div className="signUpPage">
-                <PageHeader eyebrow="Rejoins la fête" title="Inscription">
+                <PageHeader title="Inscription">
                     Un compte suffit pour shotgun ton lit, trouver un trajet et suivre les scores.
                 </PageHeader>
                 {display}

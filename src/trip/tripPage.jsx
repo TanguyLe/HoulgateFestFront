@@ -4,7 +4,7 @@ import { PageHeader } from "../ui/components";
 
 const TripPage = () => (
     <div>
-        <PageHeader eyebrow="Covoiturage" title="Trajets">
+        <PageHeader title="Trajets">
             Propose tes places libres ou trouve une voiture pour rejoindre Houlgate.
         </PageHeader>
         <div className="embed embed--compact">

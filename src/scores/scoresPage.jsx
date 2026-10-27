@@ -45,7 +45,7 @@ class ScoresPage extends React.Component {
     render() {
         return (
             <div>
-                <PageHeader eyebrow="En direct" title="Tableau des scores">
+                <PageHeader title="Tableau des scores">
                     Le classement des duos, mis à jour tout au long du week-end.
                 </PageHeader>
                 {this.renderBoard()}

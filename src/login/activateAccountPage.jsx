@@ -72,7 +72,7 @@ class ActivateAccount extends React.Component {
 
         return (
             <div className="activateAccountPage">
-                <PageHeader eyebrow="Dernière étape" title="Activation du compte" />
+                <PageHeader title="Activation du compte" />
                 {display}
             </div>
         );

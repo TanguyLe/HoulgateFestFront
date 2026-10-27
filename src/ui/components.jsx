@@ -55,9 +55,8 @@ export const Field = ({ label, error, hint, as: Control = "input", required, ...
     );
 };
 
-export const PageHeader = ({ eyebrow, title, children }) => (
+export const PageHeader = ({ title, children }) => (
     <header className="page-header">
-        {eyebrow && <div className="eyebrow">{eyebrow}</div>}
         <h1>{title}</h1>
         {children && <div className="page-header__lead">{children}</div>}
     </header>

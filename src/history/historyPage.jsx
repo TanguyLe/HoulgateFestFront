@@ -51,7 +51,7 @@ const Edition = ({ edition }) => (
 
 const HistoryPage = () => (
     <div className="history">
-        <PageHeader eyebrow="Depuis 2018" title="Gloryhoul of Fame">
+        <PageHeader title="Gloryhoul of Fame">
             Sept éditions, des tribus, des sorciers, des Schtroumpfs et beaucoup trop de houblon.
             Voici la légende.
         </PageHeader>
