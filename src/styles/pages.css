@@ -705,7 +705,9 @@
 .floor__plan-wrap {
     display: grid;
     place-items: center;
-    height: 9.5rem;
+    /* a short floor gives its extra height to this panel: more room around the plan, not missing rows */
+    flex: 1 0 auto;
+    min-height: 9.5rem;
     padding: var(--space-3);
     background: var(--bg-raised);
     border-bottom: 1px solid var(--border);
@@ -713,7 +715,8 @@
 
 .floor__plan {
     display: grid;
-    height: 100%;
+    /* fixed, so the plan keeps its size when the panel grows */
+    height: calc(9.5rem - 2 * var(--space-3));
     max-width: 100%;
     padding: 2px;
     border: 2px solid var(--text);
