@@ -103,7 +103,8 @@ class EditionsAdmin extends React.Component {
             <div>
                 <Message info size="small">
                     L'édition en cours est celle de l'année actuelle ({currentYear}) : sa date de
-                    shotgun ouvre les réservations et décide du compte à rebours.
+                    shotgun ouvre les réservations et décide du compte à rebours, et son tableau des
+                    scores est affiché sur la page Scores.
                 </Message>
                 {error && (
                     <Message error content={error} onDismiss={() => this.setState({ error: "" })} />
@@ -121,6 +122,7 @@ class EditionsAdmin extends React.Component {
                             <Table.HeaderCell>Année</Table.HeaderCell>
                             <Table.HeaderCell>Date du weekend</Table.HeaderCell>
                             <Table.HeaderCell>Date et heure du shotgun</Table.HeaderCell>
+                            <Table.HeaderCell>Lien du tableau des scores</Table.HeaderCell>
                             <Table.HeaderCell />
                         </Table.Row>
                     </Table.Header>
