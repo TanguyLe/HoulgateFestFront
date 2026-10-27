@@ -11,6 +11,7 @@ import PasswordResetPage from "./login/passwordResetPage";
 import CreatePasswordResetPage from "./login/createPasswordResetPage";
 import DefaultLayout from "./mainLayout/components/layout";
 import ContactPage from "./contact/contactPage";
+import ChecklistPage from "./checklist/checklistPage";
 import TripPage from "./trip/tripPage";
 import ScoresPage from "./scores/scoresPage";
 import HistoryPage from "./history/historyPage";
@@ -41,6 +42,10 @@ class App extends React.Component {
                     <Route
                         path="/admin/*"
                         element={<DefaultLayout component={AdminPage} bigContainer auth />}
+                    />
+                    <Route
+                        path="/checklist/*"
+                        element={<DefaultLayout component={ChecklistPage} />}
                     />
                     <Route path="/contact/*" element={<DefaultLayout component={ContactPage} />} />
                     <Route
