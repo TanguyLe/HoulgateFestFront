@@ -106,7 +106,7 @@ const Homepage = () => (
                 </div>
             </section>
 
-            <section className="programme__row">
+            <section className="programme__row programme__row--small-picture">
                 <div>
                     <h2>#PosticheMoustachu</h2>
                     <p>{edition.tentNote}</p>

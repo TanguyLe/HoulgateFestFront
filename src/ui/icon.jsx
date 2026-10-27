@@ -35,12 +35,6 @@ const PATHS = {
             <path d="m22 7-10 6L2 7" />
         </>
     ),
-    lock: (
-        <>
-            <rect x="3" y="11" width="18" height="11" rx="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-        </>
-    ),
     logOut: <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m7 14 5-5-5-5m5 5H9" />,
     check: <path d="M20 6 9 17l-5-5" />,
     alert: (

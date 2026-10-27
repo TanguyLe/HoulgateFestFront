@@ -65,13 +65,18 @@
 }
 
 .nav__link:hover {
-    background: var(--surface-muted);
     color: var(--text);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
 }
 
+/* an ink underline, like the rules of the page, rather than a filled block */
 .nav__link.is-active {
-    background: var(--text);
-    color: var(--bg);
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.35em;
 }
 
 .topbar__user {
@@ -133,7 +138,7 @@
 }
 
 .drawer .nav__link.is-active {
-    color: var(--bg);
+    color: var(--text);
 }
 
 @media (max-width: 860px) {
@@ -199,10 +204,6 @@
     .page {
         padding: var(--space-6) var(--space-4) var(--space-7);
     }
-
-    .footer__inner {
-        width: calc(100% - 2 * var(--space-4));
-    }
 }
 
 /* ---------- Footer ---------- */
@@ -225,6 +226,13 @@
     border-top: 2px solid var(--text);
     color: var(--text-muted);
     font-size: var(--text-sm);
+}
+
+/* same gutter as the programme on small screens (after the rule above, so it wins) */
+@media (max-width: 860px) {
+    .footer__inner {
+        width: calc(100% - 2 * var(--space-4));
+    }
 }
 
 .footer__links {

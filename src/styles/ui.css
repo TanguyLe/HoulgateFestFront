@@ -258,13 +258,11 @@ select.field__control {
 
 /* ---------- Cards & chips ---------- */
 
+/* a section of the sheet: on the paper under an ink rule, no raised or rounded surface */
 .card {
     position: relative;
-    padding: var(--space-6);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    background: var(--surface);
-    box-shadow: var(--shadow-sm);
+    padding-top: var(--space-5);
+    border-top: 2px solid var(--text);
 }
 
 .chip {
@@ -467,29 +465,17 @@ select.field__control {
 
 /* ---------- Lock screen (auth-only pages) ---------- */
 
+/* left-aligned like every page header: the site reads as one printed sheet */
 .locked {
     display: grid;
-    justify-items: center;
+    justify-items: start;
     gap: var(--space-4);
-    max-width: 30rem;
-    margin: var(--space-7) auto;
-    text-align: center;
-}
-
-.locked__badge {
-    display: grid;
-    place-items: center;
-    width: 4.5rem;
-    height: 4.5rem;
-    border-radius: 50%;
-    background: var(--accent-soft);
-    color: var(--accent);
+    max-width: var(--prose-width);
 }
 
 .locked__actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: var(--space-3);
 }
 

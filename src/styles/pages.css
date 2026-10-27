@@ -200,6 +200,12 @@
     max-width: var(--prose-width);
 }
 
+/* the second picture only illustrates a short paragraph: capped so it doesn't tower over it */
+.programme__row--small-picture img {
+    max-width: 22rem;
+    justify-self: end;
+}
+
 .programme__facts {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -424,9 +430,8 @@
     font-size: clamp(7rem, 4rem + 15vw, 14rem);
     font-weight: 900;
     line-height: 0.8;
-    letter-spacing: -0.06em;
-    color: transparent;
-    -webkit-text-stroke: 3px var(--accent);
+    letter-spacing: -0.04em;
+    color: var(--accent);
 }
 
 .not-found p {
