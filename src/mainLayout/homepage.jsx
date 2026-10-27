@@ -45,18 +45,20 @@ const Homepage = () => (
             </div>
         </section>
 
-        <ul className="keywords" aria-label="Le thème en quelques mots">
-            {edition.keywords.map((word) => (
-                <li key={word}>{word}</li>
-            ))}
-        </ul>
+        <div className="keywords">
+            <div className="keywords__line">
+                <ul aria-label="Le thème en quelques mots">
+                    {edition.keywords.map((word) => (
+                        <li key={word}>{word}</li>
+                    ))}
+                </ul>
+            </div>
+        </div>
 
         <article className="programme">
-            <section className="programme__story">
+            <section className="programme__row">
                 <div>
-                    <h2>
-                        {edition.name} {edition.tagline}
-                    </h2>
+                    <h2>{edition.theme}</h2>
                     {edition.intro.map((paragraph) => (
                         <p key={paragraph.slice(0, 24)}>{paragraph}</p>
                     ))}
@@ -104,13 +106,17 @@ const Homepage = () => (
                 </div>
             </section>
 
-            <section className="programme__pictures">
+            <section className="programme__row">
+                <div>
+                    <h2>#PosticheMoustachu</h2>
+                    <p>{edition.tentNote}</p>
+                </div>
                 <img src={edition.images[1]} alt="" loading="lazy" />
-                <p>{edition.tentNote} #PosticheMoustachu</p>
-                <p className="programme__credit">
-                    Illustrations : les orgas et une IA un peu trop motivée.
-                </p>
             </section>
+
+            <p className="programme__credit">
+                Illustrations : les orgas et une IA un peu trop motivée.
+            </p>
 
             <section className="programme__end">
                 <p>

@@ -199,12 +199,15 @@
     .page {
         padding: var(--space-6) var(--space-4) var(--space-7);
     }
+
+    .footer__inner {
+        width: calc(100% - 2 * var(--space-4));
+    }
 }
 
 /* ---------- Footer ---------- */
 
 .footer {
-    border-top: 2px solid var(--text);
     background: var(--bg);
 }
 
@@ -214,9 +217,12 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
-    max-width: calc(var(--content-width) + 2 * var(--space-5));
+    /* the rule spans the content width, like every other rule of the page */
+    width: calc(100% - 2 * var(--space-5));
+    max-width: var(--content-width);
     margin: 0 auto;
-    padding: var(--space-6) var(--space-5);
+    padding: var(--space-6) 0;
+    border-top: 2px solid var(--text);
     color: var(--text-muted);
     font-size: var(--text-sm);
 }

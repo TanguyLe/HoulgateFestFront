@@ -36,7 +36,8 @@
 
 .hero__title {
     margin-bottom: var(--space-3);
-    font-size: min(var(--text-hero), 13cqi);
+    /* about 8em wide for a 14-letter name like DoublegateFest: 11.5cqi keeps it inside */
+    font-size: min(var(--text-hero), 11.5cqi);
     font-weight: 900;
     line-height: 0.95;
     letter-spacing: -0.035em;
@@ -61,7 +62,7 @@
 
 .hero__facts dt {
     font-size: var(--text-sm);
-    color: var(--text-muted);
+    color: var(--text-soft);
 }
 
 .hero__facts dd {
@@ -95,7 +96,19 @@
     }
 
     .hero__badge {
-        width: 5.5rem;
+        width: 6rem;
+    }
+}
+
+/* On phones the stamp would eat the title's width: one full-width column, stamp on top */
+@media (max-width: 600px) {
+    .hero__inner {
+        grid-template-columns: 1fr;
+    }
+
+    .hero__badge {
+        order: -1;
+        width: 4.5rem;
     }
 
     .hero__facts {
@@ -106,29 +119,51 @@
 /* The theme in a few words: a static band of colour, set like a line of the poster */
 
 .keywords {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-1) 0;
-    margin: 0;
-    padding: var(--space-3) var(--space-4);
-    list-style: none;
+    padding: var(--space-3) var(--space-5);
     border-bottom: 2px solid var(--text);
-    background: var(--accent);
-    color: var(--accent-contrast);
+    /* the quieter of the two teal blocks in dark mode, the primary button stays the loudest */
+    background: light-dark(var(--accent), var(--surface-muted));
+    color: light-dark(var(--accent-contrast), var(--accent));
     font-family: var(--font-display);
     font-stretch: var(--display-stretch);
     font-size: var(--text-lg);
     font-weight: 800;
-    text-align: center;
+}
+
+/*
+ * Middots rather than pipes: a line of the poster, not tabs to tap. Every word carries its
+ * dot in front and the list is pulled left by one dot: the line clips the dot that would
+ * open each line, so wrapped lines always start with a word.
+ */
+.keywords__line {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.keywords ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 0 -1.6em;
+    padding: 0;
+    list-style: none;
 }
 
 .keywords li {
-    padding: 0 var(--space-4);
+    white-space: nowrap;
 }
 
-.keywords li + li {
-    border-left: 2px solid currentColor;
+.keywords li::before {
+    content: "·";
+    display: inline-block;
+    width: 1.6em;
+    text-align: center;
+}
+
+@media (max-width: 860px) {
+    .keywords {
+        padding: var(--space-3) var(--space-4);
+    }
 }
 
 /* Programme */
@@ -153,14 +188,15 @@
     border: 2px solid var(--text);
 }
 
-.programme__story {
+/* text on the left, picture on the right, top-aligned: the same grid for every row */
+.programme__row {
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
     align-items: start;
     gap: var(--space-7);
 }
 
-.programme__story p {
+.programme__row p {
     max-width: var(--prose-width);
 }
 
@@ -188,19 +224,8 @@
     color: var(--accent);
 }
 
-.programme__pictures {
-    display: grid;
-    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
-    align-items: center;
-    gap: var(--space-6);
-}
-
-.programme__pictures p {
-    max-width: var(--prose-width);
-}
-
 .programme__credit {
-    grid-column: 1 / -1;
+    margin: calc(-1 * var(--space-4)) 0 0;
     font-size: var(--text-sm);
     color: var(--text-muted);
 }
@@ -220,9 +245,8 @@
         padding: var(--space-6) var(--space-4) var(--space-7);
     }
 
-    .programme__story,
-    .programme__facts,
-    .programme__pictures {
+    .programme__row,
+    .programme__facts {
         grid-template-columns: 1fr;
     }
 }

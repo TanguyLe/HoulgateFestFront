@@ -25,12 +25,31 @@ const fixText = (text, startsAfterCode) => {
         // an apostrophe between two letters is an elision: l’heure, qu’il, aujourd’hui
         .replace(/(\p{L})'(\p{L})/gu, "$1’$2")
         // a plain space before a high sign becomes a narrow no-break one
-        .replace(/(\S)[\s\u00A0]+([?!:;»])/gu, "$1" + NNBSP + "$2")
+        // a lookahead, so chained signs each get their space: « Duo Choc » !
+        .replace(/(\S)[\s\u00A0]+(?=[?!:;»])/gu, "$1" + NNBSP)
         .replace(/«[\s\u00A0]+(\S)/gu, "«" + NNBSP + "$1");
 
     // in JSX the sign can follow an expression: {edition.name} : rendez-vous
     return startsAfterCode ? fixed.replace(/^[\s\u00A0]+([?!:;»])/u, NNBSP + "$1") : fixed;
 };
+
+// Regression cases, run before every check or fix
+const CASES = [
+    ["l'heure", "l’heure"],
+    ["C’est quand ?", "C’est quand" + NNBSP + "?"],
+    ["le « Duo Choc » !", "le «" + NNBSP + "Duo Choc" + NNBSP + "»" + NNBSP + "!"],
+    ["« Où ? » ?", "«" + NNBSP + "Où" + NNBSP + "?" + NNBSP + "»" + NNBSP + "?"],
+    ["Houlgate : rendez-vous", "Houlgate" + NNBSP + ": rendez-vous"],
+    ["https://docs.google.com/edit?usp=sharing", "https://docs.google.com/edit?usp=sharing"],
+    ["", ""],
+];
+CASES.forEach(([input, expected]) => {
+    const actual = fixText(input, false);
+    if (actual !== expected)
+        throw new Error(`fixText(${JSON.stringify(input)}) gave ${JSON.stringify(actual)}`);
+});
+if (fixText(" : suite", true) !== NNBSP + ": suite")
+    throw new Error("JSX text after an expression");
 
 const isCodeString = (nodePath) => {
     const parent = nodePath.parent;
