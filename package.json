@@ -35,9 +35,7 @@
         "helmet": "^8.3.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "react-responsive-carousel": "^3.2.23",
-        "react-router-dom": "^7.18.4",
-        "semantic-ui-react": "^2.1.5"
+        "react-router-dom": "^7.18.4"
     },
     "devDependencies": {
         "@babel/core": "^8.0.9",
@@ -52,7 +50,6 @@
         "mini-css-extract-plugin": "^2.10.2",
         "prettier": "^3.9.10",
         "react-refresh": "^0.19.0",
-        "style-loader": "^4.0.0",
         "terser-webpack-plugin": "^5.6.1",
         "webpack": "^5.112.2",
         "webpack-cli": "^7.2.3",

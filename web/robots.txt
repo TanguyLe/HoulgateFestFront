@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin
+Disallow: /register
+Disallow: /activateUser
+Disallow: /passwordReset
+Disallow: /createPasswordReset
+
+Sitemap: https://www.houlgatefest.fr/sitemap.txt
