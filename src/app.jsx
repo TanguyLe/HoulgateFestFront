@@ -4,9 +4,10 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Homepage from "./mainLayout/homepage";
 import NotFound from "./mainLayout/components/notFound";
 import DefaultLayout from "./mainLayout/components/layout";
+// The shotgun is the race of the year: in the main bundle, never waiting for a chunk
+import ShotgunPage from "./shotgun/shotgunPage";
 
-// The homepage comes with the bundle, the other pages are loaded when they are opened
-const ShotgunPage = lazy(() => import(/* webpackChunkName: "shotgun" */ "./shotgun/shotgunPage"));
+// The homepage and the shotgun come with the bundle, the other pages are loaded when opened
 const SignUpPage = lazy(() => import(/* webpackChunkName: "account" */ "./login/signUpPage"));
 const ActivateAccount = lazy(
     () => import(/* webpackChunkName: "account" */ "./login/activateAccountPage"),

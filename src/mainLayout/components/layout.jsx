@@ -6,7 +6,7 @@ import OnlyWhenConnectedWrapper from "../../utils/login/onlyWhenConnectedWrapper
 import OnlyWhenNotConnectedWrapper from "../../utils/login/onlyWhenNotConnectedWrapper";
 import { currentEdition } from "../../content/currentEdition";
 import { Drawer, NavigationBar, NavigationRail } from "../../ui/navigation";
-import { Loading, SnackbarHost } from "../../ui";
+import { Button, Loading, Notice, SnackbarHost } from "../../ui";
 import Logo from "./logo";
 import "../layout.css";
 
@@ -48,6 +48,37 @@ const usePageMeta = ({ title, description, noindex }) => {
     }, [title, description, noindex, location.pathname]);
 };
 
+// A page that fails to load (its chunk, on a bad network or after a deploy replaced it) shows a
+// way to reload instead of blanking the whole site
+class PageErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { failed: false };
+    }
+
+    static getDerivedStateFromError() {
+        return { failed: true };
+    }
+
+    componentDidCatch(error) {
+        console.error(error);
+    }
+
+    render() {
+        if (!this.state.failed) return this.props.children;
+
+        return (
+            <Notice
+                tone="error"
+                title="Cette page n'a pas pu se charger"
+                action={<Button onClick={() => window.location.reload()}>Recharger</Button>}
+            >
+                Vérifie ta connexion internet, puis recharge la page.
+            </Notice>
+        );
+    }
+}
+
 // The frame of every page: top app bar, navigation (bar on phones, rail above 600 px, drawer for
 // the rest), the page in <main>, the footer and the snackbars
 const DefaultLayout = ({
@@ -82,10 +113,13 @@ const DefaultLayout = ({
         { label: "Plus", icon: "moreHoriz", onClick: openDrawer, expanded: drawerOpen },
     ];
 
+    // Keyed by the page, so going to another page leaves a failed one behind
     let page = (
-        <Suspense fallback={<Loading>Chargement de la page…</Loading>}>
-            <Component />
-        </Suspense>
+        <PageErrorBoundary key={location.pathname}>
+            <Suspense fallback={<Loading>Chargement de la page…</Loading>}>
+                <Component />
+            </Suspense>
+        </PageErrorBoundary>
     );
     if (auth) page = <OnlyWhenConnectedWrapper title={title}>{page}</OnlyWhenConnectedWrapper>;
     else if (notCo) page = <OnlyWhenNotConnectedWrapper>{page}</OnlyWhenNotConnectedWrapper>;
