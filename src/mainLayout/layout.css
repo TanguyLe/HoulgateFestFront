@@ -1,6 +1,24 @@
 /* The frame of the pages: top app bar, navigation bar (compact), navigation rail (medium and
    expanded), modal drawer, page container and footer */
 
+/* What is scrolled to or focused never ends up under the sticky top app bar or the bars fixed at
+   the bottom (WCAG 2.4.11): the navigation bar on phones, the summary bar of the shotgun page */
+html {
+    --app-bottom-bars: calc(var(--app-navigation-bar-height) + env(safe-area-inset-bottom));
+    scroll-padding-top: calc(var(--app-top-bar-height) + 8px);
+    scroll-padding-bottom: calc(var(--app-bottom-bars) + 8px);
+}
+
+html:has(.shotgun-bar) {
+    scroll-padding-bottom: calc(var(--app-bottom-bars) + 88px);
+}
+
+@media (min-width: 600px) {
+    html {
+        --app-bottom-bars: 0px;
+    }
+}
+
 .app {
     min-height: 100vh;
     display: flex;

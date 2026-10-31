@@ -156,7 +156,6 @@
     min-height: 72px;
     padding: 8px 8px 8px 0;
     border-radius: var(--md-sys-shape-corner-medium);
-    scroll-margin: 96px 0 160px;
 }
 
 .room:focus-visible {
