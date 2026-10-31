@@ -11,39 +11,6 @@
     padding: clamp(32px, 8vw, 120px) 0 clamp(48px, 8vw, 112px);
 }
 
-.history__legend {
-    display: flex;
-    align-items: flex-end;
-    gap: 16px;
-    margin-top: 16px;
-}
-
-.history__legend .shape {
-    width: clamp(28px, 4vw, 44px);
-}
-
-.history__legend .shape--half {
-    width: clamp(40px, 5.6vw, 62px);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .history__legend .shape {
-        animation: shape-in 900ms var(--md-sys-motion-easing-emphasized-decelerate) both;
-    }
-
-    .history__legend .shape:nth-child(2) {
-        animation-delay: 90ms;
-    }
-
-    .history__legend .shape:nth-child(3) {
-        animation-delay: 180ms;
-    }
-
-    .history__legend .shape:nth-child(4) {
-        animation-delay: 270ms;
-    }
-}
-
 .editions {
     display: flex;
     flex-direction: column;

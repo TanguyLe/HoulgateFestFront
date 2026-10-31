@@ -5,12 +5,13 @@ import { photos } from "../content/photos";
 import { Button, Photo, PhotoViewer, Reveal, Shape } from "../ui";
 import "./history.css";
 
-// The four colours, and a shape each, taken in turn by the editions
+// The four colours, and a shape each, taken in turn by the editions (not in the order of the
+// Google logo)
 const ACCENTS = [
+    ["yellow", "half"],
     ["blue", "circle"],
+    ["green", "square"],
     ["red", "triangle"],
-    ["yellow", "square"],
-    ["green", "half"],
 ];
 
 // One edition, as a slide: its year huge in its colour, its name, its story, its photos
@@ -83,11 +84,6 @@ const HistoryPage = () => (
             <p className="stage-eyebrow">Depuis 2018</p>
             <h1 className="stage-headline">Gloryhoul of Fame</h1>
             <p className="stage-lead">Toutes les éditions, de la plus récente à la première.</p>
-            <div className="history__legend" aria-hidden="true">
-                {ACCENTS.map(([color, shape]) => (
-                    <Shape key={color} kind={shape} color={color} />
-                ))}
-            </div>
         </header>
         <ol className="editions">
             {editions.map((edition, index) => (
