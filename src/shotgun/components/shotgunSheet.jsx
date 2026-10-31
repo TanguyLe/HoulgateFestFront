@@ -31,14 +31,14 @@ const ShotgunSheet = ({
     const [seenStep, setSeenStep] = useState(!startedHere);
     const [reachedBeds, setReachedBeds] = useState(state === "pendingMine");
 
-    // Opened by "Shotgun", the room is still free until the API answers: the sheet closes only
-    // once it was in a step, and left it (refused, expired)
+    // Opened by "Shotgun", the room is still free until the API answers
     useEffect(() => {
         if (state === "pendingMine") setReachedBeds(true);
         if (STEP_STATES.includes(state)) setSeenStep(true);
-        // A refresh may briefly show the room free while it is being booked: free only closes the
-        // sheet once the pre-shotgun existed (it expired)
-        else if (seenStep && (state !== "free" || reachedBeds)) onClose();
+        // Any state the sheet can't show closes it: someone else took the room (pending, taken),
+        // or the user's room is elsewhere (locked). A refresh may briefly show the room free while
+        // it is being booked: free only closes the sheet once the pre-shotgun existed (expired)
+        else if (state !== "free" || (seenStep && reachedBeds)) onClose();
     }, [state, seenStep, reachedBeds]);
 
     const what = state === "pendingMine" ? "pré-shotgun" : "shotgun";
@@ -51,7 +51,7 @@ const ShotgunSheet = ({
                 <Loading>Enregistrement…</Loading>
             </>
         );
-    else if (state === "loading" || (state === "free" && !seenStep))
+    else if (state === "loading" || (state === "free" && !reachedBeds))
         content = (
             <>
                 <Step number={1}>La chambre</Step>

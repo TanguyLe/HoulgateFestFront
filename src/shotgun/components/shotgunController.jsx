@@ -58,12 +58,12 @@ class ShotgunContainer extends React.Component {
          * Returns an updater for the roomsIndexed particularly to change one room.
          * It is an object to be used with the updateState method.
          */
+        // A new object: shouldComponentUpdate compares the states, a change made in place is
+        // never rendered (the room's loading state was skipped)
         const currentRoom = this.state.roomsIndexed[roomId];
-        return Object.assign({
-            roomsIndexed: Object.assign(this.state.roomsIndexed, {
-                [roomId]: Object.assign({}, currentRoom, newRoom),
-            }),
-        });
+        return {
+            roomsIndexed: { ...this.state.roomsIndexed, [roomId]: { ...currentRoom, ...newRoom } },
+        };
     }
 
     async getUsersUpdater() {
