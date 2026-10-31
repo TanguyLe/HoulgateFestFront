@@ -31,6 +31,7 @@
     "main": "index.js",
     "dependencies": {
         "@babel/runtime": "^8.0.8",
+        "compression": "^1.8.2",
         "express": "^5.3.0",
         "helmet": "^8.3.0",
         "react": "^18.3.1",
@@ -67,6 +68,7 @@
         "devStartShotgun": "cross-env-shell HAS_STARTED=true npm run dev",
         "devBuild": "npm run theme && webpack --config webpack.dev.config",
         "build": "npm run theme && webpack --config webpack.prod.config",
+        "budgets": "node scripts/check-budgets.mjs",
         "start": "node server.js",
         "v": "node -v"
     }

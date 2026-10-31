@@ -2,7 +2,8 @@ const express = require("express"),
     app = express(),
     port = process.env.PORT || 8000,
     path = require("path"),
-    helmet = require("helmet");
+    helmet = require("helmet"),
+    compression = require("compression");
 
 const webPath = path.join(__dirname, "web");
 
@@ -67,5 +68,7 @@ app.use(
         },
     }),
 );
+// gzip the bundle, the stylesheet and the pages (the photos and the font are already compressed)
+app.use(compression());
 app.use(serveFront);
 app.listen(port, () => console.log("HoulgateFestFront server started on: " + port));
