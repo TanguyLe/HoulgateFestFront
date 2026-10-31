@@ -1,4 +1,5 @@
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 module.exports = {
@@ -18,7 +19,14 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: /bin/,
-                use: ["style-loader", "css-loader"],
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    // Root-relative urls (the fonts) are served as they are from web/
+                    {
+                        loader: "css-loader",
+                        options: { url: { filter: (url) => !url.startsWith("/") } },
+                    },
+                ],
             },
         ],
     },
@@ -32,6 +40,7 @@ module.exports = {
         historyApiFallback: true,
     },
     plugins: [
+        new MiniCssExtractPlugin({ filename: "houlgatefest.min.css" }),
         new ReactRefreshWebpackPlugin(),
         new webpack.EnvironmentPlugin({
             NODE_ENV: "development",

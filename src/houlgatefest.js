@@ -1,4 +1,8 @@
 require("./houlgatefest.css");
+// Material 3 tokens: the generated colour scheme first, the other tokens, then the defaults
+require("./styles/scheme.css");
+require("./styles/tokens.css");
+require("./styles/base.css");
 
 import React from "react";
 import { createRoot } from "react-dom/client";

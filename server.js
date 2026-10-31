@@ -22,8 +22,22 @@ const semanticCdn = "https://cdnjs.cloudflare.com";
 // The sign up captcha (Cloudflare Turnstile) loads its script and runs in an iframe
 const turnstile = "https://challenges.cloudflare.com";
 
+// The static files of web/: the bundle, its stylesheet, the font, the photos and the icons
+const staticExtensions = [
+    ".js",
+    ".css",
+    ".woff2",
+    ".png",
+    ".jpg",
+    ".webp",
+    ".avif",
+    ".svg",
+    ".ico",
+    ".txt",
+];
+
 serveFront = (req, res) => {
-    if ([".png", ".js", ".jpg", ".ico"].includes(path.extname(req.path)))
+    if (staticExtensions.includes(path.extname(req.path)))
         // root makes sendFile reject paths escaping webPath (path traversal)
         res.sendFile(req.path, { root: webPath });
     else if (req.originalUrl.includes("api"))
