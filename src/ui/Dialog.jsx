@@ -6,7 +6,10 @@ import { Button, IconButton } from "./Button";
 // M3 basic dialog, on a native modal <dialog>: the page behind is inert, Esc closes it and the
 // focus goes back where it was. With `sheet`, it is a bottom sheet on compact screens.
 // `onClose` is called whenever the user dismisses it (Esc, scrim, close button).
+// `returnFocus` (a function returning an element) gets the focus back when the element that
+// opened the dialog is gone or disabled, e.g. a button replaced by another one meanwhile.
 const Dialog = ({
+    returnFocus,
     open,
     onClose,
     title,
@@ -35,17 +38,23 @@ const Dialog = ({
         } else if (!open && element.open) element.close();
     }, [open]);
 
+    const giveFocusBack = () => {
+        if (!opener.current) return;
+        // The opener may be gone, or disabled meanwhile (the focus then fell back to <body>)
+        const usable = (element) =>
+            element && element.isConnected && element !== document.body && !element.disabled;
+        const target = usable(opener.current) ? opener.current : returnFocus && returnFocus();
+        if (target) target.focus();
+        opener.current = null;
+    };
+    const giveFocusBackRef = useRef(giveFocusBack);
+    giveFocusBackRef.current = giveFocusBack;
+
     // Gives the focus back on unmount too, when the dialog goes away with its parent
-    useEffect(
-        () => () => {
-            if (opener.current && opener.current.isConnected) opener.current.focus();
-        },
-        [],
-    );
+    useEffect(() => () => giveFocusBackRef.current(), []);
 
     const handleClose = () => {
-        if (opener.current && opener.current.isConnected) opener.current.focus();
-        opener.current = null;
+        giveFocusBack();
         if (open && onClose) onClose();
     };
 

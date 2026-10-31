@@ -135,7 +135,13 @@ const ShotgunSheet = ({
     );
 
     return (
-        <Dialog open onClose={onClose} title={room.name + " · " + room.seats + " lits"} sheet>
+        <Dialog
+            open
+            onClose={onClose}
+            returnFocus={() => document.getElementById("room-" + room._id)}
+            title={room.name + " · " + room.seats + " lits"}
+            sheet
+        >
             {content}
             {cancel}
         </Dialog>
