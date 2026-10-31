@@ -1208,3 +1208,111 @@ html:has(.md-dialog[open]) {
 .edition-badge--large .edition-badge__year {
     font-size: 1.75rem;
 }
+
+/* A photo that opens the viewer */
+
+.photo-button {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: var(--md-sys-shape-corner-large);
+    background: none;
+    cursor: zoom-in;
+    aspect-ratio: 4 / 3;
+}
+
+.photo-button .md-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+.photo-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--md-sys-color-on-surface);
+    opacity: 0;
+    transition: opacity var(--md-sys-motion-duration-short2) linear;
+}
+
+.photo-button:hover::after {
+    opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+/* Full screen viewer */
+
+.photo-viewer {
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #000;
+    color: #fff;
+}
+
+.photo-viewer::backdrop {
+    background: #000;
+}
+
+.photo-viewer__figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 100%;
+    padding: 64px 16px 24px;
+}
+
+.photo-viewer__figure .md-photo {
+    min-height: 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.photo-viewer__figure img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    background: none;
+    border-radius: var(--md-sys-shape-corner-medium);
+}
+
+.photo-viewer__caption {
+    max-width: 68ch;
+    text-align: center;
+}
+
+.photo-viewer .md-icon-button {
+    position: absolute;
+}
+
+.photo-viewer__close {
+    top: 12px;
+    right: 12px;
+}
+
+.photo-viewer__previous,
+.photo-viewer__next {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.photo-viewer__previous {
+    left: 12px;
+}
+
+.photo-viewer__next {
+    right: 12px;
+}

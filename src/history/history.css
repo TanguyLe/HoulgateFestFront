@@ -1,0 +1,61 @@
+/* History page: one card per edition, tinted by the edition's own scheme */
+
+.editions {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.edition-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px 20px 16px;
+    border-radius: var(--md-sys-shape-corner-extra-large);
+    background: var(--md-sys-color-surface-container-low);
+}
+
+@media (min-width: 600px) {
+    .edition-card {
+        padding: 32px 32px 20px;
+    }
+}
+
+.edition-card__header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.edition-card__photos {
+    display: grid;
+    grid-template-columns: repeat(var(--photo-columns, 1), minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@media (min-width: 600px) {
+    .edition-card__photos--2 {
+        --photo-columns: 2;
+    }
+
+    .edition-card__photos--3 {
+        --photo-columns: 3;
+    }
+
+    .edition-card__photos--1 {
+        max-width: 50%;
+    }
+}
+
+.editions__signature {
+    margin-top: 24px;
+    text-align: right;
+}
