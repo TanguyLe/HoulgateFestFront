@@ -42,6 +42,7 @@ class Captcha extends React.Component {
                 this.widgetId = turnstile.render(this.container.current, {
                     sitekey: process.env.TURNSTILE_SITE_KEY,
                     language: "fr",
+                    theme: "dark",
                     callback: (token) => this.props.onToken(token),
                     "expired-callback": () => this.props.onToken(null),
                     "error-callback": () => this.props.onToken(null),
