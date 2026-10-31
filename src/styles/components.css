@@ -711,12 +711,12 @@
 
 .md-card {
     position: relative;
-    border-radius: var(--md-sys-shape-corner-large);
+    border-radius: var(--md-sys-shape-corner-extra-large);
     color: var(--md-sys-color-on-surface);
 }
 
 .md-card--filled {
-    background: var(--md-sys-color-surface-container-highest);
+    background: var(--md-sys-color-surface-container);
 }
 
 .md-card--elevated {
@@ -725,7 +725,7 @@
 }
 
 .md-card--outlined {
-    background: var(--md-sys-color-surface);
+    background: transparent;
     border: 1px solid var(--md-sys-color-outline-variant);
 }
 
@@ -1184,7 +1184,7 @@ body:has(.shotgun-bar) .md-snackbar-host {
     background: var(--md-sys-color-surface-container-high);
 }
 
-/* The edition badge, the site's signature shape */
+/* The edition badge: the year on a disc of the edition's colour */
 
 .edition-badge {
     position: relative;
@@ -1193,7 +1193,9 @@ body:has(.shotgun-bar) .md-snackbar-host {
     flex: none;
     width: 72px;
     height: 72px;
-    color: var(--md-sys-color-on-primary-container);
+    border-radius: 50%;
+    background: var(--accent, var(--stage-blue));
+    color: var(--stage-ink);
 }
 
 .edition-badge--small {
@@ -1206,20 +1208,11 @@ body:has(.shotgun-bar) .md-snackbar-host {
     height: 112px;
 }
 
-.edition-badge__shape {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    fill: var(--md-sys-color-primary-container);
-}
-
 .edition-badge__year {
-    position: relative;
     font-size: 1.125rem;
-    font-weight: var(--md-sys-typescale-weight-emphasized);
+    font-weight: 700;
     font-variant-numeric: tabular-nums;
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
 }
 
 .edition-badge--small .edition-badge__year {
@@ -1349,4 +1342,83 @@ body:has(.shotgun-bar) .md-snackbar-host {
 
 .captcha-field__error {
     color: var(--md-sys-color-error);
+}
+
+/* Stage shapes: flat, in the four colours, placed by each composition */
+
+.shapes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.shape {
+    position: absolute;
+    display: block;
+}
+
+.shape--blue {
+    fill: var(--stage-blue);
+}
+
+.shape--red {
+    fill: var(--stage-red);
+}
+
+.shape--yellow {
+    fill: var(--stage-yellow);
+}
+
+.shape--green {
+    fill: var(--stage-green);
+}
+
+/* Shapes come in one after the other, once, when their composition appears */
+@media (prefers-reduced-motion: no-preference) {
+    .shapes .shape {
+        animation: shape-in 900ms var(--md-sys-motion-easing-emphasized-decelerate) both;
+        animation-delay: calc(var(--order, 0) * 90ms + 150ms);
+    }
+
+    .reveal:not(.is-visible) .shapes .shape {
+        animation-play-state: paused;
+    }
+
+    .shapes .shape--2 {
+        --order: 1;
+    }
+
+    .shapes .shape--3 {
+        --order: 2;
+    }
+
+    .shapes .shape--4 {
+        --order: 3;
+    }
+
+    .shapes .shape--5 {
+        --order: 4;
+    }
+}
+
+@keyframes shape-in {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.6) rotate(-12deg);
+    }
+}
+
+/* Sections slide in like the next slide of a keynote */
+@media (prefers-reduced-motion: no-preference) {
+    .reveal {
+        transition:
+            opacity 700ms var(--md-sys-motion-easing-standard-decelerate),
+            transform 700ms var(--md-sys-motion-easing-emphasized-decelerate);
+    }
+
+    .reveal:not(.is-visible) {
+        opacity: 0;
+        transform: translateY(40px);
+    }
 }

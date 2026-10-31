@@ -11,7 +11,7 @@ const BUDGETS = [
     { file: "houlgatefest.min.js", max: 300 * KIB, gzip: true },
     { file: "houlgatefest.min.css", max: 50 * KIB, gzip: true },
     // already compressed
-    { file: "static/fonts/roboto-flex-latin-wght.woff2", max: 60 * KIB, gzip: false },
+    { file: "static/fonts/google-sans-flex-latin-wght.woff2", max: 60 * KIB, gzip: false },
 ];
 
 let failed = false;

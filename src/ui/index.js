@@ -10,3 +10,4 @@ export { default as Icon } from "./Icon";
 export { default as Photo } from "./Photo";
 export { default as EditionBadge } from "./EditionBadge";
 export { default as PhotoViewer } from "./PhotoViewer";
+export { Shape, Shapes, Reveal } from "./Shapes";

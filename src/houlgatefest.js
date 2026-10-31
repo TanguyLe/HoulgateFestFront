@@ -1,5 +1,5 @@
-// Material 3 tokens: the generated colour scheme first, the other tokens, then the defaults
-require("./styles/scheme.css");
+// The stage's colours first, the other tokens, then the defaults and the components
+require("./styles/stage.css");
 require("./styles/tokens.css");
 require("./styles/base.css");
 require("./styles/components.css");

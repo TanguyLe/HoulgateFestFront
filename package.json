@@ -43,7 +43,6 @@
         "@babel/plugin-transform-runtime": "^8.0.6",
         "@babel/preset-env": "^8.0.7",
         "@babel/preset-react": "^8.0.1",
-        "@material/material-color-utilities": "0.3.0",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.6.3",
         "babel-loader": "^10.1.1",
         "cross-env": "^10.1.0",
@@ -63,11 +62,10 @@
     "scripts": {
         "prettier-check": "prettier --check .",
         "prettier-run": "prettier --write .",
-        "theme": "node scripts/generate-theme.mjs",
-        "dev": "npm run theme && webpack-dev-server --hot --config webpack.dev.config --port 8000",
+        "dev": "webpack-dev-server --hot --config webpack.dev.config --port 8000",
         "devStartShotgun": "cross-env-shell HAS_STARTED=true npm run dev",
-        "devBuild": "npm run theme && webpack --config webpack.dev.config",
-        "build": "npm run theme && webpack --config webpack.prod.config",
+        "devBuild": "webpack --config webpack.dev.config",
+        "build": "webpack --config webpack.prod.config",
         "budgets": "node scripts/check-budgets.mjs",
         "start": "node server.js",
         "v": "node -v"

@@ -5,9 +5,8 @@ import WhoAmI from "../../login/components/whoAmI";
 import OnlyWhenConnectedWrapper from "../../utils/login/onlyWhenConnectedWrapper";
 import OnlyWhenNotConnectedWrapper from "../../utils/login/onlyWhenNotConnectedWrapper";
 import { currentEdition } from "../../content/currentEdition";
-import { isDark, onSystemThemeChange, setTheme, updateThemeColor } from "../../utils/theme";
 import { Drawer, NavigationBar, NavigationRail } from "../../ui/navigation";
-import { IconButton, SnackbarHost } from "../../ui";
+import { SnackbarHost } from "../../ui";
 import Logo from "./logo";
 import "../layout.css";
 
@@ -47,29 +46,6 @@ const usePageMeta = ({ title, description, noindex }) => {
         setMeta('meta[name="robots"]', "content", noindex ? "noindex, nofollow" : "index, follow");
         setMeta('link[rel="canonical"]', "href", SITE_URL + location.pathname);
     }, [title, description, noindex, location.pathname]);
-};
-
-const ThemeToggle = () => {
-    const [dark, setDark] = useState(isDark);
-
-    useEffect(() => {
-        updateThemeColor();
-        return onSystemThemeChange(() => {
-            setDark(isDark());
-            updateThemeColor();
-        });
-    }, []);
-
-    return (
-        <IconButton
-            icon={dark ? "lightMode" : "darkMode"}
-            label={dark ? "Passer en thème clair" : "Passer en thème sombre"}
-            onClick={() => {
-                setTheme(dark ? "light" : "dark");
-                setDark(!dark);
-            }}
-        />
-    );
 };
 
 // The frame of every page: top app bar, navigation (bar on phones, rail above 600 px, drawer for
@@ -121,7 +97,6 @@ const DefaultLayout = ({
                     <span className="visually-hidden">, accueil</span>
                 </Link>
                 <div className="top-app-bar__actions">
-                    <ThemeToggle />
                     <WhoAmI />
                 </div>
             </header>

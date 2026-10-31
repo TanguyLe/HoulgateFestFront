@@ -20,7 +20,5 @@ _book
 .vercel
 front-env.env
 
-# Generated at build time
-src/styles/scheme.css
 *.min.css
 .lighthouseci

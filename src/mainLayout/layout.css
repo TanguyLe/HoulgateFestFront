@@ -107,16 +107,17 @@ html:has(.shotgun-bar) {
     height: 32px;
 }
 
-.logo__mark path {
-    fill: var(--md-sys-color-primary);
+.logo__sun {
+    fill: var(--stage-yellow);
 }
 
-.logo__mark .logo__letter {
-    fill: var(--md-sys-color-on-primary);
+.logo__sea {
+    fill: var(--stage-blue);
 }
 
 .logo__name {
-    letter-spacing: -0.01em;
+    font-weight: 600;
+    letter-spacing: -0.03em;
 }
 
 /* Navigation items, shared by the bar and the rail */

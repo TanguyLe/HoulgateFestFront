@@ -1,15 +1,14 @@
 import React from "react";
 
-import { cookiePath } from "../../ui/EditionBadge";
-
-// The wordmark: an H in the signature cookie shape (drawn, not text), then the name
+// The wordmark: the sun setting on the sea at Houlgate, in two of the stage's colours, then the
+// name. The link around it gives its accessible name.
 const Logo = () => (
     <span className="logo">
-        <svg className="logo__mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-            <path d={cookiePath} />
-            <path className="logo__letter" d="M33 28h10v17h14V28h10v44H57V54H43v18H33z" />
+        <svg className="logo__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <path className="logo__sun" d="M5 18a11 11 0 0 1 22 0Z" />
+            <rect className="logo__sea" x="2" y="21" width="28" height="7" rx="3.5" />
         </svg>
-        <span className="logo__name title-large emphasized">HoulgateFest</span>
+        <span className="logo__name title-large">HoulgateFest</span>
     </span>
 );
 

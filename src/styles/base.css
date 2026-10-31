@@ -58,7 +58,7 @@ textarea {
 }
 
 a {
-    color: var(--md-sys-color-primary);
+    color: var(--stage-blue-text);
     text-decoration-thickness: 1px;
     text-underline-offset: 0.15em;
 }
@@ -77,6 +77,48 @@ a:hover {
     color: var(--md-sys-color-on-tertiary-container);
 }
 
+/* The stage's type: keynote headlines in sentence case */
+
+.stage-headline,
+.stage-title,
+.stage-subtitle {
+    font-family: var(--md-ref-typeface-brand);
+    font-weight: 500;
+    letter-spacing: var(--stage-tracking-tight);
+    text-wrap: balance;
+}
+
+.stage-headline {
+    font-size: var(--stage-headline-size);
+    line-height: 0.98;
+}
+
+.stage-title {
+    font-size: var(--stage-title-size);
+    line-height: 1.04;
+}
+
+.stage-subtitle {
+    font-size: var(--stage-subtitle-size);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.stage-lead {
+    font-size: var(--stage-lead-size);
+    line-height: 1.45;
+    color: var(--md-sys-color-on-surface-variant);
+    text-wrap: pretty;
+}
+
+/* A short line above a headline, in the colour of the section */
+.stage-eyebrow {
+    font-size: var(--md-sys-typescale-title-medium-size);
+    line-height: var(--md-sys-typescale-title-medium-line-height);
+    font-weight: 500;
+    color: var(--accent-text, var(--stage-blue-text));
+}
+
 /* Type scale */
 
 .display-large,
@@ -86,7 +128,8 @@ a:hover {
 .headline-medium,
 .headline-small {
     font-family: var(--md-ref-typeface-brand);
-    font-weight: var(--md-sys-typescale-weight-regular);
+    font-weight: 500;
+    letter-spacing: -0.02em;
 }
 
 .display-large {
@@ -98,31 +141,31 @@ a:hover {
 .display-medium {
     font-size: var(--md-sys-typescale-display-medium-size);
     line-height: var(--md-sys-typescale-display-medium-line-height);
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
 }
 
 .display-small {
     font-size: var(--md-sys-typescale-display-small-size);
     line-height: var(--md-sys-typescale-display-small-line-height);
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
 }
 
 .headline-large {
     font-size: var(--md-sys-typescale-headline-large-size);
     line-height: var(--md-sys-typescale-headline-large-line-height);
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
 }
 
 .headline-medium {
     font-size: var(--md-sys-typescale-headline-medium-size);
     line-height: var(--md-sys-typescale-headline-medium-line-height);
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
 }
 
 .headline-small {
     font-size: var(--md-sys-typescale-headline-small-size);
     line-height: var(--md-sys-typescale-headline-small-line-height);
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
 }
 
 .title-large {
