@@ -1,171 +1,285 @@
-/* Homepage: the current edition, the organisers' word, photos, and two practical cards */
+/* Homepage: a keynote, one idea per slide, lots of stage around each */
+
+.keynote {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stage-section-space);
+    padding-bottom: var(--stage-section-space);
+}
+
+.slide {
+    position: relative;
+}
+
+/* 1. The edition: a huge name, a composition of shapes next to it, one action */
 
 .hero {
     display: grid;
-    gap: 24px;
-    margin-top: 8px;
+    gap: 40px;
+    padding-top: 24px;
 }
 
 @media (min-width: 840px) {
     .hero {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        align-items: center;
+        grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+        align-items: end;
         gap: 48px;
-        margin-top: 24px;
-    }
-
-    .hero__media {
-        order: 2;
-    }
-}
-
-.hero__media {
-    position: relative;
-}
-
-.hero__photo {
-    aspect-ratio: 4 / 3;
-    border-radius: var(--md-sys-shape-corner-extra-large);
-    overflow: hidden;
-}
-
-/* The edition badge sits over the corner of the photo */
-.hero__badge {
-    position: absolute;
-    left: 16px;
-    bottom: -40px;
-}
-
-.hero__badge .edition-badge__shape {
-    filter: drop-shadow(0 2px 6px rgb(0 0 0 / 0.2));
-}
-
-@media (min-width: 840px) {
-    .hero__badge {
-        left: -40px;
-        bottom: -32px;
+        min-height: min(80vh, 720px);
+        padding-top: 48px;
     }
 }
 
 .hero__content {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
-    padding-top: 32px;
+    gap: 20px;
 }
 
-@media (min-width: 840px) {
-    .hero__content {
-        padding-top: 0;
-    }
+/* A little smaller than the other headlines: the edition's name fits its column */
+.hero__title {
+    margin-left: -0.04em;
+    font-size: clamp(3rem, 1.4rem + 5.4vw, 6.5rem);
 }
 
-@media (max-width: 599px) {
-    .hero__content h1 {
-        font-size: var(--md-sys-typescale-display-small-size);
-        line-height: var(--md-sys-typescale-display-small-line-height);
-    }
-}
-
-.hero__theme {
-    color: var(--md-sys-color-on-surface-variant);
-}
-
-.hero__facts {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.hero__facts li,
-.hero__countdown {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.hero__facts .md-icon {
-    color: var(--md-sys-color-primary);
-}
-
-.hero__countdown {
-    padding: 8px 16px 8px 12px;
-    border-radius: var(--md-sys-shape-corner-full);
-    background: var(--md-sys-color-tertiary-container);
-    color: var(--md-sys-color-on-tertiary-container);
+.hero__lead {
+    max-width: 30ch;
 }
 
 .hero__actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
-    margin-top: 8px;
+    gap: 12px 16px;
+    margin-top: 16px;
 }
 
-/* The organisers' word */
-
-.home-word {
-    margin-top: 56px;
+/* The composition, a sunset at Houlgate: the sun (yellow) setting on the sea (blue), a red sail
+   and a green disc, in a square box */
+.hero__art {
+    position: relative;
+    order: -1;
+    width: min(100%, 220px);
+    aspect-ratio: 1;
+    justify-self: end;
 }
 
-.home-word__signature {
-    font-style: italic;
+@media (min-width: 840px) {
+    .hero__art {
+        order: 0;
+        width: 100%;
+        max-width: 360px;
+        margin-bottom: 96px;
+    }
 }
 
-/* Photos */
+/* The sun, its flat side just above the sea */
+.hero__art .shape--1 {
+    left: 10%;
+    bottom: 31%;
+    width: 58%;
+}
 
-.home-photos {
+/* The sea: two lines, the second one shorter */
+.hero__art .shape--2 {
+    left: 0;
+    bottom: 15%;
+    width: 100%;
+}
+
+.hero__art .shape--3 {
+    left: 18%;
+    bottom: 0;
+    width: 64%;
+}
+
+/* A red sail on the sea */
+.hero__art .shape--4 {
+    right: 7%;
+    bottom: 31%;
+    width: 17%;
+}
+
+/* And a green disc, high in the sky */
+.hero__art .shape--5 {
+    top: 6%;
+    right: 12%;
+    width: 13%;
+}
+
+/* 2. The photo, the whole width, the edition's year on its corner */
+
+.stage-photo {
+    border-radius: var(--stage-radius-photo);
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+}
+
+@media (max-width: 599px) {
+    .stage-photo {
+        aspect-ratio: 4 / 3;
+    }
+}
+
+.hero-photo__badge {
+    position: absolute;
+    right: clamp(16px, 4vw, 48px);
+    bottom: clamp(-56px, -4vw, -32px);
+}
+
+/* 3. The date of the shotgun, as a statement */
+
+.statement {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
-    margin-top: 48px;
+    gap: 20px;
+    padding-right: clamp(0px, 18vw, 240px);
 }
 
-.home-photos__grid {
+.statement__title {
+    max-width: 18ch;
+}
+
+.statement__lead {
+    max-width: 44ch;
+}
+
+.statement__countdown {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 20px 0 16px;
+    border-radius: var(--md-sys-shape-corner-full);
+    background: var(--stage-yellow);
+    color: var(--stage-ink);
+    font-size: var(--md-sys-typescale-title-medium-size);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+/* A quarter of a blue ring around a green disc, its centre */
+.statement__shapes .shape--1 {
+    top: 0;
+    right: 0;
+    width: clamp(96px, 17vw, 220px);
+}
+
+.statement__shapes .shape--2 {
+    top: calc(clamp(96px, 17vw, 220px) * 0.76);
+    right: calc(clamp(96px, 17vw, 220px) * -0.24);
+    width: calc(clamp(96px, 17vw, 220px) * 0.48);
+}
+
+@media (max-width: 599px) {
+    .statement {
+        padding-right: 0;
+    }
+
+    .statement__title {
+        padding-right: 72px;
+    }
+
+    .statement__shapes .shape--1 {
+        right: 17px;
+        width: 72px;
+    }
+
+    .statement__shapes .shape--2 {
+        top: 55px;
+        right: 0;
+        width: 34px;
+    }
+}
+
+/* 4. The organisers' word: its first sentence big, the rest as a lead */
+
+.word {
+    display: grid;
+    gap: 32px;
+}
+
+@media (min-width: 840px) {
+    .word {
+        grid-template-columns: 7fr 5fr;
+        gap: 64px;
+        align-items: start;
+    }
+}
+
+.word__opening {
+    padding-left: 24px;
+    border-left: 6px solid var(--stage-yellow);
+}
+
+.word__text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.word__signature {
+    color: var(--accent-text);
+}
+
+/* 5. Past editions: photos, big */
+
+.past {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.past__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.past__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    width: 100%;
+    gap: clamp(8px, 1.6vw, 20px);
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-@media (min-width: 840px) {
-    .home-photos__grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
+.past__grid .photo-button {
+    border-radius: clamp(16px, 2vw, 28px);
 }
 
-/* Practical cards */
+/* 6. Two practical cards */
 
-.home-cards {
+.practical {
     display: grid;
     gap: 16px;
-    margin-top: 48px;
 }
 
 @media (min-width: 600px) {
-    .home-cards {
+    .practical {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
-.home-card {
+.practical__card {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
-    padding: 24px;
-    background: var(--md-sys-color-surface-container);
+    gap: 16px;
+    padding: clamp(24px, 4vw, 40px);
+    overflow: hidden;
 }
 
-.home-card .md-button {
+.practical__shape {
+    width: 48px;
+    margin-bottom: 8px;
+}
+
+.practical__card .md-button {
     margin-top: auto;
 }

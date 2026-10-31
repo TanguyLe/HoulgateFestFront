@@ -14,6 +14,8 @@ const DRAWINGS = {
     },
     square: { viewBox: "0 0 100 100", body: <rect width="100" height="100" rx="14" /> },
     pill: { viewBox: "0 0 100 40", body: <rect width="100" height="40" rx="20" /> },
+    // A thin pill, like a line of sea
+    bar: { viewBox: "0 0 100 12", body: <rect width="100" height="12" rx="6" /> },
     // A quarter of a thick ring
     arc: {
         viewBox: "0 0 100 100",

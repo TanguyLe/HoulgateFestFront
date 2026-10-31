@@ -26,8 +26,9 @@ export const formatRange = (start, end) => {
     return "Du " + (sameMonth ? day : dayMonth).format(from) + " au " + dayMonthYear.format(to);
 };
 
-// "dimanche 1 juin à 20:00"
-export const formatDayAndTime = (date) => dayAndTime.format(new Date(date));
+// "dimanche 1er juin à 20:00" (French writes the first of the month 1er)
+export const formatDayAndTime = (date) =>
+    dayAndTime.format(new Date(date)).replace(/(^|\s)1 /, "$11er ");
 
 // "2 j 3 h 4 min" before a date, null once passed
 export const formatTimeLeft = (date, now = Date.now()) => {

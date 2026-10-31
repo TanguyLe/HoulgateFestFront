@@ -187,7 +187,6 @@
     min-height: 56px;
     padding: 0 28px;
     font-size: var(--md-sys-typescale-title-medium-size);
-    border-radius: var(--md-sys-shape-corner-large);
 }
 
 .md-button--large.md-button--with-icon {
@@ -1354,8 +1353,11 @@ body:has(.shotgun-bar) .md-snackbar-host {
 }
 
 .shape {
-    position: absolute;
     display: block;
+}
+
+.shapes .shape {
+    position: absolute;
 }
 
 .shape--blue {
