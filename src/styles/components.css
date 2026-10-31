@@ -1056,6 +1056,19 @@ html:has(.md-dialog[open]) {
     pointer-events: none;
 }
 
+/* Inside a dialog: in the flow, at the top of its content, pushing the fields down */
+.md-snackbar-host--inline,
+body:has(.shotgun-bar) .md-snackbar-host--inline {
+    position: static;
+    width: 100%;
+    transform: none;
+}
+
+/* Without a message, out of the flow (no gap) but its live regions stay in place */
+.md-dialog__snackbars:not(:has(.md-snackbar)) {
+    position: absolute;
+}
+
 /* Above the summary bar of the shotgun page */
 body:has(.shotgun-bar) .md-snackbar-host {
     bottom: calc(88px + var(--app-bottom-offset, 0px) + env(safe-area-inset-bottom));

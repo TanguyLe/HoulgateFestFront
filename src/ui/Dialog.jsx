@@ -94,6 +94,8 @@ const Dialog = ({
             {open && (
                 <div className="md-dialog__container">
                     {sheet && <div className="md-dialog__handle" aria-hidden="true" />}
+                    {/* Where the snackbars go while this dialog is open (Snackbar.jsx) */}
+                    <div className="md-dialog__snackbars" data-snackbar-slot />
                     <div className="md-dialog__header">
                         {icon && <Icon name={icon} className="md-dialog__icon" />}
                         {title && (
