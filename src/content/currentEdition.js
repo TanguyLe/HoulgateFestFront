@@ -3,7 +3,8 @@
 export const currentEdition = {
     year: 2025,
     name: "DoublegateFest",
-    theme: "DoublegateFest met l’alchimie à l’honneur",
+    // Said under the name, so without it
+    theme: "L’alchimie à l’honneur",
     // Paris time
     startDate: "2025-06-20T00:00:00+02:00",
     endDate: "2025-06-22T23:59:59+02:00",
@@ -15,6 +16,8 @@ export const currentEdition = {
         "Les moins réactifs pourront toujours apporter leur plus belle tente et leur meilleur costume de duo. Après tout, la surprise fait toujours son effet. #PosticheMoustachu",
     ],
     signature: "Les orgas",
+    // Once the weekend is past, after "C'était du … au … à Houlgate."
+    afterword: "Merci à tous, la prochaine édition se prépare !",
     heroPhoto: "2020-1",
     photos: ["2021-1", "2019-2", "2019-1", "2024-1"],
     whatsApp:

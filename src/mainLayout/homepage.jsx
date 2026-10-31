@@ -7,7 +7,7 @@ import { getCallApi } from "../utils/api/fetchMiddleware";
 import { getCredentials, register, unregister } from "../login/store";
 import { openLoginDialog } from "../login/loginDialog";
 import { formatDayAndTime, formatRange, formatTimeLeft } from "../utils/dates";
-import { Button, Card, EditionBadge, Icon, Photo, PhotoViewer, Reveal, Shape, Shapes } from "../ui";
+import { Button, Icon, Photo, PhotoViewer, Reveal, Shapes } from "../ui";
 import "./homepage.css";
 
 const WEEK = 7 * 24 * 60 * 60 * 1000;
@@ -51,8 +51,8 @@ const useHasBed = (login) => {
     return hasBed;
 };
 
-// The time left before the shotgun, in its last 7 days, updated every minute
-const useTimeLeft = (date) => {
+// The time, updated every minute: the homepage changes as the edition comes and goes
+const useNow = () => {
     const [now, setNow] = useState(Date.now());
 
     useEffect(() => {
@@ -60,11 +60,19 @@ const useTimeLeft = (date) => {
         return () => clearInterval(interval);
     }, []);
 
-    return new Date(date) - now < WEEK ? formatTimeLeft(date, now) : null;
+    return now;
 };
 
-// The one main action: sign up, then go to the shotgun, then see your bed
-const MainAction = () => {
+// Where the edition is: before its shotgun, between the shotgun and the end of the weekend, or past
+const getPhase = (now) => {
+    if (now < new Date(edition.shotgunDate)) return "coming";
+    if (now <= new Date(edition.endDate)) return "open";
+    return "past";
+};
+
+// The one main action: sign up, then go to the shotgun, then see your bed; once the edition is
+// past, look back at the editions
+const MainAction = ({ phase }) => {
     const login = useLogin();
     const hasBed = useHasBed(login);
 
@@ -80,6 +88,15 @@ const MainAction = () => {
             </div>
         );
 
+    if (phase === "past")
+        return (
+            <div className="hero__actions">
+                <Button to="/history" icon="history" className="md-button--large">
+                    Revoir les éditions
+                </Button>
+            </div>
+        );
+
     return (
         <div className="hero__actions">
             <Button to="/shotgun" icon="bed" className="md-button--large">
@@ -89,9 +106,17 @@ const MainAction = () => {
     );
 };
 
-// The homepage is a keynote: one idea per section, each sliding in like the next slide
+// The homepage is a keynote: one idea per section, each sliding in like the next slide. It
+// follows the edition: its shotgun date and the organisers' word while it is coming, a look
+// back once it is past.
 const Homepage = () => {
-    const timeLeft = useTimeLeft(edition.shotgunDate);
+    const now = useNow();
+    const phase = getPhase(now);
+    const timeLeft =
+        phase === "coming" && new Date(edition.shotgunDate) - now < WEEK
+            ? formatTimeLeft(edition.shotgunDate, now)
+            : null;
+    const dates = formatRange(edition.startDate, edition.endDate).toLowerCase();
     const [viewed, setViewed] = useState(null);
     // The first sentence of the organisers' text is said big, the rest follows
     const [first, ...others] = edition.text;
@@ -104,23 +129,25 @@ const Homepage = () => {
             <section className="slide hero" aria-labelledby="edition-name">
                 <div className="hero__content">
                     <p className="stage-eyebrow">
-                        Houlgate · {formatRange(edition.startDate, edition.endDate).toLowerCase()}
+                        {phase === "past" ? "L’édition " + edition.year : "Houlgate · " + dates}
                     </p>
                     <h1 id="edition-name" className="stage-headline hero__title">
                         {edition.name}
                     </h1>
-                    <p className="stage-lead hero__lead">{edition.theme}.</p>
-                    <MainAction />
+                    <p className="stage-lead hero__lead">
+                        {phase === "past"
+                            ? "C’était " + dates + " à Houlgate. " + edition.afterword
+                            : edition.theme + "."}
+                    </p>
+                    <MainAction phase={phase} />
                 </div>
-                {/* The sun setting on the sea of Houlgate, the logo's motif, with a sail */}
+                {/* The sun setting on the sea at Houlgate, the logo's motif */}
                 <div className="hero__art">
                     <Shapes
                         shapes={[
                             ["half", "yellow"],
                             ["bar", "blue"],
                             ["bar", "blue"],
-                            ["triangle", "red"],
-                            ["circle", "green"],
                         ]}
                     />
                 </div>
@@ -133,51 +160,38 @@ const Homepage = () => {
                     sizes="(min-width: 1100px) 1040px, 100vw"
                     className="stage-photo"
                 />
-                <EditionBadge
-                    year={edition.year}
-                    size="large"
-                    label={"Édition " + edition.year}
-                    className="hero-photo__badge"
-                />
             </Reveal>
 
-            <Reveal className="slide statement accent-green" aria-labelledby="shotgun-date">
-                <Shapes
-                    className="statement__shapes"
-                    shapes={[
-                        ["arc", "blue"],
-                        ["circle", "green"],
-                    ]}
-                />
-                <p className="stage-eyebrow">Le shotgun</p>
-                <h2 id="shotgun-date" className="stage-title statement__title">
-                    Les lits se réservent le {formatDayAndTime(edition.shotgunDate)}.
-                </h2>
-                {timeLeft && (
-                    <p className="statement__countdown" aria-live="polite">
-                        <Icon name="schedule" />
-                        Ouverture dans {timeLeft}
-                    </p>
-                )}
-                <p className="stage-lead statement__lead">
-                    Seul votre lit est à réserver sur ce site : vérifiez dès maintenant que vous
-                    arrivez à vous connecter.
-                </p>
-            </Reveal>
-
-            <Reveal className="slide word accent-yellow" aria-label="Le mot des orgas">
-                <p className="stage-subtitle word__opening">{opening}</p>
-                <div className="word__text">
-                    {rest.map((paragraph) => (
-                        <p key={paragraph} className="stage-lead">
-                            {paragraph}
+            {phase === "coming" && (
+                <Reveal className="slide statement" aria-labelledby="shotgun-date">
+                    <p className="stage-eyebrow">Le shotgun</p>
+                    <h2 id="shotgun-date" className="stage-title statement__title">
+                        Les lits se réservent le {formatDayAndTime(edition.shotgunDate)}.
+                    </h2>
+                    {timeLeft && (
+                        <p className="statement__countdown" aria-live="polite">
+                            <Icon name="schedule" />
+                            Ouverture dans {timeLeft}
                         </p>
-                    ))}
-                    <p className="word__signature title-medium">{edition.signature}</p>
-                </div>
-            </Reveal>
+                    )}
+                </Reveal>
+            )}
 
-            <Reveal className="slide past accent-red" aria-labelledby="past-title">
+            {phase !== "past" && (
+                <Reveal className="slide word" aria-label="Le mot des orgas">
+                    <p className="stage-subtitle word__opening">{opening}</p>
+                    <div className="word__text">
+                        {rest.map((paragraph) => (
+                            <p key={paragraph} className="stage-lead">
+                                {paragraph}
+                            </p>
+                        ))}
+                        <p className="word__signature title-medium">{edition.signature}</p>
+                    </div>
+                </Reveal>
+            )}
+
+            <Reveal className="slide past" aria-labelledby="past-title">
                 <div className="past__header">
                     <h2 id="past-title" className="stage-title">
                         Les éditions passées
@@ -210,21 +224,19 @@ const Homepage = () => {
             </Reveal>
 
             <Reveal className="slide practical" aria-label="Avant le weekend">
-                <Card className="practical__card accent-blue">
-                    <Shape kind="circle" color="blue" className="practical__shape" />
+                <div className="practical__item">
                     <h2 className="stage-subtitle">Restez informés</h2>
-                    <p className="body-large on-surface-variant">{edition.whatsApp}</p>
-                </Card>
-                <Card className="practical__card accent-yellow">
-                    <Shape kind="triangle" color="yellow" className="practical__shape" />
+                    <p className="stage-lead">{edition.whatsApp}</p>
+                </div>
+                <div className="practical__item">
                     <h2 className="stage-subtitle">Le guide du shotgun</h2>
-                    <p className="body-large on-surface-variant">
+                    <p className="stage-lead">
                         Il devrait vous aider à vous préparer. Organisez-vous pour le shotgun !
                     </p>
                     <Button variant="tonal" href={edition.shotgunGuideUrl} trailingIcon="openInNew">
                         Lire le guide
                     </Button>
-                </Card>
+                </div>
             </Reveal>
         </div>
     );

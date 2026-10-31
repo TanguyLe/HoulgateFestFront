@@ -55,13 +55,13 @@
     margin-top: 16px;
 }
 
-/* The composition, a sunset at Houlgate: the sun (yellow) setting on the sea (blue), a red sail
-   and a green disc, in a square box */
+/* The composition: the sun (yellow) setting on the sea (blue), the logo's motif, in a box
+   wider than high */
 .hero__art {
     position: relative;
     order: -1;
-    width: min(100%, 220px);
-    aspect-ratio: 1;
+    width: min(100%, 200px);
+    aspect-ratio: 10 / 7;
     justify-self: end;
 }
 
@@ -76,15 +76,15 @@
 
 /* The sun, its flat side just above the sea */
 .hero__art .shape--1 {
-    left: 10%;
-    bottom: 31%;
-    width: 58%;
+    left: 18%;
+    bottom: 42%;
+    width: 64%;
 }
 
 /* The sea: two lines, the second one shorter */
 .hero__art .shape--2 {
     left: 0;
-    bottom: 15%;
+    bottom: 21%;
     width: 100%;
 }
 
@@ -92,20 +92,6 @@
     left: 18%;
     bottom: 0;
     width: 64%;
-}
-
-/* A red sail on the sea */
-.hero__art .shape--4 {
-    right: 7%;
-    bottom: 31%;
-    width: 17%;
-}
-
-/* And a green disc, high in the sky */
-.hero__art .shape--5 {
-    top: 6%;
-    right: 12%;
-    width: 13%;
 }
 
 /* 2. The photo, the whole width, the edition's year on its corner */
@@ -122,28 +108,17 @@
     }
 }
 
-.hero-photo__badge {
-    position: absolute;
-    right: clamp(16px, 4vw, 48px);
-    bottom: clamp(-56px, -4vw, -32px);
-}
-
-/* 3. The date of the shotgun, as a statement */
+/* 3. The date of the shotgun, as a statement, while it is coming */
 
 .statement {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
-    padding-right: clamp(0px, 18vw, 240px);
 }
 
 .statement__title {
     max-width: 18ch;
-}
-
-.statement__lead {
-    max-width: 44ch;
 }
 
 .statement__countdown {
@@ -158,40 +133,6 @@
     font-size: var(--md-sys-typescale-title-medium-size);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
-}
-
-/* A quarter of a blue ring around a green disc, its centre */
-.statement__shapes .shape--1 {
-    top: 0;
-    right: 0;
-    width: clamp(96px, 17vw, 220px);
-}
-
-.statement__shapes .shape--2 {
-    top: calc(clamp(96px, 17vw, 220px) * 0.76);
-    right: calc(clamp(96px, 17vw, 220px) * -0.24);
-    width: calc(clamp(96px, 17vw, 220px) * 0.48);
-}
-
-@media (max-width: 599px) {
-    .statement {
-        padding-right: 0;
-    }
-
-    .statement__title {
-        padding-right: 72px;
-    }
-
-    .statement__shapes .shape--1 {
-        right: 17px;
-        width: 72px;
-    }
-
-    .statement__shapes .shape--2 {
-        top: 55px;
-        right: 0;
-        width: 34px;
-    }
 }
 
 /* 4. The organisers' word: its first sentence big, the rest as a lead */
@@ -221,7 +162,7 @@
 }
 
 .word__signature {
-    color: var(--accent-text);
+    color: var(--stage-yellow-text);
 }
 
 /* 5. Past editions: photos, big */
@@ -253,33 +194,25 @@
     border-radius: clamp(16px, 2vw, 28px);
 }
 
-/* 6. Two practical cards */
+/* 6. Two practical things, side by side, as text on the stage */
 
 .practical {
     display: grid;
-    gap: 16px;
+    gap: 48px;
+    padding-top: clamp(24px, 4vw, 40px);
+    border-top: 1px solid var(--md-sys-color-outline-variant);
 }
 
 @media (min-width: 600px) {
     .practical {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 64px;
     }
 }
 
-.practical__card {
+.practical__item {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
-    padding: clamp(24px, 4vw, 40px);
-    overflow: hidden;
-}
-
-.practical__shape {
-    width: 48px;
-    margin-bottom: 8px;
-}
-
-.practical__card .md-button {
-    margin-top: auto;
 }
