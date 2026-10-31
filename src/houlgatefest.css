@@ -36,11 +36,6 @@ a {
     padding: 0 15px;
 }
 
-.HoulgateFest {
-    min-width: 500px;
-    text-align: justify;
-}
-
 /* Shotgun */
 
 .HoulgateFest .allFloors {
@@ -129,17 +124,6 @@ a {
 .HoulgateFest .viewerText {
     padding-left: 30px;
     font-size: 20px;
-}
-
-/* Semantic ui fixes */
-
-.ui.inverted.menu .item a {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
 
 .smalltext {

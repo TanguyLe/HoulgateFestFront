@@ -2,7 +2,7 @@ import React from "react";
 
 // The site's one signature shape: the 9-sided "cookie" of the M3 Expressive shape library, a circle
 // with soft scallops, drawn in a 100 x 100 box
-const cookiePath = (() => {
+export const cookiePath = (() => {
     const lobes = 9;
     const points = 180;
     const path = [];
