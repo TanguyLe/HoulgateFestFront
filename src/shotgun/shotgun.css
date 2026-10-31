@@ -1,0 +1,267 @@
+/* Shotgun page: countdown, floors (plan + rooms), summary bar, steps sheet */
+
+/* Room states: a colour role each, always with a label and an icon */
+
+.room-state--free {
+    --room-container: var(--md-sys-color-primary-container);
+    --room-on-container: var(--md-sys-color-on-primary-container);
+}
+
+.room-state--locked {
+    --room-container: var(--md-sys-color-surface-container-highest);
+    --room-on-container: var(--md-sys-color-on-surface-variant);
+}
+
+.room-state--loading,
+.room-state--pending,
+.room-state--pendingMine {
+    --room-container: var(--md-sys-color-tertiary-container);
+    --room-on-container: var(--md-sys-color-on-tertiary-container);
+}
+
+.room-state--mine {
+    --room-container: var(--md-sys-color-primary);
+    --room-on-container: var(--md-sys-color-on-primary);
+}
+
+.room-state--taken {
+    --room-container: var(--md-sys-color-surface-container-highest);
+    --room-on-container: var(--md-sys-color-on-surface-variant);
+}
+
+/* Countdown before the opening */
+
+.countdown-card {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+    border-radius: var(--md-sys-shape-corner-extra-large);
+    background: var(--md-sys-color-surface-container);
+}
+
+.countdown__units {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    max-width: 560px;
+}
+
+.countdown__unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 16px 4px 12px;
+    border-radius: var(--md-sys-shape-corner-large);
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.countdown__value {
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--md-sys-typescale-weight-emphasized);
+}
+
+@media (max-width: 599px) {
+    .countdown__value {
+        font-size: var(--md-sys-typescale-headline-large-size);
+        line-height: var(--md-sys-typescale-headline-large-line-height);
+    }
+}
+
+/* Floors */
+
+.floors {
+    display: grid;
+    gap: 16px;
+}
+
+@media (min-width: 1100px) {
+    .floors {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.floor {
+    padding: 16px;
+}
+
+.floor__title {
+    margin-bottom: 12px;
+}
+
+.floor__body {
+    display: grid;
+    gap: 16px;
+}
+
+@media (min-width: 600px) {
+    .floor__body {
+        grid-template-columns: minmax(120px, 2fr) 3fr;
+        align-items: start;
+    }
+}
+
+.floor__plan {
+    display: flex;
+    justify-content: center;
+}
+
+.floor-plan {
+    width: 100%;
+    max-height: 220px;
+}
+
+.floor-plan__room rect {
+    fill: var(--md-sys-color-surface-container);
+    stroke: var(--md-sys-color-outline-variant);
+    stroke-width: 0.4;
+}
+
+.floor-plan__room--bedroom {
+    cursor: pointer;
+}
+
+.floor-plan__room--bedroom rect {
+    fill: var(--room-container);
+    stroke: none;
+}
+
+.floor-plan__room--bedroom text {
+    fill: var(--room-on-container);
+    font-family: var(--md-ref-typeface-brand);
+    font-weight: var(--md-sys-typescale-weight-emphasized);
+}
+
+.floor-plan__room--bedroom:hover rect {
+    filter: brightness(0.95);
+}
+
+.floor__rooms {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* A room */
+
+.room {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 72px;
+    padding: 8px 8px 8px 0;
+    border-radius: var(--md-sys-shape-corner-medium);
+    scroll-margin: 96px 0 160px;
+}
+
+.room:focus-visible {
+    outline-offset: 0;
+}
+
+.room__number {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--md-sys-shape-corner-full);
+    background: var(--room-container);
+    color: var(--room-on-container);
+    font-variant-numeric: tabular-nums;
+}
+
+.room__content {
+    flex: 1;
+    min-width: 0;
+}
+
+.room__supporting {
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.room-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.room-state .md-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.room-state--free.room-state,
+.room-state--mine.room-state {
+    color: var(--md-sys-color-primary);
+}
+
+.room-state--pending.room-state,
+.room-state--pendingMine.room-state,
+.room-state--loading.room-state {
+    color: var(--md-sys-color-tertiary);
+}
+
+.room__action {
+    flex: none;
+}
+
+.timer {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Summary bar, stuck to the bottom of the screen (above the navigation bar on phones) */
+
+.shotgun-bar {
+    position: sticky;
+    z-index: 5;
+    bottom: calc(var(--app-bottom-offset) + 8px);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 24px;
+    min-height: 64px;
+    margin-top: 16px;
+    padding: 8px 8px 8px 20px;
+    border-radius: var(--md-sys-shape-corner-large);
+    background: var(--md-sys-color-inverse-surface);
+    color: var(--md-sys-color-inverse-on-surface);
+    box-shadow: var(--md-sys-elevation-level2);
+}
+
+.shotgun-bar__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.shotgun-bar__item .md-icon {
+    color: var(--md-sys-color-inverse-primary);
+}
+
+.shotgun-bar .md-button {
+    margin-left: auto;
+    background: var(--md-sys-color-inverse-primary);
+    color: var(--md-sys-color-primary);
+}
+
+/* The sheet */
+
+.shotgun-sheet__step {
+    color: var(--md-sys-color-primary);
+}
+
+.shotgun-sheet__cancel {
+    padding-top: 16px;
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.shotgun-sheet__cancel p {
+    margin-bottom: 8px;
+}

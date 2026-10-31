@@ -77,48 +77,35 @@ export default class Countdown extends React.Component {
         if (this.props.onTime) this.props.onTime();
     }
 
-    addLeadingZeros(value) {
-        value = String(value);
-
-        while (value.length < 2) {
-            value = "0" + value;
-        }
-
-        return value;
-    }
-
     render() {
-        const countDown = this.state.timeLeft;
+        const { days, hours, min, sec } = this.state.timeLeft;
+        const units = [
+            [days, "jour", "jours"],
+            [hours, "heure", "heures"],
+            [min, "minute", "minutes"],
+            [sec, "seconde", "secondes"],
+        ];
+        const say = (value, one, many) => value + " " + (value === 1 ? one : many);
 
         return (
-            <div className="Countdown">
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.days)}</strong>
-                        <span>{countDown.days === 1 ? "Jour" : "Jours"}</span>
-                    </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.hours)}</strong>
-                        <span>{countDown.hours === 1 ? "Heure" : "Heures"}</span>
-                    </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.min)}</strong>
-                        <span>{countDown.min === 1 ? "Minute" : "Minutes"}</span>
-                    </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.sec)}</strong>
-                        <span>{countDown.sec === 1 ? "Seconde" : "Secondes"}</span>
-                    </span>
-                </span>
+            <div className="countdown">
+                <div className="countdown__units" aria-hidden="true">
+                    {units.map(([value, one, many]) => (
+                        <span key={many} className="countdown__unit">
+                            <span className="countdown__value display-medium">
+                                {String(value).padStart(2, "0")}
+                            </span>
+                            <span className="countdown__label label-large">
+                                {value === 1 ? one : many}
+                            </span>
+                        </span>
+                    ))}
+                </div>
+                {/* Read out once a minute, not every second */}
+                <p className="visually-hidden" aria-live="polite">
+                    Ouverture dans {say(days, "jour", "jours")}, {say(hours, "heure", "heures")} et{" "}
+                    {say(min, "minute", "minutes")}
+                </p>
             </div>
         );
     }

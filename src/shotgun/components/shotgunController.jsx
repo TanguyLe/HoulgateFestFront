@@ -1,7 +1,6 @@
 import React from "react";
-import { Icon, Message } from "semantic-ui-react";
-
-import DisplayAllFloors from "./floor/DisplayAllFloors";
+import ShotgunBoard from "./shotgunBoard";
+import { Loading, Notice, showError } from "../../ui";
 import { getParisDatetimeFromAPI, objectMap } from "../../utils/miscFcts";
 import { villaLesGenets } from "../villaLesGenetsDef";
 import { USERS_ENDPOINT } from "../../constants";
@@ -238,7 +237,7 @@ class ShotgunContainer extends React.Component {
                 ////////////////////////////////////////////////////////////////////
 
                 // The shotgun was denied, several possible reasons, may need to elaborate in the future.
-                alert("Cette pièce n'est plus disponible, ou tu as déjà shotgun.");
+                showError("Cette pièce n'est plus disponible, ou tu as déjà shotgun.");
             }
             await this.intervalFunction();
         });
@@ -265,8 +264,8 @@ class ShotgunContainer extends React.Component {
                 this.updateState([usersUpdater, roomUpdater]);
             } else {
                 // The shotgun was denied, several possible reasons, may need to elaborate in the future.
-                alert(
-                    "Trop tard! Cette pièce est soit déjà shotgun, soit toi ou un de " +
+                showError(
+                    "Trop tard ! Cette pièce est soit déjà shotgun, soit toi ou un de " +
                         "tes camarades est déjà inscrit dans une pièce.",
                 );
             }
@@ -282,7 +281,7 @@ class ShotgunContainer extends React.Component {
             const cancelShotgun = await deleteCallApi(getShotgunRoomUrl(roomId), {}, true);
 
             if (cancelShotgun.status === 200) this.updateState([{ shotgunId: null }]);
-            else alert("L'annulation a échoué, recharge la page et réessaie.");
+            else showError("L'annulation a échoué, recharge la page et réessaie.");
 
             await this.intervalFunction();
         });
@@ -301,26 +300,17 @@ class ShotgunContainer extends React.Component {
     }
 
     render() {
-        if (this.state.loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement des pièces...</Message.Content>
-                </Message>
-            );
+        if (this.state.loading) return <Loading>Chargement des chambres…</Loading>;
 
         if (this.state.error)
             return (
-                <Message error>
-                    <Message.Content>
-                        Erreur de chargement des pièces, tu n'aurais pas du voir ça. Vérifie ta
-                        connection internet et recharge la page.
-                    </Message.Content>
-                </Message>
+                <Notice tone="error" title="Erreur de chargement des chambres">
+                    Tu n'aurais pas dû voir ça. Vérifie ta connexion internet et recharge la page.
+                </Notice>
             );
 
         return (
-            <DisplayAllFloors
+            <ShotgunBoard
                 floors={this.getFloorsToRender()}
                 userInfo={this.state.userInfo}
                 createShotgunFunction={this.createShotgun}

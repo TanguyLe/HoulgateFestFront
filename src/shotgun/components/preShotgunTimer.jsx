@@ -24,15 +24,15 @@ export default class PreShotgunTimer extends React.Component {
     render() {
         const { secondsLeft } = this.state;
 
-        if (secondsLeft === 0) return <small>Expiré</small>;
+        if (secondsLeft === 0) return <span className="timer">expiré</span>;
 
         const minutes = Math.floor(secondsLeft / 60);
         const seconds = String(secondsLeft % 60).padStart(2, "0");
 
         return (
-            <small>
+            <span className="timer">
                 {this.props.label} {minutes}:{seconds}
-            </small>
+            </span>
         );
     }
 }

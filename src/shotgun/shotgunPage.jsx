@@ -5,8 +5,29 @@ import { getParisDatetimeFromAPI } from "../utils/miscFcts";
 import Countdown from "./components/countdown";
 import ShotgunController from "./components/shotgunController";
 
-import { Icon, Message } from "semantic-ui-react";
 import { getCallApi } from "../utils/api/fetchMiddleware";
+import { currentEdition } from "../content/currentEdition";
+import { Button, Card, Loading, Notice } from "../ui";
+import "./shotgun.css";
+
+const Header = () => (
+    <header className="page-header">
+        <h1 className="headline-large">Shotgun</h1>
+        <p className="body-large on-surface-variant">
+            Choisis ta chambre, puis qui dort avec toi : tu as 2 minutes pour confirmer. Seul ton
+            lit est à réserver sur ce site.
+        </p>
+    </header>
+);
+
+const DATE_FORMAT = new Intl.DateTimeFormat("fr-FR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "Europe/Paris",
+});
 
 class ShotgunPage extends React.Component {
     constructor() {
@@ -51,41 +72,59 @@ class ShotgunPage extends React.Component {
     }
 
     render() {
-        if (this.state.loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Vérification de l'heure...</Message.Content>
-                </Message>
-            );
+        if (this.state.loading) return <Loading>Vérification de l'heure…</Loading>;
+
+        const started = (
+            <>
+                <Header />
+                <ShotgunController />
+            </>
+        );
 
         // This is set within webpack
-        if (process.env.HAS_STARTED) return <ShotgunController />;
+        if (process.env.HAS_STARTED) return started;
 
-        if (this.state.targetDatetime === null)
+        if (!this.state.targetDatetime)
             return (
-                <Message info>
-                    <Message.Content>
+                <>
+                    <Header />
+                    <Notice title="Pas encore de date">
                         La date de shotgun n'a pas encore été définie cette année. Reviens plus tard
                         !
-                    </Message.Content>
-                </Message>
+                    </Notice>
+                </>
             );
 
-        if (this.state.currentDatetime < this.state.targetDatetime)
-            return [
-                <div key="countdown-title" className="Countdown">
-                    Ouverture du Shotgun des chambres:
-                </div>,
-                <Countdown
-                    onTime={this.updateActualDate}
-                    key="countdown-component"
-                    targetDatetime={this.state.targetDatetime}
-                    currentDatetime={this.state.currentDatetime}
-                />,
-            ];
+        if (this.state.currentDatetime >= this.state.targetDatetime) return started;
 
-        return <ShotgunController />;
+        return (
+            <>
+                <Header />
+                <Card className="countdown-card">
+                    <h2 className="title-large">
+                        Ouverture du shotgun le {DATE_FORMAT.format(this.state.targetDatetime)}
+                    </h2>
+                    <Countdown
+                        onTime={this.updateActualDate}
+                        targetDatetime={this.state.targetDatetime}
+                        currentDatetime={this.state.currentDatetime}
+                    />
+                    <p className="body-medium on-surface-variant">
+                        D'ici là, vérifie que tu arrives à te connecter et lis le guide : le jour J,
+                        tout se joue en quelques secondes.
+                    </p>
+                    <div>
+                        <Button
+                            variant="tonal"
+                            icon="menuBook"
+                            href={currentEdition.shotgunGuideUrl}
+                        >
+                            Le guide du shotgun
+                        </Button>
+                    </div>
+                </Card>
+            </>
+        );
     }
 }
 

@@ -445,6 +445,7 @@
     max-width: 0.01px;
     height: 11px;
     padding: 0;
+    overflow: hidden;
     visibility: hidden;
     white-space: nowrap;
     font-size: var(--md-sys-typescale-body-small-size);
