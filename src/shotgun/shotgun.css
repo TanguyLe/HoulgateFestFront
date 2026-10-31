@@ -1,32 +1,33 @@
 /* Shotgun page: countdown, floors (plan + rooms), summary bar, steps sheet */
 
-/* Room states: a colour role each, always with a label and an icon */
+/* Room states: one of the stage's colours each, always with a label and an icon. Free is
+   green, pending is yellow, the user's room is blue, the others are grey */
 
 .room-state--free {
-    --room-container: var(--md-sys-color-primary-container);
-    --room-on-container: var(--md-sys-color-on-primary-container);
+    --room-container: var(--stage-green);
+    --room-on-container: var(--stage-ink);
+    --room-text: var(--stage-green-text);
 }
 
-.room-state--locked {
+.room-state--locked,
+.room-state--taken {
     --room-container: var(--md-sys-color-surface-container-highest);
     --room-on-container: var(--md-sys-color-on-surface-variant);
+    --room-text: var(--md-sys-color-on-surface-variant);
 }
 
 .room-state--loading,
 .room-state--pending,
 .room-state--pendingMine {
-    --room-container: var(--md-sys-color-tertiary-container);
-    --room-on-container: var(--md-sys-color-on-tertiary-container);
+    --room-container: var(--stage-yellow);
+    --room-on-container: var(--stage-ink);
+    --room-text: var(--stage-yellow-text);
 }
 
 .room-state--mine {
-    --room-container: var(--md-sys-color-primary);
-    --room-on-container: var(--md-sys-color-on-primary);
-}
-
-.room-state--taken {
-    --room-container: var(--md-sys-color-surface-container-highest);
-    --room-on-container: var(--md-sys-color-on-surface-variant);
+    --room-container: var(--stage-blue);
+    --room-on-container: var(--stage-ink);
+    --room-text: var(--stage-blue-text);
 }
 
 /* Countdown before the opening */
@@ -35,7 +36,7 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding: 24px;
+    padding: clamp(24px, 4vw, 40px);
     border-radius: var(--md-sys-shape-corner-extra-large);
     background: var(--md-sys-color-surface-container);
 }
@@ -54,8 +55,25 @@
     gap: 4px;
     padding: 16px 4px 12px;
     border-radius: var(--md-sys-shape-corner-large);
-    background: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
+    background: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-on-surface);
+}
+
+/* The four units in the four colours, as a keynote countdown */
+.countdown__unit:nth-child(1) .countdown__value {
+    color: var(--stage-blue-text);
+}
+
+.countdown__unit:nth-child(2) .countdown__value {
+    color: var(--stage-red-text);
+}
+
+.countdown__unit:nth-child(3) .countdown__value {
+    color: var(--stage-yellow-text);
+}
+
+.countdown__unit:nth-child(4) .countdown__value {
+    color: var(--stage-green-text);
 }
 
 .countdown__value {
@@ -84,7 +102,9 @@
 }
 
 .floor {
-    padding: 16px;
+    padding: clamp(16px, 2.4vw, 24px);
+    border-color: var(--md-sys-color-outline-variant);
+    background: var(--md-sys-color-surface-container-low);
 }
 
 .floor__title {
@@ -196,15 +216,8 @@
     height: 16px;
 }
 
-.room-state--free.room-state,
-.room-state--mine.room-state {
-    color: var(--md-sys-color-primary);
-}
-
-.room-state--pending.room-state,
-.room-state--pendingMine.room-state,
-.room-state--loading.room-state {
-    color: var(--md-sys-color-tertiary);
+.room-state.room-state {
+    color: var(--room-text);
 }
 
 .room__action {

@@ -382,6 +382,25 @@ html:has(.shotgun-bar) {
     max-width: 68ch;
 }
 
+/* A short blue pill above the app pages' titles: the stage's mark, kept small */
+.page-header::before,
+.account-card::before,
+.connect-card::before {
+    content: "";
+    width: 40px;
+    height: 8px;
+    margin-bottom: 8px;
+    border-radius: 3px;
+    background: var(--stage-blue);
+}
+
+/* The app pages' titles, in the stage's type but kept compact */
+.page-header .headline-large {
+    font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: var(--stage-tracking-tight);
+}
+
 /* "Log in to see this page" */
 
 .connect-card {
