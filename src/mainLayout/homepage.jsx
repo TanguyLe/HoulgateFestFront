@@ -127,9 +127,9 @@ const Homepage = () => {
             </section>
 
             <Reveal className="slide hero-photo" aria-label="Le weekend en photo">
+                {/* Below the first slide: lazy, it doesn't compete with the headline */}
                 <Photo
                     id={edition.heroPhoto}
-                    priority
                     sizes="(min-width: 1100px) 1040px, 100vw"
                     className="stage-photo"
                 />

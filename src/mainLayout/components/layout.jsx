@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import WhoAmI from "../../login/components/whoAmI";
@@ -6,7 +6,7 @@ import OnlyWhenConnectedWrapper from "../../utils/login/onlyWhenConnectedWrapper
 import OnlyWhenNotConnectedWrapper from "../../utils/login/onlyWhenNotConnectedWrapper";
 import { currentEdition } from "../../content/currentEdition";
 import { Drawer, NavigationBar, NavigationRail } from "../../ui/navigation";
-import { SnackbarHost } from "../../ui";
+import { Loading, SnackbarHost } from "../../ui";
 import Logo from "./logo";
 import "../layout.css";
 
@@ -82,7 +82,11 @@ const DefaultLayout = ({
         { label: "Plus", icon: "moreHoriz", onClick: openDrawer, expanded: drawerOpen },
     ];
 
-    let page = <Component />;
+    let page = (
+        <Suspense fallback={<Loading>Chargement de la page…</Loading>}>
+            <Component />
+        </Suspense>
+    );
     if (auth) page = <OnlyWhenConnectedWrapper title={title}>{page}</OnlyWhenConnectedWrapper>;
     else if (notCo) page = <OnlyWhenNotConnectedWrapper>{page}</OnlyWhenNotConnectedWrapper>;
 

@@ -34,13 +34,19 @@ module.exports = {
     output: {
         path: __dirname + "/web",
         filename: "houlgatefest.min.js",
+        // The pages other than the homepage, loaded when they are opened
+        chunkFilename: "chunks/[name].[contenthash:8].js",
+        publicPath: "/",
     },
     optimization: {
         minimize: true,
         minimizer: [new TerserPlugin()],
     },
     plugins: [
-        new MiniCssExtractPlugin({ filename: "houlgatefest.min.css" }),
+        new MiniCssExtractPlugin({
+            filename: "houlgatefest.min.css",
+            chunkFilename: "chunks/[name].[contenthash:8].css",
+        }),
         new webpack.EnvironmentPlugin({
             NODE_ENV: "production",
             API_URL: null,
