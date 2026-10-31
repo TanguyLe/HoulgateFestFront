@@ -3,6 +3,7 @@ require("./houlgatefest.css");
 require("./styles/scheme.css");
 require("./styles/tokens.css");
 require("./styles/base.css");
+require("./styles/components.css");
 
 import React from "react";
 import { createRoot } from "react-dom/client";
