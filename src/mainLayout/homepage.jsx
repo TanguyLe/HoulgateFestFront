@@ -1,139 +1,314 @@
 import React from "react";
-import { Image, Header, Icon } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const SHOTGUN_GUIDE_LINK =
-    "https://docs.google.com/document/d/19Yfhg8whi_AQRPlVCqYRUmmdQwRggpVxn1tbaPKCMkc/edit?usp=sharing";
+import "./home/home.css";
+import { useNow, useLogin, useBookedPeople } from "./home/hooks";
+import {
+    InviteCard,
+    HomeCountdown,
+    Preflight,
+    QuickLinks,
+    WhoIsComing,
+    EditionStory,
+    PreviewBar,
+} from "./home/components";
+import { useCurrentEdition } from "../editions/currentEdition";
+import { getTheme, getThemeStyle, LATEST_THEME_YEAR } from "../editions/themes";
+import {
+    getPhase,
+    getPreviewEdition,
+    getPreviewPhase,
+    formatDateTime,
+    formatWeekend,
+    formatDay,
+    daysBetween,
+} from "../editions/phase";
+import { openLoginDialog } from "../login/loginDialog";
 
-class Homepage extends React.Component {
-    render() {
-        return (
-            <div className="WelcomePage">
-                <Header as="h2"> Bienvenue sur le site d'HoulgateFest ! </Header>
-                <Header as="h3">
-                    <Icon name="heart" />
-                    <Header.Content>DoublegateFest met l’alchimie à l’honneur ! </Header.Content>
-                </Header>
+const DEFAULT_STAY_TUNED =
+    "Pour être notifié directement au moment du Shotgun et au courant de toutes les actualités : rendez-vous sur le groupe WhatsApp de l’évènement !";
+const PLACE = "Villa Les Genêts, Houlgate";
 
-                <div style={{ float: "left" }}>
-                    <Image
-                        style={{ margin: "10px 10px 10px 10px" }}
-                        size="medium"
-                        floated="left"
-                        src="static/banners/2025.jpg"
-                        bordered
-                        spaced
-                    />
-                    <p>
-                        Dans un monde où les contrastes s'harmonisent, l'heure est venue de célébrer
-                        le "Duo Choc" ! Une rencontre explosive entre deux esprits, deux talents,
-                        deux univers qui s'unissent pour créer une alliance sans pareille.
-                    </p>
-                    <p>
-                        Que ce soit à travers la musique, le cinéma ou la gastronomie, laissez-vous
-                        emporter par cette magie qui se produit lorsque les opposés s'attirent.
-                    </p>
-                </div>
+/* -------------------------------------------------------------------- One block per phase */
 
-                <p>
-                    Préparez-vous à une soirée inoubliable, où chaque duo apportera son propre éclat
-                    à notre fête colorée ! Nos duos vont donc s’affronter dans des jeux variés pour
-                    faire rayonner sur Houlgate leurs personnalités flamboyantes et repartir, qui
-                    sait… avec un cadeau probablement exceptionnel !
-                </p>
+const Teaser = ({ theme, edition, loading, now, login }) => {
+    const shotgunLabel = edition ? formatDateTime(edition.shotgunDate) : theme.shotgunLabel;
+    const knownAccount = !!window.localStorage.getItem("username");
 
-                <p>Tenterez-vous l’aventure ?</p>
-
-                <Image
-                    style={{ margin: "10px 0 10px 0" }}
-                    src="static/carrousel1.jpg"
-                    centered
-                    bordered
-                    spaced
+    return (
+        <>
+            <InviteCard
+                theme={theme}
+                kicker="Tu es invité·e à"
+                title={theme.name}
+                subtitle={theme.subtitle ? "— " + theme.subtitle + " —" : theme.tagline}
+                details={[
+                    ["📅", edition ? formatWeekend(edition.weekendDate) : theme.datesLabel],
+                    ["📍", PLACE],
+                    ["🛏️", shotgunLabel && "Shotgun des lits " + shotgunLabel],
+                ].filter(([, text]) => text)}
+            >
+                <HomeCountdown
+                    label="Ouverture du shotgun dans"
+                    target={edition && new Date(edition.shotgunDate).getTime()}
+                    now={now}
+                    loading={loading}
+                    unknown={
+                        !edition && (
+                            <p className="home-countdown__unknown">
+                                {login ? (
+                                    "La date de shotgun n'a pas encore été définie cette année. Reviens plus tard !"
+                                ) : (
+                                    <>
+                                        <button
+                                            type="button"
+                                            className="link-btn"
+                                            onClick={openLoginDialog}
+                                        >
+                                            Connecte-toi
+                                        </button>{" "}
+                                        pour voir le compte à rebours du shotgun ⏳
+                                    </>
+                                )}
+                            </p>
+                        )
+                    }
                 />
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                    <i> Image genérée par IA n°1 </i>
+                {shotgunLabel && (
+                    <p className="invite__note">
+                        Soyez présents {shotgunLabel} sur cette plateforme pour choisir votre
+                        meilleur hamac !
+                    </p>
+                )}
+            </InviteCard>
+            <Preflight
+                login={login}
+                knownAccount={knownAccount}
+                stayTuned={theme.stayTuned || DEFAULT_STAY_TUNED}
+                shotgunLabel={shotgunLabel}
+            />
+            <EditionStory theme={theme} withLogistics />
+        </>
+    );
+};
+
+const Shotgun = ({ theme, edition, now, login }) => {
+    const shotgunTime = new Date(edition.shotgunDate).getTime();
+    const open = now >= shotgunTime;
+
+    return (
+        <>
+            <InviteCard
+                theme={theme}
+                kicker={theme.name}
+                title={open ? "Le shotgun est ouvert !" : "C'est l'heure du shotgun !"}
+                subtitle={
+                    open
+                        ? "Vite, les meilleurs lits partent en premier. Que le plus rapide gagne !"
+                        : "Échauffe tes doigts, le shotgun ouvre " +
+                          formatDateTime(edition.shotgunDate) +
+                          "."
+                }
+            >
+                {!open && <HomeCountdown label="Ouverture dans" target={shotgunTime} now={now} />}
+                <div className="invite__cta">
+                    {login ? (
+                        <Link to="/shotgun" className="btn btn--primary btn--lg btn--pulse">
+                            <span className="emoji" aria-hidden="true">
+                                🛏️
+                            </span>
+                            {open ? "Je shotgun mon lit" : "Aller sur la page du shotgun"}
+                        </Link>
+                    ) : (
+                        <>
+                            <button
+                                type="button"
+                                className="btn btn--primary btn--lg btn--pulse"
+                                onClick={openLoginDialog}
+                            >
+                                <span className="emoji" aria-hidden="true">
+                                    🔑
+                                </span>
+                                Je me connecte d'abord
+                            </button>
+                            <p className="small muted">
+                                Le shotgun n'est accessible qu'une fois connecté.
+                            </p>
+                        </>
+                    )}
                 </div>
-
-                <Header as="h3">
-                    <Icon name="calendar" />
-                    <Header.Content>C'est quand ?</Header.Content>
-                </Header>
-
-                <p>
-                    L’édition 2025 aura lieu du <b>20/06/2025 au 22/06/2025 !</b>
-                </p>
-                <p>
-                    Comme dit plus haut, tous nos duos sont attendus avec impatience à Houlgate,
-                    qu’ils viennent du passé ou de votre assiette ! Cependant, seul votre lit est à
-                    réserver sur ce site !
-                </p>
-                <p>
-                    Soyez présents le 1er juin à 20h sur cette plateforme pour choisir votre
-                    meilleur hamac !
-                </p>
-                <p>
-                    D'ici là pensez à vous <Link to="/register">inscrire</Link> et vérifiez bien que
-                    vous pouvez vous connecter en amont. Le{" "}
-                    <a target="_blank" href={SHOTGUN_GUIDE_LINK}>
-                        guide
-                    </a>{" "}
-                    devrait vous aider à vous préparer.
-                    <br />
-                    <b>Organisez-vous pour le shotgun !</b>
-                </p>
-                <p>
-                    Les moins réactifs pourront aussi apporter leurs plus belles toiles de tente et
-                    leurs meilleurs costumes de duo ! Après tout, la surprise fait toujours son
-                    effet. Sinon, vous pourrez toujours refaire le monde autour du feu en brûlant
-                    vos fausses moustaches, parce que vous avez toujours été imberbe !
-                    #PosticheMoustachu
-                    <Image
-                        style={{ margin: "10px 0 10px 0" }}
-                        src="static/carrousel2.jpg"
-                        centered
-                        bordered
-                        spaced
-                    />
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                        <i> Image genérée par IA n°2 </i>
-                    </div>
-                </p>
-
-                <Header as="h3">
-                    <Icon name="map marker" />
-                    <Header.Content>Restez informés</Header.Content>
-                </Header>
-
-                <p>
-                    Pour être notifié directement au moment du Shotgun et au courant de toutes les
-                    actualités du DoublegateFest : rendez-vous sur le groupeWhatsApp de l’évènement
-                    !
-                </p>
-
-                <p>
-                    Sur ce site vous êtes à bonne adresse si vous voulez{" "}
-                    <Link to="/shotgun">shotgun votre chambre</Link>, débusquer{" "}
-                    <Link to="/trips">un trajet en voiture</Link> ou suivre en direct le{" "}
-                    <Link to="/scores">tableau des scores</Link>.
-                </p>
-
-                <Image
-                    style={{ margin: "10px 10px 10px 10px" }}
-                    src="static/carrousel3.jpg"
-                    bordered
-                    spaced
+                {theme.bedNote && <p className="invite__note">{theme.bedNote}</p>}
+            </InviteCard>
+            {!login && (
+                <Preflight
+                    login={login}
+                    knownAccount={!!window.localStorage.getItem("username")}
+                    stayTuned={theme.stayTuned || DEFAULT_STAY_TUNED}
                 />
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                    <i> Image genérée par IA n°3 </i>
-                </div>
+            )}
+        </>
+    );
+};
 
-                <div style={{ float: "right" }}>
-                    <b> Les orgas </b>
+const Countdown = ({ theme, edition, now, people }) => {
+    const weekendTime = new Date(edition.weekendDate).getTime();
+    const days = daysBetween(now, weekendTime);
+
+    return (
+        <>
+            <InviteCard
+                theme={theme}
+                kicker="Le shotgun est plié, place à l'impatience"
+                title={days > 1 ? "Plus que " + days + " dodos !" : "C'est (presque) demain !"}
+                subtitle={theme.name + (theme.subtitle ? " — " + theme.subtitle : "")}
+                details={[
+                    ["📅", formatWeekend(edition.weekendDate)],
+                    ["📍", PLACE],
+                ]}
+            >
+                <HomeCountdown label="Le weekend commence dans" target={weekendTime} now={now} />
+            </InviteCard>
+            <QuickLinks
+                links={[
+                    {
+                        to: "/trips",
+                        emoji: "🚗",
+                        title: "Trajets",
+                        text: "Trouve une place dans une voiture (ou propose la tienne).",
+                    },
+                    {
+                        to: "/checklist",
+                        emoji: "✅",
+                        title: "Checklist",
+                        text: "Draps, matelas, déguisement... rien d'oublié ?",
+                    },
+                    {
+                        to: "/shotgun",
+                        emoji: "🛏️",
+                        title: "Qui dort où ?",
+                        text: "Les chambres et leurs heureux occupants.",
+                    },
+                ]}
+            />
+            <WhoIsComing people={people} />
+            <EditionStory theme={theme} />
+        </>
+    );
+};
+
+const Live = ({ theme, edition, now, people }) => {
+    const weekendTime = new Date(edition.weekendDate).getTime();
+    const day = Math.min(3, Math.max(1, daysBetween(weekendTime, now + 1)));
+
+    return (
+        <>
+            <InviteCard
+                theme={theme}
+                kicker={"Jour " + day + " sur 3 · " + formatDay(now)}
+                title={"C'est le weekend !"}
+                subtitle={
+                    theme.name +
+                    " bat son plein à Houlgate. Profitez, hydratez-vous, et suivez les scores en direct !"
+                }
+            >
+                <div className="invite__cta">
+                    <Link to="/scores" className="btn btn--primary btn--lg">
+                        <span className="emoji" aria-hidden="true">
+                            🏆
+                        </span>
+                        Le tableau des scores
+                    </Link>
                 </div>
+            </InviteCard>
+            <QuickLinks
+                links={[
+                    {
+                        to: "/scores",
+                        emoji: "🏆",
+                        title: "Scores en direct",
+                        text: "Qui mène la danse ?",
+                        big: true,
+                    },
+                    { to: "/trips", emoji: "🚗", title: "Trajets", text: "Pour le retour aussi !" },
+                    { to: "/shotgun", emoji: "🛏️", title: "Qui dort où ?" },
+                    { to: "/checklist", emoji: "✅", title: "Checklist" },
+                ]}
+            />
+            <WhoIsComing people={people} />
+        </>
+    );
+};
+
+const Recap = ({ theme }) => (
+    <>
+        <InviteCard
+            theme={theme}
+            kicker={theme.name + " · c'est fini"}
+            title={
+                <>
+                    Merci à tous !{" "}
+                    <span className="emoji" aria-hidden="true">
+                        💖
+                    </span>
+                </>
+            }
+            subtitle="Les valises sont défaites, les voix sont cassées, mais les souvenirs restent. Rendez-vous l'année prochaine pour un nouveau shotgun !"
+        >
+            <div className="invite__cta">
+                <Link to="/history" className="btn btn--primary btn--lg">
+                    <span className="emoji" aria-hidden="true">
+                        📸
+                    </span>
+                    Le Gloryhoul of Fame
+                </Link>
+                <Link to="/scores" className="btn">
+                    Revoir les scores
+                </Link>
             </div>
-        );
-    }
-}
+        </InviteCard>
+        <EditionStory theme={theme} />
+    </>
+);
+
+/* -------------------------------------------------------------------- The page */
+
+const Homepage = () => {
+    const location = useLocation();
+    const now = useNow();
+    const login = useLogin();
+    const { loading, edition: currentEdition } = useCurrentEdition();
+
+    const previewPhase = getPreviewPhase(location.search);
+    const previewYear = Number(new URLSearchParams(location.search).get("year")) || null;
+
+    const year = previewYear || (currentEdition ? currentEdition.year : LATEST_THEME_YEAR);
+    // The preview dates are computed once per phase, so the countdowns keep ticking
+    const previewEdition = React.useMemo(
+        () => (previewPhase ? getPreviewEdition(previewPhase, year, Date.now()) : null),
+        [previewPhase, year],
+    );
+    const edition = previewEdition || currentEdition;
+    const theme = getTheme(year);
+    const phase = previewPhase || getPhase(edition, now);
+
+    const wantsPeople = !!login && (phase === "countdown" || phase === "live");
+    const people = useBookedPeople(wantsPeople && !loading);
+
+    // Without known dates, only the teaser makes sense
+    const props = { theme, edition, loading: loading && !edition, now, login, people };
+    let content;
+    if (!edition || phase === "teaser") content = <Teaser {...props} />;
+    else if (phase === "shotgun") content = <Shotgun {...props} />;
+    else if (phase === "countdown") content = <Countdown {...props} />;
+    else if (phase === "live") content = <Live {...props} />;
+    else content = <Recap {...props} />;
+
+    return (
+        <div className={"home home--" + phase} style={getThemeStyle(theme)}>
+            {previewPhase && <PreviewBar phase={previewPhase} search={location.search} />}
+            {content}
+        </div>
+    );
+};
 
 export default Homepage;
