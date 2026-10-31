@@ -257,16 +257,17 @@
     color: var(--md-sys-color-inverse-primary);
 }
 
+/* The stage's blue with its ink on it (5.2:1), on the light bar */
 .shotgun-bar .md-button {
     margin-left: auto;
-    background: var(--md-sys-color-inverse-primary);
-    color: var(--md-sys-color-primary);
+    background: var(--stage-blue);
+    color: var(--stage-ink);
 }
 
 /* The sheet */
 
 .shotgun-sheet__step {
-    color: var(--md-sys-color-primary);
+    color: var(--stage-blue-text);
 }
 
 .shotgun-sheet__cancel {

@@ -148,7 +148,7 @@
 
 .md-button--elevated {
     background: var(--md-sys-color-surface-container-low);
-    color: var(--md-sys-color-primary);
+    color: var(--stage-blue-text);
     box-shadow: var(--md-sys-elevation-level1);
 }
 
@@ -162,9 +162,11 @@
     border: 1px solid var(--md-sys-color-outline-variant);
 }
 
+/* The light blue: readable (>= 7:1) on the stage and on the raised surfaces of dialogs and cards,
+   where the bold blue falls under 4.5:1 */
 .md-button--text {
     background: transparent;
-    color: var(--md-sys-color-primary);
+    color: var(--stage-blue-text);
     padding: 0 12px;
 }
 
@@ -513,7 +515,7 @@
 }
 
 .md-field__input:focus ~ .md-field__label {
-    color: var(--md-sys-color-primary);
+    color: var(--stage-blue-text);
 }
 
 .md-field__input:focus-visible ~ .md-field__outline {
@@ -1139,7 +1141,7 @@ body:has(.shotgun-bar) .md-snackbar-host {
 }
 
 .md-tab--selected {
-    color: var(--md-sys-color-primary);
+    color: var(--stage-blue-text);
 }
 
 .md-tab__indicator {
