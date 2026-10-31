@@ -1,5 +1,4 @@
 import React from "react";
-import { Icon, Form, Message, List } from "semantic-ui-react";
 
 import {
     NAME,
@@ -10,10 +9,10 @@ import {
     CREATE_PSWRD_RESET_DEF,
     REGEXES,
     ERROR_MSG,
-    CREATE_PSWRD_RESET_ERROR_MSG_PREFIX,
     CONFIRM,
 } from "../../constants";
 import { UNKNOWN_ERROR_MSG } from "../../../labels";
+import { Button, Notice, TextField, showError } from "../../../ui";
 import { upCaseFirstLetter } from "../../../utils/miscFcts";
 import { postCallApi } from "../../../utils/api/fetchMiddleware";
 
@@ -38,7 +37,6 @@ class CreatePasswordResetForm extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleClickReset = this.handleClickReset.bind(this);
@@ -67,7 +65,7 @@ class CreatePasswordResetForm extends React.Component {
     isFormValid(emptyValuesOk = false) {
         for (let property in this.state)
             if (this.state.hasOwnProperty(property))
-                if (property !== "status")
+                if (property !== "status" && property !== "notActivated")
                     if (
                         !this.state[property].valid ||
                         (!emptyValuesOk && !this.state[property].value)
@@ -80,12 +78,12 @@ class CreatePasswordResetForm extends React.Component {
     handleClickSubmit() {
         let formValues = {};
 
-        Object.keys(this.state).map((key) => {
-            formValues[key] = this.state[key].value;
+        CREATE_PSWRD_RESET_DEF.forEach((elem) => {
+            formValues[elem[NAME]] = this.state[elem[NAME]].value;
         });
 
         let failure = false;
-        this.setState({ status: "loading" });
+        this.setState({ status: "loading", notActivated: false });
 
         postCallApi(PSWD_RESET_URL, formValues, false)
             .then((response) => {
@@ -113,15 +111,12 @@ class CreatePasswordResetForm extends React.Component {
                         ),
                     );
 
-                    if (jsonData.wrongField === "activation")
-                        alert(
-                            "Le compte n'est pas activé! Veuillez utiliser le lien que vous avez reçu par mail.",
-                        );
+                    if (jsonData.wrongField === "activation") this.setState({ notActivated: true });
                 } else this.setState({ status: "sent" });
             })
             .catch((error) => {
                 this.setState({ status: "input" });
-                alert(UNKNOWN_ERROR_MSG + error);
+                showError(UNKNOWN_ERROR_MSG);
             });
     }
 
@@ -151,10 +146,6 @@ class CreatePasswordResetForm extends React.Component {
         this.validateField(name, value);
     }
 
-    handleKeyPress(event) {
-        if (this.isFormValid() && event.key === "Enter") this.handleClickSubmit();
-    }
-
     handleKeyUp(event) {
         const name = event.target.name;
         const value = event.target.value;
@@ -171,27 +162,40 @@ class CreatePasswordResetForm extends React.Component {
     }
 
     render() {
-        const isFormValid = this.isFormValid(true);
+        if (this.state.status === "sent")
+            return (
+                <Notice tone="success" title="Mail envoyé">
+                    Nous venons de t'envoyer un mail pour changer ton mot de passe !
+                </Notice>
+            );
 
         return (
-            <Form
-                error={!isFormValid}
-                onSubmit={this.handleSubmit}
-                success={this.state.status === "sent"}
-                onKeyPress={this.handleKeyPress}
+            <form
+                className="form"
+                noValidate
+                onSubmit={(event) => {
+                    event.preventDefault();
+                    if (this.isFormValid() && this.state.status === "input")
+                        this.handleClickSubmit();
+                }}
             >
+                {this.state.notActivated && (
+                    <Notice tone="warning" title="Ton compte n'est pas activé">
+                        Utilise le lien que tu as reçu par mail à l'inscription.
+                    </Notice>
+                )}
                 {CREATE_PSWRD_RESET_DEF.map((elem, index) => {
-                    let name = elem[NAME];
+                    const name = elem[NAME];
                     return (
-                        <Form.Input
+                        <TextField
                             required
-                            error={!this.state[name].valid}
                             key={CREATE_PSWRD_RESET_BLOCK_INDEX_PREFIX + index}
-                            type={elem[TYPE]}
-                            fluid
+                            type="email"
                             label={upCaseFirstLetter(elem[LABEL])}
                             name={name}
+                            autoComplete="email"
                             value={this.state[name].value}
+                            error={this.state[name].valid ? "" : this.state[name].errorMsg}
                             onBlur={this.handleBlur}
                             onKeyUp={this.handleKeyUp}
                             onKeyDown={this.handleKeyDown}
@@ -199,37 +203,16 @@ class CreatePasswordResetForm extends React.Component {
                         />
                     );
                 })}
-                <Form.Group inline>
-                    <Form.Button
+                <div className="form__actions">
+                    <Button
                         type="submit"
+                        loading={this.state.status === "loading"}
                         disabled={!this.isFormValid() || this.state.status !== "input"}
-                        onClick={this.handleClickSubmit}
                     >
-                        Envoi du mail
-                    </Form.Button>
-                </Form.Group>
-                <Message error>
-                    <List bulleted>
-                        {Object.keys(this.state).map((key) => {
-                            const errorMsg = this.state[key].errorMsg;
-
-                            if (errorMsg)
-                                return (
-                                    <List.Item key={CREATE_PSWRD_RESET_ERROR_MSG_PREFIX + key}>
-                                        {errorMsg}
-                                    </List.Item>
-                                );
-                        })}
-                    </List>
-                </Message>
-                <Message success>
-                    Nous venons de t'envoyer un mail pour changer ton mot de passe!
-                </Message>
-                <Message info icon hidden={this.state.status !== "loading"}>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Envoi du mail en cours...</Message.Content>
-                </Message>
-            </Form>
+                        Recevoir le mail
+                    </Button>
+                </div>
+            </form>
         );
     }
 }

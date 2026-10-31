@@ -1,5 +1,7 @@
-import React from "react";
-import { Checkbox, Header, List } from "semantic-ui-react";
+import React, { useState } from "react";
+
+import { Card, Checkbox } from "../ui";
+import "./checklist.css";
 
 const BEFORE_ITEMS = [
     "J'ai trouvé un véhicule ou un billet de train pour venir",
@@ -14,25 +16,81 @@ const PACKING_ITEMS = [
     "J'ai préparé mon déguisement",
 ];
 
-// The boxes are only a help to go through the list: nothing is saved
-const CheckList = ({ items }) => (
-    <List relaxed>
-        {items.map((item) => (
-            <List.Item key={item}>
-                <Checkbox label={item} />
-            </List.Item>
-        ))}
-    </List>
-);
+// The ticks are kept in this browser only
+const STORAGE_KEY = "checklist";
 
-let ChecklistPage = () => (
-    <div>
-        <h1> Checklist </h1>
-        <Header as="h3">Avant le weekend</Header>
-        <CheckList items={BEFORE_ITEMS} />
-        <Header as="h3">Pour le weekend</Header>
-        <CheckList items={PACKING_ITEMS} />
-    </div>
-);
+const readTicks = () => {
+    try {
+        return JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || {};
+    } catch {
+        return {};
+    }
+};
+
+const CheckList = ({ title, items, ticks, onToggle }) => {
+    const done = items.filter((item) => ticks[item]).length;
+
+    return (
+        <Card as="section" className="checklist" aria-label={title}>
+            <h2 className="title-large">
+                {title}{" "}
+                <span className="checklist__count body-medium">
+                    {done}/{items.length}
+                </span>
+            </h2>
+            <ul className="checklist__items">
+                {items.map((item) => (
+                    <li key={item}>
+                        <Checkbox
+                            label={item}
+                            checked={Boolean(ticks[item])}
+                            onChange={() => onToggle(item)}
+                        />
+                    </li>
+                ))}
+            </ul>
+        </Card>
+    );
+};
+
+const ChecklistPage = () => {
+    const [ticks, setTicks] = useState(readTicks);
+
+    const toggle = (item) => {
+        const next = { ...ticks, [item]: !ticks[item] };
+        setTicks(next);
+        try {
+            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        } catch {
+            // private browsing: the ticks last until the page is closed
+        }
+    };
+
+    return (
+        <>
+            <header className="page-header">
+                <h1 className="headline-large">Checklist</h1>
+                <p className="body-large on-surface-variant">
+                    De quoi ne rien oublier. Tes cases cochées restent sur ce téléphone ou cet
+                    ordinateur.
+                </p>
+            </header>
+            <div className="checklists">
+                <CheckList
+                    title="Avant le weekend"
+                    items={BEFORE_ITEMS}
+                    ticks={ticks}
+                    onToggle={toggle}
+                />
+                <CheckList
+                    title="Pour le weekend"
+                    items={PACKING_ITEMS}
+                    ticks={ticks}
+                    onToggle={toggle}
+                />
+            </div>
+        </>
+    );
+};
 
 export default ChecklistPage;

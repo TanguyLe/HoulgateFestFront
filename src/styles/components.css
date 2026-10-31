@@ -442,6 +442,8 @@
 }
 
 .md-field__outline legend {
+    display: block;
+    width: auto;
     max-width: 0.01px;
     height: 11px;
     padding: 0;
@@ -1315,4 +1317,17 @@ html:has(.md-dialog[open]) {
 
 .photo-viewer__next {
     right: 12px;
+}
+
+/* Captcha under a form */
+
+.captcha-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 65px;
+}
+
+.captcha-field__error {
+    color: var(--md-sys-color-error);
 }

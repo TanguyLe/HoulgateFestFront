@@ -1,8 +1,9 @@
 import React from "react";
-import { Icon, Message } from "semantic-ui-react";
 
 import { EDITIONS_ENDPOINT } from "../shotgun/constants";
 import { getCallApi } from "../utils/api/fetchMiddleware";
+import { Card, Loading, Notice } from "../ui";
+import "../trip/trip.css";
 
 // The scores board of the current edition, set from the editions tab of the admin interface
 class ScoresPage extends React.Component {
@@ -25,29 +26,33 @@ class ScoresPage extends React.Component {
     }
 
     render() {
-        if (this.state.loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement du tableau des scores...</Message.Content>
-                </Message>
+        let content;
+        if (this.state.loading) content = <Loading>Chargement du tableau des scores…</Loading>;
+        else if (!this.state.scoresBoardUrl)
+            content = (
+                <Notice>
+                    Le tableau des scores n'est pas encore disponible cette année. Reviens plus tard
+                    !
+                </Notice>
             );
-
-        if (!this.state.scoresBoardUrl)
-            return (
-                <Message info>
-                    <Message.Content>
-                        Le tableau des scores n'est pas encore disponible cette année. Reviens plus
-                        tard !
-                    </Message.Content>
-                </Message>
+        else
+            content = (
+                <Card variant="outlined" className="scores-card">
+                    <iframe
+                        title="Le tableau des scores"
+                        className="scores-card__frame"
+                        src={this.state.scoresBoardUrl}
+                    />
+                </Card>
             );
 
         return (
-            <iframe
-                style={{ height: "900px", width: "100%", border: "none" }}
-                src={this.state.scoresBoardUrl}
-            />
+            <>
+                <header className="page-header">
+                    <h1 className="headline-large">Scores</h1>
+                </header>
+                {content}
+            </>
         );
     }
 }

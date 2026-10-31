@@ -1,9 +1,17 @@
 import React from "react";
-import { Form, Message, List, Icon } from "semantic-ui-react";
 import { CONTACT_URL, CONTACT_DEF } from "../constants";
 import { postCallApi } from "../../utils/api/fetchMiddleware";
 import { upCaseFirstLetter } from "../../utils/miscFcts";
-import Captcha from "../../utils/captcha";
+import CaptchaField from "../../utils/captchaField";
+import { Button, Notice, TextField, showError } from "../../ui";
+
+const AUTOCOMPLETE = {
+    mail: "email",
+    firstname: "given-name",
+    lastname: "family-name",
+    phone: "tel",
+};
+const TYPES = { mail: "email", phone: "tel" };
 
 class ContactForm extends React.Component {
     constructor() {
@@ -28,7 +36,6 @@ class ContactForm extends React.Component {
         this.validateField = this.validateField.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.reset = this.reset.bind(this);
@@ -47,10 +54,6 @@ class ContactForm extends React.Component {
         const value = event.target.value;
 
         this.validateField(name, value);
-    }
-
-    handleKeyPress(event) {
-        if (this.isFormValid() && event.key === "Enter") this.handleSubmit();
     }
 
     handleKeyUp(event) {
@@ -142,83 +145,59 @@ class ContactForm extends React.Component {
             .catch((error) => {
                 this.captcha.current.reset();
                 this.setState({ status: "input" });
-                alert("Une erreur est survenue, veuillez réessayer :  " + error);
+                showError("Une erreur est survenue, réessaie dans un instant.");
             });
     }
 
     render() {
-        const isFormValid = this.isFormValid(true);
         return (
-            <Form
-                error={!isFormValid}
-                onSubmit={this.handleSubmit}
-                onKeyPress={this.handleKeyPress}
-                success={this.state.status === "sent"}
+            <form
+                className="form"
+                noValidate
+                onSubmit={(event) => {
+                    event.preventDefault();
+                    if (this.isFormValid() && this.state.status !== "loading") this.handleSubmit();
+                }}
             >
-                {Object.keys(CONTACT_DEF).map((name, index) => {
-                    if (CONTACT_DEF[name].htmlElem === "Input")
-                        return (
-                            <Form.Input
-                                required
-                                error={!this.state[name].valid}
-                                type={CONTACT_DEF[name].type}
-                                key={"formKey" + index}
-                                fluid
-                                label={upCaseFirstLetter(CONTACT_DEF[name].label)}
-                                name={name}
-                                value={this.state[name].value}
-                                onBlur={this.handleBlur}
-                                onKeyUp={this.handleKeyUp}
-                                onKeyDown={this.handleKeyDown}
-                                onChange={this.handleChange}
-                            />
-                        );
-                    else if (CONTACT_DEF[name].htmlElem === "TextArea")
-                        return (
-                            <Form.TextArea
-                                required
-                                error={!this.state[name].valid}
-                                type={CONTACT_DEF[name].type}
-                                key={"formKey" + index}
-                                label={upCaseFirstLetter(CONTACT_DEF[name].label)}
-                                name={name}
-                                value={this.state[name].value}
-                                onBlur={this.handleBlur}
-                                onKeyUp={this.handleKeyUp}
-                                onKeyDown={this.handleKeyDown}
-                                onChange={this.handleChange}
-                            />
-                        );
-                })}
-                <Form.Field>
-                    <Captcha ref={this.captcha} onToken={this.handleCaptchaToken} />
-                </Form.Field>
-                <Form.Group inline>
-                    <Form.Button
+                {this.state.status === "sent" && (
+                    <Notice tone="success">Ton message a bien été transmis !</Notice>
+                )}
+                {Object.keys(CONTACT_DEF).map((name) => (
+                    <TextField
+                        required
+                        key={name}
+                        multiline={CONTACT_DEF[name].htmlElem === "TextArea"}
+                        type={TYPES[name] || CONTACT_DEF[name].type}
+                        autoComplete={AUTOCOMPLETE[name]}
+                        label={upCaseFirstLetter(CONTACT_DEF[name].label)}
+                        name={name}
+                        value={this.state[name].value}
+                        error={this.state[name].valid ? "" : this.state[name].errorMsg}
+                        onBlur={this.handleBlur}
+                        onKeyUp={this.handleKeyUp}
+                        onKeyDown={this.handleKeyDown}
+                        onChange={this.handleChange}
+                    />
+                ))}
+                <CaptchaField
+                    ref={this.captcha}
+                    onToken={this.handleCaptchaToken}
+                    error={this.state.captcha.errorMsg}
+                />
+                <div className="form__actions">
+                    <Button
                         type="submit"
-                        disabled={!this.isFormValid() || this.state.status !== "input"}
+                        icon="send"
+                        loading={this.state.status === "loading"}
+                        disabled={!this.isFormValid()}
                     >
                         Envoyer
-                    </Form.Button>
-                    <Form.Button type="reset" onClick={this.reset}>
-                        Réinitialiser
-                    </Form.Button>
-                </Form.Group>
-                <Message error>
-                    <List bulleted>
-                        {Object.keys(this.state).map((key) => {
-                            const errorMsg = this.state[key].errorMsg;
-                            if (errorMsg)
-                                return <List.Item key={"messageKey" + key}>{errorMsg}</List.Item>;
-                        })}
-                    </List>
-                </Message>
-                <Message success>Ton message a bien été transmis !</Message>
-                <Message info icon hidden={this.state.status !== "loading"}>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Envoi du message en cours..</Message.Content>
-                </Message>
-            </Form>
+                    </Button>
+                    <Button type="reset" variant="text" onClick={this.reset}>
+                        Effacer
+                    </Button>
+                </div>
+            </form>
         );
     }
 }

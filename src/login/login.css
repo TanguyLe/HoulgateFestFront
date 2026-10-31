@@ -1,0 +1,22 @@
+/* Account pages: sign up, activation, password reset */
+
+.account-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 480px;
+    margin: 16px auto 0;
+    padding: 24px 20px;
+    border-radius: var(--md-sys-shape-corner-extra-large);
+}
+
+@media (min-width: 600px) {
+    .account-card {
+        margin-top: 32px;
+        padding: 32px;
+    }
+}
+
+.account-card > .form {
+    margin-top: 8px;
+}

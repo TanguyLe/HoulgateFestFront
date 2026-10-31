@@ -4,6 +4,8 @@ import withRouter from "../utils/withRouter";
 import { getCallApi } from "../utils/api/fetchMiddleware";
 import { login } from "./store";
 import { getActivateUserUrl } from "./constants";
+import AccountCard from "./components/accountCard";
+import { Loading, Notice } from "../ui";
 
 class ActivateAccount extends React.Component {
     constructor() {
@@ -37,26 +39,28 @@ class ActivateAccount extends React.Component {
                         login(jsonData.username, jsonData.accessToken, jsonData.refreshToken),
                     );
                 })
-                .catch((error) => alert(error));
+                .catch(() => this.setState({ status: "loaded", activated: false }));
         } else this.setState({ status: "failed" });
     }
 
     render() {
-        let display = "";
-        if (this.state.status === "loading") display = "Activation en cours...";
+        let display;
+        if (this.state.status === "loading" || this.state.status === "activating")
+            display = <Loading>Activation en cours…</Loading>;
+        else if (this.state.activated)
+            display = (
+                <Notice tone="success" title="Ton compte est activé !">
+                    Tu es connecté, à toi le shotgun.
+                </Notice>
+            );
         else
-            display =
-                "Ton compte est " +
-                (this.state.activated
-                    ? "activé!"
-                    : "désactivé. (Il y a une erreur, vérifie le lien)");
+            display = (
+                <Notice tone="error" title="Ton compte n'a pas pu être activé">
+                    Il y a une erreur, vérifie le lien reçu par mail.
+                </Notice>
+            );
 
-        return (
-            <div className="activateAccountPage">
-                <h1> Activation de compte </h1>
-                {display}
-            </div>
-        );
+        return <AccountCard title="Activation du compte">{display}</AccountCard>;
     }
 }
 

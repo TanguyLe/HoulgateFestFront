@@ -1,14 +1,21 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
+import { Button } from "../../ui";
 
 export const NotFound = () => (
-    <div>
-        <h1>Erreur 404</h1>
-        <p>
-            Oups jeune chenapan ! Il semble que tu aies perdu ton chemin. Laisse moi te{" "}
-            <Link to="/">rediriger</Link> vers le côté obscur de la force.
+    <section className="page-header not-found">
+        <p className="display-large emphasized on-surface-variant">404</p>
+        <h1 className="headline-medium">Oups jeune chenapan !</h1>
+        <p className="body-large">
+            Il semble que tu aies perdu ton chemin. Laisse-moi te rediriger vers le côté obscur de
+            la force.
         </p>
-    </div>
+        <div>
+            <Button to="/" icon="home">
+                Retour à l'accueil
+            </Button>
+        </div>
+    </section>
 );
 
 export default NotFound;
