@@ -16,7 +16,7 @@ export const currentEdition = {
     ],
     signature: "Les orgas",
     heroPhoto: "2020-1",
-    photos: ["2021-1", "2023-1", "2019-1", "2024-1"],
+    photos: ["2021-1", "2019-2", "2019-1", "2024-1"],
     whatsApp:
         "Pour être prévenu au moment du shotgun et suivre toutes les actualités du DoublegateFest, rendez-vous sur le groupe WhatsApp de l’évènement !",
     shotgunGuideUrl:

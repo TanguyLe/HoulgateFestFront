@@ -28,27 +28,29 @@ const EditionCard = ({ edition }) => {
                         <p key={paragraph}>{paragraph}</p>
                     ))}
                 </div>
-                <ul
-                    className={
-                        "edition-card__photos edition-card__photos--" + edition.photos.length
-                    }
-                >
-                    {edition.photos.map((id, index) => (
-                        <li key={id}>
-                            <button
-                                type="button"
-                                className="photo-button"
-                                onClick={() => setViewed(index)}
-                                aria-label={"Agrandir : " + photos[id].alt}
-                            >
-                                <Photo
-                                    id={id}
-                                    sizes="(min-width: 840px) 340px, (min-width: 600px) 45vw, 90vw"
-                                />
-                            </button>
-                        </li>
-                    ))}
-                </ul>
+                {edition.photos.length > 0 && (
+                    <ul
+                        className={
+                            "edition-card__photos edition-card__photos--" + edition.photos.length
+                        }
+                    >
+                        {edition.photos.map((id, index) => (
+                            <li key={id}>
+                                <button
+                                    type="button"
+                                    className="photo-button"
+                                    onClick={() => setViewed(index)}
+                                    aria-label={"Agrandir : " + photos[id].alt}
+                                >
+                                    <Photo
+                                        id={id}
+                                        sizes="(min-width: 840px) 340px, (min-width: 600px) 45vw, 90vw"
+                                    />
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                )}
                 {edition.url && (
                     <Button variant="text" href={edition.url} trailingIcon="openInNew">
                         L'événement Facebook

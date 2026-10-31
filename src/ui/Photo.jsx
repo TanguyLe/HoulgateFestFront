@@ -2,8 +2,11 @@ import React from "react";
 
 import { photos } from "../content/photos";
 
+// Every photo exists 640 px wide (or at its own width when smaller) and at its largest size
+const smallWidth = (id) => Math.min(640, photos[id].width);
+
 const srcset = (id, format) =>
-    [640, photos[id].width]
+    [smallWidth(id), photos[id].width]
         .filter((width, index, widths) => widths.indexOf(width) === index)
         .map((width) => `/static/photos/${id}-${width}.${format} ${width}w`)
         .join(", ");
@@ -17,7 +20,7 @@ const Photo = ({ id, sizes = "100vw", priority = false, className = "" }) => {
         <picture className={"md-photo " + className}>
             <source type="image/avif" srcSet={srcset(id, "avif")} sizes={sizes} />
             <img
-                src={`/static/photos/${id}-640.webp`}
+                src={`/static/photos/${id}-${smallWidth(id)}.webp`}
                 srcSet={srcset(id, "webp")}
                 sizes={sizes}
                 width={photo.width}

@@ -11,7 +11,7 @@ export const editions = [
             "Les duos et solos ont rivalisés de talent sur la piste pour nous présenter des chansons qui ont atterries droit dans nos cœurs #commeuneflèche lors du merveilleux HoulgateVoice. Les oreilles ravies, ce sont les papilles qui ont désormais pu l’être grâce à une dégustation de frometon pas piquée des hannetons.",
             "Enfin, comment ne pas les louer (eeh-eh-eeh-eh-eh), les fameux quizz et restaurant du samedi soir (joyeux anniversaire Tanguy !) ont réunis les convives de SoundgateFest et les ont mis en Y 👆🏼☝🏼",
         ],
-        photos: ["2024-1", "2024-2"],
+        photos: ["2024-1"],
     },
     {
         year: 2023,
@@ -22,7 +22,7 @@ export const editions = [
             "Les gagnants du fameux « Où sont les Schtroumpfs » ont pu se régaler et ramener chez eux une preuve de leur participation… Ce n’est pas tout ! Alléchés par l’odeur du piment fortifié, les Schtroumpfs se sont frottés à l’échelle de Schtroumpfville, et comme disait le Schtroumpf Naps, « C’était la piquance ! ».",
             "Enfin, des mélanges plus improbables les uns que les autres ont eu raison des plus vaillants d’entre nous. Pour ces premiers jeux individuels, c’est le RaphaSchtroumpf qui l’a emporté grâce à toute la pugnacité qui caractérise le Bébé Schtroumpf !",
         ],
-        photos: ["2023-1", "2023-2"],
+        photos: ["2023-2"],
     },
     {
         year: 2022,
@@ -35,7 +35,7 @@ export const editions = [
             "Le principe ? Deux jours de banquet, trois tribus, des défis, des jeux, de la musique et surtout de la bonne humeur !",
             "Cette année, les nobles, le clergé et les paysans (berk !) s’affrontaient pour ramener le plus de moula à la maison ! Des scènes d’une rare violence ont pu être observées au cours de ce week-end. Les participants ont poussé leur corps au bout de leurs limites. Mais toujours dans la bonne humeur hein ?! Et ce sont finalement les paysans qui ont raflé le plus de thunasses pour gagner ce spin-off 2022 ! Bravo à eux !",
         ],
-        photos: ["2022-1"],
+        photos: [],
     },
     {
         year: 2021,
@@ -47,7 +47,7 @@ export const editions = [
             "Et malgré leurs différences, les participants ont su mettre de côté leurs tensions et faire régner la joie de vivre tout au long du week-end !",
             "Mais bon, comme on n’est pas là pour enfiler des perles, il faut bien un gagnant ! Et c’est la tribu des Romaintiques qui a remporté cette édition 2021 ! On les félicite… Ou pas.",
         ],
-        photos: ["2021-1", "2021-2"],
+        photos: ["2021-1"],
     },
     {
         year: 2020,
