@@ -7,7 +7,13 @@ const byUsername = (a, b) => a.username.localeCompare(b.username, "fr", { sensit
 // Who sleeps in which bed: the first bed is the user's, each other one gets a person among
 // `availablePersons` (activated, without a room). A person chosen for a bed isn't offered for the
 // others. Every bed has to be given before confirming.
-const BedsForm = ({ numberOfBeds, availablePersons, currentUser, onSubmit }) => {
+const BedsForm = ({
+    numberOfBeds,
+    availablePersons,
+    currentUser,
+    onSubmit,
+    submitting = false,
+}) => {
     const [beds, setBeds] = useState(() => new Array(numberOfBeds - 1).fill(""));
 
     // Someone chosen may have taken another room since: their bed is free again
@@ -29,7 +35,7 @@ const BedsForm = ({ numberOfBeds, availablePersons, currentUser, onSubmit }) => 
             className="form"
             onSubmit={(event) => {
                 event.preventDefault();
-                if (complete) onSubmit(chosen);
+                if (complete && !submitting) onSubmit(chosen);
             }}
         >
             <Select
@@ -51,7 +57,7 @@ const BedsForm = ({ numberOfBeds, availablePersons, currentUser, onSubmit }) => 
                 />
             ))}
             <div className="form__actions">
-                <Button type="submit" icon="check" disabled={!complete}>
+                <Button type="submit" icon="check" disabled={!complete} loading={submitting}>
                     Confirmer
                 </Button>
             </div>

@@ -44,21 +44,16 @@ const ShotgunSheet = ({
     const what = state === "pendingMine" ? "pré-shotgun" : "shotgun";
     let content;
 
-    if (state === "loading" && reachedBeds)
-        content = (
-            <>
-                <Step number={2}>Qui dort avec toi ?</Step>
-                <Loading>Enregistrement…</Loading>
-            </>
-        );
-    else if (state === "loading" || (state === "free" && !reachedBeds))
+    if ((state === "loading" || state === "free") && !reachedBeds)
         content = (
             <>
                 <Step number={1}>La chambre</Step>
                 <Loading>Shotgun en cours…</Loading>
             </>
         );
-    else if (state === "pendingMine")
+    // While "Confirmer" is pending the room is loading: the form stays, with its picks, so a
+    // refused confirmation can be sent again
+    else if (state === "pendingMine" || (state === "loading" && reachedBeds))
         content = (
             <>
                 <Step number={2}>Qui dort avec toi ?</Step>
@@ -73,6 +68,7 @@ const ShotgunSheet = ({
                     availablePersons={availablePersons}
                     currentUser={currentUser}
                     onSubmit={onSubmitBeds}
+                    submitting={state === "loading"}
                 />
             </>
         );
