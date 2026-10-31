@@ -64,6 +64,8 @@ Errors and confirmations are snackbars (`showError`, `showSnackbar`), never `win
   1280 px), with their size and a French alt text in `photos.js`. They were made with `sharp`
   (AVIF quality 42, WebP quality 60).
 - The share image (`share.jpg`, 1200 × 630) is the beach photo of 2020.
+- No photo whose subject is someone who isn't one of us (staff, passers-by): crop them out or
+  pick another one.
 
 ## Alcohol
 
