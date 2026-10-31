@@ -1,0 +1,83 @@
+/*
+ * HoulgateFest design tokens: stark black & white, one loud accent per edition.
+ * --accent / --accent-ink are overridden at runtime from src/editions/themes.js.
+ */
+:root {
+    /* Colors */
+    --ink: #0a0a0a;
+    --paper: #ffffff;
+    --paper-2: #f0eee8;
+    --muted: #555555;
+    --line-color: var(--ink);
+    --accent: #ff4d00;
+    --accent-ink: #0a0a0a;
+    --ok: #00d26a;
+    --ok-ink: #0a0a0a;
+    --warn: #ffc400;
+    --warn-ink: #0a0a0a;
+    --danger: #d70015;
+    --danger-ink: #ffffff;
+    --info: #0a0a0a;
+    --info-ink: #ffffff;
+    --focus: #2f6bff;
+
+    /* Type */
+    --font-display: "Anton", "Impact", "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+    --font-body: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --fs-xs: 0.75rem;
+    --fs-sm: 0.875rem;
+    --fs-md: 1rem;
+    --fs-lg: 1.25rem;
+    --fs-xl: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+    --fs-2xl: clamp(2.25rem, 1.4rem + 4vw, 4.5rem);
+    --fs-3xl: clamp(3rem, 1.5rem + 8vw, 8rem);
+    --fs-mega: clamp(4.25rem, 1rem + 17vw, 17rem);
+    --lh-tight: 0.92;
+    --lh-body: 1.55;
+    --tracking-label: 0.12em;
+
+    /* Spacing */
+    --s-1: 0.25rem;
+    --s-2: 0.5rem;
+    --s-3: 0.75rem;
+    --s-4: 1rem;
+    --s-5: 1.5rem;
+    --s-6: 2rem;
+    --s-7: 3rem;
+    --s-8: 5rem;
+    --gutter: clamp(16px, 4vw, 48px);
+    --content-narrow: 46rem;
+    --content-wide: 90rem;
+
+    /* Shapes */
+    --bw: 3px;
+    --line: var(--bw) solid var(--line-color);
+    --line-thin: 1px solid var(--line-color);
+    --radius: 0;
+    --radius-pill: 999px;
+    --shadow-hard: 6px 6px 0 var(--ink);
+
+    /* Chrome */
+    --topbar-h: 60px;
+    --tabbar-h: 64px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+    /* Motion */
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --dur: 160ms;
+    --marquee-dur: 28s;
+}
+
+@media (max-width: 860px) {
+    :root {
+        --bw: 2px;
+        --topbar-h: 54px;
+        --shadow-hard: 4px 4px 0 var(--ink);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --dur: 0ms;
+    }
+}
