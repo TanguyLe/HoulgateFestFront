@@ -89,5 +89,8 @@ IDs for styling.
 - WCAG 2.2 AA: landmarks, skip link, labels on every field, errors under their field, focus moved
   to the page on navigation, live regions for the countdown (once a minute) and the snackbars.
 - Lighthouse CI on `/`, `/history` and `/shotgun` as a phone: at least 95 in every category
-  (`lighthouserc.json`).
+  (`lighthouserc.json`). The runs are logged in (`scripts/lighthouse-login.js`, a test account of
+  a back seeded in CI), so the two pages behind the login are audited for real. Keeping the
+  session needs `disableStorageReset`, which also keeps the HTTP cache between runs: the
+  performance scores are those of a returning visitor, the first visit is checked by hand.
 - Budgets (`npm run budgets`, gzipped): JS ≤ 300 KiB, CSS ≤ 50 KiB, font ≤ 60 KiB.

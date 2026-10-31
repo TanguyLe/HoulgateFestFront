@@ -10,8 +10,10 @@
             ],
             "numberOfRuns": 3,
             "settings": {
-                "formFactor": "mobile"
-            }
+                "formFactor": "mobile",
+                "disableStorageReset": true
+            },
+            "puppeteerScript": "./scripts/lighthouse-login.js"
         },
         "assert": {
             "assertions": {
