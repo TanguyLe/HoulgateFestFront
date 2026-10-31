@@ -1,19 +1,33 @@
 import React from "react";
 import withRouter from "../../utils/withRouter";
-import { Button, Header, Segment, TransitionablePortal } from "semantic-ui-react";
 
 import LogInForm from "./forms/logInForm";
+import { Dialog } from "../../ui";
+import Icon from "../../ui/icons";
+import { subscribeLoginPanel } from "../loginPanel";
 
 class LoginPortal extends React.Component {
     constructor() {
         super();
 
-        this.state = {
-            open: false,
-        };
+        this.state = { open: false };
 
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
+    }
+
+    componentDidMount() {
+        this.unsubscribe = subscribeLoginPanel((open) => this.setState({ open: open }));
+    }
+
+    componentDidUpdate(prevProps) {
+        // leaving the page closes the dialog
+        if (prevProps.location.pathname !== this.props.location.pathname && this.state.open)
+            this.handleClose();
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     handleOpen() {
@@ -24,36 +38,24 @@ class LoginPortal extends React.Component {
         this.setState({ open: false });
     }
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        if (nextState === this.state) return 0;
-        return 1;
-    }
-
     render() {
         return (
-            <TransitionablePortal
-                open={this.state.open}
-                onOpen={this.handleOpen}
-                onClose={this.handleClose}
-                // A controlled TransitionablePortal ignores its own trigger click: open it from here
-                trigger={
-                    <Button
-                        content="Connexion"
-                        id="loginPortalOpener"
-                        disabled={this.state.open}
-                        onClick={this.handleOpen}
-                    />
-                }
-            >
-                <Segment className="ConnectionModal">
-                    <Header id={"loginPortal"}>Connecte-toi</Header>
-                    <LogInForm
-                        className="loginForm"
-                        history={this.props.history}
-                        toClose={this.handleClose}
-                    />
-                </Segment>
-            </TransitionablePortal>
+            <>
+                <button
+                    type="button"
+                    className={"btn btn--accent account__login " + (this.props.className || "")}
+                    id="loginPortalOpener"
+                    onClick={this.handleOpen}
+                >
+                    <Icon name="user" size={18} />
+                    <span>Connexion</span>
+                </button>
+                {this.state.open && (
+                    <Dialog title="Connecte-toi" onClose={this.handleClose}>
+                        <LogInForm history={this.props.history} toClose={this.handleClose} />
+                    </Dialog>
+                )}
+            </>
         );
     }
 }

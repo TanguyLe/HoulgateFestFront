@@ -4,6 +4,7 @@ import withRouter from "../utils/withRouter";
 import { getCallApi } from "../utils/api/fetchMiddleware";
 import { login } from "./store";
 import { getActivateUserUrl } from "./constants";
+import { Loading, Notice, PageHead } from "../ui";
 
 class ActivateAccount extends React.Component {
     constructor() {
@@ -37,24 +38,31 @@ class ActivateAccount extends React.Component {
                         login(jsonData.username, jsonData.accessToken, jsonData.refreshToken),
                     );
                 })
-                .catch((error) => alert(error));
+                .catch((error) => {
+                    this.setState({ status: "failed" });
+                    alert(error);
+                });
         } else this.setState({ status: "failed" });
     }
 
     render() {
-        let display = "";
-        if (this.state.status === "loading") display = "Activation en cours...";
+        let display;
+        if (this.state.status === "loading" || this.state.status === "activating")
+            display = <Loading>Activation en cours...</Loading>;
         else
-            display =
-                "Ton compte est " +
-                (this.state.activated
-                    ? "activé!"
-                    : "désactivé. (Il y a une erreur, vérifie le lien)");
+            display = (
+                <Notice type={this.state.activated ? "success" : "error"}>
+                    {"Ton compte est " +
+                        (this.state.activated
+                            ? "activé!"
+                            : "désactivé. (Il y a une erreur, vérifie le lien)")}
+                </Notice>
+            );
 
         return (
             <div className="activateAccountPage">
-                <h1> Activation de compte </h1>
-                {display}
+                <PageHead kicker="Compte" title="Activation de compte" />
+                <div className="page-body">{display}</div>
             </div>
         );
     }
