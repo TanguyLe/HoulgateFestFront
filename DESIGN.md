@@ -15,7 +15,8 @@ look like and the rules that keep it that way.
   body: the contrast of sizes does the work, not boxes or colours behind text.
 - **Four flat colours as shapes.** Blue, red, yellow and green, as circles, half discs, triangles,
   squares, pills, bars and arcs, placed next to a headline as a composition with a meaning (the
-  homepage's is the sun setting on the sea at Houlgate, with a red sail), never sprinkled.
+  homepage's is the sun setting on the sea at Houlgate, the logo's motif), never sprinkled. Every
+  shape means something or goes: no shape on top of a card, none just to fill a corner.
 - **Ours, not a template, and not Google's.** No Google logo, wordmark or colour bar, nothing that
   could pass for Google. Our own photos carry the site, the texts are the organisers'.
 - **The app pages stay tools.** Shotgun, trips, scores, account and admin keep the stage (dark,
@@ -38,7 +39,8 @@ look like and the rules that keep it that way.
 - **Roles**: blue leads (actions, links, selection), yellow is pending or needs attention, red is
   errors and what can't be undone, green is free. In the shotgun: free green, pending yellow, the
   user's room blue, taken grey, always with a label and an icon.
-- **Editions** take the four colours in turn (`.accent-<colour>`, with a shape each).
+- **Editions** take the four colours in turn (`.accent-<colour>`, with a shape each), never in the
+  order of the Google logo.
 - **Dark only**: the stage is the identity, there is no light theme.
 - **Font**: Google Sans Flex (Google Fonts, SIL Open Font License), latin subset, weight axis,
   self-hosted in `web/static/fonts` (50 KB).
@@ -76,7 +78,10 @@ of its content.
   1040 px (1280 px for the shotgun and the admin).
 - Photos: the whole content width, large rounded corners (`--stage-radius-photo`).
 - Layout is CSS only: no JavaScript measuring the window.
-- The homepage is in the main bundle, the other pages are loaded when opened (`React.lazy`).
+- The homepage and the shotgun are in the main bundle, the other pages are loaded when opened
+  (`React.lazy`), inside an error boundary that offers to reload when a page fails to load.
+- The homepage follows the edition's dates: the shotgun date and the organisers' word while it is
+  coming, a short look back once it is past.
 
 ## Content
 
