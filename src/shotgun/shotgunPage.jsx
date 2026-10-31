@@ -5,7 +5,7 @@ import { getParisDatetimeFromAPI } from "../utils/miscFcts";
 import Countdown from "./components/countdown";
 import ShotgunController from "./components/shotgunController";
 
-import { Icon, Message } from "semantic-ui-react";
+import { Loading, Notice, PageHeader } from "../ui";
 import { getCallApi } from "../utils/api/fetchMiddleware";
 
 class ShotgunPage extends React.Component {
@@ -51,39 +51,49 @@ class ShotgunPage extends React.Component {
     }
 
     render() {
-        if (this.state.loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Vérification de l'heure...</Message.Content>
-                </Message>
-            );
+        if (this.state.loading) return <Loading>Vérification de l'heure...</Loading>;
 
         // This is set within webpack
         if (process.env.HAS_STARTED) return <ShotgunController />;
 
         if (this.state.targetDatetime === null)
             return (
-                <Message info>
-                    <Message.Content>
+                <>
+                    <PageHeader kicker="Villa Les Genêts" title="Shotgun des chambres" />
+                    <Notice kind="info">
                         La date de shotgun n'a pas encore été définie cette année. Reviens plus tard
                         !
-                    </Message.Content>
-                </Message>
+                    </Notice>
+                </>
             );
 
         if (this.state.currentDatetime < this.state.targetDatetime)
-            return [
-                <div key="countdown-title" className="Countdown">
-                    Ouverture du Shotgun des chambres:
-                </div>,
-                <Countdown
-                    onTime={this.updateActualDate}
-                    key="countdown-component"
-                    targetDatetime={this.state.targetDatetime}
-                    currentDatetime={this.state.currentDatetime}
-                />,
-            ];
+            return (
+                <section className="shotgun-wait card card--striped">
+                    <span className="kicker">Villa Les Genêts · Shotgun</span>
+                    <h1 className="shotgun-wait__title">Ouverture du Shotgun des chambres</h1>
+                    <p className="shotgun-wait__date">
+                        {this.state.targetDatetime.toLocaleString("fr-FR", {
+                            weekday: "long",
+                            day: "numeric",
+                            month: "long",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                        })}
+                    </p>
+                    <Countdown
+                        onTime={this.updateActualDate}
+                        key="countdown-component"
+                        size="xl"
+                        targetDatetime={this.state.targetDatetime}
+                        currentDatetime={this.state.currentDatetime}
+                    />
+                    <p className="muted small">
+                        Garde cette page ouverte : les chambres apparaîtront d’elles-mêmes à l’heure
+                        pile.
+                    </p>
+                </section>
+            );
 
         return <ShotgunController />;
     }
