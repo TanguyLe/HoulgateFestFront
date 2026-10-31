@@ -5,8 +5,9 @@ import { getParisDatetimeFromAPI } from "../utils/miscFcts";
 import Countdown from "./components/countdown";
 import ShotgunController from "./components/shotgunController";
 
-import { Icon, Message } from "semantic-ui-react";
 import { getCallApi } from "../utils/api/fetchMiddleware";
+import { Loading, Notice, PageHead } from "../ui";
+import { formatDay, formatHour } from "../editions/phase";
 
 class ShotgunPage extends React.Component {
     constructor() {
@@ -51,39 +52,37 @@ class ShotgunPage extends React.Component {
     }
 
     render() {
-        if (this.state.loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Vérification de l'heure...</Message.Content>
-                </Message>
-            );
+        if (this.state.loading) return <Loading>Vérification de l'heure...</Loading>;
 
         // This is set within webpack
         if (process.env.HAS_STARTED) return <ShotgunController />;
 
         if (this.state.targetDatetime === null)
             return (
-                <Message info>
-                    <Message.Content>
+                <>
+                    <PageHead kicker="Villa Les Genêts" title="Shotgun" />
+                    <Notice type="info">
                         La date de shotgun n'a pas encore été définie cette année. Reviens plus tard
                         !
-                    </Message.Content>
-                </Message>
+                    </Notice>
+                </>
             );
 
         if (this.state.currentDatetime < this.state.targetDatetime)
-            return [
-                <div key="countdown-title" className="Countdown">
-                    Ouverture du Shotgun des chambres:
-                </div>,
-                <Countdown
-                    onTime={this.updateActualDate}
-                    key="countdown-component"
-                    targetDatetime={this.state.targetDatetime}
-                    currentDatetime={this.state.currentDatetime}
-                />,
-            ];
+            return (
+                <>
+                    <PageHead kicker="Ouverture du Shotgun des chambres" title="Pas encore !">
+                        Rendez-vous le {formatDay(this.state.targetDatetime)} à{" "}
+                        {formatHour(this.state.targetDatetime)}, la page s'ouvrira toute seule.
+                    </PageHead>
+                    <Countdown
+                        onTime={this.updateActualDate}
+                        targetDatetime={this.state.targetDatetime}
+                        currentDatetime={this.state.currentDatetime}
+                        label="Temps avant l'ouverture du shotgun"
+                    />
+                </>
+            );
 
         return <ShotgunController />;
     }

@@ -1,8 +1,17 @@
 import React from "react";
-import { Button, Segment, TransitionablePortal, Icon, Message } from "semantic-ui-react";
 
 import BedsMultipleDropdown from "./bedsMultipleDropdown";
+import Confetti from "./confetti";
 import { ROOM_STATUS_READY } from "../constants";
+import { Dialog, Loading, Notice, cx } from "../../ui";
+
+const BUTTON_CLASSES = {
+    blue: "btn--accent",
+    green: "btn--ok",
+    red: "btn--danger",
+    orange: "",
+    grey: "",
+};
 
 export default class ShotgunPortal extends React.Component {
     constructor() {
@@ -11,6 +20,7 @@ export default class ShotgunPortal extends React.Component {
         this.state = {
             open: false,
             confirmingCancel: false,
+            celebrate: false,
         };
 
         this.handleClose = this.handleClose.bind(this);
@@ -18,16 +28,25 @@ export default class ShotgunPortal extends React.Component {
         this.getMessage = this.getMessage.bind(this);
     }
 
+    componentDidUpdate(prevProps) {
+        const { status } = this.props;
+        if (!this.state.open || prevProps.status === status) return;
+
+        // the shotgun just went through while the sheet is open: party time
+        if (status === "shotgunSuccessful") this.setState({ celebrate: true });
+        // the room is free again (the shotgun was denied or cancelled): nothing left to show
+        if (status === ROOM_STATUS_READY) this.handleClose();
+    }
+
     handleOpen() {
         this.setState({ open: true });
     }
 
     handleClose() {
-        this.setState({ open: false, confirmingCancel: false });
+        this.setState({ open: false, confirmingCancel: false, celebrate: false });
     }
 
-    // For the owner of a pre-shotgunned or shotgunned room. Confirmed in place: a Confirm modal
-    // would be a click outside the portal and close it.
+    // For the owner of a pre-shotgunned or shotgunned room. Confirmed in place, inside the sheet.
     getCancelButtons(status) {
         if (!this.props.cancelShotgunFunction) return "";
         if (status !== "attributingBeds" && status !== "shotgunSuccessful") return "";
@@ -36,36 +55,42 @@ export default class ShotgunPortal extends React.Component {
 
         if (!this.state.confirmingCancel)
             return (
-                <Button
-                    basic
-                    negative
-                    compact
-                    icon="cancel"
-                    content={"Annuler mon " + what}
-                    onClick={() => this.setState({ confirmingCancel: true })}
-                />
+                <div className="sheet__cancel">
+                    <button
+                        type="button"
+                        className="btn btn--small btn--ghost"
+                        onClick={() => this.setState({ confirmingCancel: true })}
+                    >
+                        Annuler mon {what}
+                    </button>
+                </div>
             );
 
         return (
-            <div>
+            <div className="sheet__cancel sheet__cancel--confirm">
                 <p>
                     La chambre et toutes ses personnes seront libérées, et n'importe qui pourra la
                     shotgun. Personne n'est prévenu par email.
                 </p>
-                <Button
-                    negative
-                    compact
-                    content={"Oui, annuler mon " + what}
-                    onClick={() => {
-                        this.handleClose();
-                        this.props.cancelShotgunFunction();
-                    }}
-                />
-                <Button
-                    compact
-                    content="Non"
-                    onClick={() => this.setState({ confirmingCancel: false })}
-                />
+                <div className="btn-row">
+                    <button
+                        type="button"
+                        className="btn btn--danger"
+                        onClick={() => {
+                            this.handleClose();
+                            this.props.cancelShotgunFunction();
+                        }}
+                    >
+                        Oui, annuler mon {what}
+                    </button>
+                    <button
+                        type="button"
+                        className="btn"
+                        onClick={() => this.setState({ confirmingCancel: false })}
+                    >
+                        Non
+                    </button>
+                </div>
             </div>
         );
     }
@@ -73,12 +98,7 @@ export default class ShotgunPortal extends React.Component {
     getMessage(status) {
         switch (status) {
             case "loading":
-                return (
-                    <Message info icon>
-                        <Icon name="circle notched" loading />
-                        <Message.Content>Shotgun en cours...</Message.Content>
-                    </Message>
-                );
+                return <Loading>Shotgun en cours...</Loading>;
             case "attributingBeds":
                 return (
                     <BedsMultipleDropdown
@@ -89,30 +109,25 @@ export default class ShotgunPortal extends React.Component {
                 );
             case "shotgunSuccessful":
                 return (
-                    <Message success>
-                        <Message.Content>
-                            <p>
-                                Félicitations, tu as bien shotgun avec tes amis
-                                {this.props.friends
-                                    ? "(" + this.props.friends.join(", ") + ")"
-                                    : ""}
-                                . Réjouis toi de voir ton nom gravé dans le marbre sur ce site. Tu
-                                es maitenant responsable si quelqu'un veut échanger :)
-                            </p>
-                            <p>
-                                Si c'est une erreur, la personne qui a shotgun la chambre peut
-                                l'annuler, et saches que c'est pas malin!
-                            </p>
-                        </Message.Content>
-                    </Message>
+                    <div className="sheet__success">
+                        <p className="sheet__bang display">C'est dans la poche !</p>
+                        <p>
+                            Félicitations, tu as bien shotgun avec tes amis
+                            {this.props.friends ? "(" + this.props.friends.join(", ") + ")" : ""}.
+                            Réjouis toi de voir ton nom gravé dans le marbre sur ce site. Tu es
+                            maitenant responsable si quelqu'un veut échanger :)
+                        </p>
+                        <p>
+                            Si c'est une erreur, la personne qui a shotgun la chambre peut
+                            l'annuler, et saches que c'est pas malin!
+                        </p>
+                    </div>
                 );
             case "shotgunFailed":
                 return (
-                    <Message error>
-                        <Message.Content>
-                            Ton shotgun a échoué :/ Dépêche-toi de tenter une autre chambre!
-                        </Message.Content>
-                    </Message>
+                    <Notice type="error">
+                        Ton shotgun a échoué :/ Dépêche-toi de tenter une autre chambre!
+                    </Notice>
                 );
         }
         return "";
@@ -120,37 +135,39 @@ export default class ShotgunPortal extends React.Component {
 
     render() {
         const directShotgun = this.props.status === ROOM_STATUS_READY;
-
-        let trigger = (
-            <Button
-                color={this.props.buttonType}
-                compact
-                content={this.props.content}
-                disabled={this.props.disabled || this.state.open}
-                // A controlled TransitionablePortal ignores its own trigger click: open it from here
-                onClick={(...args) => {
-                    if (directShotgun) this.props.createShotgunFunction(...args);
-                    this.handleOpen();
-                }}
-            />
-        );
+        const open = !this.props.disabled && this.state.open;
 
         return (
-            <TransitionablePortal
-                open={!this.props.disabled && this.state.open}
-                onOpen={this.handleOpen}
-                onClose={this.handleClose}
-                trigger={trigger}
-            >
-                <Segment className="ShotgunModal">
-                    <h3>
-                        {" "}
-                        {this.props.name}: {this.props.seats} places{" "}
-                    </h3>
-                    {this.getMessage(this.props.status)}
-                    {this.getCancelButtons(this.props.status)}
-                </Segment>
-            </TransitionablePortal>
+            <>
+                <button
+                    type="button"
+                    className={cx(
+                        "btn btn--block room__cta",
+                        BUTTON_CLASSES[this.props.buttonType],
+                    )}
+                    disabled={this.props.disabled || open}
+                    onClick={(...args) => {
+                        if (directShotgun) this.props.createShotgunFunction(...args);
+                        this.handleOpen();
+                    }}
+                >
+                    {this.props.content}
+                </button>
+                {open && (
+                    <Dialog
+                        title={this.props.name + " : " + this.props.seats + " places"}
+                        onClose={this.handleClose}
+                        className={cx(
+                            "sheet",
+                            this.props.status === "shotgunSuccessful" && "sheet--success",
+                        )}
+                    >
+                        {this.getMessage(this.props.status)}
+                        {this.getCancelButtons(this.props.status)}
+                    </Dialog>
+                )}
+                {open && this.state.celebrate && <Confetti />}
+            </>
         );
     }
 }
