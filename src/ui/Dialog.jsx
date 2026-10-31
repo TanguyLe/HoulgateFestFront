@@ -1,7 +1,7 @@
 import React, { useEffect, useId, useRef } from "react";
 
 import Icon from "./Icon";
-import { IconButton } from "./Button";
+import { Button, IconButton } from "./Button";
 
 // M3 basic dialog, on a native modal <dialog>: the page behind is inert, Esc closes it and the
 // focus goes back where it was. With `sheet`, it is a bottom sheet on compact screens.
@@ -100,3 +100,36 @@ const Dialog = ({
 };
 
 export default Dialog;
+
+// A dialog asking to confirm an action: `danger` for what can't be undone
+export const ConfirmDialog = ({
+    open,
+    title,
+    confirmLabel = "Confirmer",
+    danger = false,
+    onConfirm,
+    onCancel,
+    children,
+}) => (
+    <Dialog
+        open={open}
+        onClose={onCancel}
+        title={title}
+        actions={
+            <>
+                <Button variant="text" onClick={onCancel}>
+                    Annuler
+                </Button>
+                <Button
+                    variant={danger ? "filled" : "text"}
+                    className={danger ? "md-button--danger" : ""}
+                    onClick={onConfirm}
+                >
+                    {confirmLabel}
+                </Button>
+            </>
+        }
+    >
+        {children}
+    </Dialog>
+);

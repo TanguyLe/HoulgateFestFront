@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Input, Label, Table } from "semantic-ui-react";
+import { Button, IconButton } from "../../ui";
 
 import { toDateInput, toDatetimeInput, fromDateInput, fromDatetimeInput } from "../adminApi";
 
@@ -33,7 +33,8 @@ class EditionRow extends React.Component {
         if (prevProps.edition !== this.props.edition) this.reset();
     }
 
-    handleChange(event, { name, value }) {
+    handleChange(event) {
+        const { name, value } = event.target;
         this.setState({ draft: Object.assign({}, this.state.draft, { [name]: value }) });
     }
 
@@ -68,92 +69,97 @@ class EditionRow extends React.Component {
         const { draft, saving } = this.state;
         const isNew = !edition._id;
         const dirty = this.isDirty();
+        const label = isNew ? "nouvelle édition" : "édition " + edition.year;
 
         return (
-            <Table.Row positive={isCurrent} warning={dirty && !isNew}>
-                <Table.Cell>
-                    <Input
-                        name="year"
-                        type="number"
-                        value={draft.year}
-                        onChange={this.handleChange}
-                        placeholder="Année"
-                        style={{ width: "7em" }}
-                    />
-                    {isNew && (
-                        <Label horizontal style={{ marginLeft: "0.5em" }}>
-                            Nouvelle
-                        </Label>
-                    )}
-                    {isCurrent && (
-                        <Label color="green" horizontal style={{ marginLeft: "0.5em" }}>
-                            En cours
-                        </Label>
-                    )}
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
+            <tr
+                className={
+                    (isCurrent ? "data-table__row--current" : "") +
+                    (dirty && !isNew ? " data-table__row--dirty" : "")
+                }
+            >
+                <td>
+                    <div className="data-table__cell-with-tag">
+                        <input
+                            className="table-input table-input--year"
+                            name="year"
+                            type="number"
+                            value={draft.year}
+                            onChange={this.handleChange}
+                            placeholder="Année"
+                            aria-label={"Année, " + label}
+                        />
+                        {isNew && <span className="tag">Nouvelle</span>}
+                        {isCurrent && <span className="tag tag--primary">En cours</span>}
+                    </div>
+                </td>
+                <td>
+                    <input
+                        className="table-input"
                         name="weekendDate"
                         type="date"
                         value={draft.weekendDate}
                         onChange={this.handleChange}
+                        aria-label={"Date du weekend, " + label}
                     />
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
+                </td>
+                <td>
+                    <input
+                        className="table-input"
                         name="shotgunDate"
                         type="datetime-local"
                         value={draft.shotgunDate}
                         onChange={this.handleChange}
+                        aria-label={"Date et heure du shotgun, " + label}
                     />
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
+                </td>
+                <td>
+                    <input
+                        className="table-input table-input--url"
                         name="scoresBoardUrl"
                         type="url"
                         value={draft.scoresBoardUrl}
                         onChange={this.handleChange}
                         placeholder="https://..."
-                        fluid
+                        aria-label={"Lien du tableau des scores, " + label}
                     />
-                </Table.Cell>
-                <Table.Cell collapsing textAlign="right">
+                </td>
+                <td className="data-table__actions">
                     {isNew ? (
                         <Button
-                            primary
-                            icon="plus"
-                            content="Créer"
+                            icon="add"
                             loading={saving}
                             disabled={saving || !this.isValid()}
                             onClick={this.save}
-                        />
+                        >
+                            Créer
+                        </Button>
                     ) : (
-                        <Button.Group>
-                            <Button
-                                primary
+                        <>
+                            <IconButton
                                 icon="save"
-                                title="Enregistrer"
-                                loading={saving}
+                                variant="filled"
+                                label={"Enregistrer l'" + label}
                                 disabled={saving || !dirty || !this.isValid()}
                                 onClick={this.save}
                             />
-                            <Button
+                            <IconButton
                                 icon="undo"
-                                title="Annuler les modifications"
+                                label="Annuler les modifications"
                                 disabled={saving || !dirty}
                                 onClick={this.reset}
                             />
-                            <Button
-                                negative
-                                icon="trash"
-                                title="Supprimer"
+                            <IconButton
+                                icon="delete"
+                                className="md-icon-button--danger"
+                                label={"Supprimer l'" + label}
                                 disabled={saving}
                                 onClick={() => onDelete(edition)}
                             />
-                        </Button.Group>
+                        </>
                     )}
-                </Table.Cell>
-            </Table.Row>
+                </td>
+            </tr>
         );
     }
 }

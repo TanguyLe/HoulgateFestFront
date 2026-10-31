@@ -1,15 +1,14 @@
 import React from "react";
 import {
-    Button,
-    Checkbox,
-    Confirm,
-    Dropdown,
-    Icon,
-    Input,
-    Label,
-    Message,
-    Table,
-} from "semantic-ui-react";
+    ConfirmDialog,
+    IconButton,
+    Loading,
+    Select,
+    Switch,
+    TextField,
+    showError,
+    showSnackbar,
+} from "../../ui";
 
 import { ADMIN_USERS_URL, getAdminUserUrl, getAdminActivationEmailUrl } from "../constants";
 import { adminGet, adminPost, adminPut } from "../adminApi";
@@ -22,24 +21,14 @@ const FILTERS = {
     shotgun: { text: "Avec un shotgun", test: (user) => user.hasShotgun || user.hasPreShotgun },
 };
 const FILTER_OPTIONS = Object.keys(FILTERS).map((key) => ({
-    key: key,
     value: key,
-    text: FILTERS[key].text,
+    label: FILTERS[key].text,
 }));
 
 const shotgunCell = (user) => {
     if (user.hasShotgun)
-        return (
-            <Label color="green" size="small">
-                {user.room ? user.room.text : "Shotgun"}
-            </Label>
-        );
-    if (user.hasPreShotgun)
-        return (
-            <Label color="orange" size="small">
-                Pré-shotgun
-            </Label>
-        );
+        return <span className="tag tag--primary">{user.room ? user.room.text : "Shotgun"}</span>;
+    if (user.hasPreShotgun) return <span className="tag tag--tertiary">Pré-shotgun</span>;
     return "—";
 };
 
@@ -53,8 +42,6 @@ class UsersAdmin extends React.Component {
             search: "",
             filter: "all",
             saving: {},
-            error: "",
-            success: "",
             adminChange: null,
         };
 
@@ -66,7 +53,10 @@ class UsersAdmin extends React.Component {
     componentDidMount() {
         adminGet(ADMIN_USERS_URL)
             .then((users) => this.setState({ loading: false, users: users }))
-            .catch((error) => this.setState({ loading: false, error: error.message }));
+            .catch((error) => {
+                this.setState({ loading: false });
+                showError(error.message);
+            });
     }
 
     setSaving(userId, saving) {
@@ -79,23 +69,17 @@ class UsersAdmin extends React.Component {
             .then((updated) =>
                 this.setState({
                     users: this.state.users.map((u) => (u._id === updated._id ? updated : u)),
-                    error: "",
                 }),
             )
-            .catch((error) => this.setState({ error: error.message }))
+            .catch((error) => showError(error.message))
             .finally(() => this.setSaving(user._id, false));
     }
 
     sendActivationEmail(user) {
         this.setSaving(user._id, true);
         adminPost(getAdminActivationEmailUrl(user._id))
-            .then(() =>
-                this.setState({
-                    error: "",
-                    success: "Email d'activation renvoyé à " + user.email + ".",
-                }),
-            )
-            .catch((error) => this.setState({ error: error.message, success: "" }))
+            .then(() => showSnackbar("Email d'activation renvoyé à " + user.email + "."))
+            .catch((error) => showError(error.message))
             .finally(() => this.setSaving(user._id, false));
     }
 
@@ -118,126 +102,119 @@ class UsersAdmin extends React.Component {
     }
 
     render() {
-        const { loading, users, search, filter, saving, error, success, adminChange } = this.state;
+        const { loading, users, search, filter, saving, adminChange } = this.state;
         const { me } = this.props;
 
-        if (loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement des utilisateurs...</Message.Content>
-                </Message>
-            );
+        if (loading) return <Loading>Chargement des utilisateurs…</Loading>;
 
         const shownUsers = this.getShownUsers();
 
         return (
-            <div>
-                <div
-                    className="rowFlex"
-                    style={{ flexWrap: "wrap", gap: "1em", marginBottom: "1em" }}
-                >
-                    <Input
-                        icon="search"
-                        placeholder="Nom ou email..."
+            <div className="admin-section">
+                <div className="admin-toolbar">
+                    <TextField
+                        label="Rechercher"
+                        leadingIcon="search"
+                        type="search"
+                        placeholder=" "
+                        supportingText="Nom ou email"
                         value={search}
-                        onChange={(event, { value }) => this.setState({ search: value })}
+                        onChange={(event) => this.setState({ search: event.target.value })}
                     />
-                    <Dropdown
-                        selection
+                    <Select
+                        label="Afficher"
                         options={FILTER_OPTIONS}
                         value={filter}
-                        onChange={(event, { value }) => this.setState({ filter: value })}
+                        onChange={(event) => this.setState({ filter: event.target.value })}
                     />
-                    <span>
+                    <p className="body-medium on-surface-variant" aria-live="polite">
                         {shownUsers.length} / {users.length} utilisateurs ·{" "}
                         {users.filter((user) => !user.activated).length} non activés
-                    </span>
+                    </p>
                 </div>
-                {error && (
-                    <Message error content={error} onDismiss={() => this.setState({ error: "" })} />
-                )}
-                {success && (
-                    <Message
-                        success
-                        content={success}
-                        onDismiss={() => this.setState({ success: "" })}
-                    />
-                )}
-                <Table compact celled striped>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>Utilisateur</Table.HeaderCell>
-                            <Table.HeaderCell>Email</Table.HeaderCell>
-                            <Table.HeaderCell collapsing>Activé</Table.HeaderCell>
-                            <Table.HeaderCell collapsing>Admin</Table.HeaderCell>
-                            <Table.HeaderCell>Shotgun</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {shownUsers.map((user) => {
-                            // The back refuses it too: an admin can't lock themselves out
-                            const isMe = user.email === me.email;
-                            const disabled = isMe || saving[user._id];
+                <div className="table-scroll">
+                    <table className="data-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Utilisateur</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Activé</th>
+                                <th scope="col">Admin</th>
+                                <th scope="col">Shotgun</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {shownUsers.map((user) => {
+                                // The back refuses it too: an admin can't lock themselves out
+                                const isMe = user.email === me.email;
+                                const disabled = isMe || saving[user._id];
 
-                            return (
-                                <Table.Row key={user._id} negative={!user.activated}>
-                                    <Table.Cell>
-                                        {user.username}
-                                        {isMe && (
-                                            <Label size="mini" style={{ marginLeft: "0.5em" }}>
-                                                toi
-                                            </Label>
-                                        )}
-                                    </Table.Cell>
-                                    <Table.Cell>{user.email}</Table.Cell>
-                                    <Table.Cell textAlign="center" style={{ whiteSpace: "nowrap" }}>
-                                        <Checkbox
-                                            toggle
-                                            checked={user.activated}
-                                            disabled={disabled}
-                                            onChange={(event, { checked }) =>
-                                                this.update(user, { activated: checked })
-                                            }
-                                        />
-                                        {!user.activated && (
-                                            <Button
-                                                basic
-                                                compact
-                                                size="mini"
-                                                icon="envelope"
-                                                title="Renvoyer l'email d'activation"
-                                                loading={saving[user._id]}
-                                                disabled={saving[user._id]}
-                                                onClick={() => this.sendActivationEmail(user)}
-                                                style={{
-                                                    marginLeft: "0.5em",
-                                                    verticalAlign: "top",
-                                                }}
+                                return (
+                                    <tr
+                                        key={user._id}
+                                        className={user.activated ? "" : "data-table__row--muted"}
+                                    >
+                                        <th scope="row">
+                                            <div className="data-table__cell-with-tag">
+                                                {user.username}
+                                                {isMe && <span className="tag">toi</span>}
+                                            </div>
+                                        </th>
+                                        <td>{user.email}</td>
+                                        <td>
+                                            <div className="data-table__cell-with-tag">
+                                                <Switch
+                                                    label={"Compte de " + user.username + " activé"}
+                                                    hideLabel
+                                                    checked={user.activated}
+                                                    disabled={disabled}
+                                                    onChange={(event) =>
+                                                        this.update(user, {
+                                                            activated: event.target.checked,
+                                                        })
+                                                    }
+                                                />
+                                                {!user.activated && (
+                                                    <IconButton
+                                                        icon="outgoingMail"
+                                                        label={
+                                                            "Renvoyer l'email d'activation à " +
+                                                            user.username
+                                                        }
+                                                        disabled={saving[user._id]}
+                                                        onClick={() =>
+                                                            this.sendActivationEmail(user)
+                                                        }
+                                                    />
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <Switch
+                                                label={user.username + " est admin"}
+                                                hideLabel
+                                                checked={user.isAdmin}
+                                                disabled={disabled}
+                                                onChange={(event) =>
+                                                    this.setState({
+                                                        adminChange: {
+                                                            user: user,
+                                                            isAdmin: event.target.checked,
+                                                        },
+                                                    })
+                                                }
                                             />
-                                        )}
-                                    </Table.Cell>
-                                    <Table.Cell textAlign="center">
-                                        <Checkbox
-                                            toggle
-                                            checked={user.isAdmin}
-                                            disabled={disabled}
-                                            onChange={(event, { checked }) =>
-                                                this.setState({
-                                                    adminChange: { user: user, isAdmin: checked },
-                                                })
-                                            }
-                                        />
-                                    </Table.Cell>
-                                    <Table.Cell>{shotgunCell(user)}</Table.Cell>
-                                </Table.Row>
-                            );
-                        })}
-                    </Table.Body>
-                </Table>
-                <Confirm
+                                        </td>
+                                        <td>{shotgunCell(user)}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+                <ConfirmDialog
                     open={adminChange !== null}
-                    header={
+                    title={
                         adminChange
                             ? (adminChange.isAdmin ? "Donner" : "Retirer") +
                               " les droits d'admin à " +
@@ -245,16 +222,13 @@ class UsersAdmin extends React.Component {
                               " ?"
                             : ""
                     }
-                    content={
-                        adminChange && adminChange.isAdmin
-                            ? "Un admin peut modifier les éditions et les utilisateurs."
-                            : "Cet utilisateur n'aura plus accès à l'administration."
-                    }
-                    cancelButton="Annuler"
-                    confirmButton="Confirmer"
                     onCancel={() => this.setState({ adminChange: null })}
                     onConfirm={this.confirmAdminChange}
-                />
+                >
+                    {adminChange && adminChange.isAdmin
+                        ? "Un admin peut modifier les éditions et les utilisateurs."
+                        : "Cet utilisateur n'aura plus accès à l'administration."}
+                </ConfirmDialog>
             </div>
         );
     }

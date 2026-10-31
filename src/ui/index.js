@@ -4,7 +4,7 @@ export { TextField, Select, Checkbox, Switch } from "./fields";
 export { Card, List, ListItem, AssistChip, FilterChip, InputChip, Notice } from "./containment";
 export { CircularProgress, LinearProgress, Loading } from "./Progress";
 export { showSnackbar, showError, SnackbarHost } from "./Snackbar";
-export { default as Dialog } from "./Dialog";
+export { default as Dialog, ConfirmDialog } from "./Dialog";
 export { default as Tabs } from "./Tabs";
 export { default as Icon } from "./Icon";
 export { default as Photo } from "./Photo";

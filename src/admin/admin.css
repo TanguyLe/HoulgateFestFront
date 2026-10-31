@@ -1,0 +1,176 @@
+/* Administration: tabs, plain tables with M3 colours, toolbars */
+
+.admin-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.admin-section__title {
+    margin-top: 24px;
+}
+
+.admin-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px 16px;
+}
+
+.admin-toolbar > .md-field {
+    flex: 1 1 220px;
+    max-width: 320px;
+}
+
+.admin-toolbar > p {
+    align-self: center;
+}
+
+.admin-toolbar > .md-button {
+    margin-top: 8px;
+}
+
+.table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--md-sys-shape-corner-large);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--md-sys-typescale-body-medium-size);
+    line-height: var(--md-sys-typescale-body-medium-line-height);
+}
+
+.data-table th,
+.data-table td {
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.data-table thead th {
+    height: 56px;
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: var(--md-sys-typescale-title-small-size);
+    font-weight: var(--md-sys-typescale-weight-medium);
+}
+
+.data-table tbody th {
+    font-weight: var(--md-sys-typescale-weight-medium);
+}
+
+.data-table tbody tr:last-child > * {
+    border-bottom: 0;
+}
+
+.data-table tbody tr:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent);
+}
+
+.data-table__row--current {
+    background: color-mix(in srgb, var(--md-sys-color-primary-container) 50%, transparent);
+}
+
+.data-table__row--dirty {
+    background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 60%, transparent);
+}
+
+.data-table__row--muted {
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.data-table__actions {
+    text-align: right;
+}
+
+.data-table__actions .md-icon-button + .md-icon-button {
+    margin-left: 4px;
+}
+
+.data-table__cell-with-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* A compact field inside a table cell, labelled by aria-label */
+.table-input {
+    height: 40px;
+    min-width: 0;
+    padding: 0 12px;
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: var(--md-sys-shape-corner-extra-small);
+    background: transparent;
+    color: var(--md-sys-color-on-surface);
+    font-size: var(--md-sys-typescale-body-medium-size);
+}
+
+.table-input:hover {
+    border-color: var(--md-sys-color-on-surface);
+}
+
+.table-input:focus {
+    outline: none;
+    border: 2px solid var(--md-sys-color-primary);
+    padding: 0 11px;
+}
+
+.table-input--year {
+    width: 6em;
+}
+
+.table-input--url {
+    width: 100%;
+    min-width: 14em;
+}
+
+/* Status tags */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: var(--md-sys-shape-corner-small);
+    background: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: var(--md-sys-typescale-label-medium-size);
+    font-weight: var(--md-sys-typescale-weight-medium);
+    white-space: nowrap;
+}
+
+.tag--primary {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.tag--tertiary {
+    background: var(--md-sys-color-tertiary-container);
+    color: var(--md-sys-color-on-tertiary-container);
+}
+
+/* Roommates of a shotgun, in the edit dialog */
+.roommates-field {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.roommates-field legend {
+    padding: 0;
+    color: var(--md-sys-color-on-surface);
+}
+
+.roommates-field__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
