@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { register, unregister, getCredentials } from "../../login/store";
+import { openLogin } from "../../login/session";
+import { Button, Icon, btnClass } from "../../ui";
 
 class OnlyWhenConnectedWrapper extends React.Component {
     constructor() {
@@ -9,36 +11,41 @@ class OnlyWhenConnectedWrapper extends React.Component {
 
         this.state = {};
         this.onLogin = this.onLogin.bind(this);
-        this.onClickConnected = this.onClickConnected.bind(this);
     }
     componentDidMount() {
         register(this.onLogin);
         this.setState(getCredentials());
-
-        this.loginPortalOpener = document.getElementById("loginPortalOpener");
     }
 
     componentWillUnmount() {
         unregister(this.onLogin);
-        if (document.getElementById("loginPortal")) this.onClickConnected();
     }
 
     onLogin(creds) {
         this.setState(creds);
     }
 
-    onClickConnected() {
-        this.loginPortalOpener.click();
-    }
-
     render() {
         return this.state.login ? (
-            <div className={this.props.className || ""}> {this.props.children} </div>
+            <div className={this.props.className || ""}>{this.props.children}</div>
         ) : (
-            <div className="Countdown">
-                Cette page n'est accessible qu'une fois{" "}
-                <a onClick={this.onClickConnected}>connecté</a> ! N'hésite pas à{" "}
-                <Link to="/register">créer un compte</Link>.
+            <div className="gate card card--striped">
+                <span className="gate__icon" aria-hidden="true">
+                    <Icon name="lock" size={28} />
+                </span>
+                <h2 className="gate__title">Accès réservé aux festivaliers</h2>
+                <p>
+                    Cette page n'est accessible qu'une fois connecté ! N'hésite pas à créer un
+                    compte.
+                </p>
+                <div className="form__actions gate__actions">
+                    <Button variant="primary" icon="login" onClick={openLogin}>
+                        Me connecter
+                    </Button>
+                    <Link to="/register" className={btnClass("secondary")}>
+                        Créer un compte
+                    </Link>
+                </div>
             </div>
         );
     }
