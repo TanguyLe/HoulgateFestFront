@@ -1,15 +1,5 @@
 import React from "react";
-import {
-    Button,
-    Checkbox,
-    Confirm,
-    Dropdown,
-    Icon,
-    Input,
-    Label,
-    Message,
-    Table,
-} from "semantic-ui-react";
+import { Badge, Button, ConfirmDialog, Loading, Notice, Switch } from "../../ui";
 
 import { ADMIN_USERS_URL, getAdminUserUrl, getAdminActivationEmailUrl } from "../constants";
 import { adminGet, adminPost, adminPut } from "../adminApi";
@@ -21,25 +11,10 @@ const FILTERS = {
     admins: { text: "Admins", test: (user) => user.isAdmin },
     shotgun: { text: "Avec un shotgun", test: (user) => user.hasShotgun || user.hasPreShotgun },
 };
-const FILTER_OPTIONS = Object.keys(FILTERS).map((key) => ({
-    key: key,
-    value: key,
-    text: FILTERS[key].text,
-}));
 
 const shotgunCell = (user) => {
-    if (user.hasShotgun)
-        return (
-            <Label color="green" size="small">
-                {user.room ? user.room.text : "Shotgun"}
-            </Label>
-        );
-    if (user.hasPreShotgun)
-        return (
-            <Label color="orange" size="small">
-                Pré-shotgun
-            </Label>
-        );
+    if (user.hasShotgun) return <Badge tone="ok">{user.room ? user.room.text : "Shotgun"}</Badge>;
+    if (user.hasPreShotgun) return <Badge tone="warn">Pré-shotgun</Badge>;
     return "—";
 };
 
@@ -121,123 +96,123 @@ class UsersAdmin extends React.Component {
         const { loading, users, search, filter, saving, error, success, adminChange } = this.state;
         const { me } = this.props;
 
-        if (loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement des utilisateurs...</Message.Content>
-                </Message>
-            );
+        if (loading) return <Loading>Chargement des utilisateurs...</Loading>;
 
         const shownUsers = this.getShownUsers();
 
         return (
             <div>
-                <div
-                    className="rowFlex"
-                    style={{ flexWrap: "wrap", gap: "1em", marginBottom: "1em" }}
-                >
-                    <Input
-                        icon="search"
+                <div className="admin-toolbar">
+                    <input
+                        className="field__input"
+                        type="search"
+                        aria-label="Rechercher un utilisateur"
                         placeholder="Nom ou email..."
                         value={search}
-                        onChange={(event, { value }) => this.setState({ search: value })}
+                        onChange={(event) => this.setState({ search: event.target.value })}
                     />
-                    <Dropdown
-                        selection
-                        options={FILTER_OPTIONS}
+                    <select
+                        className="select"
+                        aria-label="Filtrer les utilisateurs"
                         value={filter}
-                        onChange={(event, { value }) => this.setState({ filter: value })}
-                    />
-                    <span>
+                        onChange={(event) => this.setState({ filter: event.target.value })}
+                    >
+                        {Object.keys(FILTERS).map((key) => (
+                            <option key={key} value={key}>
+                                {FILTERS[key].text}
+                            </option>
+                        ))}
+                    </select>
+                    <span className="muted small">
                         {shownUsers.length} / {users.length} utilisateurs ·{" "}
                         {users.filter((user) => !user.activated).length} non activés
                     </span>
                 </div>
                 {error && (
-                    <Message error content={error} onDismiss={() => this.setState({ error: "" })} />
+                    <Notice kind="error" onDismiss={() => this.setState({ error: "" })}>
+                        {error}
+                    </Notice>
                 )}
                 {success && (
-                    <Message
-                        success
-                        content={success}
-                        onDismiss={() => this.setState({ success: "" })}
-                    />
+                    <Notice kind="success" onDismiss={() => this.setState({ success: "" })}>
+                        {success}
+                    </Notice>
                 )}
-                <Table compact celled striped>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>Utilisateur</Table.HeaderCell>
-                            <Table.HeaderCell>Email</Table.HeaderCell>
-                            <Table.HeaderCell collapsing>Activé</Table.HeaderCell>
-                            <Table.HeaderCell collapsing>Admin</Table.HeaderCell>
-                            <Table.HeaderCell>Shotgun</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {shownUsers.map((user) => {
-                            // The back refuses it too: an admin can't lock themselves out
-                            const isMe = user.email === me.email;
-                            const disabled = isMe || saving[user._id];
+                <div className="table-wrap">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Email</th>
+                                <th className="cell--center">Activé</th>
+                                <th className="cell--center">Admin</th>
+                                <th>Shotgun</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {shownUsers.map((user) => {
+                                // The back refuses it too: an admin can't lock themselves out
+                                const isMe = user.email === me.email;
+                                const disabled = isMe || saving[user._id];
 
-                            return (
-                                <Table.Row key={user._id} negative={!user.activated}>
-                                    <Table.Cell>
-                                        {user.username}
-                                        {isMe && (
-                                            <Label size="mini" style={{ marginLeft: "0.5em" }}>
-                                                toi
-                                            </Label>
-                                        )}
-                                    </Table.Cell>
-                                    <Table.Cell>{user.email}</Table.Cell>
-                                    <Table.Cell textAlign="center" style={{ whiteSpace: "nowrap" }}>
-                                        <Checkbox
-                                            toggle
-                                            checked={user.activated}
-                                            disabled={disabled}
-                                            onChange={(event, { checked }) =>
-                                                this.update(user, { activated: checked })
-                                            }
-                                        />
-                                        {!user.activated && (
-                                            <Button
-                                                basic
-                                                compact
-                                                size="mini"
-                                                icon="envelope"
-                                                title="Renvoyer l'email d'activation"
-                                                loading={saving[user._id]}
-                                                disabled={saving[user._id]}
-                                                onClick={() => this.sendActivationEmail(user)}
-                                                style={{
-                                                    marginLeft: "0.5em",
-                                                    verticalAlign: "top",
-                                                }}
+                                return (
+                                    <tr
+                                        key={user._id}
+                                        className={user.activated ? "" : "row--danger"}
+                                    >
+                                        <td>
+                                            {user.username}
+                                            {isMe && <Badge className="admin-badge">toi</Badge>}
+                                        </td>
+                                        <td>{user.email}</td>
+                                        <td className="cell--center cell--nowrap">
+                                            <Switch
+                                                label={"Compte de " + user.username + " activé"}
+                                                checked={user.activated}
+                                                disabled={disabled}
+                                                onChange={(checked) =>
+                                                    this.update(user, { activated: checked })
+                                                }
                                             />
-                                        )}
-                                    </Table.Cell>
-                                    <Table.Cell textAlign="center">
-                                        <Checkbox
-                                            toggle
-                                            checked={user.isAdmin}
-                                            disabled={disabled}
-                                            onChange={(event, { checked }) =>
-                                                this.setState({
-                                                    adminChange: { user: user, isAdmin: checked },
-                                                })
-                                            }
-                                        />
-                                    </Table.Cell>
-                                    <Table.Cell>{shotgunCell(user)}</Table.Cell>
-                                </Table.Row>
-                            );
-                        })}
-                    </Table.Body>
-                </Table>
-                <Confirm
+                                            {!user.activated && (
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className="btn--icon"
+                                                    icon="mail"
+                                                    title="Renvoyer l'email d'activation"
+                                                    aria-label="Renvoyer l'email d'activation"
+                                                    loading={saving[user._id]}
+                                                    disabled={saving[user._id]}
+                                                    onClick={() => this.sendActivationEmail(user)}
+                                                />
+                                            )}
+                                        </td>
+                                        <td className="cell--center">
+                                            <Switch
+                                                label={user.username + " est admin"}
+                                                checked={user.isAdmin}
+                                                disabled={disabled}
+                                                onChange={(checked) =>
+                                                    this.setState({
+                                                        adminChange: {
+                                                            user: user,
+                                                            isAdmin: checked,
+                                                        },
+                                                    })
+                                                }
+                                            />
+                                        </td>
+                                        <td>{shotgunCell(user)}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+                <ConfirmDialog
                     open={adminChange !== null}
-                    header={
+                    title={
                         adminChange
                             ? (adminChange.isAdmin ? "Donner" : "Retirer") +
                               " les droits d'admin à " +
@@ -250,8 +225,8 @@ class UsersAdmin extends React.Component {
                             ? "Un admin peut modifier les éditions et les utilisateurs."
                             : "Cet utilisateur n'aura plus accès à l'administration."
                     }
-                    cancelButton="Annuler"
-                    confirmButton="Confirmer"
+                    cancelLabel="Annuler"
+                    confirmLabel="Confirmer"
                     onCancel={() => this.setState({ adminChange: null })}
                     onConfirm={this.confirmAdminChange}
                 />

@@ -1,0 +1,130 @@
+/*
+ * HoulgateFest design tokens: a vintage seaside / railway poster palette.
+ * The --accent-* values are overridden per edition (see src/editions/themes.js).
+ */
+
+@font-face {
+    font-family: "Abril Fatface";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: url("@fontsource/abril-fatface/files/abril-fatface-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "DM Sans";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 1000;
+    src: url("@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2") format("woff2");
+}
+
+:root {
+    color-scheme: light;
+
+    /* Palette: sea, sky, sand, beach-hut stripes */
+    --ink: #17303b;
+    --ink-soft: #3d5561;
+    --ink-muted: #5e7380;
+    --sea-900: #0e3a4a;
+    --sea-700: #175a6e;
+    --sea-500: #2a8197;
+    --sea-300: #86c1c9;
+    --sea-100: #dceeed;
+    --sky-50: #eef6f4;
+    --sand-50: #fcf8ef;
+    --sand-100: #f7efdd;
+    --sand-200: #efe1c2;
+    --sand-400: #d9bf8c;
+    --coral-600: #b8432c;
+    --coral-500: #d65a3f;
+    --coral-100: #fbe3db;
+    --sun-400: #f0b44a;
+    --sun-100: #fcefd2;
+    --pine-600: #2f7a57;
+    --pine-100: #ddf0e4;
+    --paper: var(--sand-50);
+    --surface: #fffdf8;
+    --line: #e4d6b8;
+    --line-strong: #c9b48a;
+
+    /* Edition accent (overridden at runtime) */
+    --accent: #c8742a;
+    --accent-strong: #9a5418;
+    --accent-ink: #ffffff;
+    --accent-soft: #f7e3c4;
+
+    /* Status colours, shotgun & notices */
+    --ok: var(--pine-600);
+    --ok-soft: var(--pine-100);
+    --warn: #a86a0c;
+    --warn-soft: var(--sun-100);
+    --danger: var(--coral-600);
+    --danger-soft: var(--coral-100);
+    --info: var(--sea-700);
+    --info-soft: var(--sea-100);
+
+    /* Typography */
+    --font-display: "Abril Fatface", "Playfair Display", Georgia, serif;
+    --font-body:
+        "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --fs-xs: 0.78rem;
+    --fs-sm: 0.875rem;
+    --fs-md: 1rem;
+    --fs-lg: 1.15rem;
+    --fs-xl: clamp(1.3rem, 1.1rem + 0.8vw, 1.6rem);
+    --fs-2xl: clamp(1.7rem, 1.3rem + 1.6vw, 2.4rem);
+    --fs-3xl: clamp(2.3rem, 1.6rem + 3.4vw, 4rem);
+    --fs-hero: clamp(2.3rem, 0.9rem + 4.6vw, 4.8rem);
+    --tracking-caps: 0.16em;
+
+    /* Spacing */
+    --sp-1: 0.25rem;
+    --sp-2: 0.5rem;
+    --sp-3: 0.75rem;
+    --sp-4: 1rem;
+    --sp-5: 1.5rem;
+    --sp-6: 2rem;
+    --sp-7: 3rem;
+    --sp-8: 4.5rem;
+    --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+
+    /* Shapes */
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+    --shadow-sm: 0 1px 2px rgba(23, 48, 59, 0.08), 0 1px 1px rgba(23, 48, 59, 0.04);
+    --shadow-md: 0 6px 18px -6px rgba(23, 48, 59, 0.18), 0 2px 4px rgba(23, 48, 59, 0.06);
+    --shadow-lg: 0 24px 48px -16px rgba(23, 48, 59, 0.3);
+    --focus-ring: 0 0 0 3px var(--surface), 0 0 0 5px var(--sea-500);
+
+    /* Layout */
+    --topbar-h: 64px;
+    --tabbar-h: 64px;
+    --content-max: 1180px;
+    --text-max: 46rem;
+
+    /* Motion */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur: 180ms;
+}
+
+/* Re-declared on themed subtrees: var() inside custom properties resolves where declared */
+:root,
+.DefaultLayout,
+.themed {
+    /* Beach-hut stripes, reused for borders and bands */
+    --stripes: repeating-linear-gradient(90deg, var(--accent) 0 18px, var(--surface) 18px 36px);
+    --stripes-sea: repeating-linear-gradient(
+        90deg,
+        var(--sea-500) 0 18px,
+        var(--surface) 18px 36px
+    );
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --dur: 0ms;
+    }
+}

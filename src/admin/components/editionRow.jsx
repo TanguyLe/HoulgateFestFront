@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Input, Label, Table } from "semantic-ui-react";
+import { Badge, Button } from "../../ui";
 
 import { toDateInput, toDatetimeInput, fromDateInput, fromDatetimeInput } from "../adminApi";
 
@@ -33,7 +33,8 @@ class EditionRow extends React.Component {
         if (prevProps.edition !== this.props.edition) this.reset();
     }
 
-    handleChange(event, { name, value }) {
+    handleChange(event) {
+        const { name, value } = event.target;
         this.setState({ draft: Object.assign({}, this.state.draft, { [name]: value }) });
     }
 
@@ -69,91 +70,91 @@ class EditionRow extends React.Component {
         const isNew = !edition._id;
         const dirty = this.isDirty();
 
+        const input = (name, type, extra = {}) => (
+            <input
+                className="field__input"
+                name={name}
+                type={type}
+                value={draft[name]}
+                onChange={this.handleChange}
+                aria-label={extra.label}
+                placeholder={extra.placeholder}
+                style={extra.style}
+            />
+        );
+
         return (
-            <Table.Row positive={isCurrent} warning={dirty && !isNew}>
-                <Table.Cell>
-                    <Input
-                        name="year"
-                        type="number"
-                        value={draft.year}
-                        onChange={this.handleChange}
-                        placeholder="Année"
-                        style={{ width: "7em" }}
-                    />
-                    {isNew && (
-                        <Label horizontal style={{ marginLeft: "0.5em" }}>
-                            Nouvelle
-                        </Label>
-                    )}
+            <tr className={isCurrent ? "row--ok" : dirty && !isNew ? "row--warn" : ""}>
+                <td className="cell--nowrap">
+                    {input("year", "number", {
+                        label: "Année",
+                        placeholder: "Année",
+                        style: { width: "6.5em" },
+                    })}
+                    {isNew && <Badge className="admin-badge">Nouvelle</Badge>}
                     {isCurrent && (
-                        <Label color="green" horizontal style={{ marginLeft: "0.5em" }}>
+                        <Badge tone="ok" className="admin-badge">
                             En cours
-                        </Label>
+                        </Badge>
                     )}
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
-                        name="weekendDate"
-                        type="date"
-                        value={draft.weekendDate}
-                        onChange={this.handleChange}
-                    />
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
-                        name="shotgunDate"
-                        type="datetime-local"
-                        value={draft.shotgunDate}
-                        onChange={this.handleChange}
-                    />
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
-                        name="scoresBoardUrl"
-                        type="url"
-                        value={draft.scoresBoardUrl}
-                        onChange={this.handleChange}
-                        placeholder="https://..."
-                        fluid
-                    />
-                </Table.Cell>
-                <Table.Cell collapsing textAlign="right">
+                </td>
+                <td>{input("weekendDate", "date", { label: "Date du weekend" })}</td>
+                <td>{input("shotgunDate", "datetime-local", { label: "Date du shotgun" })}</td>
+                <td>
+                    {input("scoresBoardUrl", "url", {
+                        label: "Lien du tableau des scores",
+                        placeholder: "https://...",
+                        style: { minWidth: "14em" },
+                    })}
+                </td>
+                <td className="cell--right cell--nowrap">
                     {isNew ? (
                         <Button
-                            primary
+                            variant="primary"
+                            size="sm"
                             icon="plus"
-                            content="Créer"
                             loading={saving}
                             disabled={saving || !this.isValid()}
                             onClick={this.save}
-                        />
+                        >
+                            Créer
+                        </Button>
                     ) : (
-                        <Button.Group>
+                        <span className="btn-group">
                             <Button
-                                primary
+                                variant="primary"
+                                size="sm"
+                                className="btn--icon"
                                 icon="save"
                                 title="Enregistrer"
+                                aria-label="Enregistrer"
                                 loading={saving}
                                 disabled={saving || !dirty || !this.isValid()}
                                 onClick={this.save}
                             />
                             <Button
+                                size="sm"
+                                className="btn--icon"
                                 icon="undo"
                                 title="Annuler les modifications"
+                                aria-label="Annuler les modifications"
                                 disabled={saving || !dirty}
                                 onClick={this.reset}
                             />
                             <Button
-                                negative
+                                variant="danger-ghost"
+                                size="sm"
+                                className="btn--icon"
                                 icon="trash"
                                 title="Supprimer"
+                                aria-label="Supprimer"
                                 disabled={saving}
                                 onClick={() => onDelete(edition)}
                             />
-                        </Button.Group>
+                        </span>
                     )}
-                </Table.Cell>
-            </Table.Row>
+                </td>
+            </tr>
         );
     }
 }

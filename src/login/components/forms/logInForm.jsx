@@ -1,5 +1,5 @@
 import React from "react";
-import { Segment, Form, Button, Divider } from "semantic-ui-react";
+import { Button, Field } from "../../../ui";
 
 import { login } from "../../store";
 import { LOGIN_URL } from "../../constants";
@@ -9,20 +9,19 @@ import { postCallApi } from "../../../utils/api/fetchMiddleware";
 export default class LogIn extends React.Component {
     constructor() {
         super();
-        // The component is destroyed at closing by semantic-ui portal, which is not the expected behavior
-        // It is consequently coded without reset
+        // The component is destroyed when the login dialog closes: it is coded without reset
         this.state = { email: "", password: "", wrongField: "" };
 
         this.onClickLogin = this.onClickLogin.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.onClickRegister = this.onClickRegister.bind(this);
         this.onClickPasswordReset = this.onClickPasswordReset.bind(this);
     }
 
     componentDidMount() {
         const emailInput = document.querySelector("#emailInput");
-        setTimeout(() => emailInput.focus(), 0);
+        setTimeout(() => emailInput && emailInput.focus(), 0);
     }
 
     onClickPasswordReset() {
@@ -58,8 +57,9 @@ export default class LogIn extends React.Component {
         else this.setState({ [event.target.name]: event.target.value });
     }
 
-    handleKeyPress(event) {
-        if (event.key === "Enter") this.onClickLogin();
+    handleSubmit(event) {
+        event.preventDefault();
+        this.onClickLogin();
     }
 
     onClickRegister() {
@@ -68,41 +68,54 @@ export default class LogIn extends React.Component {
     }
 
     render() {
+        const { wrongField } = this.state;
+
         return (
-            <Form>
-                <Form.Input
-                    type="text"
-                    error={this.state.wrongField === "email"}
-                    fluid
+            <form className="form loginForm" onSubmit={this.handleSubmit} noValidate>
+                <Field
+                    type="email"
+                    autoComplete="email"
+                    error={wrongField === "email"}
                     id="emailInput"
+                    data-autofocus
                     label="Email"
                     name="email"
                     value={this.state.email}
-                    onKeyPress={this.handleKeyPress}
                     onChange={this.handleChange}
                 />
-
-                <Form.Input
+                <Field
                     type="password"
-                    error={this.state.wrongField === "password"}
-                    fluid
+                    autoComplete="current-password"
+                    error={wrongField === "password"}
                     label="Mot de passe"
                     name="password"
                     value={this.state.password}
-                    onKeyPress={this.handleKeyPress}
                     onChange={this.handleChange}
                 />
-                <a onClick={this.onClickPasswordReset}> Mot de passe oublié ? </a>
-                <Segment>
-                    <Button primary fluid onClick={this.onClickLogin}>
-                        Je me connecte
-                    </Button>
-                    <Divider horizontal>Ou</Divider>
-                    <Button secondary fluid onClick={this.onClickRegister}>
-                        Je m'inscris
-                    </Button>
-                </Segment>
-            </Form>
+                {wrongField === "email" || wrongField === "password" ? (
+                    <p className="form__error" role="alert">
+                        {wrongField === "email"
+                            ? "Cet email ne nous dit rien…"
+                            : "Mauvais mot de passe, essaie encore !"}
+                    </p>
+                ) : null}
+                <button
+                    type="button"
+                    className="linklike small"
+                    onClick={this.onClickPasswordReset}
+                >
+                    Mot de passe oublié ?
+                </button>
+                <Button type="submit" variant="primary" className="btn--block" icon="login">
+                    Je me connecte
+                </Button>
+                <div className="divider">
+                    <span>ou</span>
+                </div>
+                <Button variant="secondary" className="btn--block" onClick={this.onClickRegister}>
+                    Je m'inscris
+                </Button>
+            </form>
         );
     }
 }

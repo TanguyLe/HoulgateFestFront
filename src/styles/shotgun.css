@@ -1,0 +1,582 @@
+/* ---------- Countdown (shared by the shotgun page and the homepage) ---------- */
+
+.countdown {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(6px, 1.5vw, 14px);
+    max-width: 560px;
+    margin: var(--sp-4) auto;
+}
+
+.countdown__cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(10px, 2vw, 16px) 4px clamp(8px, 1.6vw, 12px);
+    border-radius: var(--radius-md);
+    background: var(--sea-900);
+    color: var(--sand-50);
+    box-shadow:
+        inset 0 -3px 0 rgba(0, 0, 0, 0.25),
+        var(--shadow-sm);
+    overflow: hidden;
+}
+
+/* The split-flap line across the digits */
+.countdown__cell::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 46%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.countdown__value {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.9rem, 1.2rem + 3vw, 3rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+}
+
+.countdown__unit {
+    margin-top: 6px;
+    font-size: clamp(0.62rem, 0.55rem + 0.3vw, 0.75rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sea-300);
+}
+
+.countdown--xl .countdown__value {
+    font-size: clamp(2.2rem, 1.2rem + 5vw, 4.2rem);
+}
+
+.countdown--light .countdown__cell {
+    background: var(--surface);
+    color: var(--sea-900);
+    border: 1.5px solid var(--line-strong);
+    box-shadow: var(--shadow-sm);
+}
+
+.countdown--light .countdown__cell::after {
+    background: var(--line);
+}
+
+.countdown--light .countdown__unit {
+    color: var(--ink-muted);
+}
+
+/* ---------- Waiting for the opening ---------- */
+
+.shotgun-wait {
+    text-align: center;
+    padding: var(--sp-7) var(--sp-5);
+}
+
+.shotgun-wait__title {
+    font-size: var(--fs-2xl);
+    margin: var(--sp-2) 0;
+}
+
+.shotgun-wait__date {
+    font-weight: 700;
+    color: var(--accent-strong);
+    text-transform: capitalize;
+}
+
+/* ---------- Floors & rooms ---------- */
+
+.shotgun-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-4);
+}
+
+.shotgun-head__title {
+    margin: var(--sp-1) 0 0;
+}
+
+.shotgun-head__stats {
+    display: flex;
+    gap: var(--sp-3);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 92px;
+    padding: var(--sp-2) var(--sp-3);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    line-height: 1.2;
+}
+
+.stat strong {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.7rem;
+    color: var(--sea-900);
+}
+
+.stat span {
+    font-size: var(--fs-xs);
+    color: var(--ink-muted);
+}
+
+.shotgun-hint,
+.shotgun-mine {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--radius-md);
+    background: var(--sky-50);
+    border: 1px dashed var(--sea-300);
+    color: var(--ink-soft);
+}
+
+.shotgun-mine {
+    background: var(--warn-soft);
+    border: 1px solid #ecd08a;
+    color: var(--ink);
+}
+
+.shotgun-mine .icon {
+    color: var(--warn);
+    flex: none;
+}
+
+.shotgun-mine--done {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+}
+
+.shotgun-mine--done .icon {
+    color: var(--accent-strong);
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-4);
+    list-style: none;
+    padding: 0;
+    margin: var(--sp-4) 0 var(--sp-2);
+    font-size: var(--fs-sm);
+    color: var(--ink-soft);
+}
+
+.legend__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+}
+
+.legend__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--tone);
+    box-shadow: 0 0 0 2px var(--tone-soft);
+}
+
+/* Status palette, shared by the legend and the cards */
+.tone-free,
+.tone-locked {
+    --tone: var(--sea-500);
+    --tone-soft: var(--sea-100);
+}
+
+.tone-pending,
+.tone-minePending {
+    --tone: #d69a1f;
+    --tone-soft: var(--sun-100);
+}
+
+.tone-taken {
+    --tone: var(--coral-500);
+    --tone-soft: var(--coral-100);
+}
+
+.tone-mine {
+    --tone: var(--ok);
+    --tone-soft: var(--ok-soft);
+}
+
+.tone-loading {
+    --tone: var(--ink-muted);
+    --tone-soft: var(--sand-100);
+}
+
+.floor {
+    margin-top: var(--sp-6);
+}
+
+.floor__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sp-1) var(--sp-3);
+    padding-bottom: var(--sp-2);
+    margin-bottom: var(--sp-4);
+    border-bottom: 2px solid var(--sea-900);
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: var(--fs-xl);
+}
+
+.floor__count {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--ink-muted);
+}
+
+.rooms {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+    gap: var(--sp-4);
+}
+
+.room {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    padding: var(--sp-4);
+    padding-top: calc(var(--sp-4) + 6px);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition:
+        transform var(--dur) var(--ease-out),
+        box-shadow var(--dur);
+}
+
+/* A beach-hut roof in the room's status colour */
+.room::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 6px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--tone) 0 14px,
+        color-mix(in srgb, var(--tone) 35%, white) 14px 28px
+    );
+}
+
+.room.tone-free:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.room.tone-taken,
+.room.tone-locked {
+    background: #fffcf7;
+}
+
+.room.tone-taken .room__name,
+.room.tone-locked .room__name {
+    color: var(--ink-soft);
+}
+
+.room.tone-mine,
+.room.tone-minePending {
+    border: 2px solid var(--tone);
+    box-shadow:
+        0 0 0 4px var(--tone-soft),
+        var(--shadow-md);
+}
+
+.room__head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-3);
+}
+
+.room__icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--tone-soft);
+    color: var(--sea-900);
+    flex: none;
+}
+
+.room__titles {
+    flex: 1;
+    min-width: 0;
+}
+
+.room__name {
+    margin: 0;
+    font-size: var(--fs-lg);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.room__seats {
+    font-size: var(--fs-sm);
+    color: var(--ink-muted);
+}
+
+.room__status {
+    flex: none;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--tone-soft);
+    color: var(--sea-900);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.tone-taken .room__status {
+    color: var(--coral-600);
+}
+
+.tone-pending .room__status,
+.tone-minePending .room__status {
+    color: #8a5a00;
+}
+
+.tone-mine .room__status {
+    background: var(--ok);
+    color: #fff;
+}
+
+.room__beds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.room__bed {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px dashed var(--line-strong);
+    display: grid;
+    place-items: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #fff;
+}
+
+.room__bed--taken {
+    border: 2px solid var(--surface);
+    background: var(--sea-700);
+    box-shadow: 0 0 0 1px var(--line);
+}
+
+.room__bed--owner {
+    background: var(--sea-900);
+}
+
+.tone-mine .room__bed--taken {
+    background: var(--ok);
+}
+
+.tone-pending .room__bed--taken,
+.tone-minePending .room__bed--taken {
+    background: #b07a12;
+}
+
+.room__people {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--ink-soft);
+    overflow-wrap: anywhere;
+}
+
+.room__people--empty {
+    color: var(--ink-muted);
+    font-style: italic;
+}
+
+.room__timer {
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    color: #8a5a00;
+    font-variant-numeric: tabular-nums;
+}
+
+.room__timer small {
+    font-size: inherit;
+}
+
+.room__action {
+    margin-top: auto;
+}
+
+.room__action:empty {
+    display: none;
+}
+
+/* Extra button colours used by the rooms */
+.btn--success {
+    --btn-bg: var(--ok);
+    --btn-fg: #fff;
+    --btn-border: var(--ok);
+}
+
+.btn--warn {
+    --btn-bg: var(--sun-100);
+    --btn-fg: #6f4800;
+    --btn-border: #e3bf6a;
+}
+
+/* ---------- Shotgun sheet ---------- */
+
+.sheet-lead {
+    color: var(--ink-soft);
+}
+
+.beds {
+    display: grid;
+    gap: var(--sp-4);
+}
+
+.beds__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-3);
+}
+
+@media (min-width: 560px) {
+    .beds__list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.beds__bed {
+    display: grid;
+    gap: 4px;
+}
+
+.beds__label {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+}
+
+.beds__bed.is-set .select:not(:disabled) {
+    border-color: var(--ok);
+}
+
+.sheet-cancel {
+    margin-top: var(--sp-5);
+    padding-top: var(--sp-4);
+    border-top: 1px dashed var(--line);
+}
+
+.sheet-cancel--confirm p {
+    color: var(--coral-600);
+    font-size: var(--fs-sm);
+}
+
+.shotgun-success {
+    position: relative;
+    text-align: center;
+    padding-top: var(--sp-3);
+}
+
+.shotgun-success__stamp {
+    display: inline-block;
+    margin: var(--sp-2) 0 var(--sp-4);
+    padding: 6px 20px;
+    border: 3px solid var(--ok);
+    border-radius: 10px;
+    color: var(--ok);
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transform: rotate(-6deg);
+    animation: stamp 500ms var(--ease-out) both;
+}
+
+@keyframes stamp {
+    from {
+        transform: rotate(-6deg) scale(2.2);
+        opacity: 0;
+    }
+}
+
+/* ---------- Confetti ---------- */
+
+.confetti {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.confetti__bit {
+    position: absolute;
+    top: -16px;
+    width: 8px;
+    height: 14px;
+    border-radius: 2px;
+    opacity: 0;
+    animation-name: confetti-fall;
+    animation-timing-function: cubic-bezier(0.3, 0.6, 0.5, 1);
+    animation-fill-mode: forwards;
+}
+
+.confetti__bit--round {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+@keyframes confetti-fall {
+    0% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotate(0);
+    }
+    85% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--drift), 70vh, 0) rotate(var(--spin));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .confetti {
+        display: none;
+    }
+
+    .shotgun-success__stamp {
+        animation: none;
+    }
+}
+
+.shotgun-hint .icon {
+    flex: none;
+    color: var(--sea-500);
+}

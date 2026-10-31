@@ -104,9 +104,27 @@ class Room extends React.Component {
             disable = true;
         }
 
+        // The card's colours, from the same cases
+        let tone = "free";
+        if (roomStatus === ROOM_STATUS_SHOTGUNNED) tone = isUserRoom ? "mine" : "taken";
+        else if (roomStatus === ROOM_STATUS_PRESHOTGUNNED)
+            tone = isUserRoom ? "minePending" : "pending";
+        else if (roomStatus === ROOM_STATUS_LOADING) tone = "loading";
+        else if (shotgunOnGoingForUser) tone = "locked";
+
         return (
             <RoomBasis
                 {...this.props}
+                timer={
+                    roomStatus === ROOM_STATUS_PRESHOTGUNNED && this.props.preShotgunExpiry ? (
+                        <PreShotgunTimer
+                            expiry={this.props.preShotgunExpiry}
+                            label={isUserRoom ? "Il te reste" : "Expire dans"}
+                        />
+                    ) : null
+                }
+                tone={tone}
+                isUserRoom={isUserRoom}
                 seats={this.props.seats}
                 position={this.props.position}
                 name={this.props.name}
@@ -132,14 +150,6 @@ class Room extends React.Component {
                                 ? () => this.props.cancelShotgunFunction(this.props.id)
                                 : null
                         }
-                    />
-                ) : (
-                    ""
-                )}
-                {roomStatus === ROOM_STATUS_PRESHOTGUNNED && this.props.preShotgunExpiry ? (
-                    <PreShotgunTimer
-                        expiry={this.props.preShotgunExpiry}
-                        label={isUserRoom ? "Il te reste" : "Expire dans"}
                     />
                 ) : (
                     ""

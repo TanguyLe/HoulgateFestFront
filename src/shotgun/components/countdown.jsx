@@ -67,7 +67,8 @@ export default class Countdown extends React.Component {
             timeLeft.min = Math.floor(diff / 60);
             diff -= timeLeft.min * 60;
         }
-        timeLeft.sec = Math.round(diff);
+        // floor, not round: "60 secondes" is not a thing
+        timeLeft.sec = Math.floor(diff);
 
         return timeLeft;
     }
@@ -88,37 +89,33 @@ export default class Countdown extends React.Component {
     }
 
     render() {
-        const countDown = this.state.timeLeft;
+        const countDown = this.state.timeLeft || { days: 0, hours: 0, min: 0, sec: 0 };
+        const units = [
+            [countDown.days, "Jour", "Jours"],
+            [countDown.hours, "Heure", "Heures"],
+            [countDown.min, "Minute", "Minutes"],
+            [countDown.sec, "Seconde", "Secondes"],
+        ];
+        const label = units
+            .slice(0, 3)
+            .map(([value, one, many]) => value + " " + (value === 1 ? one : many).toLowerCase())
+            .join(", ");
 
         return (
-            <div className="Countdown">
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.days)}</strong>
-                        <span>{countDown.days === 1 ? "Jour" : "Jours"}</span>
+            <div
+                className={
+                    "Countdown countdown" +
+                    (this.props.size ? " countdown--" + this.props.size : "")
+                }
+                role="timer"
+                aria-label={label}
+            >
+                {units.map(([value, one, many]) => (
+                    <span className="countdown__cell" key={many} aria-hidden="true">
+                        <strong className="countdown__value">{this.addLeadingZeros(value)}</strong>
+                        <span className="countdown__unit">{value === 1 ? one : many}</span>
                     </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.hours)}</strong>
-                        <span>{countDown.hours === 1 ? "Heure" : "Heures"}</span>
-                    </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.min)}</strong>
-                        <span>{countDown.min === 1 ? "Minute" : "Minutes"}</span>
-                    </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.sec)}</strong>
-                        <span>{countDown.sec === 1 ? "Seconde" : "Secondes"}</span>
-                    </span>
-                </span>
+                ))}
             </div>
         );
     }

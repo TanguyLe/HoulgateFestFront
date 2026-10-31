@@ -18,7 +18,6 @@ const apiOrigin = originOf(process.env.API_URL);
 const togetzerOrigin = originOf(process.env.TOGETZER_IFRAME_URL);
 // The scores board URL is set on each edition from the admin interface, and the API only accepts
 // https ones, so any https page can be framed
-const semanticCdn = "https://cdnjs.cloudflare.com";
 // The sign up captcha (Cloudflare Turnstile) loads its script and runs in an iframe
 const turnstile = "https://challenges.cloudflare.com";
 
@@ -40,9 +39,10 @@ app.use(
             directives: {
                 defaultSrc: ["'self'"],
                 scriptSrc: ["'self'", turnstile],
-                // style attributes set by React components and the carousel
-                styleSrc: ["'self'", "'unsafe-inline'", semanticCdn],
-                fontSrc: ["'self'", "data:", semanticCdn],
+                // style-loader injects <style> tags, and React components set style attributes
+                styleSrc: ["'self'", "'unsafe-inline'"],
+                // the fonts are self-hosted, inlined in the bundle
+                fontSrc: ["'self'", "data:"],
                 imgSrc: ["'self'", "data:"],
                 connectSrc: ["'self'", ...(apiOrigin ? [apiOrigin] : [])],
                 frameSrc: ["https:", ...(togetzerOrigin ? [togetzerOrigin] : []), turnstile],

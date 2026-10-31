@@ -1,0 +1,708 @@
+/* ---------- Poster hero ---------- */
+
+.poster {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    margin: 0 auto;
+    padding: clamp(2rem, 1rem + 5vw, 5rem) var(--gutter) calc(clamp(2rem, 1rem + 5vw, 5rem) + 110px);
+    background: linear-gradient(180deg, #f6efe0 0%, #f9e6c6 52%, #f3d9b0 100%);
+    border-bottom: 1px solid var(--line);
+}
+
+/* Paper grain & a soft vignette, printed-poster style */
+.poster::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background:
+        radial-gradient(rgba(90, 60, 20, 0.09) 1px, transparent 1.2px) 0 0 / 5px 5px,
+        radial-gradient(ellipse at center, transparent 55%, rgba(80, 50, 10, 0.12) 100%);
+    mix-blend-mode: multiply;
+}
+
+/* Retro striped sunset */
+.poster__sun {
+    position: absolute;
+    z-index: -1;
+    right: clamp(-140px, -10vw, -40px);
+    bottom: 70px;
+    width: clamp(300px, 52vw, 680px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: linear-gradient(180deg, var(--sun-400) 10%, var(--accent) 75%);
+    -webkit-mask-image: linear-gradient(
+        180deg,
+        #000 0 54%,
+        transparent 54% 58%,
+        #000 58% 66%,
+        transparent 66% 71%,
+        #000 71% 78%,
+        transparent 78% 84%,
+        #000 84% 90%,
+        transparent 90%
+    );
+    mask-image: linear-gradient(
+        180deg,
+        #000 0 54%,
+        transparent 54% 58%,
+        #000 58% 66%,
+        transparent 66% 71%,
+        #000 71% 78%,
+        transparent 78% 84%,
+        #000 84% 90%,
+        transparent 90%
+    );
+    opacity: 0.9;
+}
+
+.poster__sea {
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 120px;
+    background: linear-gradient(180deg, var(--sea-500) 0%, var(--sea-700) 60%, var(--sea-900) 100%);
+}
+
+/* Scalloped wave crest */
+.poster__sea::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -12px;
+    height: 13px;
+    background: radial-gradient(circle at 12px 0, transparent 12px, var(--sea-500) 12.5px) 0 0 /
+        24px 13px repeat-x;
+    transform: scaleY(-1);
+}
+
+/* Foam lines */
+.poster__sea::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 34px;
+    height: 40px;
+    background:
+        radial-gradient(
+                circle at 20px 0,
+                transparent 17px,
+                rgba(255, 255, 255, 0.35) 18px,
+                transparent 19px
+            )
+            0 0 / 40px 20px repeat-x,
+        radial-gradient(
+                circle at 20px 0,
+                transparent 17px,
+                rgba(255, 255, 255, 0.2) 18px,
+                transparent 19px
+            )
+            20px 20px / 40px 20px repeat-x;
+}
+
+/* Beach huts on the shore */
+.poster__huts {
+    position: absolute;
+    z-index: 1;
+    left: var(--gutter);
+    bottom: 48px;
+    display: flex;
+    align-items: flex-end;
+    gap: clamp(8px, 2vw, 22px);
+}
+
+.hut {
+    --hut: var(--accent);
+    position: relative;
+    width: clamp(26px, 4vw, 40px);
+    height: clamp(40px, 6vw, 58px);
+    background: repeating-linear-gradient(90deg, var(--hut) 0 5px, #fffaf0 5px 10px);
+    clip-path: polygon(50% 0, 100% 24%, 100% 100%, 0 100%, 0 24%);
+    filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.15));
+}
+
+.hut::after {
+    content: "";
+    position: absolute;
+    left: 32%;
+    right: 32%;
+    bottom: 0;
+    height: 42%;
+    background: var(--sea-900);
+    border-radius: 3px 3px 0 0;
+}
+
+.hut--b {
+    --hut: var(--sea-500);
+}
+
+.hut--c {
+    --hut: var(--coral-500);
+    height: clamp(36px, 5.4vw, 52px);
+}
+
+.hut--d {
+    --hut: var(--sun-400);
+}
+
+@media (max-width: 520px) {
+    .hut:nth-child(n + 6) {
+        display: none;
+    }
+}
+
+.poster__content {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: var(--sp-6);
+    align-items: center;
+    max-width: var(--content-max);
+    margin: 0 auto;
+}
+
+@media (min-width: 860px) {
+    .poster__content {
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    }
+}
+
+.poster__text {
+    max-width: 40rem;
+}
+
+.poster__kicker {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 1.5px solid var(--sea-900);
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--sea-900);
+    background: rgba(255, 253, 248, 0.6);
+}
+
+.poster__title {
+    margin: var(--sp-4) 0 var(--sp-2);
+    font-size: var(--fs-hero);
+    line-height: 0.95;
+    color: var(--sea-900);
+    overflow-wrap: break-word;
+    text-shadow: 3px 3px 0 var(--accent-soft);
+}
+
+.poster__subtitle {
+    margin: 0 0 var(--sp-3);
+    font-family: var(--font-display);
+    font-size: var(--fs-2xl);
+    line-height: 1.1;
+    color: var(--accent-strong);
+}
+
+.poster__tagline {
+    max-width: 32rem;
+    font-size: var(--fs-lg);
+    color: var(--ink-soft);
+}
+
+.poster__dates {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    margin: 0;
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    background: var(--sea-900);
+    color: var(--sand-50);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: 4px 4px 0 var(--accent);
+}
+
+/* The edition's poster as a perforated postage stamp */
+.poster__stamp {
+    justify-self: center;
+    width: min(100%, 340px);
+    margin: 0;
+    padding: 12px;
+    background: radial-gradient(circle at 8px 8px, transparent 5px, #fffdf8 5.5px) -8px -8px / 16px
+        16px;
+    filter: drop-shadow(0 14px 18px rgba(23, 48, 59, 0.28));
+    transform: rotate(3deg);
+    transition: transform 400ms var(--ease-out);
+}
+
+.poster__stamp:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
+.poster__stamp img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: auto;
+    object-fit: cover;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 859px) {
+    .poster__stamp {
+        order: -1;
+        width: min(52vw, 210px);
+    }
+
+    .poster__kicker {
+        letter-spacing: 0.1em;
+        font-size: 0.7rem;
+    }
+
+    .poster__text {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .poster__tagline {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* ---------- Home body ---------- */
+
+.home__body {
+    display: grid;
+    gap: var(--sp-7);
+    max-width: calc(var(--content-max) + 2 * var(--gutter));
+    margin: calc(-1 * var(--sp-7)) auto 0;
+    padding: 0 var(--gutter);
+    position: relative;
+    z-index: 4;
+}
+
+/* ---------- Ticket (the phase panel) ---------- */
+
+.ticket {
+    --notch: 14px;
+    position: relative;
+    max-width: 860px;
+    width: 100%;
+    margin: 0 auto;
+    /* box-shadow would be cut by the mask below */
+    filter: drop-shadow(0 18px 24px rgba(23, 48, 59, 0.18))
+        drop-shadow(0 2px 3px rgba(23, 48, 59, 0.08));
+}
+
+.ticket__paper {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    /* Two notches on the sides, like a train ticket */
+    -webkit-mask:
+        radial-gradient(circle var(--notch) at 0 104px, transparent 98%, #000) left / 51% 100%
+            no-repeat,
+        radial-gradient(circle var(--notch) at 100% 104px, transparent 98%, #000) right / 51% 100%
+            no-repeat;
+    mask:
+        radial-gradient(circle var(--notch) at 0 104px, transparent 98%, #000) left / 51% 100%
+            no-repeat,
+        radial-gradient(circle var(--notch) at 100% 104px, transparent 98%, #000) right / 51% 100%
+            no-repeat;
+}
+
+.ticket__head {
+    height: 104px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 clamp(var(--sp-5), 4vw, var(--sp-7));
+    background: var(--stripes) top / 100% 8px no-repeat;
+    border-bottom: 2px dashed var(--line-strong);
+}
+
+.ticket__title {
+    margin: 2px 0 0;
+    font-size: var(--fs-2xl);
+}
+
+.ticket__body {
+    padding: var(--sp-5) clamp(var(--sp-5), 4vw, var(--sp-7)) var(--sp-6);
+}
+
+.ticket__when {
+    font-size: var(--fs-lg);
+    color: var(--ink-soft);
+}
+
+.ticket__subtitle {
+    margin-top: var(--sp-6);
+    font-size: var(--fs-lg);
+}
+
+.ticket__foot {
+    margin: var(--sp-4) 0 0;
+    color: var(--accent-strong);
+}
+
+.ticket__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--sp-5);
+}
+
+.ticket__cta .btn {
+    width: 100%;
+    max-width: 420px;
+}
+
+.ticket--hot .ticket__head {
+    background:
+        var(--stripes) top / 100% 8px no-repeat,
+        linear-gradient(180deg, var(--accent-soft), var(--surface));
+}
+
+@media (max-width: 520px) {
+    .ticket {
+        --notch: 10px;
+    }
+
+    .ticket__head {
+        height: 96px;
+    }
+
+    .ticket__title {
+        font-size: 1.35rem;
+    }
+
+    .ticket__paper {
+        -webkit-mask:
+            radial-gradient(circle var(--notch) at 0 96px, transparent 98%, #000) left / 51% 100%
+                no-repeat,
+            radial-gradient(circle var(--notch) at 100% 96px, transparent 98%, #000) right / 51%
+                100% no-repeat;
+        mask:
+            radial-gradient(circle var(--notch) at 0 96px, transparent 98%, #000) left / 51% 100%
+                no-repeat,
+            radial-gradient(circle var(--notch) at 100% 96px, transparent 98%, #000) right / 51%
+                100% no-repeat;
+    }
+}
+
+.btn--pulse {
+    animation: pulse 1.8s ease-out infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+    }
+    100% {
+        box-shadow: 0 0 0 18px transparent;
+    }
+}
+
+/* Pre-flight checklist */
+
+.preflight {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-3);
+}
+
+.preflight__step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--sp-2) var(--sp-3);
+    align-items: center;
+    padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--radius-md);
+    background: var(--sand-50);
+    border: 1px solid var(--line);
+}
+
+@media (min-width: 600px) {
+    .preflight__step {
+        grid-template-columns: auto 1fr auto;
+    }
+}
+
+.preflight__num {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px solid var(--sea-700);
+    color: var(--sea-700);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.preflight__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.35;
+    min-width: 0;
+}
+
+.preflight__text span {
+    font-size: var(--fs-sm);
+    color: var(--ink-muted);
+}
+
+.preflight__action {
+    grid-column: 2;
+}
+
+@media (min-width: 600px) {
+    .preflight__action {
+        grid-column: auto;
+    }
+}
+
+.preflight__step.is-done {
+    background: var(--ok-soft);
+    border-color: #b9dcc6;
+}
+
+.preflight__step.is-done .preflight__num {
+    background: var(--ok);
+    border-color: var(--ok);
+    color: #fff;
+}
+
+.preflight__step.is-done strong {
+    text-decoration: line-through;
+    text-decoration-color: rgba(47, 122, 87, 0.5);
+}
+
+/* Tiles */
+
+.tiles {
+    list-style: none;
+    margin: var(--sp-5) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-3);
+}
+
+@media (min-width: 720px) {
+    .tiles {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+.tile {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    height: 100%;
+    padding: var(--sp-4);
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    text-decoration: none;
+    transition:
+        transform var(--dur) var(--ease-out),
+        border-color var(--dur),
+        box-shadow var(--dur);
+}
+
+.tile:hover {
+    color: var(--ink);
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: var(--shadow-md);
+}
+
+.tile__icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--sky-50);
+    color: var(--sea-700);
+    flex: none;
+}
+
+.tile__text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    line-height: 1.35;
+    min-width: 0;
+}
+
+.tile__text span {
+    font-size: var(--fs-sm);
+    color: var(--ink-muted);
+}
+
+.tile__arrow {
+    color: var(--ink-muted);
+    flex: none;
+}
+
+.tile--featured {
+    background: var(--sea-900);
+    border-color: var(--sea-900);
+    color: #fff;
+}
+
+.tile--featured:hover {
+    color: #fff;
+}
+
+.tile--featured .tile__icon {
+    background: var(--accent);
+    color: #fff;
+}
+
+.tile--featured .tile__text span,
+.tile--featured .tile__arrow {
+    color: var(--sea-100);
+}
+
+/* ---------- The edition's story ---------- */
+
+.story {
+    display: grid;
+    gap: var(--sp-6);
+    align-items: start;
+}
+
+@media (min-width: 960px) {
+    .story {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    }
+}
+
+.story__text {
+    max-width: var(--text-max);
+}
+
+.story__note {
+    padding-left: var(--sp-4);
+    border-left: 3px solid var(--accent);
+    color: var(--ink-soft);
+}
+
+.story__signature {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    color: var(--accent-strong);
+    text-align: right;
+}
+
+.story__gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4);
+    padding: var(--sp-3);
+}
+
+.polaroid {
+    margin: 0;
+    padding: 10px 10px 8px;
+    background: #fff;
+    box-shadow: var(--shadow-md);
+    transform: rotate(-2deg);
+}
+
+.polaroid img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.polaroid figcaption {
+    margin-top: 6px;
+    font-size: var(--fs-xs);
+    color: var(--ink-muted);
+    text-align: center;
+    font-style: italic;
+}
+
+.polaroid--1 {
+    transform: rotate(2.5deg) translateY(18px);
+}
+
+.polaroid--2 {
+    grid-column: 1 / -1;
+    transform: rotate(-1deg);
+}
+
+.polaroid--2 img {
+    aspect-ratio: 3 / 2;
+}
+
+.home__links {
+    max-width: var(--text-max);
+    margin: 0 auto;
+    text-align: center;
+}
+
+.home__links-title {
+    font-size: var(--fs-xl);
+}
+
+/* ---------- Preview bar ---------- */
+
+.preview-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+    align-items: center;
+    justify-content: safe center;
+    gap: 6px;
+    padding: var(--sp-2) var(--gutter);
+    background: var(--sea-900);
+    color: var(--sand-50);
+    font-size: var(--fs-sm);
+}
+
+.preview-bar__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: var(--sp-2);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: var(--fs-xs);
+    color: var(--sun-400);
+}
+
+.preview-bar__link {
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    color: var(--sand-50);
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.preview-bar__link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.preview-bar__link.is-active {
+    background: var(--sand-50);
+    color: var(--sea-900);
+}
+
+.preview-bar__exit {
+    border-style: dashed;
+}

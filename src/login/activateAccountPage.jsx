@@ -4,6 +4,7 @@ import withRouter from "../utils/withRouter";
 import { getCallApi } from "../utils/api/fetchMiddleware";
 import { login } from "./store";
 import { getActivateUserUrl } from "./constants";
+import { Notice, PageHeader } from "../ui";
 
 class ActivateAccount extends React.Component {
     constructor() {
@@ -42,19 +43,22 @@ class ActivateAccount extends React.Component {
     }
 
     render() {
-        let display = "";
-        if (this.state.status === "loading") display = "Activation en cours...";
+        let display;
+        if (this.state.status === "loading" || this.state.status === "activating")
+            display = <Notice loading>Activation en cours...</Notice>;
+        else if (this.state.activated)
+            display = <Notice kind="success">Ton compte est activé!</Notice>;
         else
-            display =
-                "Ton compte est " +
-                (this.state.activated
-                    ? "activé!"
-                    : "désactivé. (Il y a une erreur, vérifie le lien)");
+            display = (
+                <Notice kind="error">
+                    Ton compte est désactivé. (Il y a une erreur, vérifie le lien)
+                </Notice>
+            );
 
         return (
-            <div className="activateAccountPage">
-                <h1> Activation de compte </h1>
-                {display}
+            <div className="activateAccountPage auth-page">
+                <PageHeader kicker="Mon compte" title="Activation de compte" />
+                <div className="card card--striped">{display}</div>
             </div>
         );
     }
