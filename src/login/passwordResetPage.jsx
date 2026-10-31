@@ -3,6 +3,8 @@ import withRouter from "../utils/withRouter";
 
 import PasswordResetForm from "./components/forms/passwordResetForm";
 import { getPasswordResetUrl } from "./constants";
+import AuthCard from "./components/authCard";
+import { Callout } from "../ui";
 
 class PasswordResetPage extends React.Component {
     constructor() {
@@ -36,13 +38,17 @@ class PasswordResetPage extends React.Component {
                     onPasswordChanged={this.onPasswordChanged}
                 />
             );
-        else display = "Ton mot de passe a été changé!";
+        else
+            display = (
+                <Callout kind="success" icon="🔐">
+                    Ton mot de passe a été changé!
+                </Callout>
+            );
 
         return (
-            <div className="passwordResetPage">
-                <h1> Changement de Mot de Passe </h1>
+            <AuthCard emoji="🔐" title="Changement de mot de passe">
                 {display}
-            </div>
+            </AuthCard>
         );
     }
 }

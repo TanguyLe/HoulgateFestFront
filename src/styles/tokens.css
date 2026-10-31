@@ -1,0 +1,104 @@
+/*
+ * Design tokens of the "playful invite" look. Every color, size and radius of the site comes from
+ * here, the accent colors are overridden per edition (see src/editions/themes.js).
+ */
+:root {
+    /* Neutrals: warm cream paper and a deep plum ink */
+    --c-bg: #fff8f1;
+    --c-bg-deep: #fdeee0;
+    --c-surface: #ffffff;
+    --c-surface-2: #fff4ea;
+    --c-ink: #2b1a3d;
+    --c-ink-soft: #5a4870;
+    --c-muted: #6f5f84;
+    --c-line: #eadccf;
+    --c-line-strong: #d4c1b0;
+
+    /* Edition accent (overridden by the current edition theme) */
+    --c-accent: #c7365f;
+    --c-accent-ink: #ffffff;
+    --c-accent-soft: #ffe6ee;
+    --c-grad-1: #ffc94a;
+    --c-grad-2: #ff7a59;
+    --c-grad-3: #e84a8a;
+    --grad-edition: linear-gradient(135deg, var(--c-grad-1), var(--c-grad-2) 55%, var(--c-grad-3));
+
+    /* Status colors (shotgun, messages) */
+    --c-free: #12805a;
+    --c-free-soft: #dcf6ea;
+    --c-pending: #8a5300;
+    --c-pending-soft: #fff0d1;
+    --c-pending-bright: #f6a821;
+    --c-taken: #b42335;
+    --c-taken-soft: #ffe2e6;
+    --c-mine: #5b3fd6;
+    --c-mine-soft: #ece7ff;
+    --c-info: #1f5fbf;
+    --c-info-soft: #e3eeff;
+
+    /* Fun palette, used for avatars, stickers and confetti */
+    --fun-1: #ff5d8f;
+    --fun-2: #ffb703;
+    --fun-3: #3ec5a0;
+    --fun-4: #4d8dff;
+    --fun-5: #9b6bff;
+    --fun-6: #ff7f3f;
+
+    /* Typography */
+    --font-display: "Fredoka Variable", "Fredoka", "Nunito Variable", system-ui, sans-serif;
+    --font-body: "Nunito Variable", "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --fs-xs: 0.78rem;
+    --fs-sm: 0.9rem;
+    --fs-md: 1rem;
+    --fs-lg: 1.15rem;
+    --fs-xl: clamp(1.3rem, 1.1rem + 0.8vw, 1.55rem);
+    --fs-2xl: clamp(1.6rem, 1.25rem + 1.5vw, 2.1rem);
+    --fs-3xl: clamp(2.1rem, 1.5rem + 2.8vw, 3.2rem);
+    --fs-4xl: clamp(2.6rem, 1.6rem + 4.5vw, 4.4rem);
+    --lh-tight: 1.1;
+    --lh-body: 1.6;
+
+    /* Spacing */
+    --sp-1: 0.25rem;
+    --sp-2: 0.5rem;
+    --sp-3: 0.75rem;
+    --sp-4: 1rem;
+    --sp-5: 1.5rem;
+    --sp-6: 2rem;
+    --sp-7: 2.5rem;
+    --sp-8: 3.5rem;
+
+    /* Shapes */
+    --r-xs: 6px;
+    --r-sm: 10px;
+    --r-md: 16px;
+    --r-lg: 24px;
+    --r-xl: 32px;
+    --r-pill: 999px;
+
+    --shadow-sm: 0 1px 2px rgba(43, 26, 61, 0.08), 0 2px 6px rgba(43, 26, 61, 0.06);
+    --shadow-md: 0 4px 14px rgba(43, 26, 61, 0.1), 0 1px 3px rgba(43, 26, 61, 0.08);
+    --shadow-lg: 0 18px 40px rgba(43, 26, 61, 0.16), 0 4px 10px rgba(43, 26, 61, 0.08);
+    /* The "sticker" look: a crisp offset shadow */
+    --shadow-sticker: 0 3px 0 rgba(43, 26, 61, 0.18);
+    --focus-ring: 0 0 0 3px var(--c-surface), 0 0 0 6px var(--c-ink);
+
+    /* Motion */
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-fast: 140ms;
+    --dur-med: 260ms;
+
+    /* Layout */
+    --topbar-h: 64px;
+    --tabbar-h: 68px;
+    --page-max: 760px;
+    --page-max-wide: 1180px;
+    --gutter: 16px;
+}
+
+@media (min-width: 768px) {
+    :root {
+        --gutter: 28px;
+    }
+}

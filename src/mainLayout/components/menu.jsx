@@ -1,137 +1,103 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Icon, Sidebar, Menu, Container, Image } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 import WhoAmI from "../../login/components/whoAmI";
+import { Modal } from "../../ui";
 
-export const leftItems = [
-    { children: <Link to="/history">Historique</Link>, key: "history" },
-    { children: <Link to="/shotgun">Shotgun</Link>, key: "shotgun" },
-    { children: <Link to="/trips">Trajets</Link>, key: "trips" },
-    { children: <Link to="/scores">Scores</Link>, key: "scores" },
-    { children: <Link to="/checklist">Checklist</Link>, key: "checklist" },
-    { children: <Link to="/contact">Contact</Link>, key: "contact" },
+export const NAV_ITEMS = [
+    { to: "/", label: "Accueil", emoji: "🏠", tab: true, end: true },
+    { to: "/shotgun", label: "Shotgun", emoji: "🛏️", tab: true },
+    { to: "/trips", label: "Trajets", emoji: "🚗", tab: true },
+    { to: "/scores", label: "Scores", emoji: "🏆", tab: true },
+    { to: "/history", label: "Gloryhoul", emoji: "📸" },
+    { to: "/checklist", label: "Checklist", emoji: "✅" },
+    { to: "/contact", label: "Contact", emoji: "💌" },
 ];
-export const rightItems = [{ children: <WhoAmI />, key: "user" }];
 
-const NavBarMobile = ({ onToggle, rightItems }) => (
-    <Menu fixed="top" inverted>
-        <Menu.Item onClick={onToggle}>
-            <Icon name="sidebar" />
-        </Menu.Item>
-        <Menu.Item>
-            <Link to="/">
-                {" "}
-                <Image src="static/logov3.png" size="small" />
-            </Link>
-        </Menu.Item>
-        <Menu.Menu position="right">
-            {rightItems.map(({ key, ...item }) => (
-                <Menu.Item key={key} {...item} as="div" />
-            ))}
-        </Menu.Menu>
-    </Menu>
+const MORE_ITEMS = NAV_ITEMS.filter((item) => !item.tab);
+
+const Brand = () => (
+    <Link to="/" className="brand" aria-label="HoulgateFest, accueil">
+        <span className="brand__badge emoji" aria-hidden="true">
+            🏖️
+        </span>
+        <span className="brand__name">
+            Houlgate<span>Fest</span>
+        </span>
+    </Link>
 );
 
-const NavBarDesktop = ({ leftItems, rightItems }) => (
-    <Menu fixed="top" inverted>
-        <Menu.Item>
-            <Link to="/">
-                {" "}
-                <Image src="static/logov3.png" size="small" />
-            </Link>
-        </Menu.Item>
-        {leftItems.map(({ key, ...item }) => (
-            <Menu.Item key={key} {...item} as="div" />
-        ))}
-        <Menu.Menu position="right">
-            {rightItems.map(({ key, ...item }) => (
-                <Menu.Item key={key} {...item} as="div" />
-            ))}
-        </Menu.Menu>
-    </Menu>
-);
-
-class NavBarChildren extends React.Component {
-    render() {
-        const { children, bigContainer } = this.props;
-        if (bigContainer)
-            return (
-                <Container fluid style={{ padding: "6.2rem 2rem 0 2rem" }}>
-                    {children}
-                </Container>
-            );
-        else
-            return (
-                <Container text style={{ paddingTop: "6.2rem" }}>
-                    {children}
-                </Container>
-            );
-    }
-}
-
-// semantic-ui-react 2 dropped Responsive: the mobile bar is shown below its old tablet breakpoint
-const mobileQuery = window.matchMedia("(max-width: 767px)");
-
-class NavBar extends React.Component {
-    state = {
-        visible: false,
-        isMobile: mobileQuery.matches,
-    };
-
-    componentDidMount() {
-        mobileQuery.addEventListener("change", this.handleMediaChange);
-    }
-
-    componentWillUnmount() {
-        mobileQuery.removeEventListener("change", this.handleMediaChange);
-    }
-
-    handleMediaChange = (event) => this.setState({ isMobile: event.matches });
-
-    handlePusher = () => {
-        const { visible } = this.state;
-
-        if (visible) this.setState({ visible: false });
-    };
-
-    handleToggle = () => this.setState({ visible: !this.state.visible });
-
-    render() {
-        const { children, leftItems, rightItems, bigContainer } = this.props;
-        const { visible, isMobile } = this.state;
-        return (
-            <div>
-                {isMobile ? (
-                    <Sidebar.Pushable>
-                        <Sidebar as={Menu} animation="overlay" inverted vertical visible={visible}>
-                            {leftItems.map(({ key, ...item }) => (
-                                <Menu.Item
-                                    key={key}
-                                    {...item}
-                                    as="div"
-                                    onClick={this.handlePusher}
-                                />
-                            ))}
-                        </Sidebar>
-                        <Sidebar.Pusher
-                            dimmed={visible}
-                            onClick={this.handlePusher}
-                            style={{ minHeight: "100vh" }}
-                        >
-                            <NavBarMobile onToggle={this.handleToggle} rightItems={rightItems} />
-                            <NavBarChildren bigContainer={bigContainer}>{children}</NavBarChildren>
-                        </Sidebar.Pusher>
-                    </Sidebar.Pushable>
-                ) : (
-                    <>
-                        <NavBarDesktop leftItems={leftItems} rightItems={rightItems} />
-                        <NavBarChildren bigContainer={bigContainer}>{children}</NavBarChildren>
-                    </>
-                )}
+// Top bar: the brand and the user everywhere, the links on large screens only
+export const TopBar = () => (
+    <header className="topbar">
+        <div className="topbar__inner">
+            <Brand />
+            <nav className="topbar__nav" aria-label="Navigation principale">
+                {NAV_ITEMS.filter((item) => item.to !== "/").map((item) => (
+                    <NavLink key={item.to} to={item.to} className="topbar__link">
+                        <span className="emoji" aria-hidden="true">
+                            {item.emoji}
+                        </span>
+                        {item.label}
+                    </NavLink>
+                ))}
+            </nav>
+            <div className="topbar__user">
+                <WhoAmI />
             </div>
-        );
-    }
-}
+        </div>
+    </header>
+);
 
-export default NavBar;
+// Bottom tab bar on phones and tablets, within the thumb's reach
+export const TabBar = () => {
+    const [moreOpen, setMoreOpen] = useState(false);
+    const location = useLocation();
+    const moreActive = MORE_ITEMS.some((item) => location.pathname.startsWith(item.to));
+
+    return (
+        <>
+            <nav className="tabbar" aria-label="Navigation">
+                {NAV_ITEMS.filter((item) => item.tab).map((item) => (
+                    <NavLink key={item.to} to={item.to} end={item.end} className="tabbar__tab">
+                        <span className="tabbar__icon emoji" aria-hidden="true">
+                            {item.emoji}
+                        </span>
+                        <span className="tabbar__label">{item.label}</span>
+                    </NavLink>
+                ))}
+                <button
+                    type="button"
+                    className={"tabbar__tab" + (moreActive ? " active" : "")}
+                    aria-haspopup="dialog"
+                    onClick={() => setMoreOpen(true)}
+                >
+                    <span className="tabbar__icon emoji" aria-hidden="true">
+                        ✨
+                    </span>
+                    <span className="tabbar__label">Plus</span>
+                </button>
+            </nav>
+            {moreOpen && (
+                <Modal title="Et aussi..." onClose={() => setMoreOpen(false)}>
+                    <div className="more-grid">
+                        {MORE_ITEMS.map((item, index) => (
+                            <Link
+                                key={item.to}
+                                to={item.to}
+                                className="more-grid__item"
+                                style={{ "--tilt": (index % 2 ? 2 : -2) + "deg" }}
+                                onClick={() => setMoreOpen(false)}
+                            >
+                                <span className="emoji" aria-hidden="true">
+                                    {item.emoji}
+                                </span>
+                                {item.label === "Gloryhoul" ? "Gloryhoul of Fame" : item.label}
+                            </Link>
+                        ))}
+                    </div>
+                </Modal>
+            )}
+        </>
+    );
+};

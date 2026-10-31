@@ -21,11 +21,19 @@ module.exports = {
                 exclude: [/bin/],
                 use: ["style-loader", "css-loader"],
             },
+            {
+                // Self-hosted fonts (@fontsource), emitted next to the bundle in web/fonts
+                test: /\.woff2?$/,
+                type: "asset/resource",
+                generator: { filename: "fonts/[name]-[contenthash:8][ext]" },
+            },
         ],
     },
     output: {
         path: __dirname + "/web",
         filename: "houlgatefest.min.js",
+        // Absolute, so the fonts load from any route (e.g. /shotgun)
+        publicPath: "/",
     },
     optimization: {
         minimize: true,

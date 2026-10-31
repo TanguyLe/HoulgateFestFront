@@ -1,5 +1,4 @@
 import React from "react";
-import { Icon, Form, Message, List } from "semantic-ui-react";
 
 import {
     NAME,
@@ -16,6 +15,7 @@ import {
 import { UNKNOWN_ERROR_MSG } from "../../../labels";
 import { upCaseFirstLetter } from "../../../utils/miscFcts";
 import { postCallApi } from "../../../utils/api/fetchMiddleware";
+import { Callout, ErrorList, Field, Spinner } from "../../../ui";
 
 class CreatePasswordResetForm extends React.Component {
     constructor() {
@@ -46,6 +46,13 @@ class CreatePasswordResetForm extends React.Component {
         this.validateField = this.validateField.bind(this);
         this.isFormValid = this.isFormValid.bind(this);
         this.isFieldValid = this.isFieldValid.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    // Enter in a field submits the form through its submit button, when it's enabled
+    handleSubmit(event) {
+        event.preventDefault();
+        if (this.isFormValid() && this.state.status === "input") this.handleClickSubmit();
     }
 
     resetState() {
@@ -171,26 +178,21 @@ class CreatePasswordResetForm extends React.Component {
     }
 
     render() {
-        const isFormValid = this.isFormValid(true);
+        const loading = this.state.status === "loading";
 
         return (
-            <Form
-                error={!isFormValid}
-                onSubmit={this.handleSubmit}
-                success={this.state.status === "sent"}
-                onKeyPress={this.handleKeyPress}
-            >
+            <form className="form" onSubmit={this.handleSubmit} noValidate>
                 {CREATE_PSWRD_RESET_DEF.map((elem, index) => {
                     let name = elem[NAME];
                     return (
-                        <Form.Input
+                        <Field
                             required
                             error={!this.state[name].valid}
                             key={CREATE_PSWRD_RESET_BLOCK_INDEX_PREFIX + index}
                             type={elem[TYPE]}
-                            fluid
                             label={upCaseFirstLetter(elem[LABEL])}
                             name={name}
+                            autoComplete="email"
                             value={this.state[name].value}
                             onBlur={this.handleBlur}
                             onKeyUp={this.handleKeyUp}
@@ -199,37 +201,27 @@ class CreatePasswordResetForm extends React.Component {
                         />
                     );
                 })}
-                <Form.Group inline>
-                    <Form.Button
+                <ErrorList
+                    messages={Object.keys(this.state)
+                        .filter((key) => key !== "status")
+                        .map((key) => this.state[key].errorMsg)}
+                />
+                {this.state.status === "sent" && (
+                    <Callout kind="success" icon="📬">
+                        Nous venons de t'envoyer un mail pour changer ton mot de passe!
+                    </Callout>
+                )}
+                <div className="form__actions">
+                    <button
                         type="submit"
+                        className="btn btn--primary btn--lg"
                         disabled={!this.isFormValid() || this.state.status !== "input"}
-                        onClick={this.handleClickSubmit}
                     >
-                        Envoi du mail
-                    </Form.Button>
-                </Form.Group>
-                <Message error>
-                    <List bulleted>
-                        {Object.keys(this.state).map((key) => {
-                            const errorMsg = this.state[key].errorMsg;
-
-                            if (errorMsg)
-                                return (
-                                    <List.Item key={CREATE_PSWRD_RESET_ERROR_MSG_PREFIX + key}>
-                                        {errorMsg}
-                                    </List.Item>
-                                );
-                        })}
-                    </List>
-                </Message>
-                <Message success>
-                    Nous venons de t'envoyer un mail pour changer ton mot de passe!
-                </Message>
-                <Message info icon hidden={this.state.status !== "loading"}>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Envoi du mail en cours...</Message.Content>
-                </Message>
-            </Form>
+                        {loading && <Spinner />}
+                        {loading ? "Envoi du mail en cours..." : "Envoi du mail"}
+                    </button>
+                </div>
+            </form>
         );
     }
 }

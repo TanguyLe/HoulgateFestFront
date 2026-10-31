@@ -22,10 +22,13 @@ class App extends React.Component {
         return (
             <Router>
                 <Routes>
-                    <Route path="/" element={<DefaultLayout exact component={Homepage} />} />
+                    <Route
+                        path="/"
+                        element={<DefaultLayout exact component={Homepage} bigContainer />}
+                    />
                     <Route
                         path="/history/*"
-                        element={<DefaultLayout component={HistoryPage} auth />}
+                        element={<DefaultLayout component={HistoryPage} bigContainer auth />}
                     />
                     <Route
                         path="/shotgun/*"
