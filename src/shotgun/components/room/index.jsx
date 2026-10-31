@@ -1,14 +1,30 @@
 import React from "react";
 
-import RoomBasis from "./roomBasis";
 import ShotgunPortal from "../shotgunModal";
 import PreShotgunTimer from "../preShotgunTimer";
 import {
     ROOM_STATUS_LOADING,
     ROOM_STATUS_SHOTGUNNED,
     ROOM_STATUS_PRESHOTGUNNED,
+    BEDROOM_TYPE,
+    LIVING_ROOM_TYPE,
+    GARDEN_TYPE,
 } from "../../constants";
 import { getCredentials, register, unregister } from "../../../login/store";
+import { Avatar } from "../../../ui";
+
+const ROOM_EMOJIS = { [BEDROOM_TYPE]: "🛏️", [LIVING_ROOM_TYPE]: "🛋️", [GARDEN_TYPE]: "⛺" };
+
+// The look of the card for each state of the room
+const CARD_STATES = {
+    free: { chip: "free", label: "Libre" },
+    locked: { chip: "free", label: "Libre" },
+    pending: { chip: "pending", label: "Shotgun en cours" },
+    minePending: { chip: "mine", label: "À finaliser !" },
+    taken: { chip: "taken", label: "Complet" },
+    mine: { chip: "mine", label: "Ta chambre 🎉" },
+    loading: { chip: "info", label: "Chargement..." },
+};
 
 class Room extends React.Component {
     constructor() {
@@ -36,6 +52,41 @@ class Room extends React.Component {
         unregister(this.onLoginChange);
     }
 
+    getUsername(userId) {
+        const user = this.props.userInfo[userId];
+        return user ? user.username : "?";
+    }
+
+    renderOccupants() {
+        const occupants = [this.props.user, ...(this.props.roommates || [])]
+            .filter(Boolean)
+            .map((userId) => this.getUsername(userId));
+        const emptySeats = Math.max(0, this.props.seats - occupants.length);
+
+        return (
+            <div className="room-card__people">
+                <div className="room-card__seats" aria-hidden="true">
+                    {occupants.map((name, index) => (
+                        <Avatar key={name + index} name={name} size="sm" />
+                    ))}
+                    {[...new Array(emptySeats).keys()].map((index) => (
+                        <Avatar key={"empty" + index} empty size="sm" title="Place libre" />
+                    ))}
+                </div>
+                {occupants.length > 0 && (
+                    <p className="room-card__names">
+                        {"par " + occupants[0]}
+                        {occupants.length > 1 && (
+                            <span className="muted">
+                                {" · avec " + occupants.slice(1).join(", ")}
+                            </span>
+                        )}
+                    </p>
+                )}
+            </div>
+        );
+    }
+
     render() {
         let buttonType = "blue";
         let content = "Shotgun!";
@@ -60,6 +111,7 @@ class Room extends React.Component {
         );
 
         let finalStatus = roomStatus;
+        let cardState = "free";
 
         /**
          * Logic here is rather simple in the end :
@@ -80,40 +132,59 @@ class Room extends React.Component {
                 buttonType = "green";
                 content = "Validé";
                 finalStatus = "shotgunSuccessful";
+                cardState = "mine";
             } else {
                 buttonType = "red";
                 content = "Déjà shotgun";
                 disable = true;
+                cardState = "taken";
             }
         } else if (roomStatus === ROOM_STATUS_PRESHOTGUNNED) {
             if (isUserRoom) {
                 content = "Finalise ton shotgun!";
                 finalStatus = "attributingBeds";
+                cardState = "minePending";
             } else {
                 buttonType = "orange";
                 content = "Shotgun en cours...";
                 disable = true;
+                cardState = "pending";
             }
         } else if (roomStatus === ROOM_STATUS_LOADING) {
             buttonType = "grey";
             content = "Chargement...";
             disable = true;
+            cardState = "loading";
         } else if (shotgunOnGoingForUser) {
             // Remaining state is readyForShotgun, the case where no shotgun
             // is ongoing for the user is handled by the default
             disable = true;
+            cardState = "locked";
         }
 
+        const look = CARD_STATES[cardState];
+
         return (
-            <RoomBasis
-                {...this.props}
-                seats={this.props.seats}
-                position={this.props.position}
-                name={this.props.name}
-                user={this.props.user}
-                roommates={this.props.roommates}
-                userInfo={this.props.userInfo}
-            >
+            <article className={"room-card room-card--" + cardState} aria-label={this.props.name}>
+                <header className="room-card__head">
+                    <span className="room-card__emoji emoji" aria-hidden="true">
+                        {ROOM_EMOJIS[this.props.type] || "🛏️"}
+                    </span>
+                    <div className="room-card__titles">
+                        <h3 className="room-card__name">{this.props.name}</h3>
+                        <span className="room-card__capacity">{this.props.seats} places</span>
+                    </div>
+                    <span className={"chip chip--" + look.chip}>{look.label}</span>
+                </header>
+                {this.renderOccupants()}
+                {roomStatus === ROOM_STATUS_PRESHOTGUNNED && this.props.preShotgunExpiry ? (
+                    <PreShotgunTimer
+                        expiry={this.props.preShotgunExpiry}
+                        label={isUserRoom ? "Il te reste" : "Expire dans"}
+                    />
+                ) : (
+                    ""
+                )}
                 {this.props.seats > 0 ? (
                     <ShotgunPortal
                         disabled={disable}
@@ -136,15 +207,7 @@ class Room extends React.Component {
                 ) : (
                     ""
                 )}
-                {roomStatus === ROOM_STATUS_PRESHOTGUNNED && this.props.preShotgunExpiry ? (
-                    <PreShotgunTimer
-                        expiry={this.props.preShotgunExpiry}
-                        label={isUserRoom ? "Il te reste" : "Expire dans"}
-                    />
-                ) : (
-                    ""
-                )}
-            </RoomBasis>
+            </article>
         );
     }
 }

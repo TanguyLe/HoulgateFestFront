@@ -1,6 +1,7 @@
 import React from "react";
-import { Dropdown, Form } from "semantic-ui-react";
 import { getCredentials, register, unregister } from "../../login/store";
+
+const byText = (a, b) => a.text.localeCompare(b.text, "fr", { sensitivity: "base" });
 
 class BedsMultipleDropdown extends React.Component {
     constructor(props) {
@@ -98,43 +99,64 @@ class BedsMultipleDropdown extends React.Component {
         ];
 
         const submitDisabled = this.state.beds.indexOf("") !== -1;
+        const filled = this.state.beds.filter((bed) => bed !== "").length;
 
         return (
-            <Form>
-                <Form.Group widths="equal" style={{ flexWrap: "wrap" }}>
-                    {[
-                        ...[...new Array(this.props.numberOfBeds).keys()].map((bedIndex) => {
-                            const userId = this.state.beds[bedIndex];
-                            const options =
-                                userId === "" ? regularOptions : generateDropdownOption(userId);
+            <form className="beds-form" onSubmit={this.submit}>
+                <p className="beds-form__intro">
+                    Choisis qui dort avec toi : chaque place doit avoir son occupant.{" "}
+                    <span className="chip chip--plain">
+                        {filled}/{this.props.numberOfBeds} places
+                    </span>
+                </p>
+                <ol className="beds-form__list">
+                    {[...new Array(this.props.numberOfBeds).keys()].map((bedIndex) => {
+                        const userId = this.state.beds[bedIndex];
+                        const options = (
+                            userId === "" ? regularOptions : generateDropdownOption(userId)
+                        )
+                            .filter(Boolean)
+                            .sort(byText);
+                        const selectId = "bed_" + bedIndex;
 
-                            return (
-                                <Dropdown
-                                    key={`bed_${bedIndex}`}
-                                    upward
-                                    placeholder={`emplacement n°${bedIndex + 1}`}
-                                    selection
+                        return (
+                            <li key={selectId} className="beds-form__bed">
+                                <label htmlFor={selectId} className="beds-form__label">
+                                    <span className="emoji" aria-hidden="true">
+                                        {bedIndex === 0 ? "😎" : "🛏️"}
+                                    </span>
+                                    {bedIndex === 0 ? "Toi" : "Place n°" + (bedIndex + 1)}
+                                </label>
+                                <select
+                                    id={selectId}
+                                    className="select"
                                     disabled={bedIndex === 0}
-                                    search
-                                    onChange={(event, { value }) =>
-                                        this.handleChange(event, bedIndex, value)
-                                    }
                                     value={userId}
-                                    options={options}
-                                />
-                            );
-                        }),
-                        <Form.Button
-                            key={"validationButton"}
-                            disabled={submitDisabled}
-                            color={submitDisabled === true ? null : "green"}
-                            onClick={this.submit}
-                        >
-                            Confirmer
-                        </Form.Button>,
-                    ]}
-                </Form.Group>
-            </Form>
+                                    onChange={(event) =>
+                                        this.handleChange(event, bedIndex, event.target.value)
+                                    }
+                                >
+                                    <option value="" disabled>
+                                        {`emplacement n°${bedIndex + 1}`}
+                                    </option>
+                                    {options.map((option) => (
+                                        <option key={option.key} value={option.value}>
+                                            {option.text}
+                                        </option>
+                                    ))}
+                                </select>
+                            </li>
+                        );
+                    })}
+                </ol>
+                <button
+                    type="submit"
+                    className={"btn btn--block btn--lg " + (submitDisabled ? "" : "btn--success")}
+                    disabled={submitDisabled}
+                >
+                    Confirmer
+                </button>
+            </form>
         );
     }
 }

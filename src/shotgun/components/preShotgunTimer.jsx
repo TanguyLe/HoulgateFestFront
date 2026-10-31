@@ -24,15 +24,21 @@ export default class PreShotgunTimer extends React.Component {
     render() {
         const { secondsLeft } = this.state;
 
-        if (secondsLeft === 0) return <small>Expiré</small>;
+        if (secondsLeft === 0) return <p className="room-card__timer is-expired">⌛ Expiré</p>;
 
         const minutes = Math.floor(secondsLeft / 60);
         const seconds = String(secondsLeft % 60).padStart(2, "0");
 
         return (
-            <small>
-                {this.props.label} {minutes}:{seconds}
-            </small>
+            <p className={"room-card__timer" + (secondsLeft <= 30 ? " is-urgent" : "")}>
+                <span className="emoji" aria-hidden="true">
+                    ⏱️
+                </span>{" "}
+                {this.props.label}{" "}
+                <b>
+                    {minutes}:{seconds}
+                </b>
+            </p>
         );
     }
 }
