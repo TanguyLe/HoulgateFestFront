@@ -1,0 +1,137 @@
+/* Tokens other than colour (stage.css): type, shape, elevation, motion, state layers. The names
+   follow the M3 spec, the values are the stage's: Google Sans Flex, a large type scale with tight
+   tracking, large corners. */
+
+@font-face {
+    font-family: "Google Sans Flex";
+    src: url("/static/fonts/google-sans-flex-latin-wght.woff2") format("woff2");
+    font-weight: 400 1000;
+    font-style: normal;
+    font-display: swap;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+        U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+    /* Typeface */
+    --md-ref-typeface-brand:
+        "Roboto Flex", Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --md-ref-typeface-plain: var(--md-ref-typeface-brand);
+
+    /* Type scale */
+    --md-sys-typescale-display-large-size: 3.5625rem;
+    --md-sys-typescale-display-large-line-height: 4rem;
+    --md-sys-typescale-display-large-tracking: -0.015625rem;
+    --md-sys-typescale-display-medium-size: 2.8125rem;
+    --md-sys-typescale-display-medium-line-height: 3.25rem;
+    --md-sys-typescale-display-small-size: 2.25rem;
+    --md-sys-typescale-display-small-line-height: 2.75rem;
+    --md-sys-typescale-headline-large-size: 2rem;
+    --md-sys-typescale-headline-large-line-height: 2.5rem;
+    --md-sys-typescale-headline-medium-size: 1.75rem;
+    --md-sys-typescale-headline-medium-line-height: 2.25rem;
+    --md-sys-typescale-headline-small-size: 1.5rem;
+    --md-sys-typescale-headline-small-line-height: 2rem;
+    --md-sys-typescale-title-large-size: 1.375rem;
+    --md-sys-typescale-title-large-line-height: 1.75rem;
+    --md-sys-typescale-title-medium-size: 1rem;
+    --md-sys-typescale-title-medium-line-height: 1.5rem;
+    --md-sys-typescale-title-medium-tracking: 0.009375rem;
+    --md-sys-typescale-title-small-size: 0.875rem;
+    --md-sys-typescale-title-small-line-height: 1.25rem;
+    --md-sys-typescale-title-small-tracking: 0.00625rem;
+    --md-sys-typescale-body-large-size: 1rem;
+    --md-sys-typescale-body-large-line-height: 1.5rem;
+    --md-sys-typescale-body-large-tracking: 0.03125rem;
+    --md-sys-typescale-body-medium-size: 0.875rem;
+    --md-sys-typescale-body-medium-line-height: 1.25rem;
+    --md-sys-typescale-body-medium-tracking: 0.015625rem;
+    --md-sys-typescale-body-small-size: 0.75rem;
+    --md-sys-typescale-body-small-line-height: 1rem;
+    --md-sys-typescale-body-small-tracking: 0.025rem;
+    --md-sys-typescale-label-large-size: 0.875rem;
+    --md-sys-typescale-label-large-line-height: 1.25rem;
+    --md-sys-typescale-label-large-tracking: 0.00625rem;
+    --md-sys-typescale-label-medium-size: 0.75rem;
+    --md-sys-typescale-label-medium-line-height: 1rem;
+    --md-sys-typescale-label-medium-tracking: 0.03125rem;
+    --md-sys-typescale-label-small-size: 0.6875rem;
+    --md-sys-typescale-label-small-line-height: 1rem;
+    --md-sys-typescale-label-small-tracking: 0.03125rem;
+    --md-sys-typescale-weight-regular: 400;
+    --md-sys-typescale-weight-medium: 500;
+    --md-sys-typescale-weight-emphasized: 650;
+
+    /* The stage's type: keynote headlines, far bigger than the body (fluid between phone and
+       desktop), tight tracking */
+    --stage-headline-size: clamp(3rem, 1.6rem + 6.4vw, 7.5rem);
+    --stage-title-size: clamp(2.125rem, 1.4rem + 3.4vw, 4.5rem);
+    --stage-subtitle-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+    --stage-lead-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+    --stage-tracking-tight: -0.035em;
+    --stage-radius-photo: clamp(24px, 3vw, 44px);
+    --stage-section-space: clamp(72px, 12vw, 176px);
+
+    /* Shape (corner scale of M3 Expressive) */
+    --md-sys-shape-corner-none: 0;
+    --md-sys-shape-corner-extra-small: 4px;
+    --md-sys-shape-corner-small: 8px;
+    --md-sys-shape-corner-medium: 12px;
+    --md-sys-shape-corner-large: 16px;
+    --md-sys-shape-corner-large-increased: 20px;
+    --md-sys-shape-corner-extra-large: 28px;
+    --md-sys-shape-corner-extra-large-increased: 32px;
+    --md-sys-shape-corner-full: 9999px;
+
+    /* Elevation */
+    --md-sys-elevation-level0: none;
+    --md-sys-elevation-level1: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 1px 3px 1px rgb(0 0 0 / 0.15);
+    --md-sys-elevation-level2: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 2px 6px 2px rgb(0 0 0 / 0.15);
+    --md-sys-elevation-level3: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 4px 8px 3px rgb(0 0 0 / 0.15);
+    --md-sys-elevation-level4: 0 2px 3px 0 rgb(0 0 0 / 0.3), 0 6px 10px 4px rgb(0 0 0 / 0.15);
+    --md-sys-elevation-level5: 0 4px 4px 0 rgb(0 0 0 / 0.3), 0 8px 12px 6px rgb(0 0 0 / 0.15);
+
+    /* Motion */
+    --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+    --md-sys-motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+    --md-sys-motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+    --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+    --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+    --md-sys-motion-duration-short2: 100ms;
+    --md-sys-motion-duration-short4: 200ms;
+    --md-sys-motion-duration-medium2: 300ms;
+    --md-sys-motion-duration-medium4: 400ms;
+    --md-sys-motion-duration-long2: 500ms;
+
+    /* State layers */
+    --md-sys-state-hover-state-layer-opacity: 0.08;
+    --md-sys-state-focus-state-layer-opacity: 0.1;
+    --md-sys-state-pressed-state-layer-opacity: 0.1;
+    --md-sys-state-dragged-state-layer-opacity: 0.16;
+    --md-sys-state-disabled-container-opacity: 0.12;
+    --md-sys-state-disabled-content-opacity: 0.38;
+
+    /* Layout */
+    --app-content-max-width: 1040px;
+    --app-margin: 16px;
+    --app-top-bar-height: 64px;
+    --app-navigation-bar-height: 80px;
+    --app-rail-width: 96px;
+}
+
+@media (min-width: 600px) {
+    :root {
+        --app-margin: 24px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --md-sys-motion-duration-short2: 0ms;
+        --md-sys-motion-duration-short4: 0ms;
+        --md-sys-motion-duration-medium2: 0ms;
+        --md-sys-motion-duration-medium4: 0ms;
+        --md-sys-motion-duration-long2: 0ms;
+    }
+}

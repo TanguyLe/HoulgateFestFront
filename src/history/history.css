@@ -1,0 +1,123 @@
+/* History: each edition is a slide, its year huge in the edition's colour */
+
+.history {
+    padding-bottom: var(--stage-section-space);
+}
+
+.history__header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: clamp(32px, 8vw, 120px) 0 clamp(48px, 8vw, 112px);
+}
+
+.editions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stage-section-space);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.edition article {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(24px, 4vw, 48px);
+    padding-top: clamp(24px, 4vw, 40px);
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.edition__header {
+    display: grid;
+    gap: 12px;
+}
+
+@media (min-width: 840px) {
+    .edition__header {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        align-items: end;
+        gap: 48px;
+    }
+}
+
+.edition__year {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    /* The bold colour: the year is large text (contrast >= 4.4:1 on the stage) */
+    color: var(--accent);
+    font-size: clamp(4.5rem, 2rem + 11vw, 10rem);
+    font-weight: 500;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+}
+
+.edition__shape {
+    width: clamp(20px, 3vw, 36px);
+    flex: none;
+    margin-top: 0.08em;
+}
+
+.edition__shape.shape--half {
+    width: clamp(28px, 4vw, 48px);
+}
+
+.edition__titles {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.edition__body {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(24px, 4vw, 48px);
+}
+
+.edition__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    max-width: 62ch;
+}
+
+@media (min-width: 840px) {
+    .edition__text {
+        margin-left: calc(5 / 12 * 100% + 20px);
+    }
+}
+
+.edition__photos {
+    display: grid;
+    gap: clamp(8px, 1.6vw, 20px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@media (min-width: 600px) {
+    .edition__photos--2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .edition__photos--3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.edition__photos .photo-button {
+    border-radius: var(--stage-radius-photo);
+}
+
+.edition__photos--1 .photo-button {
+    aspect-ratio: 16 / 9;
+}
+
+.editions__signature {
+    margin-top: var(--stage-section-space);
+    text-align: right;
+    color: var(--md-sys-color-on-surface-variant);
+}

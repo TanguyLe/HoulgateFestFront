@@ -1,5 +1,4 @@
 import React from "react";
-import { Form, Message, List } from "semantic-ui-react";
 
 import {
     NAME,
@@ -9,12 +8,12 @@ import {
     RESET_PSWRD_DEF,
     REGEXES,
     ERROR_MSG,
-    PSWRD_RESET_ERROR_MSG_PREFIX,
     CONFIRM,
 } from "../../constants";
 import { upCaseFirstLetter } from "../../../utils/miscFcts";
 import { putCallApi } from "../../../utils/api/fetchMiddleware";
 import { UNKNOWN_ERROR_MSG } from "../../../labels";
+import { Button, Notice, TextField, showError } from "../../../ui";
 
 class PasswordResetForm extends React.Component {
     constructor() {
@@ -36,7 +35,6 @@ class PasswordResetForm extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleClickReset = this.handleClickReset.bind(this);
@@ -100,7 +98,7 @@ class PasswordResetForm extends React.Component {
                     this.setState(newState);
                 }
             })
-            .catch((error) => alert(UNKNOWN_ERROR_MSG + error));
+            .catch(() => showError(UNKNOWN_ERROR_MSG));
     }
 
     validateField(name, value) {
@@ -127,10 +125,6 @@ class PasswordResetForm extends React.Component {
         this.validateField(name, value);
     }
 
-    handleKeyPress(event) {
-        if (this.isFormValid() && event.key === "Enter") this.handleClickSubmit();
-    }
-
     handleKeyUp(event) {
         const name = event.target.name;
         const value = event.target.value;
@@ -147,26 +141,35 @@ class PasswordResetForm extends React.Component {
     }
 
     render() {
-        const isFormValid = this.isFormValid(true);
+        if (!this.props.resetUrl)
+            return (
+                <Notice tone="error" title="Lien incomplet">
+                    Ce lien de changement de mot de passe n'est pas valide : utilise celui reçu par
+                    mail.
+                </Notice>
+            );
 
         return (
-            <Form
-                error={!isFormValid}
-                onSubmit={this.handleSubmit}
-                onKeyPress={this.handleKeyPress}
+            <form
+                className="form"
+                noValidate
+                onSubmit={(event) => {
+                    event.preventDefault();
+                    if (this.isFormValid()) this.handleClickSubmit();
+                }}
             >
                 {RESET_PSWRD_DEF.map((elem, index) => {
-                    let name = elem[NAME];
+                    const name = elem[NAME];
                     return (
-                        <Form.Input
+                        <TextField
                             required
-                            error={!this.state[name].valid}
                             key={PSWRD_RESET_BLOCK_INDEX_PREFIX + index}
                             type={elem[TYPE]}
-                            fluid
                             label={upCaseFirstLetter(elem[LABEL])}
                             name={name}
+                            autoComplete="new-password"
                             value={this.state[name].value}
+                            error={this.state[name].valid ? "" : this.state[name].errorMsg}
                             onBlur={this.handleBlur}
                             onKeyUp={this.handleKeyUp}
                             onKeyDown={this.handleKeyDown}
@@ -174,30 +177,12 @@ class PasswordResetForm extends React.Component {
                         />
                     );
                 })}
-                <Form.Group inline>
-                    <Form.Button
-                        type="submit"
-                        disabled={!this.isFormValid()}
-                        onClick={this.handleClickSubmit}
-                    >
-                        Changement de mot de passe
-                    </Form.Button>
-                </Form.Group>
-                <Message error>
-                    <List bulleted>
-                        {Object.keys(this.state).map((key) => {
-                            const errorMsg = this.state[key].errorMsg;
-
-                            if (errorMsg)
-                                return (
-                                    <List.Item key={PSWRD_RESET_ERROR_MSG_PREFIX + key}>
-                                        {errorMsg}
-                                    </List.Item>
-                                );
-                        })}
-                    </List>
-                </Message>
-            </Form>
+                <div className="form__actions">
+                    <Button type="submit" disabled={!this.isFormValid()}>
+                        Changer de mot de passe
+                    </Button>
+                </div>
+            </form>
         );
     }
 }

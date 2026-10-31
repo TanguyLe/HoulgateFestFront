@@ -1,0 +1,218 @@
+/* Homepage: a keynote, one idea per slide, lots of stage around each */
+
+.keynote {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stage-section-space);
+    padding-bottom: var(--stage-section-space);
+}
+
+.slide {
+    position: relative;
+}
+
+/* 1. The edition: a huge name, a composition of shapes next to it, one action */
+
+.hero {
+    display: grid;
+    gap: 40px;
+    padding-top: 24px;
+}
+
+@media (min-width: 840px) {
+    .hero {
+        grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+        align-items: end;
+        gap: 48px;
+        min-height: min(80vh, 720px);
+        padding-top: 48px;
+    }
+}
+
+.hero__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+/* A little smaller than the other headlines: the edition's name fits its column */
+.hero__title {
+    margin-left: -0.04em;
+    font-size: clamp(3rem, 1.4rem + 5.4vw, 6.5rem);
+}
+
+.hero__lead {
+    max-width: 30ch;
+}
+
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+    margin-top: 16px;
+}
+
+/* The composition: the sun (yellow) setting on the sea (blue), the logo's motif, in a box
+   wider than high */
+.hero__art {
+    position: relative;
+    order: -1;
+    width: min(100%, 200px);
+    aspect-ratio: 10 / 7;
+    justify-self: end;
+}
+
+@media (min-width: 840px) {
+    .hero__art {
+        order: 0;
+        width: 100%;
+        max-width: 360px;
+        margin-bottom: 96px;
+    }
+}
+
+/* The sun, its flat side just above the sea */
+.hero__art .shape--1 {
+    left: 18%;
+    bottom: 42%;
+    width: 64%;
+}
+
+/* The sea: two lines, the second one shorter */
+.hero__art .shape--2 {
+    left: 0;
+    bottom: 21%;
+    width: 100%;
+}
+
+.hero__art .shape--3 {
+    left: 18%;
+    bottom: 0;
+    width: 64%;
+}
+
+/* 2. The photo, the whole width, the edition's year on its corner */
+
+.stage-photo {
+    border-radius: var(--stage-radius-photo);
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+}
+
+@media (max-width: 599px) {
+    .stage-photo {
+        aspect-ratio: 4 / 3;
+    }
+}
+
+/* 3. The date of the shotgun, as a statement, while it is coming */
+
+.statement {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.statement__title {
+    max-width: 18ch;
+}
+
+.statement__countdown {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 20px 0 16px;
+    border-radius: var(--md-sys-shape-corner-full);
+    background: var(--stage-yellow);
+    color: var(--stage-ink);
+    font-size: var(--md-sys-typescale-title-medium-size);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+/* 4. The organisers' word: its first sentence big, the rest as a lead */
+
+.word {
+    display: grid;
+    gap: 32px;
+}
+
+@media (min-width: 840px) {
+    .word {
+        grid-template-columns: 7fr 5fr;
+        gap: 64px;
+        align-items: start;
+    }
+}
+
+.word__opening {
+    padding-left: 24px;
+    border-left: 6px solid var(--stage-yellow);
+}
+
+.word__text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.word__signature {
+    color: var(--stage-yellow-text);
+}
+
+/* 5. Past editions: photos, big */
+
+.past {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.past__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.past__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(8px, 1.6vw, 20px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.past__grid .photo-button {
+    border-radius: clamp(16px, 2vw, 28px);
+}
+
+/* 6. Two practical things, side by side, as text on the stage */
+
+.practical {
+    display: grid;
+    gap: 48px;
+    padding-top: clamp(24px, 4vw, 40px);
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+@media (min-width: 600px) {
+    .practical {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 64px;
+    }
+}
+
+.practical__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}

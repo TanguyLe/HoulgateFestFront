@@ -1,0 +1,479 @@
+/* The frame of the pages: top app bar, navigation bar (compact), navigation rail (medium and
+   expanded), modal drawer, page container and footer */
+
+/* What is scrolled to or focused never ends up under the sticky top app bar or the bars fixed at
+   the bottom (WCAG 2.4.11): the navigation bar on phones, the summary bar of the shotgun page */
+html {
+    --app-bottom-bars: calc(var(--app-navigation-bar-height) + env(safe-area-inset-bottom));
+    scroll-padding-top: calc(var(--app-top-bar-height) + 8px);
+    scroll-padding-bottom: calc(var(--app-bottom-bars) + 8px);
+}
+
+html:has(.shotgun-bar) {
+    scroll-padding-bottom: calc(var(--app-bottom-bars) + 88px);
+}
+
+@media (min-width: 600px) {
+    html {
+        --app-bottom-bars: 0px;
+    }
+}
+
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* What sits fixed at the bottom of the screen: the navigation bar on phones */
+    --app-bottom-offset: calc(var(--app-navigation-bar-height) + env(safe-area-inset-bottom));
+    padding-bottom: var(--app-bottom-offset);
+}
+
+@media (min-width: 600px) {
+    .app {
+        --app-bottom-offset: 0px;
+        padding-left: var(--app-rail-width);
+    }
+}
+
+.skip-link {
+    position: fixed;
+    z-index: 50;
+    top: 8px;
+    left: 8px;
+    padding: 12px 16px;
+    border-radius: var(--md-sys-shape-corner-full);
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    text-decoration: none;
+    transform: translateY(-200%);
+}
+
+.skip-link:focus {
+    transform: none;
+}
+
+/* Top app bar */
+
+.top-app-bar {
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: var(--app-top-bar-height);
+    padding: 0 8px 0 var(--app-margin);
+    background: var(--md-sys-color-surface);
+}
+
+@supports (animation-timeline: scroll()) {
+    .top-app-bar {
+        animation: top-app-bar-scrolled linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 8px;
+    }
+}
+
+@keyframes top-app-bar-scrolled {
+    to {
+        background: var(--md-sys-color-surface-container);
+    }
+}
+
+.top-app-bar__logo {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    margin-right: auto;
+    color: var(--md-sys-color-on-surface);
+    text-decoration: none;
+    border-radius: var(--md-sys-shape-corner-small);
+}
+
+.top-app-bar__actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo__mark {
+    width: 32px;
+    height: 32px;
+}
+
+.logo__sun {
+    fill: var(--stage-yellow);
+}
+
+.logo__sea {
+    fill: var(--stage-blue);
+}
+
+.logo__name {
+    font-weight: 600;
+    letter-spacing: -0.03em;
+}
+
+/* Navigation items, shared by the bar and the rail */
+
+.md-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.md-nav-item__indicator {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 32px;
+    border-radius: var(--md-sys-shape-corner-full);
+    transition: background-color var(--md-sys-motion-duration-short4) linear;
+}
+
+.md-nav-item--active,
+.md-nav-item[aria-expanded="true"] {
+    color: var(--md-sys-color-on-surface);
+}
+
+.md-nav-item--active .md-nav-item__indicator,
+.md-nav-item[aria-expanded="true"] .md-nav-item__indicator {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.md-nav-item--active .md-nav-item__label {
+    font-weight: 700;
+}
+
+.md-nav-item:focus-visible {
+    outline: none;
+}
+
+.md-nav-item:focus-visible .md-nav-item__indicator {
+    outline: 3px solid var(--md-sys-color-secondary);
+    outline-offset: 2px;
+}
+
+/* Navigation bar: phones only */
+
+.md-navigation-bar {
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    height: var(--app-bottom-offset);
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--md-sys-color-surface-container);
+}
+
+.md-navigation-bar .md-nav-item {
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+}
+
+@media (min-width: 600px) {
+    .md-navigation-bar {
+        display: none;
+    }
+}
+
+/* Navigation rail: from 600 px */
+
+.md-navigation-rail {
+    display: none;
+}
+
+@media (min-width: 600px) {
+    .md-navigation-rail {
+        position: fixed;
+        z-index: 20;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        width: var(--app-rail-width);
+        padding: 12px 0;
+        background: var(--md-sys-color-surface);
+    }
+
+    .md-navigation-rail__menu {
+        margin-top: 0;
+    }
+
+    .md-navigation-rail__items {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .md-navigation-rail .md-nav-item {
+        width: var(--app-rail-width);
+        min-height: 56px;
+    }
+}
+
+/* Modal navigation drawer */
+
+.md-drawer {
+    width: min(360px, calc(100vw - 56px));
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0 var(--md-sys-shape-corner-large) var(--md-sys-shape-corner-large) 0;
+    background: var(--md-sys-color-surface-container-low);
+    color: var(--md-sys-color-on-surface);
+    box-shadow: var(--md-sys-elevation-level1);
+}
+
+.md-drawer[open] {
+    animation: drawer-in var(--md-sys-motion-duration-medium2)
+        var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+.md-drawer::backdrop {
+    background: rgb(0 0 0 / 0.32);
+}
+
+@keyframes drawer-in {
+    from {
+        transform: translateX(-100%);
+    }
+}
+
+.md-drawer__container {
+    padding: 12px 12px 24px;
+}
+
+.md-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 16px;
+}
+
+.md-drawer__section {
+    padding: 18px 16px 8px;
+}
+
+.md-drawer__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.md-drawer__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 56px;
+    padding: 0 24px 0 16px;
+    border-radius: var(--md-sys-shape-corner-full);
+    color: var(--md-sys-color-on-surface-variant);
+    text-decoration: none;
+}
+
+.md-drawer__item:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+    text-decoration: none;
+}
+
+.md-drawer__item--active {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.md-drawer__item--active:hover {
+    background: color-mix(
+        in srgb,
+        var(--md-sys-color-on-secondary-container) 8%,
+        var(--md-sys-color-secondary-container)
+    );
+}
+
+.md-drawer__external {
+    width: 18px;
+    height: 18px;
+    margin-left: auto;
+}
+
+/* Account menu, in a dialog */
+
+.account-menu {
+    margin: 0 -8px;
+    padding: 0;
+    list-style: none;
+}
+
+.account-menu__item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 56px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: var(--md-sys-shape-corner-large);
+    background: transparent;
+    color: var(--md-sys-color-on-surface);
+    font-size: var(--md-sys-typescale-body-large-size);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.account-menu__item:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+    text-decoration: none;
+}
+
+/* Page container */
+
+/* At least the screen's height, so the footer starts below the fold and doesn't jump down when
+   a page's content arrives (layout shift) */
+.page {
+    flex: 1 0 auto;
+    min-height: calc(100dvh - var(--app-top-bar-height));
+    width: 100%;
+    max-width: calc(var(--app-content-max-width) + 2 * var(--app-margin));
+    margin: 0 auto;
+    padding: 8px var(--app-margin) 48px;
+}
+
+.page--wide {
+    max-width: calc(1280px + 2 * var(--app-margin));
+}
+
+.page:focus {
+    outline: none;
+}
+
+.page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0 24px;
+}
+
+.page-header p {
+    max-width: 68ch;
+}
+
+/* A short blue pill above the app pages' titles: the stage's mark, kept small */
+.page-header::before,
+.account-card::before,
+.connect-card::before {
+    content: "";
+    width: 40px;
+    height: 8px;
+    margin-bottom: 8px;
+    border-radius: 3px;
+    background: var(--stage-blue);
+}
+
+/* The app pages' titles, in the stage's type but kept compact */
+.page-header .headline-large {
+    font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: var(--stage-tracking-tight);
+}
+
+/* "Log in to see this page" */
+
+.connect-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 560px;
+    margin: 24px auto;
+    padding: 24px;
+}
+
+.connect-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Footer */
+
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 24px;
+    width: 100%;
+    max-width: calc(var(--app-content-max-width) + 2 * var(--app-margin));
+    margin: 0 auto;
+    padding: 24px var(--app-margin) 32px;
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 8px;
+    margin: 0 -12px;
+    padding: 0;
+    list-style: none;
+}
+
+.footer__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 12px;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Forms, shared by every page with fields */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form__aside {
+    align-self: flex-start;
+    margin: -8px 0 0 -12px;
+}
+
+.form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.form__actions--stacked {
+    flex-direction: column;
+}
+
+.form__actions--stacked .md-button {
+    width: 100%;
+}

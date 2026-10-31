@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { register, unregister, getCredentials } from "../../login/store";
+import { openLoginDialog } from "../../login/loginDialog";
+import { Button, Card } from "../../ui";
 
 class OnlyWhenConnectedWrapper extends React.Component {
     constructor() {
@@ -9,37 +10,39 @@ class OnlyWhenConnectedWrapper extends React.Component {
 
         this.state = {};
         this.onLogin = this.onLogin.bind(this);
-        this.onClickConnected = this.onClickConnected.bind(this);
     }
     componentDidMount() {
         register(this.onLogin);
         this.setState(getCredentials());
-
-        this.loginPortalOpener = document.getElementById("loginPortalOpener");
     }
 
     componentWillUnmount() {
         unregister(this.onLogin);
-        if (document.getElementById("loginPortal")) this.onClickConnected();
     }
 
     onLogin(creds) {
         this.setState(creds);
     }
 
-    onClickConnected() {
-        this.loginPortalOpener.click();
-    }
-
     render() {
-        return this.state.login ? (
-            <div className={this.props.className || ""}> {this.props.children} </div>
-        ) : (
-            <div className="Countdown">
-                Cette page n'est accessible qu'une fois{" "}
-                <a onClick={this.onClickConnected}>connecté</a> ! N'hésite pas à{" "}
-                <Link to="/register">créer un compte</Link>.
-            </div>
+        if (this.state.login) return this.props.children;
+
+        return (
+            <Card variant="outlined" className="connect-card">
+                <h1 className="headline-small">{this.props.title || "Connecte-toi"}</h1>
+                <p className="body-large on-surface-variant">
+                    Cette page n'est accessible qu'une fois connecté ! N'hésite pas à créer un
+                    compte.
+                </p>
+                <div className="connect-card__actions">
+                    <Button icon="login" onClick={openLoginDialog} aria-haspopup="dialog">
+                        Connexion
+                    </Button>
+                    <Button variant="outlined" to="/register">
+                        Créer un compte
+                    </Button>
+                </div>
+            </Card>
         );
     }
 }

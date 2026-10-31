@@ -31,13 +31,12 @@
     "main": "index.js",
     "dependencies": {
         "@babel/runtime": "^8.0.8",
+        "compression": "^1.8.2",
         "express": "^5.3.0",
         "helmet": "^8.3.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "react-responsive-carousel": "^3.2.23",
-        "react-router-dom": "^7.18.4",
-        "semantic-ui-react": "^2.1.5"
+        "react-router-dom": "^7.18.4"
     },
     "devDependencies": {
         "@babel/core": "^8.0.9",
@@ -48,9 +47,9 @@
         "babel-loader": "^10.1.1",
         "cross-env": "^10.1.0",
         "css-loader": "^7.1.5",
+        "mini-css-extract-plugin": "^2.10.2",
         "prettier": "^3.9.10",
         "react-refresh": "^0.19.0",
-        "style-loader": "^4.0.0",
         "terser-webpack-plugin": "^5.6.1",
         "webpack": "^5.112.2",
         "webpack-cli": "^7.2.3",
@@ -67,6 +66,7 @@
         "devStartShotgun": "cross-env-shell HAS_STARTED=true npm run dev",
         "devBuild": "webpack --config webpack.dev.config",
         "build": "webpack --config webpack.prod.config",
+        "budgets": "node scripts/check-budgets.mjs",
         "start": "node server.js",
         "v": "node -v"
     }

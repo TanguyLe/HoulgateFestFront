@@ -49,6 +49,11 @@ All the frontend servers are served by default at http://localhost:8000/.
 3. `npm run devBuild`: Performs a development build to generate the static asset of the website,
    must be used with `npm start` (see below).
 
+#### Design
+
+The site looks like a keynote stage, with its own components: see [DESIGN.md](./DESIGN.md).
+`npm run budgets` checks the size of a production build.
+
 #### Production
 
 1. `npm run build`: Performs a production build to generate the static asset of the website,

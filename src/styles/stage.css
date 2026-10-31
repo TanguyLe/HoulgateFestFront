@@ -1,0 +1,86 @@
+/* The stage: a near-black keynote stage lit by four flat colours. Dark is the site's identity,
+   there is no light theme. The components keep reading the M3 role names
+   (--md-sys-color-*), defined here for the stage. */
+
+:root {
+    color-scheme: dark;
+
+    /* The four colours, flat, for shapes and accents. Text on them is the stage's ink */
+    --stage-blue: #4285f4;
+    --stage-red: #ea4335;
+    --stage-yellow: #fbbc04;
+    --stage-green: #34a853;
+    --stage-ink: #0e0f12;
+
+    /* Tints of the four colours, readable as text on the stage (contrast >= 7:1) */
+    --stage-blue-text: #8ab4f8;
+    --stage-red-text: #f28b82;
+    --stage-yellow-text: #fdd663;
+    --stage-green-text: #81c995;
+
+    /* Roles: the stage and its raised surfaces */
+    --md-sys-color-background: #0e0f12;
+    --md-sys-color-on-background: #f1f3f4;
+    --md-sys-color-surface: #0e0f12;
+    --md-sys-color-on-surface: #f1f3f4;
+    --md-sys-color-surface-variant: #2a2d33;
+    --md-sys-color-on-surface-variant: #b4b9c1;
+    --md-sys-color-surface-dim: #0e0f12;
+    --md-sys-color-surface-bright: #2f3238;
+    --md-sys-color-surface-container-lowest: #09090b;
+    --md-sys-color-surface-container-low: #15171b;
+    --md-sys-color-surface-container: #1b1d22;
+    --md-sys-color-surface-container-high: #22252b;
+    --md-sys-color-surface-container-highest: #2b2e35;
+    --md-sys-color-inverse-surface: #f1f3f4;
+    --md-sys-color-inverse-on-surface: #0e0f12;
+    --md-sys-color-outline: #70757e;
+    --md-sys-color-outline-variant: #33363d;
+    --md-sys-color-shadow: #000000;
+    --md-sys-color-scrim: #000000;
+
+    /* Roles: the blue leads (actions, links, selection) */
+    --md-sys-color-primary: var(--stage-blue);
+    --md-sys-color-on-primary: var(--stage-ink);
+    --md-sys-color-primary-container: #1c2b47;
+    --md-sys-color-on-primary-container: #d2e3fc;
+    --md-sys-color-inverse-primary: #1a73e8;
+    --md-sys-color-surface-tint: var(--stage-blue);
+    --md-sys-color-secondary: #aecbfa;
+    --md-sys-color-on-secondary: var(--stage-ink);
+    --md-sys-color-secondary-container: #2a3140;
+    --md-sys-color-on-secondary-container: #e3eaf6;
+
+    /* Roles: the yellow for what is pending or needs attention */
+    --md-sys-color-tertiary: var(--stage-yellow-text);
+    --md-sys-color-on-tertiary: var(--stage-ink);
+    --md-sys-color-tertiary-container: #3a2f0b;
+    --md-sys-color-on-tertiary-container: #fde49b;
+
+    /* Roles: the red for errors and what can't be undone */
+    --md-sys-color-error: var(--stage-red-text);
+    --md-sys-color-on-error: var(--stage-ink);
+    --md-sys-color-error-container: #3d1c1a;
+    --md-sys-color-on-error-container: #fad2cf;
+}
+
+/* Each edition of the history takes one of the four colours, in turn */
+.accent-blue {
+    --accent: var(--stage-blue);
+    --accent-text: var(--stage-blue-text);
+}
+
+.accent-red {
+    --accent: var(--stage-red);
+    --accent-text: var(--stage-red-text);
+}
+
+.accent-yellow {
+    --accent: var(--stage-yellow);
+    --accent-text: var(--stage-yellow-text);
+}
+
+.accent-green {
+    --accent: var(--stage-green);
+    --accent-text: var(--stage-green-text);
+}

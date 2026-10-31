@@ -19,3 +19,9 @@ _book
 
 .vercel
 front-env.env
+
+*.min.css
+.lighthouseci
+
+# Built page chunks
+web/chunks
