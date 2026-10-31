@@ -1,0 +1,163 @@
+/* ---------- Checklist ---------- */
+
+.checklists {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: var(--s-5);
+}
+
+.checklist {
+    border: var(--line);
+}
+
+.checklist__title {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+    padding: var(--s-4);
+    border-bottom: var(--line);
+    background: var(--ink);
+    color: var(--paper);
+    font-size: var(--fs-xl);
+}
+
+.checklist__num {
+    color: var(--accent);
+}
+
+.checklist__items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.checklist__items li + li {
+    border-top: var(--line-thin);
+}
+
+.checklist__item {
+    padding: var(--s-4);
+    font-weight: 500;
+    font-size: 1.0625rem;
+}
+
+.checklist__item:hover {
+    background: var(--paper-2);
+}
+
+.checklist__item input:checked + span {
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    color: var(--muted);
+}
+
+/* ---------- Iframes ---------- */
+
+.frame--scores iframe {
+    height: min(900px, 75vh);
+    min-height: 480px;
+}
+
+.frame--trips {
+    width: min(100%, 440px);
+}
+
+.frame--trips iframe {
+    height: 180px;
+}
+
+.frame__bar .label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+}
+
+/* ---------- 404 ---------- */
+
+.not-found {
+    padding: var(--s-7) 0;
+}
+
+.not-found__code {
+    margin: var(--s-2) 0 var(--s-4);
+    font-size: clamp(8rem, 4rem + 22vw, 24rem);
+    line-height: 0.78;
+    color: var(--ink);
+    text-shadow: 0.04em 0.04em 0 var(--accent);
+}
+
+.not-found__text {
+    max-width: 34rem;
+    margin-bottom: var(--s-5);
+    font-size: var(--fs-lg);
+    font-weight: 500;
+}
+
+/* ---------- Forms pages ---------- */
+
+.form--wide {
+    max-width: 40rem;
+}
+
+/* ---------- Admin ---------- */
+
+.admin-section {
+    display: grid;
+    gap: var(--s-4);
+}
+
+.admin-section .notice + .notice {
+    margin-top: 0;
+}
+
+.admin-section__title {
+    margin-top: var(--s-4);
+    font-size: var(--fs-xl);
+}
+
+.admin-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+}
+
+.admin-toolbar .input[type="search"] {
+    width: min(100%, 18rem);
+}
+
+.admin-select {
+    width: auto;
+    min-width: 12rem;
+}
+
+.admin-mail {
+    margin-left: var(--s-2);
+    vertical-align: top;
+}
+
+.roommates {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.roommates__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: var(--s-2);
+    max-height: 16rem;
+    margin: var(--s-2) 0 0;
+    padding: var(--s-3);
+    overflow: auto;
+    border: var(--line);
+    list-style: none;
+}
+
+.roommates--error .roommates__list {
+    border-color: var(--danger);
+}
+
+.roommates--error legend {
+    color: var(--danger);
+}

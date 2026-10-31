@@ -1,12 +1,15 @@
 import React from "react";
 
 import ContactForm from "./components/contactForm";
+import { PageHead } from "../ui";
 
 let ContactPage = () => {
     return (
         <div>
-            <h1> Contact </h1>
-            <ContactForm />
+            <PageHead kicker="Écrire aux orgas" title="Contact" />
+            <div className="page-body">
+                <ContactForm />
+            </div>
         </div>
     );
 };

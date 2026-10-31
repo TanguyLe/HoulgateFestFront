@@ -1,8 +1,8 @@
 import React from "react";
-import { Icon, Message } from "semantic-ui-react";
 
 import { EDITIONS_ENDPOINT } from "../shotgun/constants";
 import { getCallApi } from "../utils/api/fetchMiddleware";
+import { Loading, Notice, PageHead } from "../ui";
 
 // The scores board of the current edition, set from the editions tab of the admin interface
 class ScoresPage extends React.Component {
@@ -24,30 +24,47 @@ class ScoresPage extends React.Component {
             .catch(() => this.setState({ loading: false }));
     }
 
-    render() {
-        if (this.state.loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement du tableau des scores...</Message.Content>
-                </Message>
-            );
+    renderBoard() {
+        if (this.state.loading) return <Loading>Chargement du tableau des scores...</Loading>;
 
         if (!this.state.scoresBoardUrl)
             return (
-                <Message info>
-                    <Message.Content>
-                        Le tableau des scores n'est pas encore disponible cette année. Reviens plus
-                        tard !
-                    </Message.Content>
-                </Message>
+                <Notice type="info">
+                    Le tableau des scores n'est pas encore disponible cette année. Reviens plus tard
+                    !
+                </Notice>
             );
 
         return (
-            <iframe
-                style={{ height: "900px", width: "100%", border: "none" }}
-                src={this.state.scoresBoardUrl}
-            />
+            <div className="frame frame--scores">
+                <div className="frame__bar">
+                    <span className="label">
+                        <span className="live-dot" aria-hidden="true" /> En direct
+                    </span>
+                    <a
+                        className="label"
+                        href={this.state.scoresBoardUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Plein écran ↗
+                    </a>
+                </div>
+                <iframe title="Tableau des scores" src={this.state.scoresBoardUrl} />
+            </div>
+        );
+    }
+
+    render() {
+        return (
+            <div>
+                <PageHead
+                    kicker="Tableau des scores"
+                    title="Scores"
+                    marquee={["Qui va gagner", "Scores", "Qui va gagner", "Scores"]}
+                />
+                {this.renderBoard()}
+            </div>
         );
     }
 }

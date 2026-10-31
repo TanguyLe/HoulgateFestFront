@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Input, Label, Table } from "semantic-ui-react";
 
 import { toDateInput, toDatetimeInput, fromDateInput, fromDatetimeInput } from "../adminApi";
+import { Spinner, Tag, cx } from "../../ui";
 
 const toDraft = (edition) => ({
     year: edition.year !== undefined ? String(edition.year) : "",
@@ -33,7 +33,8 @@ class EditionRow extends React.Component {
         if (prevProps.edition !== this.props.edition) this.reset();
     }
 
-    handleChange(event, { name, value }) {
+    handleChange(event) {
+        const { name, value } = event.target;
         this.setState({ draft: Object.assign({}, this.state.draft, { [name]: value }) });
     }
 
@@ -68,92 +69,98 @@ class EditionRow extends React.Component {
         const { draft, saving } = this.state;
         const isNew = !edition._id;
         const dirty = this.isDirty();
+        const label = isNew ? "nouvelle édition" : "édition " + edition.year;
 
         return (
-            <Table.Row positive={isCurrent} warning={dirty && !isNew}>
-                <Table.Cell>
-                    <Input
+            <tr className={cx(isCurrent && "row--ok", dirty && !isNew && "row--warn")}>
+                <td className="nowrap">
+                    <input
+                        className="input"
                         name="year"
                         type="number"
                         value={draft.year}
                         onChange={this.handleChange}
                         placeholder="Année"
-                        style={{ width: "7em" }}
-                    />
-                    {isNew && (
-                        <Label horizontal style={{ marginLeft: "0.5em" }}>
-                            Nouvelle
-                        </Label>
-                    )}
-                    {isCurrent && (
-                        <Label color="green" horizontal style={{ marginLeft: "0.5em" }}>
-                            En cours
-                        </Label>
-                    )}
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
+                        aria-label={"Année, " + label}
+                        style={{ width: "6.5em" }}
+                    />{" "}
+                    {isNew && <Tag>Nouvelle</Tag>}
+                    {isCurrent && <Tag tone="ok">En cours</Tag>}
+                </td>
+                <td>
+                    <input
+                        className="input"
                         name="weekendDate"
                         type="date"
                         value={draft.weekendDate}
                         onChange={this.handleChange}
+                        aria-label={"Date du weekend, " + label}
                     />
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
+                </td>
+                <td>
+                    <input
+                        className="input"
                         name="shotgunDate"
                         type="datetime-local"
                         value={draft.shotgunDate}
                         onChange={this.handleChange}
+                        aria-label={"Date et heure du shotgun, " + label}
                     />
-                </Table.Cell>
-                <Table.Cell>
-                    <Input
+                </td>
+                <td style={{ minWidth: "14em" }}>
+                    <input
+                        className="input"
                         name="scoresBoardUrl"
                         type="url"
                         value={draft.scoresBoardUrl}
                         onChange={this.handleChange}
                         placeholder="https://..."
-                        fluid
+                        aria-label={"Lien du tableau des scores, " + label}
                     />
-                </Table.Cell>
-                <Table.Cell collapsing textAlign="right">
+                </td>
+                <td className="nowrap">
                     {isNew ? (
-                        <Button
-                            primary
-                            icon="plus"
-                            content="Créer"
-                            loading={saving}
+                        <button
+                            type="button"
+                            className="btn btn--small btn--primary"
                             disabled={saving || !this.isValid()}
                             onClick={this.save}
-                        />
+                        >
+                            {saving && <Spinner />} Créer
+                        </button>
                     ) : (
-                        <Button.Group>
-                            <Button
-                                primary
-                                icon="save"
+                        <div className="btn-row">
+                            <button
+                                type="button"
+                                className="btn btn--small btn--primary"
                                 title="Enregistrer"
-                                loading={saving}
                                 disabled={saving || !dirty || !this.isValid()}
                                 onClick={this.save}
-                            />
-                            <Button
-                                icon="undo"
+                            >
+                                {saving && <Spinner />} Enregistrer
+                            </button>
+                            <button
+                                type="button"
+                                className="btn btn--small"
                                 title="Annuler les modifications"
                                 disabled={saving || !dirty}
                                 onClick={this.reset}
-                            />
-                            <Button
-                                negative
-                                icon="trash"
+                            >
+                                Annuler
+                            </button>
+                            <button
+                                type="button"
+                                className="btn btn--small btn--danger"
                                 title="Supprimer"
                                 disabled={saving}
                                 onClick={() => onDelete(edition)}
-                            />
-                        </Button.Group>
+                            >
+                                Supprimer
+                            </button>
+                        </div>
                     )}
-                </Table.Cell>
-            </Table.Row>
+                </td>
+            </tr>
         );
     }
 }

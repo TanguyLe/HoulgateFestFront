@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dropdown, Form, Message, Modal } from "semantic-ui-react";
+import { Dialog, Field, Notice, Spinner } from "../../ui";
 
 // Edits the owner and the roommates of a shotgun. Only the activated users who aren't in another
 // shotgun are offered: the back refuses the others.
@@ -25,7 +25,13 @@ class ShotgunEditModal extends React.Component {
 
         return users
             .filter((user) => user.activated && !busy.has(user._id) && !excluded.includes(user._id))
-            .map((user) => ({ key: user._id, value: user._id, text: user.username || user.email }));
+            .map((user) => ({ key: user._id, value: user._id, text: user.username || user.email }))
+            .sort((a, b) => a.text.localeCompare(b.text, "fr", { sensitivity: "base" }));
+    }
+
+    toggleRoommate(userId, checked) {
+        const roommates = this.state.roommates.filter((id) => id !== userId);
+        this.setState({ roommates: checked ? roommates.concat(userId) : roommates });
     }
 
     render() {
@@ -34,65 +40,92 @@ class ShotgunEditModal extends React.Component {
         const isPreShotgun = shotgun.status === "preShotgunned";
         const nbBeds = shotgun.room ? shotgun.room.nbBeds : 0;
         const tooMany = 1 + roommates.length > nbBeds;
+        const ownerOptions = this.getOptions(roommates);
+        // the current owner stays selectable even if the filter would hide it
+        const hasOwner = !user || ownerOptions.some((option) => option.value === user);
 
         return (
-            <Modal open size="small" onClose={onClose}>
-                <Modal.Header>
-                    {(isPreShotgun ? "Pré-shotgun" : "Shotgun") +
-                        " de la chambre " +
-                        (shotgun.room ? shotgun.room.text : "?")}
-                </Modal.Header>
-                <Modal.Content>
-                    {error && <Message error content={error} />}
-                    <Form>
-                        <Form.Field>
-                            <label>Propriétaire</label>
-                            <Dropdown
-                                selection
-                                search
-                                placeholder="Propriétaire"
-                                value={user}
-                                options={this.getOptions(roommates)}
-                                onChange={(event, { value }) => this.setState({ user: value })}
-                            />
-                        </Form.Field>
-                        {isPreShotgun ? (
-                            <Message info size="small">
-                                Un pré-shotgun n'a pas encore de colocataires : seul le propriétaire
-                                peut être changé.
-                            </Message>
-                        ) : (
-                            <Form.Field error={tooMany}>
-                                <label>
-                                    Colocataires ({1 + roommates.length}/{nbBeds} lits)
-                                </label>
-                                <Dropdown
-                                    selection
-                                    search
-                                    multiple
-                                    placeholder="Colocataires"
-                                    value={roommates}
-                                    options={this.getOptions([user])}
-                                    onChange={(event, { value }) =>
-                                        this.setState({ roommates: value })
-                                    }
-                                />
-                            </Form.Field>
-                        )}
-                    </Form>
-                </Modal.Content>
-                <Modal.Actions>
-                    <Button content="Annuler" disabled={saving} onClick={onClose} />
-                    <Button
-                        primary
-                        icon="save"
-                        content="Enregistrer"
-                        loading={saving}
+            <Dialog
+                title={
+                    (isPreShotgun ? "Pré-shotgun" : "Shotgun") +
+                    " de la chambre " +
+                    (shotgun.room ? shotgun.room.text : "?")
+                }
+                onClose={onClose}
+                actions={[
+                    <button
+                        key="cancel"
+                        type="button"
+                        className="btn"
+                        disabled={saving}
+                        onClick={onClose}
+                    >
+                        Annuler
+                    </button>,
+                    <button
+                        key="save"
+                        type="button"
+                        className="btn btn--primary"
                         disabled={saving || !user || tooMany}
                         onClick={() => onSave({ user: user, roommates: roommates })}
-                    />
-                </Modal.Actions>
-            </Modal>
+                    >
+                        {saving && <Spinner />} Enregistrer
+                    </button>,
+                ]}
+            >
+                <div className="form">
+                    {error && <Notice type="error">{error}</Notice>}
+                    <Field label="Propriétaire" htmlFor="shotgun-owner">
+                        <select
+                            id="shotgun-owner"
+                            className="input"
+                            value={user || ""}
+                            onChange={(event) => this.setState({ user: event.target.value })}
+                        >
+                            <option value="" disabled>
+                                Propriétaire
+                            </option>
+                            {!hasOwner && <option value={user}>{shotgun.user.username}</option>}
+                            {ownerOptions.map((option) => (
+                                <option key={option.key} value={option.value}>
+                                    {option.text}
+                                </option>
+                            ))}
+                        </select>
+                    </Field>
+                    {isPreShotgun ? (
+                        <Notice type="info">
+                            Un pré-shotgun n'a pas encore de colocataires : seul le propriétaire
+                            peut être changé.
+                        </Notice>
+                    ) : (
+                        <fieldset className={"roommates" + (tooMany ? " roommates--error" : "")}>
+                            <legend className="field__label">
+                                Colocataires ({1 + roommates.length}/{nbBeds} lits)
+                            </legend>
+                            <ul className="roommates__list">
+                                {this.getOptions([user]).map((option) => (
+                                    <li key={option.key}>
+                                        <label className="check">
+                                            <input
+                                                type="checkbox"
+                                                checked={roommates.includes(option.value)}
+                                                onChange={(event) =>
+                                                    this.toggleRoommate(
+                                                        option.value,
+                                                        event.target.checked,
+                                                    )
+                                                }
+                                            />
+                                            <span>{option.text}</span>
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                        </fieldset>
+                    )}
+                </div>
+            </Dialog>
         );
     }
 }
