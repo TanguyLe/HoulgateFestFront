@@ -1,0 +1,290 @@
+/* ---------- Gloryhoul of Fame: a wall of posters ---------- */
+
+.wall {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    gap: clamp(var(--sp-4), 2.5vw, var(--sp-6));
+}
+
+@media (min-width: 720px) {
+    .wall__item--featured {
+        grid-column: span 2;
+    }
+
+    .wall__item--featured .poster-card__frame {
+        aspect-ratio: 16 / 9;
+    }
+
+    .wall__item--featured .poster-card__frame img {
+        object-fit: contain;
+    }
+}
+
+.poster-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 10px 10px 0;
+    border: 0;
+    border-radius: 4px;
+    background: #fffdf8;
+    color: var(--ink);
+    text-align: left;
+    box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.04),
+        var(--shadow-md);
+    transition:
+        transform 260ms var(--ease-out),
+        box-shadow 260ms var(--ease-out);
+}
+
+/* Alternate slight tilts: posters pinned on a wall */
+.wall__item:nth-child(3n + 1) .poster-card {
+    transform: rotate(-1.2deg);
+}
+
+.wall__item:nth-child(3n + 2) .poster-card {
+    transform: rotate(0.8deg);
+}
+
+.wall__item:nth-child(3n) .poster-card {
+    transform: rotate(-0.4deg);
+}
+
+.wall__item .poster-card:hover,
+.wall__item .poster-card:focus-visible {
+    transform: rotate(0) translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.poster-card:focus-visible {
+    box-shadow: var(--focus-ring), var(--shadow-lg);
+}
+
+/* A bit of tape on top */
+.poster-card::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: -9px;
+    left: 50%;
+    width: 72px;
+    height: 20px;
+    margin-left: -36px;
+    background: color-mix(in srgb, var(--accent) 35%, rgba(255, 250, 235, 0.75));
+    transform: rotate(-3deg);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.poster-card__frame {
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--accent-soft);
+}
+
+.poster-card__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms var(--ease-out);
+}
+
+.poster-card:hover .poster-card__frame img {
+    transform: scale(1.04);
+}
+
+.poster-card__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--stripes);
+}
+
+.poster-card__caption {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: var(--sp-3);
+    align-items: center;
+    padding: var(--sp-3) var(--sp-1) var(--sp-4);
+}
+
+.poster-card__year {
+    grid-row: span 2;
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--accent-strong);
+}
+
+.wall__item--featured .poster-card__year {
+    font-size: clamp(2.4rem, 2rem + 2vw, 3.4rem);
+}
+
+.poster-card__name {
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--sea-900);
+}
+
+.poster-card__dates {
+    font-size: var(--fs-sm);
+    color: var(--ink-muted);
+}
+
+.poster-card__more {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-strong);
+    color: #fff;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition:
+        opacity var(--dur),
+        transform var(--dur) var(--ease-out);
+}
+
+.poster-card:hover .poster-card__more,
+.poster-card:focus-visible .poster-card__more {
+    opacity: 1;
+    transform: none;
+}
+
+@media (hover: none) {
+    .poster-card__more {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ---------- One edition, in the dialog ---------- */
+
+.dialog--wide {
+    width: 880px;
+}
+
+.edition__intro {
+    display: grid;
+    gap: var(--sp-4);
+    align-items: center;
+    margin-bottom: var(--sp-5);
+}
+
+@media (min-width: 640px) {
+    .edition__intro {
+        grid-template-columns: 220px 1fr;
+    }
+}
+
+.edition__banner {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+}
+
+.edition__subtitle {
+    margin: var(--sp-1) 0;
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    color: var(--accent-strong);
+    line-height: 1.15;
+}
+
+.edition__tagline {
+    color: var(--ink-soft);
+    margin-bottom: var(--sp-2);
+}
+
+.edition__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+}
+
+.edition__story p:first-child::first-letter {
+    float: left;
+    margin: 6px 8px 0 0;
+    font-family: var(--font-display);
+    font-size: 3.2rem;
+    line-height: 0.8;
+    color: var(--accent-strong);
+}
+
+.edition__signature {
+    margin: var(--sp-4) 0 0;
+    text-align: right;
+    font-family: var(--font-display);
+    color: var(--accent-strong);
+}
+
+/* ---------- Photo strip ---------- */
+
+.gallery {
+    position: relative;
+    margin-top: var(--sp-5);
+}
+
+.gallery__strip {
+    display: flex;
+    gap: var(--sp-3);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    padding-bottom: var(--sp-2);
+    -webkit-overflow-scrolling: touch;
+}
+
+.gallery__strip:focus-visible {
+    border-radius: var(--radius-md);
+}
+
+.gallery__item {
+    flex: 0 0 min(86%, 560px);
+    margin: 0;
+    scroll-snap-align: center;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--sand-100);
+}
+
+.gallery__item img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.gallery__nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--sp-2);
+    margin-top: var(--sp-2);
+}
+
+.gallery__btn {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--sea-900);
+}
+
+.gallery__btn:hover {
+    background: var(--sand-100);
+}

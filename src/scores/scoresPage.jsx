@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Message } from "semantic-ui-react";
+import { Loading, Notice, PageHeader } from "../ui";
 
 import { EDITIONS_ENDPOINT } from "../shotgun/constants";
 import { getCallApi } from "../utils/api/fetchMiddleware";
@@ -25,29 +25,31 @@ class ScoresPage extends React.Component {
     }
 
     render() {
-        if (this.state.loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement du tableau des scores...</Message.Content>
-                </Message>
+        let content;
+        if (this.state.loading) content = <Loading>Chargement du tableau des scores...</Loading>;
+        else if (!this.state.scoresBoardUrl)
+            content = (
+                <Notice kind="info">
+                    Le tableau des scores n'est pas encore disponible cette année. Reviens plus tard
+                    !
+                </Notice>
             );
-
-        if (!this.state.scoresBoardUrl)
-            return (
-                <Message info>
-                    <Message.Content>
-                        Le tableau des scores n'est pas encore disponible cette année. Reviens plus
-                        tard !
-                    </Message.Content>
-                </Message>
+        else
+            content = (
+                <div className="frame">
+                    <iframe
+                        title="Tableau des scores"
+                        className="frame__iframe frame__iframe--scores"
+                        src={this.state.scoresBoardUrl}
+                    />
+                </div>
             );
 
         return (
-            <iframe
-                style={{ height: "900px", width: "100%", border: "none" }}
-                src={this.state.scoresBoardUrl}
-            />
+            <div className="scores-page">
+                <PageHeader kicker="En direct de la villa" title="Tableau des scores" />
+                {content}
+            </div>
         );
     }
 }

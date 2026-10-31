@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Message, List } from "semantic-ui-react";
+import { Button, ErrorList, Field } from "../../../ui";
 
 import {
     NAME,
@@ -36,7 +36,7 @@ class PasswordResetForm extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleClickReset = this.handleClickReset.bind(this);
@@ -127,8 +127,9 @@ class PasswordResetForm extends React.Component {
         this.validateField(name, value);
     }
 
-    handleKeyPress(event) {
-        if (this.isFormValid() && event.key === "Enter") this.handleClickSubmit();
+    handleSubmit(event) {
+        event.preventDefault();
+        if (this.isFormValid()) this.handleClickSubmit();
     }
 
     handleKeyUp(event) {
@@ -146,24 +147,24 @@ class PasswordResetForm extends React.Component {
         clearTimeout(this.typing);
     }
 
+    errorMessages() {
+        return Object.keys(this.state).map((key) => this.state[key] && this.state[key].errorMsg);
+    }
+
     render() {
         const isFormValid = this.isFormValid(true);
 
         return (
-            <Form
-                error={!isFormValid}
-                onSubmit={this.handleSubmit}
-                onKeyPress={this.handleKeyPress}
-            >
+            <form className="form" onSubmit={this.handleSubmit} noValidate>
                 {RESET_PSWRD_DEF.map((elem, index) => {
-                    let name = elem[NAME];
+                    const name = elem[NAME];
                     return (
-                        <Form.Input
+                        <Field
                             required
                             error={!this.state[name].valid}
                             key={PSWRD_RESET_BLOCK_INDEX_PREFIX + index}
                             type={elem[TYPE]}
-                            fluid
+                            autoComplete={"new-password"}
                             label={upCaseFirstLetter(elem[LABEL])}
                             name={name}
                             value={this.state[name].value}
@@ -174,30 +175,13 @@ class PasswordResetForm extends React.Component {
                         />
                     );
                 })}
-                <Form.Group inline>
-                    <Form.Button
-                        type="submit"
-                        disabled={!this.isFormValid()}
-                        onClick={this.handleClickSubmit}
-                    >
+                {!isFormValid && <ErrorList messages={this.errorMessages()} />}
+                <div className="form__actions">
+                    <Button type="submit" variant="primary" disabled={!this.isFormValid()}>
                         Changement de mot de passe
-                    </Form.Button>
-                </Form.Group>
-                <Message error>
-                    <List bulleted>
-                        {Object.keys(this.state).map((key) => {
-                            const errorMsg = this.state[key].errorMsg;
-
-                            if (errorMsg)
-                                return (
-                                    <List.Item key={PSWRD_RESET_ERROR_MSG_PREFIX + key}>
-                                        {errorMsg}
-                                    </List.Item>
-                                );
-                        })}
-                    </List>
-                </Message>
-            </Form>
+                    </Button>
+                </div>
+            </form>
         );
     }
 }

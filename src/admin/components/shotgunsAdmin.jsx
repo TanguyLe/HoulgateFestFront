@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Confirm, Dropdown, Header, Icon, Label, Message, Table } from "semantic-ui-react";
+import { Badge, Button, ConfirmDialog, Loading, Notice } from "../../ui";
 
 import {
     ADMIN_EDITIONS_URL,
@@ -141,13 +141,7 @@ class ShotgunsAdmin extends React.Component {
         const { confirming, historizing, error, success } = this.state;
         const { users, editing, editError, deleting, saving } = this.state;
 
-        if (loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement des shotguns...</Message.Content>
-                </Message>
-            );
+        if (loading) return <Loading>Chargement des shotguns...</Loading>;
 
         const edition = this.getEdition();
         const alreadyHistorized = edition ? historyCounts[edition._id] || 0 : 0;
@@ -156,79 +150,82 @@ class ShotgunsAdmin extends React.Component {
         return (
             <div>
                 {error && (
-                    <Message error content={error} onDismiss={() => this.setState({ error: "" })} />
+                    <Notice kind="error" onDismiss={() => this.setState({ error: "" })}>
+                        {error}
+                    </Notice>
                 )}
                 {success && (
-                    <Message
-                        success
-                        content={success}
-                        onDismiss={() => this.setState({ success: "" })}
-                    />
+                    <Notice kind="success" onDismiss={() => this.setState({ success: "" })}>
+                        {success}
+                    </Notice>
                 )}
-                <Header as="h3">Shotguns en cours ({shotguns.length})</Header>
+                <h3 className="admin-section-title">Shotguns en cours ({shotguns.length})</h3>
                 {shotguns.length ? (
-                    <Table compact celled>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>Chambre</Table.HeaderCell>
-                                <Table.HeaderCell>Propriétaire</Table.HeaderCell>
-                                <Table.HeaderCell>Colocataires</Table.HeaderCell>
-                                <Table.HeaderCell collapsing>Statut</Table.HeaderCell>
-                                <Table.HeaderCell collapsing>Actions</Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
-                        <Table.Body>
-                            {shotguns.map((shotgun) => (
-                                <Table.Row key={shotgun._id}>
-                                    <Table.Cell>
-                                        {shotgun.room ? shotgun.room.text : "?"}
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        {shotgun.user ? shotgun.user.username : "?"}
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        {shotgun.roommates
-                                            .map((roommate) => roommate.username)
-                                            .join(", ") || "—"}
-                                    </Table.Cell>
-                                    <Table.Cell style={{ whiteSpace: "nowrap" }}>
-                                        {shotgun.status === "shotgunned" ? (
-                                            <Label color="green" size="small">
-                                                Shotgun
-                                            </Label>
-                                        ) : (
-                                            <Label color="orange" size="small">
-                                                Pré-shotgun
-                                            </Label>
-                                        )}
-                                    </Table.Cell>
-                                    <Table.Cell style={{ whiteSpace: "nowrap" }}>
-                                        <Button
-                                            compact
-                                            size="small"
-                                            icon="edit"
-                                            title="Modifier les personnes"
-                                            disabled={saving || !shotgun.room}
-                                            onClick={() =>
-                                                this.setState({ editing: shotgun, editError: "" })
-                                            }
-                                        />
-                                        <Button
-                                            compact
-                                            negative
-                                            size="small"
-                                            icon="trash"
-                                            title="Supprimer"
-                                            disabled={saving}
-                                            onClick={() => this.setState({ deleting: shotgun })}
-                                        />
-                                    </Table.Cell>
-                                </Table.Row>
-                            ))}
-                        </Table.Body>
-                    </Table>
+                    <div className="table-wrap">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>Chambre</th>
+                                    <th>Propriétaire</th>
+                                    <th>Colocataires</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {shotguns.map((shotgun) => (
+                                    <tr key={shotgun._id}>
+                                        <td>{shotgun.room ? shotgun.room.text : "?"}</td>
+                                        <td>{shotgun.user ? shotgun.user.username : "?"}</td>
+                                        <td>
+                                            {shotgun.roommates
+                                                .map((roommate) => roommate.username)
+                                                .join(", ") || "—"}
+                                        </td>
+                                        <td className="cell--nowrap">
+                                            {shotgun.status === "shotgunned" ? (
+                                                <Badge tone="ok">Shotgun</Badge>
+                                            ) : (
+                                                <Badge tone="warn">Pré-shotgun</Badge>
+                                            )}
+                                        </td>
+                                        <td className="cell--nowrap">
+                                            <span className="btn-group">
+                                                <Button
+                                                    size="sm"
+                                                    className="btn--icon"
+                                                    icon="edit"
+                                                    title="Modifier les personnes"
+                                                    aria-label="Modifier les personnes"
+                                                    disabled={saving || !shotgun.room}
+                                                    onClick={() =>
+                                                        this.setState({
+                                                            editing: shotgun,
+                                                            editError: "",
+                                                        })
+                                                    }
+                                                />
+                                                <Button
+                                                    variant="danger-ghost"
+                                                    size="sm"
+                                                    className="btn--icon"
+                                                    icon="trash"
+                                                    title="Supprimer"
+                                                    aria-label="Supprimer"
+                                                    disabled={saving}
+                                                    onClick={() =>
+                                                        this.setState({ deleting: shotgun })
+                                                    }
+                                                />
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 ) : (
-                    <p>Aucun shotgun en cours.</p>
+                    <p className="muted">Aucun shotgun en cours.</p>
                 )}
 
                 {editing && (
@@ -242,9 +239,9 @@ class ShotgunsAdmin extends React.Component {
                         onClose={() => this.setState({ editing: null })}
                     />
                 )}
-                <Confirm
+                <ConfirmDialog
                     open={deleting !== null}
-                    header={
+                    title={
                         deleting
                             ? "Supprimer le " +
                               (deleting.status === "shotgunned" ? "shotgun" : "pré-shotgun") +
@@ -254,52 +251,57 @@ class ShotgunsAdmin extends React.Component {
                             : ""
                     }
                     content="La chambre et toutes ses personnes seront libérées. Personne n'est prévenu par email."
-                    cancelButton="Annuler"
-                    confirmButton={{ content: "Supprimer", negative: true }}
+                    cancelLabel="Annuler"
+                    confirmLabel="Supprimer"
+                    danger
                     onCancel={() => this.setState({ deleting: null })}
                     onConfirm={this.deleteShotgun}
                 />
 
-                <Header as="h3">Historiser les shotguns</Header>
+                <h3 className="admin-section-title">Historiser les shotguns</h3>
                 <p>
                     Archive les shotguns dans l'historique de l'édition choisie, puis libère toutes
                     les chambres et tous les utilisateurs pour l'édition suivante. Les pré-shotguns
                     (réservations pas terminées) sont abandonnés.
                 </p>
-                <div className="rowFlex" style={{ flexWrap: "wrap", gap: "1em" }}>
-                    <Dropdown
-                        selection
-                        placeholder="Édition"
-                        value={editionId}
-                        options={editions.map((edition) => ({
-                            key: edition._id,
-                            value: edition._id,
-                            text:
-                                edition.year +
-                                (historyCounts[edition._id]
-                                    ? " (" + historyCounts[edition._id] + " déjà historisés)"
-                                    : ""),
-                        }))}
-                        onChange={(event, { value }) => this.setState({ editionId: value })}
-                    />
+                <div className="admin-toolbar">
+                    <select
+                        className="select"
+                        aria-label="Édition"
+                        value={editionId || ""}
+                        onChange={(event) => this.setState({ editionId: event.target.value })}
+                    >
+                        <option value="" disabled>
+                            Édition
+                        </option>
+                        {editions.map((edition) => (
+                            <option key={edition._id} value={edition._id}>
+                                {edition.year +
+                                    (historyCounts[edition._id]
+                                        ? " (" + historyCounts[edition._id] + " déjà historisés)"
+                                        : "")}
+                            </option>
+                        ))}
+                    </select>
                     <Button
-                        negative
+                        variant="danger"
                         icon="archive"
-                        content="Historiser"
                         loading={historizing}
                         disabled={!edition || historizing || shotguns.length === 0}
                         onClick={() => this.setState({ confirming: true })}
-                    />
+                    >
+                        Historiser
+                    </Button>
                 </div>
                 {edition && alreadyHistorized > 0 && shotguns.length > 0 && (
-                    <Message warning size="small">
+                    <Notice kind="warning">
                         L'édition {edition.year} a déjà {alreadyHistorized} shotgun(s) dans
                         l'historique : ceux des mêmes propriétaires seront remplacés.
-                    </Message>
+                    </Notice>
                 )}
-                <Confirm
+                <ConfirmDialog
                     open={confirming}
-                    header={edition ? "Historiser les shotguns de " + edition.year + " ?" : ""}
+                    title={edition ? "Historiser les shotguns de " + edition.year + " ?" : ""}
                     content={
                         shotguns.length -
                         preShotguns.length +
@@ -310,8 +312,9 @@ class ShotgunsAdmin extends React.Component {
                         ". Toutes les chambres seront libérées : personne ne pourra plus voir ces" +
                         " shotguns sur la page Shotgun."
                     }
-                    cancelButton="Annuler"
-                    confirmButton={{ content: "Historiser", negative: true }}
+                    cancelLabel="Annuler"
+                    confirmLabel="Historiser"
+                    danger
                     onCancel={() => this.setState({ confirming: false })}
                     onConfirm={this.historize}
                 />
