@@ -1,9 +1,16 @@
 import React from "react";
-import { Form, Message, List, Icon } from "semantic-ui-react";
 import { CONTACT_URL, CONTACT_DEF } from "../constants";
 import { postCallApi } from "../../utils/api/fetchMiddleware";
 import { upCaseFirstLetter } from "../../utils/miscFcts";
 import Captcha from "../../utils/captcha";
+import { Callout, ErrorList, Field, Spinner } from "../../ui";
+
+const AUTOCOMPLETE = {
+    mail: "email",
+    firstname: "given-name",
+    lastname: "family-name",
+    phone: "tel",
+};
 
 class ContactForm extends React.Component {
     constructor() {
@@ -33,6 +40,13 @@ class ContactForm extends React.Component {
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.reset = this.reset.bind(this);
         this.handleCaptchaToken = this.handleCaptchaToken.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    // Enter in a field submits the form through its submit button, when it's enabled
+    onSubmit(event) {
+        event.preventDefault();
+        if (this.isFormValid() && this.state.status === "input") this.handleSubmit();
     }
 
     handleCaptchaToken(token) {
@@ -147,78 +161,58 @@ class ContactForm extends React.Component {
     }
 
     render() {
-        const isFormValid = this.isFormValid(true);
+        const loading = this.state.status === "loading";
+
         return (
-            <Form
-                error={!isFormValid}
-                onSubmit={this.handleSubmit}
-                onKeyPress={this.handleKeyPress}
-                success={this.state.status === "sent"}
-            >
-                {Object.keys(CONTACT_DEF).map((name, index) => {
-                    if (CONTACT_DEF[name].htmlElem === "Input")
-                        return (
-                            <Form.Input
-                                required
-                                error={!this.state[name].valid}
-                                type={CONTACT_DEF[name].type}
-                                key={"formKey" + index}
-                                fluid
-                                label={upCaseFirstLetter(CONTACT_DEF[name].label)}
-                                name={name}
-                                value={this.state[name].value}
-                                onBlur={this.handleBlur}
-                                onKeyUp={this.handleKeyUp}
-                                onKeyDown={this.handleKeyDown}
-                                onChange={this.handleChange}
-                            />
-                        );
-                    else if (CONTACT_DEF[name].htmlElem === "TextArea")
-                        return (
-                            <Form.TextArea
-                                required
-                                error={!this.state[name].valid}
-                                type={CONTACT_DEF[name].type}
-                                key={"formKey" + index}
-                                label={upCaseFirstLetter(CONTACT_DEF[name].label)}
-                                name={name}
-                                value={this.state[name].value}
-                                onBlur={this.handleBlur}
-                                onKeyUp={this.handleKeyUp}
-                                onKeyDown={this.handleKeyDown}
-                                onChange={this.handleChange}
-                            />
-                        );
-                })}
-                <Form.Field>
+            <form className="form" onSubmit={this.onSubmit} noValidate>
+                {Object.keys(CONTACT_DEF).map((name, index) => (
+                    <Field
+                        required
+                        multiline={CONTACT_DEF[name].htmlElem === "TextArea"}
+                        error={!this.state[name].valid}
+                        type={
+                            CONTACT_DEF[name].htmlElem === "Input"
+                                ? CONTACT_DEF[name].type
+                                : undefined
+                        }
+                        key={"formKey" + index}
+                        label={upCaseFirstLetter(CONTACT_DEF[name].label)}
+                        name={name}
+                        autoComplete={AUTOCOMPLETE[name]}
+                        value={this.state[name].value}
+                        onBlur={this.handleBlur}
+                        onKeyUp={this.handleKeyUp}
+                        onKeyDown={this.handleKeyDown}
+                        onChange={this.handleChange}
+                    />
+                ))}
+                <div className="field">
                     <Captcha ref={this.captcha} onToken={this.handleCaptchaToken} />
-                </Form.Field>
-                <Form.Group inline>
-                    <Form.Button
+                </div>
+                <ErrorList
+                    messages={Object.keys(this.state)
+                        .filter((key) => key !== "status")
+                        .map((key) => this.state[key].errorMsg)}
+                />
+                {this.state.status === "sent" && (
+                    <Callout kind="success" icon="💌">
+                        Ton message a bien été transmis !
+                    </Callout>
+                )}
+                <div className="form__actions">
+                    <button
                         type="submit"
+                        className="btn btn--primary btn--lg"
                         disabled={!this.isFormValid() || this.state.status !== "input"}
                     >
-                        Envoyer
-                    </Form.Button>
-                    <Form.Button type="reset" onClick={this.reset}>
+                        {loading && <Spinner />}
+                        {loading ? "Envoi du message en cours.." : "Envoyer"}
+                    </button>
+                    <button type="reset" className="btn btn--ghost" onClick={this.reset}>
                         Réinitialiser
-                    </Form.Button>
-                </Form.Group>
-                <Message error>
-                    <List bulleted>
-                        {Object.keys(this.state).map((key) => {
-                            const errorMsg = this.state[key].errorMsg;
-                            if (errorMsg)
-                                return <List.Item key={"messageKey" + key}>{errorMsg}</List.Item>;
-                        })}
-                    </List>
-                </Message>
-                <Message success>Ton message a bien été transmis !</Message>
-                <Message info icon hidden={this.state.status !== "loading"}>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Envoi du message en cours..</Message.Content>
-                </Message>
-            </Form>
+                    </button>
+                </div>
+            </form>
         );
     }
 }

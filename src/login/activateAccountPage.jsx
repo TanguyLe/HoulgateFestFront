@@ -4,6 +4,8 @@ import withRouter from "../utils/withRouter";
 import { getCallApi } from "../utils/api/fetchMiddleware";
 import { login } from "./store";
 import { getActivateUserUrl } from "./constants";
+import AuthCard from "./components/authCard";
+import { Callout, Loading } from "../ui";
 
 class ActivateAccount extends React.Component {
     constructor() {
@@ -42,20 +44,26 @@ class ActivateAccount extends React.Component {
     }
 
     render() {
-        let display = "";
-        if (this.state.status === "loading") display = "Activation en cours...";
+        let display;
+        if (this.state.status === "loading" || this.state.status === "activating")
+            display = <Loading emoji="🔑">Activation en cours...</Loading>;
+        else if (this.state.activated)
+            display = (
+                <Callout kind="success" icon="🥳">
+                    Ton compte est activé!
+                </Callout>
+            );
         else
-            display =
-                "Ton compte est " +
-                (this.state.activated
-                    ? "activé!"
-                    : "désactivé. (Il y a une erreur, vérifie le lien)");
+            display = (
+                <Callout kind="error">
+                    Ton compte est désactivé. (Il y a une erreur, vérifie le lien)
+                </Callout>
+            );
 
         return (
-            <div className="activateAccountPage">
-                <h1> Activation de compte </h1>
+            <AuthCard emoji="🔑" title="Activation de compte">
                 {display}
-            </div>
+            </AuthCard>
         );
     }
 }

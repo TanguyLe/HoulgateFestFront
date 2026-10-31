@@ -1,5 +1,4 @@
 import React from "react";
-import { Form, Message, List } from "semantic-ui-react";
 
 import {
     NAME,
@@ -16,6 +15,14 @@ import { upCaseFirstLetter } from "../../../utils/miscFcts";
 import { postCallApi } from "../../../utils/api/fetchMiddleware";
 import { UNKNOWN_ERROR_MSG } from "../../../labels";
 import Captcha from "../../../utils/captcha";
+import { ErrorList, Field } from "../../../ui";
+
+const AUTOCOMPLETE = {
+    email: "email",
+    username: "username",
+    password: "new-password",
+    confirm: "new-password",
+};
 
 class SignUpForm extends React.Component {
     constructor() {
@@ -49,6 +56,13 @@ class SignUpForm extends React.Component {
         this.isFormValid = this.isFormValid.bind(this);
         this.isFieldValid = this.isFieldValid.bind(this);
         this.handleCaptchaToken = this.handleCaptchaToken.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    // Enter in a field submits the form through its submit button, when it's enabled
+    handleSubmit(event) {
+        event.preventDefault();
+        if (this.isFormValid()) this.handleClickSubmit();
     }
 
     resetState() {
@@ -171,25 +185,19 @@ class SignUpForm extends React.Component {
     }
 
     render() {
-        const isFormValid = this.isFormValid(true);
-
         return (
-            <Form
-                error={!isFormValid || !!this.state.captcha.errorMsg}
-                onSubmit={this.handleSubmit}
-                onKeyPress={this.handleKeyPress}
-            >
+            <form className="form" onSubmit={this.handleSubmit} noValidate>
                 {SIGN_UP_DEF.map((elem, index) => {
                     let name = elem[NAME];
                     return (
-                        <Form.Input
+                        <Field
                             required
                             error={!this.state[name].valid}
                             key={SIGN_UP_FORM_BLOCK_INDEX_PREFIX + index}
                             type={elem[TYPE]}
-                            fluid
                             label={upCaseFirstLetter(elem[LABEL])}
                             name={name}
+                            autoComplete={AUTOCOMPLETE[name]}
                             value={this.state[name].value}
                             onBlur={this.handleBlur}
                             onKeyUp={this.handleKeyUp}
@@ -198,36 +206,25 @@ class SignUpForm extends React.Component {
                         />
                     );
                 })}
-                <Form.Field>
+                <div className="field">
                     <Captcha ref={this.captcha} onToken={this.handleCaptchaToken} />
-                </Form.Field>
-                <Form.Group inline>
-                    <Form.Button
+                </div>
+                <ErrorList
+                    messages={Object.keys(this.state).map((key) => this.state[key].errorMsg)}
+                />
+                <div className="form__actions">
+                    <button
                         type="submit"
+                        className="btn btn--primary btn--lg"
                         disabled={!this.isFormValid()}
-                        onClick={this.handleClickSubmit}
                     >
                         Inscription
-                    </Form.Button>
-                    <Form.Button type="reset" onClick={this.handleClickReset}>
+                    </button>
+                    <button type="reset" className="btn btn--ghost" onClick={this.handleClickReset}>
                         Reset
-                    </Form.Button>
-                </Form.Group>
-                <Message error>
-                    <List bulleted>
-                        {Object.keys(this.state).map((key) => {
-                            const errorMsg = this.state[key].errorMsg;
-
-                            if (errorMsg)
-                                return (
-                                    <List.Item key={REGISTRATION_ERROR_MSG_PREFIX + key}>
-                                        {errorMsg}
-                                    </List.Item>
-                                );
-                        })}
-                    </List>
-                </Message>
-            </Form>
+                    </button>
+                </div>
+            </form>
         );
     }
 }

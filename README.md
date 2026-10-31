@@ -54,3 +54,11 @@ All the frontend servers are served by default at http://localhost:8000/.
 1. `npm run build`: Performs a production build to generate the static asset of the website,
    must be used with `npm start` (see below)
 2. `npm run start`: Starting a server for an already built website (dev or prod version).
+
+## Editions & homepage phases
+
+Each edition's name, colors, banner and texts live in `src/editions/themes.js` (a year without
+configuration gets a "mystery theme" fallback). The homepage adapts to the current edition's dates
+(`teaser` → `shotgun` → `countdown` → `live` → `recap`, see `src/editions/phase.js`), and any phase
+can be previewed without a backend with `/?phase=teaser|shotgun|countdown|live|recap`
+(optionally `&year=2024` to try another edition's theme).

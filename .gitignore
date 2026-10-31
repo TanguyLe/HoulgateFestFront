@@ -13,6 +13,8 @@ _book
 .idea
 
 *.min.js
+# fonts emitted by the build
+/web/fonts
 *.min.js.LICENSE
 *.min.js.LICENSE.txt
 /back/api/mail/emailConfig.js

@@ -1,0 +1,305 @@
+.shotgun-header .sticker {
+    margin-bottom: var(--sp-3);
+}
+
+/* ---------------------------------------------------------------- Before the opening */
+
+.shotgun-wait {
+    max-width: 620px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.shotgun-wait__emoji {
+    font-size: 3rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.shotgun-wait__title {
+    margin-top: var(--sp-3);
+}
+
+.shotgun-wait .countdown {
+    margin: var(--sp-5) 0;
+}
+
+.shotgun-wait__tip {
+    margin: 0;
+}
+
+/* ---------------------------------------------------------------- The board */
+
+.shotgun-board__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--sp-5);
+}
+
+.shotgun-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.allFloors {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-6);
+}
+
+.floor__title {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-size: var(--fs-xl);
+    margin-bottom: var(--sp-4);
+}
+
+.floor__emoji {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--c-ink);
+    border-radius: 12px;
+    background: var(--grad-edition);
+    box-shadow: var(--shadow-sticker);
+    transform: rotate(-5deg);
+    font-size: 1.2rem;
+}
+
+.floor__count {
+    margin-left: auto;
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 800;
+    color: var(--c-ink-soft);
+}
+
+.floor__rooms {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--sp-4);
+}
+
+@media (max-width: 560px) {
+    .floor__rooms {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------------------------------------------------------------- Room cards */
+
+.room-card {
+    --room-edge: var(--c-ink);
+    --room-bg: var(--c-surface);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    padding: var(--sp-4);
+    border: 2px solid var(--room-edge);
+    border-radius: var(--r-lg);
+    background: var(--room-bg);
+    box-shadow: 0 5px 0 var(--room-edge);
+    transition:
+        transform var(--dur-med) var(--ease-spring),
+        background var(--dur-med);
+}
+
+.room-card--free:hover {
+    transform: translateY(-3px) rotate(-0.6deg);
+}
+
+.room-card--free {
+    --room-bg: linear-gradient(180deg, #fff 60%, var(--c-free-soft));
+}
+
+.room-card--locked {
+    opacity: 0.75;
+}
+
+.room-card--pending {
+    --room-bg: var(--c-pending-soft);
+    --room-edge: #8a5300;
+}
+
+.room-card--taken {
+    --room-bg: #fbf3f4;
+    --room-edge: #9b8a99;
+    color: var(--c-ink-soft);
+}
+
+.room-card--minePending {
+    --room-bg: var(--c-mine-soft);
+    --room-edge: var(--c-mine);
+    animation: pulse-ring 1.8s ease-out infinite;
+}
+
+.room-card--mine {
+    --room-bg: linear-gradient(135deg, var(--c-mine-soft), #fff 50%, var(--c-accent-soft));
+    --room-edge: var(--c-mine);
+    position: relative;
+}
+
+.room-card--mine::after {
+    content: "🎉";
+    position: absolute;
+    top: -16px;
+    right: -8px;
+    font-size: 1.8rem;
+    transform: rotate(14deg);
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+    animation: wiggle 1.2s var(--ease-out) 2;
+}
+
+.room-card--loading {
+    opacity: 0.7;
+}
+
+.room-card__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--sp-2) var(--sp-3);
+}
+
+.room-card__emoji {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--c-surface-2);
+    border: 2px solid var(--c-line);
+    font-size: 1.3rem;
+}
+
+.room-card__titles {
+    flex: 1 1 110px;
+    min-width: 0;
+}
+
+.room-card__name {
+    margin: 0;
+    font-size: var(--fs-lg);
+    line-height: 1.2;
+    overflow-wrap: break-word;
+}
+
+.room-card__capacity {
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    color: var(--c-ink-soft);
+}
+
+.room-card__people {
+    flex: 1;
+}
+
+.room-card__seats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.room-card__names {
+    margin: var(--sp-2) 0 0;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.room-card__timer {
+    margin: 0;
+    padding: var(--sp-1) var(--sp-3);
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, 0.7);
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
+    align-self: flex-start;
+}
+
+.room-card__timer.is-urgent {
+    color: var(--c-taken);
+    animation: wiggle 0.6s var(--ease-out) infinite;
+}
+
+.room-card__action {
+    white-space: normal;
+    text-align: center;
+}
+
+.btn--pending {
+    --btn-bg: var(--c-pending-bright);
+    --btn-fg: var(--c-ink);
+}
+
+/* ---------------------------------------------------------------- The dialog of a room */
+
+.beds-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+}
+
+.beds-form__intro {
+    margin: 0;
+}
+
+.beds-form__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+}
+
+.beds-form__bed {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    gap: var(--sp-3);
+}
+
+.beds-form__label {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-family: var(--font-display);
+    font-weight: 600;
+}
+
+@media (max-width: 380px) {
+    .beds-form__bed {
+        grid-template-columns: 1fr;
+        gap: var(--sp-1);
+    }
+}
+
+.shotgun-sheet__cancel {
+    margin-top: var(--sp-4);
+}
+
+.shotgun-success {
+    text-align: center;
+}
+
+.shotgun-success__badge {
+    font-size: 3.5rem;
+    animation: pop-in 0.6s var(--ease-spring);
+}
+
+.shotgun-success__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--fs-2xl);
+    margin-bottom: var(--sp-3);
+}

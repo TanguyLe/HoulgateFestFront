@@ -1,5 +1,4 @@
 import React from "react";
-import { Icon, Message } from "semantic-ui-react";
 
 import DisplayAllFloors from "./floor/DisplayAllFloors";
 import { getParisDatetimeFromAPI, objectMap } from "../../utils/miscFcts";
@@ -23,6 +22,7 @@ import {
     putCallApi,
 } from "../../utils/api/fetchMiddleware";
 import { getCredentials } from "../../login/store";
+import { Callout, Loading } from "../../ui";
 
 const INTERVAL_DURATION = 15000;
 
@@ -301,22 +301,14 @@ class ShotgunContainer extends React.Component {
     }
 
     render() {
-        if (this.state.loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement des pièces...</Message.Content>
-                </Message>
-            );
+        if (this.state.loading) return <Loading emoji="🛏️">Chargement des pièces...</Loading>;
 
         if (this.state.error)
             return (
-                <Message error>
-                    <Message.Content>
-                        Erreur de chargement des pièces, tu n'aurais pas du voir ça. Vérifie ta
-                        connection internet et recharge la page.
-                    </Message.Content>
-                </Message>
+                <Callout kind="error">
+                    Erreur de chargement des pièces, tu n'aurais pas du voir ça. Vérifie ta
+                    connection internet et recharge la page.
+                </Callout>
             );
 
         return (

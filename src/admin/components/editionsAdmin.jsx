@@ -1,5 +1,5 @@
 import React from "react";
-import { Confirm, Header, Icon, Message, Table } from "semantic-ui-react";
+import { Callout, Confirm, Loading } from "../../ui";
 
 import EditionRow from "./editionRow";
 import { ADMIN_EDITIONS_URL, getAdminEditionUrl } from "../constants";
@@ -91,59 +91,54 @@ class EditionsAdmin extends React.Component {
         const { loading, editions, newEdition, error, success, toDelete } = this.state;
         const currentYear = new Date().getFullYear();
 
-        if (loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement des éditions...</Message.Content>
-                </Message>
-            );
+        if (loading) return <Loading emoji="📅">Chargement des éditions...</Loading>;
 
         return (
-            <div>
-                <Message info size="small">
+            <div className="stack">
+                <Callout kind="info">
                     L'édition en cours est celle de l'année actuelle ({currentYear}) : sa date de
                     shotgun ouvre les réservations et décide du compte à rebours, et son tableau des
                     scores est affiché sur la page Scores.
-                </Message>
+                </Callout>
                 {error && (
-                    <Message error content={error} onDismiss={() => this.setState({ error: "" })} />
+                    <Callout kind="error" onDismiss={() => this.setState({ error: "" })}>
+                        {error}
+                    </Callout>
                 )}
                 {success && (
-                    <Message
-                        success
-                        content={success}
-                        onDismiss={() => this.setState({ success: "" })}
-                    />
+                    <Callout kind="success" onDismiss={() => this.setState({ success: "" })}>
+                        {success}
+                    </Callout>
                 )}
-                <Table compact celled>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>Année</Table.HeaderCell>
-                            <Table.HeaderCell>Date du weekend</Table.HeaderCell>
-                            <Table.HeaderCell>Date et heure du shotgun</Table.HeaderCell>
-                            <Table.HeaderCell>Lien du tableau des scores</Table.HeaderCell>
-                            <Table.HeaderCell />
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        <EditionRow edition={newEdition} onSave={this.create} />
-                        {editions.map((edition) => (
-                            <EditionRow
-                                key={edition._id}
-                                edition={edition}
-                                isCurrent={edition.year === currentYear}
-                                onSave={(body) => this.update(edition._id, body)}
-                                onDelete={(edition) => this.setState({ toDelete: edition })}
-                            />
-                        ))}
-                    </Table.Body>
-                </Table>
+                <div className="table-wrap">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Année</th>
+                                <th>Date du weekend</th>
+                                <th>Date et heure du shotgun</th>
+                                <th>Lien du tableau des scores</th>
+                                <th />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <EditionRow edition={newEdition} onSave={this.create} />
+                            {editions.map((edition) => (
+                                <EditionRow
+                                    key={edition._id}
+                                    edition={edition}
+                                    isCurrent={edition.year === currentYear}
+                                    onSave={(body) => this.update(edition._id, body)}
+                                    onDelete={(edition) => this.setState({ toDelete: edition })}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
                 {!editions.some((edition) => edition.year === currentYear) && (
-                    <Message warning>
-                        <Header as="h4">Pas d'édition pour {currentYear}</Header>
+                    <Callout kind="warning" title={"Pas d'édition pour " + currentYear}>
                         Sans édition pour l'année en cours, le shotgun reste fermé.
-                    </Message>
+                    </Callout>
                 )}
                 <Confirm
                     open={toDelete !== null}
@@ -155,8 +150,8 @@ class EditionsAdmin extends React.Component {
                               ". Cette action est définitive."
                             : ""
                     }
-                    cancelButton="Annuler"
-                    confirmButton={{ content: "Supprimer", negative: true }}
+                    confirmLabel="Supprimer"
+                    danger
                     onCancel={() => this.setState({ toDelete: null })}
                     onConfirm={this.confirmDelete}
                 />

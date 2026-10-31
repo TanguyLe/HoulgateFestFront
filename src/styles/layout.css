@@ -1,0 +1,383 @@
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.skip-link {
+    position: absolute;
+    left: var(--sp-3);
+    top: -60px;
+    z-index: 2000;
+    padding: var(--sp-2) var(--sp-4);
+    background: var(--c-ink);
+    color: #fff;
+    border-radius: var(--r-pill);
+}
+
+.skip-link:focus {
+    top: var(--sp-3);
+}
+
+/* ---------------------------------------------------------------- Page container */
+
+.page {
+    flex: 1;
+    width: 100%;
+    max-width: calc(var(--page-max) + 2 * var(--gutter));
+    margin: 0 auto;
+    padding: var(--sp-5) var(--gutter)
+        calc(var(--tabbar-h) + var(--sp-7) + env(safe-area-inset-bottom));
+}
+
+.page--wide {
+    max-width: calc(var(--page-max-wide) + 2 * var(--gutter));
+}
+
+@media (min-width: 1080px) {
+    .page {
+        padding-top: var(--sp-6);
+        padding-bottom: var(--sp-8);
+    }
+}
+
+.page-header {
+    margin-bottom: var(--sp-5);
+}
+
+.page-header h1 {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+}
+
+.page-header p {
+    color: var(--c-ink-soft);
+    font-size: var(--fs-lg);
+    max-width: 60ch;
+}
+
+.page-header .sticker {
+    font-size: var(--fs-sm);
+}
+
+/* ---------------------------------------------------------------- Top bar */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    background: rgba(255, 248, 241, 0.86);
+    backdrop-filter: saturate(1.4) blur(12px);
+    -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 2px solid var(--c-ink);
+}
+
+.topbar__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    height: var(--topbar-h);
+    max-width: calc(var(--page-max-wide) + 2 * var(--gutter));
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    color: var(--c-ink);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+}
+
+.brand:hover {
+    text-decoration: none;
+}
+
+.brand__badge {
+    display: inline-grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 2px solid var(--c-ink);
+    border-radius: 12px;
+    background: var(--grad-edition);
+    box-shadow: var(--shadow-sticker);
+    font-size: 1.2rem;
+    transform: rotate(-6deg);
+    transition: transform var(--dur-med) var(--ease-spring);
+}
+
+.brand:hover .brand__badge {
+    transform: rotate(8deg) scale(1.08);
+}
+
+.brand__name span {
+    color: var(--c-accent);
+}
+
+.topbar__nav {
+    display: none;
+    align-items: center;
+    gap: var(--sp-1);
+    margin-left: var(--sp-3);
+}
+
+.topbar__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--r-pill);
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-weight: 500;
+    text-decoration: none;
+    transition:
+        background var(--dur-fast),
+        transform var(--dur-fast) var(--ease-spring);
+}
+
+.topbar__link:hover {
+    text-decoration: none;
+    background: var(--c-surface);
+    transform: rotate(-2deg);
+}
+
+.topbar__link.active {
+    background: var(--c-ink);
+    color: #fff;
+}
+
+.topbar__user {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+@media (min-width: 1080px) {
+    .topbar__nav {
+        display: flex;
+    }
+}
+
+@media (max-width: 1079px) {
+    .topbar {
+        --topbar-h: 58px;
+    }
+
+    .brand {
+        font-size: 1.2rem;
+    }
+
+    .brand__badge {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+/* ---------------------------------------------------------------- User menu */
+
+.user-menu {
+    position: relative;
+}
+
+.user-menu__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: 4px 10px 4px 4px;
+    border: 2px solid var(--c-ink);
+    border-radius: var(--r-pill);
+    background: var(--c-surface);
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: var(--shadow-sticker);
+    max-width: 210px;
+    transition: transform var(--dur-fast) var(--ease-spring);
+}
+
+.user-menu__trigger:hover {
+    transform: rotate(-2deg);
+}
+
+.user-menu__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-menu__caret {
+    font-size: 0.8em;
+}
+
+@media (max-width: 420px) {
+    .user-menu__name {
+        max-width: 90px;
+    }
+}
+
+.user-menu__popover {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    z-index: 950;
+    min-width: 220px;
+    padding: var(--sp-2);
+    background: var(--c-surface);
+    border: 2px solid var(--c-ink);
+    border-radius: var(--r-md);
+    box-shadow: 0 5px 0 var(--c-ink);
+    animation: pop-in var(--dur-med) var(--ease-spring);
+    transform-origin: top right;
+}
+
+.user-menu__hello {
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: 2px dashed var(--c-line);
+    margin-bottom: var(--sp-1);
+    overflow-wrap: anywhere;
+}
+
+.user-menu__item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    width: 100%;
+    padding: var(--sp-2) var(--sp-3);
+    border: 0;
+    border-radius: var(--r-sm);
+    background: none;
+    color: var(--c-ink);
+    font-weight: 700;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.user-menu__item:hover {
+    background: var(--c-surface-2);
+    text-decoration: none;
+}
+
+/* ---------------------------------------------------------------- Bottom tab bar */
+
+.tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+    /* centered and capped on tablets */
+    padding: 6px max(6px, calc((100% - 600px) / 2)) env(safe-area-inset-bottom);
+    background: var(--c-surface);
+    border-top: 2px solid var(--c-ink);
+    box-shadow: 0 -6px 20px rgba(43, 26, 61, 0.08);
+}
+
+.tabbar__tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    margin: 0 2px;
+    border: 0;
+    border-radius: var(--r-md);
+    background: none;
+    color: var(--c-ink-soft);
+    font-family: var(--font-display);
+    font-size: 0.74rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.tabbar__tab:hover {
+    text-decoration: none;
+}
+
+.tabbar__icon {
+    font-size: 1.4rem;
+    transition: transform var(--dur-med) var(--ease-spring);
+}
+
+.tabbar__tab.active {
+    color: var(--c-ink);
+    background: var(--c-accent-soft);
+}
+
+.tabbar__tab.active .tabbar__icon {
+    transform: translateY(-3px) rotate(-8deg) scale(1.15);
+}
+
+.tabbar__tab:active .tabbar__icon {
+    transform: scale(0.85);
+}
+
+@media (min-width: 1080px) {
+    .tabbar {
+        display: none;
+    }
+}
+
+.more-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-3);
+}
+
+.more-grid__item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    border: 2px solid var(--c-ink);
+    border-radius: var(--r-md);
+    background: var(--c-surface-2);
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow-sticker);
+    transform: rotate(var(--tilt, 0deg));
+}
+
+.more-grid__item .emoji {
+    font-size: 1.5rem;
+}
+
+.more-grid__item:hover {
+    text-decoration: none;
+    animation: wiggle 0.5s var(--ease-out);
+}
+
+/* ---------------------------------------------------------------- Login gate */
+
+.gate {
+    max-width: 520px;
+    margin: var(--sp-6) auto;
+    text-align: center;
+}
+
+.gate__emoji {
+    font-size: 3rem;
+    margin-bottom: var(--sp-3);
+    animation: float 3s ease-in-out infinite;
+}
+
+.gate__title {
+    font-size: var(--fs-2xl);
+}

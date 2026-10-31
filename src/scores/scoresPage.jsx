@@ -1,8 +1,8 @@
 import React from "react";
-import { Icon, Message } from "semantic-ui-react";
 
 import { EDITIONS_ENDPOINT } from "../shotgun/constants";
 import { getCallApi } from "../utils/api/fetchMiddleware";
+import { Callout, Loading } from "../ui";
 
 // The scores board of the current edition, set from the editions tab of the admin interface
 class ScoresPage extends React.Component {
@@ -24,30 +24,60 @@ class ScoresPage extends React.Component {
             .catch(() => this.setState({ loading: false }));
     }
 
-    render() {
+    renderBoard() {
         if (this.state.loading)
-            return (
-                <Message info icon>
-                    <Icon name="circle notched" loading />
-                    <Message.Content>Chargement du tableau des scores...</Message.Content>
-                </Message>
-            );
+            return <Loading emoji="🏆">Chargement du tableau des scores...</Loading>;
 
         if (!this.state.scoresBoardUrl)
             return (
-                <Message info>
-                    <Message.Content>
-                        Le tableau des scores n'est pas encore disponible cette année. Reviens plus
-                        tard !
-                    </Message.Content>
-                </Message>
+                <Callout kind="info" icon="⏳">
+                    Le tableau des scores n'est pas encore disponible cette année. Reviens plus tard
+                    !
+                </Callout>
             );
 
         return (
-            <iframe
-                style={{ height: "900px", width: "100%", border: "none" }}
-                src={this.state.scoresBoardUrl}
-            />
+            <div className="frame">
+                <div className="frame__bar">
+                    <span className="frame__dots" aria-hidden="true">
+                        <i />
+                        <i />
+                        <i />
+                    </span>
+                    <span className="frame__title">Tableau des scores</span>
+                    <a href={this.state.scoresBoardUrl} target="_blank" rel="noreferrer">
+                        Ouvrir en grand ↗
+                    </a>
+                </div>
+                <iframe
+                    className="frame__iframe frame__iframe--scores"
+                    title="Tableau des scores"
+                    src={this.state.scoresBoardUrl}
+                />
+            </div>
+        );
+    }
+
+    render() {
+        return (
+            <div>
+                <header className="page-header">
+                    <span className="sticker sticker--yellow" style={{ "--tilt": "-3deg" }}>
+                        En direct
+                    </span>
+                    <h1>
+                        Scores{" "}
+                        <span className="emoji" aria-hidden="true">
+                            🏆
+                        </span>
+                    </h1>
+                    <p>
+                        Qui va repartir avec la gloire (et le cadeau) ? Suis le classement en
+                        direct.
+                    </p>
+                </header>
+                {this.renderBoard()}
+            </div>
         );
     }
 }

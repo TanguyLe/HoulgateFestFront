@@ -1,28 +1,31 @@
 import React from "react";
-import { Segment, Form, Button, Divider } from "semantic-ui-react";
 
 import { login } from "../../store";
 import { LOGIN_URL } from "../../constants";
 import { UNKNOWN_ERROR_MSG } from "../../../labels";
 import { postCallApi } from "../../../utils/api/fetchMiddleware";
+import { Callout, Field } from "../../../ui";
+
+const WRONG_FIELD_MSG = {
+    email: "On ne connaît pas cet email 🤔",
+    password: "Mauvais mot de passe, essaie encore !",
+};
 
 export default class LogIn extends React.Component {
     constructor() {
         super();
-        // The component is destroyed at closing by semantic-ui portal, which is not the expected behavior
-        // It is consequently coded without reset
+        // The form is unmounted when its dialog closes: it is consequently coded without reset
         this.state = { email: "", password: "", wrongField: "" };
 
         this.onClickLogin = this.onClickLogin.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.onClickRegister = this.onClickRegister.bind(this);
         this.onClickPasswordReset = this.onClickPasswordReset.bind(this);
     }
 
     componentDidMount() {
         const emailInput = document.querySelector("#emailInput");
-        setTimeout(() => emailInput.focus(), 0);
+        setTimeout(() => emailInput && emailInput.focus(), 0);
     }
 
     onClickPasswordReset() {
@@ -30,7 +33,8 @@ export default class LogIn extends React.Component {
         this.props.toClose();
     }
 
-    onClickLogin() {
+    onClickLogin(event) {
+        if (event) event.preventDefault();
         let failure = false;
 
         postCallApi(LOGIN_URL, this.state, false)
@@ -58,51 +62,58 @@ export default class LogIn extends React.Component {
         else this.setState({ [event.target.name]: event.target.value });
     }
 
-    handleKeyPress(event) {
-        if (event.key === "Enter") this.onClickLogin();
-    }
-
     onClickRegister() {
         this.props.history.push("/register");
         this.props.toClose();
     }
 
     render() {
+        const wrongMsg = WRONG_FIELD_MSG[this.state.wrongField];
+
         return (
-            <Form>
-                <Form.Input
-                    type="text"
-                    error={this.state.wrongField === "email"}
-                    fluid
+            <form className="form" onSubmit={this.onClickLogin} noValidate>
+                <Field
+                    type="email"
+                    autoComplete="email"
+                    inputMode="email"
                     id="emailInput"
                     label="Email"
                     name="email"
+                    error={this.state.wrongField === "email"}
                     value={this.state.email}
-                    onKeyPress={this.handleKeyPress}
                     onChange={this.handleChange}
                 />
-
-                <Form.Input
+                <Field
                     type="password"
-                    error={this.state.wrongField === "password"}
-                    fluid
+                    autoComplete="current-password"
+                    id="passwordInput"
                     label="Mot de passe"
                     name="password"
+                    error={this.state.wrongField === "password"}
                     value={this.state.password}
-                    onKeyPress={this.handleKeyPress}
                     onChange={this.handleChange}
                 />
-                <a onClick={this.onClickPasswordReset}> Mot de passe oublié ? </a>
-                <Segment>
-                    <Button primary fluid onClick={this.onClickLogin}>
-                        Je me connecte
-                    </Button>
-                    <Divider horizontal>Ou</Divider>
-                    <Button secondary fluid onClick={this.onClickRegister}>
-                        Je m'inscris
-                    </Button>
-                </Segment>
-            </Form>
+                {wrongMsg && (
+                    <Callout kind="error" icon="🙈">
+                        {wrongMsg}
+                    </Callout>
+                )}
+                <div>
+                    <button type="button" className="link-btn" onClick={this.onClickPasswordReset}>
+                        Mot de passe oublié ?
+                    </button>
+                </div>
+                <button type="submit" className="btn btn--primary btn--block btn--lg">
+                    Je me connecte
+                </button>
+                <div className="divider-or">ou</div>
+                <button type="button" className="btn btn--block" onClick={this.onClickRegister}>
+                    <span className="emoji" aria-hidden="true">
+                        ✍️
+                    </span>
+                    Je m'inscris
+                </button>
+            </form>
         );
     }
 }
