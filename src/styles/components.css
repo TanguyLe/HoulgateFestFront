@@ -1049,10 +1049,16 @@ html:has(.md-dialog[open]) {
     position: fixed;
     z-index: 30;
     left: 50%;
+    color: var(--md-sys-color-on-surface);
     bottom: calc(16px + var(--app-bottom-offset, 0px) + env(safe-area-inset-bottom));
     width: min(560px, calc(100% - 2 * var(--app-margin)));
     transform: translateX(-50%);
     pointer-events: none;
+}
+
+/* Above the summary bar of the shotgun page */
+body:has(.shotgun-bar) .md-snackbar-host {
+    bottom: calc(88px + var(--app-bottom-offset, 0px) + env(safe-area-inset-bottom));
 }
 
 .md-snackbar {

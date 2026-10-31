@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 
 import Icon from "./Icon";
+import { placeSnackbars } from "./Snackbar";
 import { IconButton } from "./Button";
 
 // One destination of the navigation bar or rail: a link, or a button (`onClick`) like "Plus"
@@ -78,10 +79,13 @@ export const Drawer = ({ open, onClose, title, sections }) => {
         if (open && !element.open) {
             opener.current = document.activeElement;
             element.showModal();
+            // The snackbars move into the dialog, the rest of the page being inert
+            placeSnackbars();
         } else if (!open && element.open) element.close();
     }, [open]);
 
     const handleClose = () => {
+        placeSnackbars();
         // Back to the menu button, unless a link of the drawer moved the focus to the new page
         const active = document.activeElement;
         const focusLost = !active || active === document.body || dialog.current.contains(active);

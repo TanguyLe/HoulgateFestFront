@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 import Photo from "./Photo";
+import { placeSnackbars } from "./Snackbar";
 import { IconButton } from "./Button";
 import { photos } from "../content/photos";
 
@@ -16,6 +17,8 @@ const PhotoViewer = ({ ids, index, onChange, onClose, label }) => {
         if (open && !element.open) {
             opener.current = document.activeElement;
             element.showModal();
+            // The snackbars move into the dialog, the rest of the page being inert
+            placeSnackbars();
         } else if (!open && element.open) element.close();
     }, [open]);
 
@@ -28,6 +31,7 @@ const PhotoViewer = ({ ids, index, onChange, onClose, label }) => {
     };
 
     const handleClose = () => {
+        placeSnackbars();
         if (opener.current && opener.current.isConnected) opener.current.focus();
         if (open) onClose();
     };

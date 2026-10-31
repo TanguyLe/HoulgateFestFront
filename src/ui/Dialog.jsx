@@ -1,6 +1,7 @@
 import React, { useEffect, useId, useRef } from "react";
 
 import Icon from "./Icon";
+import { placeSnackbars } from "./Snackbar";
 import { Button, IconButton } from "./Button";
 
 // M3 basic dialog, on a native modal <dialog>: the page behind is inert, Esc closes it and the
@@ -32,6 +33,8 @@ const Dialog = ({
         if (open && !element.open) {
             opener.current = document.activeElement;
             element.showModal();
+            // The snackbars move into the dialog, the rest of the page being inert
+            placeSnackbars();
             // The field to fill first, rather than the close button
             const first = element.querySelector("[data-autofocus]");
             if (first) first.focus();
@@ -51,9 +54,16 @@ const Dialog = ({
     giveFocusBackRef.current = giveFocusBack;
 
     // Gives the focus back on unmount too, when the dialog goes away with its parent
-    useEffect(() => () => giveFocusBackRef.current(), []);
+    useEffect(
+        () => () => {
+            placeSnackbars();
+            giveFocusBackRef.current();
+        },
+        [],
+    );
 
     const handleClose = () => {
+        placeSnackbars();
         giveFocusBack();
         if (open && onClose) onClose();
     };
