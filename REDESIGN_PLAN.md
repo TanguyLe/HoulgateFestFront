@@ -1,4 +1,34 @@
-# Redesign plan: HoulgateFest on Material 3
+# Redesign plan: HoulgateFest on a keynote stage
+
+## Direction change (2026-10-31): a Google I/O keynote stage
+
+The first version of this plan (below) was implemented on Material 3 app UI. The owner found it
+ugly: by "Google style" they meant the look of a Google keynote, not Material 3 apps. The
+direction is now the **Google I/O stage**:
+
+- A near-black stage (`#0e0f12`, not pure black), lots of empty space, one idea per section like
+  keynote slides. Dark is the identity: the light theme goes.
+- Huge headlines in **Google Sans Flex** (Google Fonts, SIL Open Font License, self-hosted latin
+  subset, weight axis), sentence case, tight tracking, a big contrast of sizes with the body.
+- The four colours (blue `#4285f4`, red `#ea4335`, yellow `#fbbc04`, green `#34a853`) as bold flat
+  shapes (circles, half discs, triangles, squares, pills, bars, arcs) placed with intent around
+  the headlines, not confetti. No Google logo, wordmark or anything that could pass for Google.
+- Big photos the whole content width, with large rounded corners. Restrained keynote motion:
+  sections and shapes fade and slide in once; nothing moves under `prefers-reduced-motion`.
+- The app pages (shotgun, trips, scores, account, admin) keep the stage but stay dense and
+  usable; room states still use a colour and a label.
+
+What changes from the plan below: the colour (hand-made stage tokens with the M3 role names
+instead of a generated M3 scheme from a seed photo, no per-edition schemes: the editions take the
+four colours in turn), the font (Google Sans Flex instead of Roboto Flex), no light theme, the
+signature (the shapes instead of the M3 "cookie" shape), and the layouts of the homepage and the
+history (slides). What stays: the components and their behaviour, the accessibility work, the
+navigation, the content data files, the photo selection, the alcohol rules, the budgets and
+Lighthouse CI. `DESIGN.md` describes the result.
+
+---
+
+## First version: Material 3 (implemented, then restyled)
 
 Branch `feat/material-redesign`, from `main` (2026-10-31). Independent from any other redesign
 work.

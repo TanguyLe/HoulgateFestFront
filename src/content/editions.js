@@ -1,5 +1,5 @@
-// The past editions, newest first, shown on the history page. Each one's card is tinted by its
-// own colour scheme (`.edition-<year>`, generated from src/content/themeSeeds.json).
+// The past editions, newest first, shown on the history page as slides, each in one of the
+// stage's four colours, taken in turn.
 // `name` is displayed in the history list only: never in a page title, a meta tag or a share image.
 export const editions = [
     {

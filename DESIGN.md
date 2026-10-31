@@ -1,52 +1,72 @@
 # Design of the HoulgateFest site
 
-The site follows [Material Design 3](https://m3.material.io) without a UI kit: the M3 tokens are
-CSS custom properties and the components are small React components in `src/ui`. This file says
-what the site should look like and the rules that keep it that way.
+The site looks like a keynote stage, in the spirit of a Google I/O keynote: a near-black stage,
+huge headlines in Google Sans, and four flat colours as geometric shapes placed with intent. It is
+built without a UI kit: tokens as CSS custom properties (with the M3 role names, so the components
+read them as before) and small React components in `src/ui`. This file says what the site should
+look like and the rules that keep it that way.
 
 ## Direction
 
-- **Ours, not a template.** Our own photos carry the site (the beach, the house, the costumes, the
-  games), the texts are the organisers' and are reread by one of them.
-- **The phone first.** Most visits are on a phone, often at night or outside, and the shotgun is a
-  race: the shotgun is in the bottom navigation bar, under the thumb.
-- **One signature.** The M3 "cookie" shape (`src/ui/EditionBadge.jsx`) holds the year of an
-  edition and the H of the logo. It is the only decorative shape.
+- **A stage, one idea per slide.** Lots of empty space; each section of the homepage and the
+  history says one thing (the edition, the photo, the shotgun date, the organisers' word, the
+  past editions) and slides in once as it reaches the screen.
+- **Huge type.** Headlines in Google Sans Flex, sentence case, tight tracking, far bigger than the
+  body: the contrast of sizes does the work, not boxes or colours behind text.
+- **Four flat colours as shapes.** Blue, red, yellow and green, as circles, half discs, triangles,
+  squares, pills, bars and arcs, placed next to a headline as a composition with a meaning (the
+  homepage's is the sun setting on the sea at Houlgate, with a red sail), never sprinkled.
+- **Ours, not a template, and not Google's.** No Google logo, wordmark or colour bar, nothing that
+  could pass for Google. Our own photos carry the site, the texts are the organisers'.
+- **The app pages stay tools.** Shotgun, trips, scores, account and admin keep the stage (dark,
+  Google Sans, the colours as accents) but stay dense: the shotgun is a race on a phone.
 
 ## Tokens
 
-| What                                         | Where                                             | Notes                                                                         |
-| -------------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------- |
-| Colour                                       | `src/styles/scheme.css`, generated                | `npm run theme` (run by `dev` and `build`) from `src/content/themeSeeds.json` |
-| Type, shape, elevation, motion, state layers | `src/styles/tokens.css`                           | M3 names: `--md-sys-typescale-*`, `--md-sys-shape-corner-*`…                  |
-| Defaults and type scale classes              | `src/styles/base.css`                             | `.headline-large`, `.body-medium`…                                            |
-| Components                                   | `src/styles/components.css`                       | One block per component of `src/ui`                                           |
-| Pages                                        | next to each page (`shotgun.css`, `history.css`…) |                                                                               |
+| What                                         | Where                                              | Notes                                                             |
+| -------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------------- |
+| Colour                                       | `src/styles/stage.css`                             | The stage, the four colours and the M3 roles mapped on them       |
+| Type, shape, elevation, motion, state layers | `src/styles/tokens.css`                            | M3 names, plus `--stage-*` for the keynote type and spacing       |
+| Defaults and type classes                    | `src/styles/base.css`                              | `.stage-headline`, `.stage-title`, `.stage-lead`, `.body-medium`… |
+| Components and shapes                        | `src/styles/components.css`                        | One block per component of `src/ui`                               |
+| Pages                                        | next to each page (`homepage.css`, `history.css`…) | Each page's compositions of shapes                                |
 
-- **Seed**: `#85b3dc`, the sea and the sky of the beach photo of 2020, picked with the quantizer and
-  score of `@material/material-color-utilities`. The tertiary palette is the sand of the same photo
-  (`#d99332`). Scheme variant: Vibrant.
-- **Editions**: each one has a seed from its old poster; `.edition-<year>` redefines the primary and
-  surface roles, so a card in the history takes its edition's colours.
-- **Dark mode** follows the system unless the user chose with the toggle (`data-theme` on `<html>`).
-- **Contrast** comes from the role pairs only: text in `on-X` on an `X` background. Never pick a
-  hex value in a component.
-- **Font**: Roboto Flex, latin subset, weight axis, self-hosted in `web/static/fonts` (34 KB).
+- **Stage**: `#0e0f12`, near black, not pure black; raised surfaces are greys up to `#2b2e35`.
+- **The four colours**: blue `#4285f4`, red `#ea4335`, yellow `#fbbc04`, green `#34a853`, flat,
+  for shapes, fills and large text; their light tints (`--stage-*-text`) for small text on the
+  stage. Text on a colour is the stage's ink (`#0e0f12`).
+- **Roles**: blue leads (actions, links, selection), yellow is pending or needs attention, red is
+  errors and what can't be undone, green is free. In the shotgun: free green, pending yellow, the
+  user's room blue, taken grey, always with a label and an icon.
+- **Editions** take the four colours in turn (`.accent-<colour>`, with a shape each).
+- **Dark only**: the stage is the identity, there is no light theme.
+- **Font**: Google Sans Flex (Google Fonts, SIL Open Font License), latin subset, weight axis,
+  self-hosted in `web/static/fonts` (50 KB).
 - **Icons**: Material Symbols Rounded paths in `src/ui/icons.js` (add one by copying its path from
   `@material-symbols/svg-400/rounded`). Filled for the selected navigation destination only.
+
+## Shapes and motion
+
+- `Shape` and `Shapes` (`src/ui/Shapes.jsx`) draw the shapes; each page's CSS places them
+  (`.shape--1`, `.shape--2`…) in a composition next to a headline, never behind text.
+- `Reveal` fades and slides a section in once, when it reaches the screen; shapes come in one
+  after the other. Under `prefers-reduced-motion`, nothing moves: everything is simply there.
 
 ## Components
 
 `src/ui` has Button (filled, tonal, outlined, elevated, text), IconButton, TextField and Select
 (outlined), Checkbox, Switch, Card, List, chips (assist, filter, input), Notice, Dialog and
 ConfirmDialog (a bottom sheet on phones with `sheet`), Snackbar, Tabs, progress indicators,
-navigation (bar, rail, drawer), Photo, PhotoViewer and EditionBadge.
+navigation (bar, rail, drawer), Photo, PhotoViewer, EditionBadge, Shape(s) and Reveal.
 
-Each one has the M3 state layers (hover 8 %, focus and pressed 10 %), a 48 × 48 px target, a
-visible `:focus-visible` ring, works in light and dark and honours `prefers-reduced-motion`.
-Dialogs are native modal `<dialog>`s: the page behind is inert, Esc closes, the focus comes back.
+Each one has state layers (hover 8 %, focus and pressed 10 %), a 48 × 48 px target, a visible
+`:focus-visible` ring and honours `prefers-reduced-motion`. Dialogs are native modal `<dialog>`s:
+the page behind is inert, Esc closes, the focus comes back (or to a fallback when its opener is
+gone).
 
-Errors and confirmations are snackbars (`showError`, `showSnackbar`), never `window.alert()`.
+Errors and confirmations are snackbars (`showError`, `showSnackbar`), never `window.alert()`. A new
+message replaces the current one; errors stay until dismissed; inside a dialog they sit at the top
+of its content.
 
 ## Layout
 
@@ -54,7 +74,9 @@ Errors and confirmations are snackbars (`showError`, `showSnackbar`), never `win
   Scores, Plus), the rest in the drawer.
 - Medium and expanded (≥ 600 px): navigation rail with a menu button for the drawer, content up to
   1040 px (1280 px for the shotgun and the admin).
+- Photos: the whole content width, large rounded corners (`--stage-radius-photo`).
 - Layout is CSS only: no JavaScript measuring the window.
+- The homepage is in the main bundle, the other pages are loaded when opened (`React.lazy`).
 
 ## Content
 
@@ -81,10 +103,11 @@ Loi Évin restricts how alcohol is shown online, which backs this up.
 
 ## Never use
 
-Gradients behind text, glassmorphism, floating blobs, 3D emoji, stock illustrations, AI-generated
-images, rows of three "feature" cards with an icon each, fake stats or testimonials, emoji
-in headings, copy full of em dashes or lists of three adjectives, `!important`, inline styles,
-IDs for styling.
+Gradients behind text, glows, glassmorphism, floating blobs, confetti of shapes, a generic SaaS
+hero (headline, gradient, screenshot), 3D emoji, stock illustrations, AI-generated images, rows of
+three "feature" cards with an icon each, fake stats or testimonials, emoji in headings, copy full
+of em dashes or lists of three adjectives, the Google logo, wordmark or colour bar, `!important`,
+inline styles, IDs for styling.
 
 ## Quality bar
 

@@ -51,8 +51,7 @@ All the frontend servers are served by default at http://localhost:8000/.
 
 #### Design
 
-The site follows Material Design 3 with its own components: see [DESIGN.md](./DESIGN.md).
-`npm run theme` generates the colour scheme (run by the dev and build commands), and
+The site looks like a keynote stage, with its own components: see [DESIGN.md](./DESIGN.md).
 `npm run budgets` checks the size of a production build.
 
 #### Production
