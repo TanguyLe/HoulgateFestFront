@@ -1,0 +1,289 @@
+/* ---------- Gloryhoul of Fame ---------- */
+
+.hof-head {
+    padding: var(--s-6) var(--gutter) var(--s-5);
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.hof-head .label {
+    color: var(--accent);
+}
+
+.hof-head__title {
+    margin-top: var(--s-3);
+    font-size: clamp(3.5rem, 1rem + 14vw, 14rem);
+    line-height: 0.8;
+}
+
+.hof-wall {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* the opened story spans a full row: the posters after it fill the holes before it */
+    grid-auto-flow: row dense;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: var(--line);
+}
+
+.hof-tile {
+    border-right: var(--line);
+    border-bottom: var(--line);
+}
+
+.hof-tile__button {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: var(--paper);
+    color: var(--ink);
+    text-align: left;
+    overflow: hidden;
+}
+
+.hof-tile__img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-bottom: var(--line);
+    filter: grayscale(1) contrast(1.1);
+    transition:
+        filter 240ms var(--ease),
+        transform 400ms var(--ease);
+}
+
+.hof-tile__year {
+    position: absolute;
+    top: var(--s-2);
+    left: var(--s-2);
+    padding: 0.06em 0.12em 0;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-size: clamp(2.5rem, 1rem + 4vw, 5rem);
+    line-height: 0.9;
+}
+
+.hof-tile__name {
+    padding: var(--s-3) var(--s-3) var(--s-1);
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    line-height: 0.95;
+    text-transform: uppercase;
+}
+
+.hof-tile__more {
+    align-self: end;
+    padding: 0 var(--s-3) var(--s-3);
+}
+
+.hof-tile__more::after {
+    content: " →";
+}
+
+.hof-tile__button:hover .hof-tile__img,
+.hof-tile__button:focus-visible .hof-tile__img,
+.hof-tile--open .hof-tile__img {
+    filter: none;
+    transform: scale(1.04);
+}
+
+.hof-tile__button:hover,
+.hof-tile--open .hof-tile__button {
+    background: var(--accent);
+    color: var(--accent-ink);
+}
+
+.hof-tile__button:focus-visible {
+    outline-offset: -6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hof-tile__img {
+        transition: none;
+    }
+
+    .hof-tile__button:hover .hof-tile__img,
+    .hof-tile--open .hof-tile__img {
+        transform: none;
+    }
+}
+
+/* Opened edition */
+
+.hof-wall__story {
+    grid-column: 1 / -1;
+    border-right: var(--line);
+    border-bottom: var(--line);
+}
+
+.hof-story {
+    scroll-margin-top: calc(var(--topbar-h) + var(--s-3));
+    background: var(--accent);
+    color: var(--accent-ink);
+    animation: story-in 260ms var(--ease);
+}
+
+@keyframes story-in {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hof-story {
+        animation: none;
+    }
+}
+
+.hof-story__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--s-4);
+    padding: var(--s-5) var(--gutter);
+    border-bottom: var(--bw) solid var(--accent-ink);
+}
+
+.hof-story__year {
+    margin: 0;
+    font-size: clamp(4rem, 1rem + 12vw, 11rem);
+    line-height: 0.78;
+}
+
+.hof-story__title {
+    font-size: var(--fs-2xl);
+    overflow-wrap: anywhere;
+}
+
+.hof-story__when {
+    margin: var(--s-2) 0 0;
+}
+
+.hof-story__close {
+    align-self: start;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: var(--bw) solid var(--accent-ink);
+    background: transparent;
+    color: var(--accent-ink);
+}
+
+.hof-story__close:hover {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.hof-story__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: var(--s-6);
+    align-items: start;
+    padding: var(--s-6) var(--gutter);
+    background: var(--paper);
+    color: var(--ink);
+}
+
+.hof-story__banner {
+    width: 100%;
+    height: auto;
+    border: var(--line);
+    box-shadow: 8px 8px 0 var(--accent);
+}
+
+.hof-photos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--line);
+    background: var(--ink);
+}
+
+.hof-photos li + li {
+    border-left: var(--line);
+}
+
+.hof-photos a {
+    display: block;
+    overflow: hidden;
+}
+
+.hof-photos img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: transform 400ms var(--ease);
+}
+
+.hof-photos a:hover img {
+    transform: scale(1.05);
+}
+
+.hof-signature {
+    margin: 0;
+    padding: var(--s-6) var(--gutter);
+    font-size: var(--fs-xl);
+    text-align: right;
+}
+
+@media (max-width: 1100px) {
+    .hof-wall {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .hof-wall {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hof-story__head {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .hof-story__year {
+        grid-column: 1;
+    }
+
+    .hof-story__head > div {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .hof-story__close {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .hof-story__body {
+        grid-template-columns: 1fr;
+        gap: var(--s-5);
+    }
+
+    /* swipeable photos */
+    .hof-photos {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+    }
+
+    .hof-photos li {
+        flex: 0 0 85%;
+        scroll-snap-align: start;
+    }
+}
+
+@media (max-width: 400px) {
+    .hof-tile__name {
+        font-size: 1.1rem;
+    }
+}
