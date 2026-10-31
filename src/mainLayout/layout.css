@@ -111,11 +111,8 @@ html:has(.shotgun-bar) {
     fill: var(--md-sys-color-primary);
 }
 
-.logo__mark text {
+.logo__mark .logo__letter {
     fill: var(--md-sys-color-on-primary);
-    font-family: var(--md-ref-typeface-brand);
-    font-size: 52px;
-    font-weight: 750;
 }
 
 .logo__name {
@@ -354,8 +351,11 @@ html:has(.shotgun-bar) {
 
 /* Page container */
 
+/* At least the screen's height, so the footer starts below the fold and doesn't jump down when
+   a page's content arrives (layout shift) */
 .page {
-    flex: 1;
+    flex: 1 0 auto;
+    min-height: calc(100dvh - var(--app-top-bar-height));
     width: 100%;
     max-width: calc(var(--app-content-max-width) + 2 * var(--app-margin));
     margin: 0 auto;

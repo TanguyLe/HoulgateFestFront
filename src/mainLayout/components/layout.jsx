@@ -116,8 +116,9 @@ const DefaultLayout = ({
                 Aller au contenu
             </a>
             <header className="top-app-bar">
-                <Link to="/" className="top-app-bar__logo" aria-label="HoulgateFest, accueil">
+                <Link to="/" className="top-app-bar__logo">
                     <Logo />
+                    <span className="visually-hidden">, accueil</span>
                 </Link>
                 <div className="top-app-bar__actions">
                     <ThemeToggle />
