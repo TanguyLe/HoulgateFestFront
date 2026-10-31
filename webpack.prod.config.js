@@ -21,6 +21,11 @@ module.exports = {
                 exclude: [/bin/],
                 use: ["style-loader", "css-loader"],
             },
+            // Self-hosted fonts, inlined: the CSP allows data: fonts and no other host
+            {
+                test: /\.woff2$/,
+                type: "asset/inline",
+            },
         ],
     },
     output: {
