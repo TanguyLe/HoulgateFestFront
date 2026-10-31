@@ -2,60 +2,69 @@ import React, { useState } from "react";
 
 import { editions, historySignature } from "../content/editions";
 import { photos } from "../content/photos";
-import { Button, EditionBadge, Photo, PhotoViewer } from "../ui";
+import { Button, Photo, PhotoViewer, Reveal, Shape } from "../ui";
 import "./history.css";
 
-// One edition, in its own colours (`.edition-<year>`, from its old poster)
-const EditionCard = ({ edition }) => {
+// The four colours, and a shape each, taken in turn by the editions
+const ACCENTS = [
+    ["blue", "circle"],
+    ["red", "triangle"],
+    ["yellow", "square"],
+    ["green", "half"],
+];
+
+// One edition, as a slide: its year huge in its colour, its name, its story, its photos
+const EditionSlide = ({ edition, index }) => {
     const [viewed, setViewed] = useState(null);
     const titleId = "edition-" + edition.year;
+    const [color, shape] = ACCENTS[index % ACCENTS.length];
 
     return (
-        <li>
-            <article className={"edition-card edition-" + edition.year} aria-labelledby={titleId}>
-                <header className="edition-card__header">
-                    <EditionBadge year={edition.year} />
-                    <div>
-                        <h2 id={titleId} className="headline-small">
+        <Reveal as="li" className={"edition accent-" + color}>
+            <article aria-labelledby={titleId}>
+                <header className="edition__header">
+                    <p className="edition__year" aria-hidden="true">
+                        {edition.year}
+                        <Shape kind={shape} color={color} className="edition__shape" />
+                    </p>
+                    <div className="edition__titles">
+                        <p className="stage-eyebrow">{edition.dates}</p>
+                        <h2 id={titleId} className="stage-subtitle">
                             <span className="visually-hidden">{edition.year} : </span>
                             {edition.name}
                         </h2>
-                        <p className="body-medium on-surface-variant">{edition.dates}</p>
                     </div>
                 </header>
-                <div className="prose body-large">
-                    {edition.text.map((paragraph) => (
-                        <p key={paragraph}>{paragraph}</p>
-                    ))}
-                </div>
-                {edition.photos.length > 0 && (
-                    <ul
-                        className={
-                            "edition-card__photos edition-card__photos--" + edition.photos.length
-                        }
-                    >
-                        {edition.photos.map((id, index) => (
-                            <li key={id}>
-                                <button
-                                    type="button"
-                                    className="photo-button"
-                                    onClick={() => setViewed(index)}
-                                    aria-label={"Agrandir : " + photos[id].alt}
-                                >
-                                    <Photo
-                                        id={id}
-                                        sizes="(min-width: 840px) 340px, (min-width: 600px) 45vw, 90vw"
-                                    />
-                                </button>
-                            </li>
+                <div className="edition__body">
+                    <div className="edition__text">
+                        {edition.text.map((paragraph) => (
+                            <p key={paragraph} className="stage-lead">
+                                {paragraph}
+                            </p>
                         ))}
-                    </ul>
-                )}
-                {edition.url && (
-                    <Button variant="text" href={edition.url} trailingIcon="openInNew">
-                        L'événement Facebook
-                    </Button>
-                )}
+                        {edition.url && (
+                            <Button variant="tonal" href={edition.url} trailingIcon="openInNew">
+                                L'événement Facebook
+                            </Button>
+                        )}
+                    </div>
+                    {edition.photos.length > 0 && (
+                        <ul className={"edition__photos edition__photos--" + edition.photos.length}>
+                            {edition.photos.map((id, photoIndex) => (
+                                <li key={id}>
+                                    <button
+                                        type="button"
+                                        className="photo-button"
+                                        onClick={() => setViewed(photoIndex)}
+                                        aria-label={"Agrandir : " + photos[id].alt}
+                                    >
+                                        <Photo id={id} sizes="(min-width: 1100px) 1040px, 100vw" />
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
                 <PhotoViewer
                     ids={edition.photos}
                     index={viewed}
@@ -64,25 +73,29 @@ const EditionCard = ({ edition }) => {
                     label={"Photos de l'édition " + edition.year}
                 />
             </article>
-        </li>
+        </Reveal>
     );
 };
 
 const HistoryPage = () => (
-    <>
-        <header className="page-header">
-            <h1 className="headline-large">Gloryhoul of Fame</h1>
-            <p className="body-large on-surface-variant">
-                Toutes les éditions depuis 2018, de la plus récente à la première.
-            </p>
+    <div className="history">
+        <header className="history__header">
+            <p className="stage-eyebrow">Depuis 2018</p>
+            <h1 className="stage-headline">Gloryhoul of Fame</h1>
+            <p className="stage-lead">Toutes les éditions, de la plus récente à la première.</p>
+            <div className="history__legend" aria-hidden="true">
+                {ACCENTS.map(([color, shape]) => (
+                    <Shape key={color} kind={shape} color={color} />
+                ))}
+            </div>
         </header>
         <ol className="editions">
-            {editions.map((edition) => (
-                <EditionCard key={edition.year} edition={edition} />
+            {editions.map((edition, index) => (
+                <EditionSlide key={edition.year} edition={edition} index={index} />
             ))}
         </ol>
         <p className="editions__signature title-medium">{historySignature}</p>
-    </>
+    </div>
 );
 
 export default HistoryPage;
