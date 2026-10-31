@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Icon } from "semantic-ui-react";
 
 import LoginModal from "./loginModal";
 import { getCallApi } from "../../utils/api/fetchMiddleware";
 import { EDITIONS_ENDPOINT } from "../../shotgun/constants";
 import { getMe } from "../../admin/adminApi";
 import { silentLogin, getCredentials, dispatch, logout, register, unregister } from "../store";
+import { Avatar } from "../../ui";
+import Icon from "../../ui/icons";
 
 class WhoAmI extends React.Component {
     constructor() {
@@ -20,11 +21,15 @@ class WhoAmI extends React.Component {
         if (creds.login === this.state.login) return;
 
         this.setState({ login: creds.login, isAdmin: false });
+        if (this.props.onAdminChange) this.props.onAdminChange(false);
         // Only to show the admin link: the back checks the rights on every admin call
         if (creds.login)
             getMe()
                 .then((me) => {
-                    if (this.state.login === creds.login) this.setState({ isAdmin: me.isAdmin });
+                    if (this.state.login === creds.login) {
+                        this.setState({ isAdmin: me.isAdmin });
+                        if (this.props.onAdminChange) this.props.onAdminChange(me.isAdmin);
+                    }
                 })
                 .catch(() => {});
     }
@@ -57,20 +62,34 @@ class WhoAmI extends React.Component {
     }
 
     render() {
-        return !this.state.login ? (
-            <div className="rowFlex">
-                <LoginModal />
-            </div>
-        ) : (
-            <div className="rowFlex">
+        if (!this.state.login)
+            return (
+                <div className="account">
+                    <LoginModal />
+                </div>
+            );
+
+        return (
+            <div className="account">
                 {this.state.isAdmin && (
-                    <Link to="/admin" className="paddingSides" title="Administration">
-                        <Icon name="settings" />
-                        Admin
+                    <Link to="/admin" className="account__admin" title="Administration">
+                        <Icon name="gear" size={18} />
+                        <span className="account__admin-label">Admin</span>
                     </Link>
                 )}
-                <div className="paddingSides">{this.state.login}</div>
-                <Button content="Déconnexion" onClick={logout} />
+                <span className="account__user">
+                    <Avatar name={this.state.login} />
+                    <span className="account__name">{this.state.login}</span>
+                </span>
+                <button
+                    type="button"
+                    className="account__logout"
+                    onClick={logout}
+                    title="Déconnexion"
+                >
+                    <Icon name="logout" size={18} />
+                    <span className="account__logout-label">Déconnexion</span>
+                </button>
             </div>
         );
     }

@@ -60,6 +60,9 @@ class Room extends React.Component {
         );
 
         let finalStatus = roomStatus;
+        // look of the card
+        let tone = "free";
+        let statusLabel = "Libre";
 
         /**
          * Logic here is rather simple in the end :
@@ -80,28 +83,39 @@ class Room extends React.Component {
                 buttonType = "green";
                 content = "Validé";
                 finalStatus = "shotgunSuccessful";
+                tone = "mine";
+                statusLabel = "À toi";
             } else {
                 buttonType = "red";
                 content = "Déjà shotgun";
                 disable = true;
+                tone = "taken";
+                statusLabel = "Pris";
             }
         } else if (roomStatus === ROOM_STATUS_PRESHOTGUNNED) {
             if (isUserRoom) {
                 content = "Finalise ton shotgun!";
                 finalStatus = "attributingBeds";
+                tone = "mine-pending";
+                statusLabel = "À finaliser";
             } else {
                 buttonType = "orange";
                 content = "Shotgun en cours...";
                 disable = true;
+                tone = "pending";
+                statusLabel = "En cours";
             }
         } else if (roomStatus === ROOM_STATUS_LOADING) {
             buttonType = "grey";
             content = "Chargement...";
             disable = true;
+            tone = "loading";
+            statusLabel = "…";
         } else if (shotgunOnGoingForUser) {
             // Remaining state is readyForShotgun, the case where no shotgun
             // is ongoing for the user is handled by the default
             disable = true;
+            tone = "locked";
         }
 
         return (
@@ -113,6 +127,8 @@ class Room extends React.Component {
                 user={this.props.user}
                 roommates={this.props.roommates}
                 userInfo={this.props.userInfo}
+                tone={tone}
+                statusLabel={statusLabel}
             >
                 {this.props.seats > 0 ? (
                     <ShotgunPortal

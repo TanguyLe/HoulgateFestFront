@@ -1,5 +1,4 @@
 import React from "react";
-import { Form, Message, List } from "semantic-ui-react";
 
 import {
     NAME,
@@ -15,6 +14,7 @@ import {
 import { upCaseFirstLetter } from "../../../utils/miscFcts";
 import { putCallApi } from "../../../utils/api/fetchMiddleware";
 import { UNKNOWN_ERROR_MSG } from "../../../labels";
+import { ErrorList, Field } from "../../../ui";
 
 class PasswordResetForm extends React.Component {
     constructor() {
@@ -44,6 +44,12 @@ class PasswordResetForm extends React.Component {
         this.validateField = this.validateField.bind(this);
         this.isFormValid = this.isFormValid.bind(this);
         this.isFieldValid = this.isFieldValid.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        if (this.isFormValid()) this.handleClickSubmit();
     }
 
     resetState() {
@@ -147,57 +153,50 @@ class PasswordResetForm extends React.Component {
     }
 
     render() {
-        const isFormValid = this.isFormValid(true);
-
         return (
-            <Form
-                error={!isFormValid}
-                onSubmit={this.handleSubmit}
-                onKeyPress={this.handleKeyPress}
-            >
+            <form className="form" onSubmit={this.handleSubmit} noValidate>
                 {RESET_PSWRD_DEF.map((elem, index) => {
                     let name = elem[NAME];
+                    const id = PSWRD_RESET_BLOCK_INDEX_PREFIX + index;
                     return (
-                        <Form.Input
+                        <Field
+                            key={id}
+                            htmlFor={id}
                             required
                             error={!this.state[name].valid}
-                            key={PSWRD_RESET_BLOCK_INDEX_PREFIX + index}
-                            type={elem[TYPE]}
-                            fluid
                             label={upCaseFirstLetter(elem[LABEL])}
-                            name={name}
-                            value={this.state[name].value}
-                            onBlur={this.handleBlur}
-                            onKeyUp={this.handleKeyUp}
-                            onKeyDown={this.handleKeyDown}
-                            onChange={this.handleChange}
-                        />
+                        >
+                            <input
+                                className="input"
+                                id={id}
+                                required
+                                aria-invalid={!this.state[name].valid}
+                                type={elem[TYPE]}
+                                name={name}
+                                autoComplete={"new-password"}
+                                value={this.state[name].value}
+                                onBlur={this.handleBlur}
+                                onKeyUp={this.handleKeyUp}
+                                onKeyDown={this.handleKeyDown}
+                                onChange={this.handleChange}
+                            />
+                        </Field>
                     );
                 })}
-                <Form.Group inline>
-                    <Form.Button
+                <div className="btn-row">
+                    <button
                         type="submit"
+                        className="btn btn--primary"
                         disabled={!this.isFormValid()}
-                        onClick={this.handleClickSubmit}
                     >
                         Changement de mot de passe
-                    </Form.Button>
-                </Form.Group>
-                <Message error>
-                    <List bulleted>
-                        {Object.keys(this.state).map((key) => {
-                            const errorMsg = this.state[key].errorMsg;
-
-                            if (errorMsg)
-                                return (
-                                    <List.Item key={PSWRD_RESET_ERROR_MSG_PREFIX + key}>
-                                        {errorMsg}
-                                    </List.Item>
-                                );
-                        })}
-                    </List>
-                </Message>
-            </Form>
+                    </button>
+                </div>
+                <ErrorList
+                    key={PSWRD_RESET_ERROR_MSG_PREFIX}
+                    messages={Object.keys(this.state).map((key) => this.state[key].errorMsg)}
+                />
+            </form>
         );
     }
 }

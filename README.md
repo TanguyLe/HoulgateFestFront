@@ -49,6 +49,14 @@ All the frontend servers are served by default at http://localhost:8000/.
 3. `npm run devBuild`: Performs a development build to generate the static asset of the website,
    must be used with `npm start` (see below).
 
+#### Editions & homepage phases
+
+Each edition's name, colors, poster and texts live in `src/editions/themes.js` (a year without an
+entry gets a neutral fallback). The homepage follows the current edition's dates
+(`src/editions/phase.js`): `teaser` before the shotgun, `shotgun` around its opening, `countdown`
+until the weekend, `live` during it and `recap` afterwards. Any phase can be previewed, even
+without a backend, with `/?phase=teaser|shotgun|countdown|live|recap`.
+
 #### Production
 
 1. `npm run build`: Performs a production build to generate the static asset of the website,

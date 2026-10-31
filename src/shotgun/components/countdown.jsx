@@ -88,37 +88,26 @@ export default class Countdown extends React.Component {
     }
 
     render() {
-        const countDown = this.state.timeLeft;
+        const countDown = this.state.timeLeft || { days: 0, hours: 0, min: 0, sec: 0 };
+        const cells = [
+            [countDown.days, countDown.days === 1 ? "Jour" : "Jours"],
+            [countDown.hours, countDown.hours === 1 ? "Heure" : "Heures"],
+            [countDown.min, countDown.min === 1 ? "Minute" : "Minutes"],
+            [countDown.sec, countDown.sec === 1 ? "Seconde" : "Secondes"],
+        ];
 
         return (
-            <div className="Countdown">
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.days)}</strong>
-                        <span>{countDown.days === 1 ? "Jour" : "Jours"}</span>
+            <div
+                className={"countdown" + (this.props.small ? " countdown--small" : "")}
+                role="timer"
+                aria-label={this.props.label}
+            >
+                {cells.map(([value, unit]) => (
+                    <span className="countdown__cell" key={unit}>
+                        <strong className="countdown__value">{this.addLeadingZeros(value)}</strong>
+                        <span className="countdown__unit">{unit}</span>
                     </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.hours)}</strong>
-                        <span>{countDown.hours === 1 ? "Heure" : "Heures"}</span>
-                    </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.min)}</strong>
-                        <span>{countDown.min === 1 ? "Minute" : "Minutes"}</span>
-                    </span>
-                </span>
-
-                <span className="CountdownCol">
-                    <span className="CountdownColElement">
-                        <strong>{this.addLeadingZeros(countDown.sec)}</strong>
-                        <span>{countDown.sec === 1 ? "Seconde" : "Secondes"}</span>
-                    </span>
-                </span>
+                ))}
             </div>
         );
     }

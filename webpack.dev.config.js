@@ -20,11 +20,19 @@ module.exports = {
                 exclude: /bin/,
                 use: ["style-loader", "css-loader"],
             },
+            {
+                // Self-hosted fonts (@fontsource): the CSP only allows fonts from 'self'
+                test: /\.(woff2?)$/,
+                type: "asset/resource",
+                generator: { filename: "fonts/[name].[contenthash:8][ext]" },
+            },
         ],
     },
     output: {
         path: __dirname + "/web",
         filename: "houlgatefest.min.js",
+        // Absolute, so the fonts load from nested routes like /history/2023
+        publicPath: "/",
     },
     devServer: {
         static: "./web",

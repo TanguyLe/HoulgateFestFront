@@ -1,5 +1,6 @@
 import React from "react";
-import { Checkbox, Header, List } from "semantic-ui-react";
+
+import { PageHead } from "../ui";
 
 const BEFORE_ITEMS = [
     "J'ai trouvé un véhicule ou un billet de train pour venir",
@@ -15,23 +16,31 @@ const PACKING_ITEMS = [
 ];
 
 // The boxes are only a help to go through the list: nothing is saved
-const CheckList = ({ items }) => (
-    <List relaxed>
-        {items.map((item) => (
-            <List.Item key={item}>
-                <Checkbox label={item} />
-            </List.Item>
-        ))}
-    </List>
+const CheckList = ({ title, number, items }) => (
+    <section className="checklist">
+        <h2 className="checklist__title">
+            <span className="checklist__num">{number}</span> {title}
+        </h2>
+        <ul className="checklist__items">
+            {items.map((item) => (
+                <li key={item}>
+                    <label className="check checklist__item">
+                        <input type="checkbox" />
+                        <span>{item}</span>
+                    </label>
+                </li>
+            ))}
+        </ul>
+    </section>
 );
 
 let ChecklistPage = () => (
     <div>
-        <h1> Checklist </h1>
-        <Header as="h3">Avant le weekend</Header>
-        <CheckList items={BEFORE_ITEMS} />
-        <Header as="h3">Pour le weekend</Header>
-        <CheckList items={PACKING_ITEMS} />
+        <PageHead kicker="Rien oublier" title="Checklist" />
+        <div className="checklists">
+            <CheckList number="01" title="Avant le weekend" items={BEFORE_ITEMS} />
+            <CheckList number="02" title="Pour le weekend" items={PACKING_ITEMS} />
+        </div>
     </div>
 );
 

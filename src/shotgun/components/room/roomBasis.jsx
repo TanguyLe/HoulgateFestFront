@@ -1,6 +1,8 @@
 import React from "react";
-import { Popup } from "semantic-ui-react";
 
+import { Avatar, Tag, cx } from "../../../ui";
+
+// A room as a card: its status, who sleeps there (initials) and the free places
 class RoomBasis extends React.Component {
     constructor() {
         super();
@@ -9,48 +11,59 @@ class RoomBasis extends React.Component {
     }
 
     getUsername(userId) {
-        return this.props.userInfo[userId].username;
+        const user = this.props.userInfo[userId];
+        return user ? user.username : "?";
     }
 
     render() {
-        let preDisplay = this.props.seats ? this.props.seats + " places" : null;
-        let user = this.props.user ? "par " + this.getUsername(this.props.user) : "";
-        user = <div>{user}</div>;
+        const { name, seats, user, roommates, tone, statusLabel, children } = this.props;
 
-        let roommates = this.props.roommates
-            ? this.props.roommates.map((userId) => this.getUsername(userId)).join(", ")
-            : null;
-
-        let view;
-        if (roommates) view = <Popup flowing trigger={user} content={"Avec: " + roommates} />;
-        else view = user;
+        const occupants = [user, ...(roommates || [])].filter(Boolean).map(this.getUsername);
+        const free = Math.max(0, seats - occupants.length);
+        const isTaken = !!user;
 
         return (
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    height: "100%",
-                    userSelect: "none",
-                    alignItems: "center",
-                    textAlign: "center",
-                    overflow: "hidden",
-                    border: "1px solid #353535",
-                    gridColumnStart: this.props.position.columnStart,
-                    gridColumnEnd: this.props.position.columnEnd,
-                    gridRowStart: this.props.position.rowStart,
-                    gridRowEnd: this.props.position.rowEnd,
-                }}
-            >
-                <span style={{ overflowWrap: " break-word", width: "100%" }}>
-                    {this.props.name}
-                </span>
-                {preDisplay}
-                <br />
-                {view}
-                {this.props.children}
-            </div>
+            <article className={cx("room", "room--" + (tone || "free"))}>
+                <header className="room__head">
+                    <h3 className="room__name">{name}</h3>
+                    {statusLabel && <Tag tone={tone === "free" ? null : "ink"}>{statusLabel}</Tag>}
+                </header>
+                <p className="room__meta">
+                    <span className="room__seats">{seats}</span> places
+                    {isTaken && (
+                        <span className="room__count">
+                            {" "}
+                            · {occupants.length}/{seats} occupées
+                        </span>
+                    )}
+                </p>
+                <ul className="room__beds" aria-label="Places">
+                    {occupants.map((username, index) => (
+                        <li key={username + index}>
+                            <Avatar name={username} />
+                        </li>
+                    ))}
+                    {isTaken &&
+                        Array.from({ length: free }, (_, index) => (
+                            <li key={"free" + index}>
+                                <Avatar empty />
+                            </li>
+                        ))}
+                    {!isTaken &&
+                        Array.from({ length: seats }, (_, index) => (
+                            <li key={"seat" + index}>
+                                <span className="room__bed" aria-hidden="true" />
+                            </li>
+                        ))}
+                </ul>
+                {isTaken && (
+                    <p className="room__who">
+                        par <strong>{occupants[0]}</strong>
+                        {occupants.length > 1 && <> avec {occupants.slice(1).join(", ")}</>}
+                    </p>
+                )}
+                <div className="room__actions">{children}</div>
+            </article>
         );
     }
 }

@@ -1,28 +1,26 @@
 import React from "react";
-import { Segment, Form, Button, Divider } from "semantic-ui-react";
 
 import { login } from "../../store";
 import { LOGIN_URL } from "../../constants";
 import { UNKNOWN_ERROR_MSG } from "../../../labels";
 import { postCallApi } from "../../../utils/api/fetchMiddleware";
+import { Field } from "../../../ui";
 
 export default class LogIn extends React.Component {
     constructor() {
         super();
-        // The component is destroyed at closing by semantic-ui portal, which is not the expected behavior
-        // It is consequently coded without reset
+        // The component is destroyed when the dialog closes, it is consequently coded without reset
         this.state = { email: "", password: "", wrongField: "" };
 
         this.onClickLogin = this.onClickLogin.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.onClickRegister = this.onClickRegister.bind(this);
         this.onClickPasswordReset = this.onClickPasswordReset.bind(this);
     }
 
     componentDidMount() {
         const emailInput = document.querySelector("#emailInput");
-        setTimeout(() => emailInput.focus(), 0);
+        setTimeout(() => emailInput && emailInput.focus(), 0);
     }
 
     onClickPasswordReset() {
@@ -30,7 +28,8 @@ export default class LogIn extends React.Component {
         this.props.toClose();
     }
 
-    onClickLogin() {
+    onClickLogin(event) {
+        if (event) event.preventDefault();
         let failure = false;
 
         postCallApi(LOGIN_URL, this.state, false)
@@ -58,10 +57,6 @@ export default class LogIn extends React.Component {
         else this.setState({ [event.target.name]: event.target.value });
     }
 
-    handleKeyPress(event) {
-        if (event.key === "Enter") this.onClickLogin();
-    }
-
     onClickRegister() {
         this.props.history.push("/register");
         this.props.toClose();
@@ -69,40 +64,53 @@ export default class LogIn extends React.Component {
 
     render() {
         return (
-            <Form>
-                <Form.Input
-                    type="text"
-                    error={this.state.wrongField === "email"}
-                    fluid
-                    id="emailInput"
-                    label="Email"
-                    name="email"
-                    value={this.state.email}
-                    onKeyPress={this.handleKeyPress}
-                    onChange={this.handleChange}
-                />
-
-                <Form.Input
-                    type="password"
-                    error={this.state.wrongField === "password"}
-                    fluid
+            <form className="form login-form" onSubmit={this.onClickLogin} noValidate>
+                <Field label="Email" htmlFor="emailInput" error={this.state.wrongField === "email"}>
+                    <input
+                        className="input"
+                        type="email"
+                        id="emailInput"
+                        name="email"
+                        autoComplete="email"
+                        value={this.state.email}
+                        onChange={this.handleChange}
+                    />
+                </Field>
+                <Field
                     label="Mot de passe"
-                    name="password"
-                    value={this.state.password}
-                    onKeyPress={this.handleKeyPress}
-                    onChange={this.handleChange}
-                />
-                <a onClick={this.onClickPasswordReset}> Mot de passe oublié ? </a>
-                <Segment>
-                    <Button primary fluid onClick={this.onClickLogin}>
-                        Je me connecte
-                    </Button>
-                    <Divider horizontal>Ou</Divider>
-                    <Button secondary fluid onClick={this.onClickRegister}>
-                        Je m'inscris
-                    </Button>
-                </Segment>
-            </Form>
+                    htmlFor="passwordInput"
+                    error={this.state.wrongField === "password"}
+                >
+                    <input
+                        className="input"
+                        type="password"
+                        id="passwordInput"
+                        name="password"
+                        autoComplete="current-password"
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                    />
+                </Field>
+                {(this.state.wrongField === "email" || this.state.wrongField === "password") && (
+                    <p className="login-form__error" role="alert">
+                        {this.state.wrongField === "email"
+                            ? "Cet email ne nous dit rien."
+                            : "Mauvais mot de passe."}
+                    </p>
+                )}
+                <button type="button" className="linkish" onClick={this.onClickPasswordReset}>
+                    Mot de passe oublié ?
+                </button>
+                <button type="submit" className="btn btn--primary btn--block">
+                    Je me connecte
+                </button>
+                <div className="login-form__or label" aria-hidden="true">
+                    <span>Ou</span>
+                </div>
+                <button type="button" className="btn btn--block" onClick={this.onClickRegister}>
+                    Je m'inscris
+                </button>
+            </form>
         );
     }
 }

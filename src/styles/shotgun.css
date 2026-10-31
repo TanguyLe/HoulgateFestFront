@@ -1,0 +1,369 @@
+/* ---------- Shotgun ---------- */
+
+.shotgun__summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-bottom: var(--s-6);
+}
+
+.shotgun__stat {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    margin: 0;
+}
+
+.shotgun__stat-value {
+    font-size: var(--fs-3xl);
+    line-height: 0.8;
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+}
+
+.legend__item {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+}
+
+.legend__item::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--ink);
+    background: var(--room-bg);
+}
+
+.legend__item--free {
+    --room-bg: var(--paper);
+}
+
+.legend__item--pending {
+    --room-bg: var(--warn);
+}
+
+.legend__item--taken {
+    --room-bg: var(--ink);
+}
+
+.legend__item--mine {
+    --room-bg: var(--accent);
+}
+
+/* Floors */
+
+.allFloors {
+    display: grid;
+    gap: var(--s-7);
+}
+
+.floor__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-2) var(--s-4);
+    margin-bottom: var(--s-4);
+    padding-bottom: var(--s-2);
+    border-bottom: var(--line);
+}
+
+.floor__num {
+    color: var(--muted);
+    font-size: var(--fs-2xl);
+}
+
+.floor__title {
+    font-size: var(--fs-2xl);
+}
+
+.floor__free {
+    margin-left: auto;
+}
+
+.floor__rooms {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+    gap: var(--s-4);
+}
+
+/* Room cards */
+
+.room {
+    --room-bg: var(--paper);
+    --room-ink: var(--ink);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-4);
+    border: var(--line);
+    background: var(--room-bg);
+    color: var(--room-ink);
+    transition:
+        transform var(--dur) var(--ease),
+        box-shadow var(--dur) var(--ease);
+}
+
+.room--free:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-hard);
+}
+
+.room--pending {
+    --room-bg: var(--warn);
+}
+
+.room--taken {
+    --room-bg: var(--ink);
+    --room-ink: var(--paper);
+}
+
+.room--taken .avatar {
+    border-color: var(--paper);
+}
+
+.room--mine,
+.room--mine-pending {
+    --room-bg: var(--accent);
+    --room-ink: var(--accent-ink);
+    box-shadow: var(--shadow-hard);
+}
+
+.room--mine .avatar,
+.room--mine-pending .avatar {
+    --av-bg: var(--paper);
+    --av-ink: var(--ink);
+}
+
+.room--mine-pending {
+    background-image: repeating-linear-gradient(
+        -45deg,
+        transparent 0 14px,
+        rgba(10, 10, 10, 0.08) 14px 28px
+    );
+}
+
+.room--locked {
+    --room-bg: var(--paper-2);
+}
+
+.room--loading {
+    --room-bg: var(--paper-2);
+    opacity: 0.8;
+}
+
+.room__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-2);
+}
+
+.room__name {
+    font-size: var(--fs-xl);
+    line-height: 0.95;
+    overflow-wrap: anywhere;
+}
+
+.room--taken .tag--ink {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--paper);
+}
+
+.room__meta {
+    margin: 0;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.room__seats {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.room__beds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.room__bed {
+    display: block;
+    width: 36px;
+    height: 36px;
+    border: 2px dashed currentColor;
+    border-radius: var(--radius-pill);
+    opacity: 0.35;
+}
+
+.room__who {
+    margin: 0;
+    font-size: var(--fs-sm);
+    overflow-wrap: anywhere;
+}
+
+.room__actions {
+    display: grid;
+    gap: var(--s-2);
+    margin-top: auto;
+}
+
+.room__actions small {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.room--taken .room__cta:disabled,
+.room--pending .room__cta:disabled {
+    opacity: 1;
+    background: transparent;
+    color: inherit;
+    border-color: currentColor;
+}
+
+.room--mine .room__cta,
+.room--mine-pending .room__cta {
+    --btn-bg: var(--ink);
+    --btn-ink: var(--paper);
+}
+
+/* Shotgun sheet */
+
+.beds {
+    display: grid;
+    gap: var(--s-4);
+}
+
+.beds__hint {
+    margin: 0;
+    font-weight: 500;
+}
+
+.beds__list {
+    display: grid;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.beds__bed {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    align-items: center;
+    gap: var(--s-3);
+}
+
+.beds__label {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+}
+
+.beds__label .display {
+    font-size: 1.75rem;
+}
+
+.sheet__cancel {
+    margin-top: var(--s-5);
+    padding-top: var(--s-4);
+    border-top: var(--line-thin);
+}
+
+.sheet__cancel--confirm {
+    padding: var(--s-4);
+    border: var(--bw) solid var(--danger);
+    background: #fff3f3;
+}
+
+.sheet--success .dialog__head {
+    background: var(--accent);
+    color: var(--accent-ink);
+}
+
+.sheet--success .dialog__close {
+    border-color: var(--accent-ink);
+    color: var(--accent-ink);
+}
+
+.sheet__bang {
+    margin: 0 0 var(--s-4);
+    font-size: var(--fs-2xl);
+    line-height: 0.9;
+    animation: bang 600ms var(--ease) both;
+}
+
+@keyframes bang {
+    0% {
+        transform: scale(0.4) rotate(-6deg);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.08) rotate(2deg);
+        opacity: 1;
+    }
+}
+
+/* Confetti */
+
+.confetti {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.confetti__piece {
+    position: absolute;
+    top: -24px;
+    left: var(--x);
+    width: var(--w);
+    height: var(--h);
+    background: var(--c);
+    animation: confetti-fall var(--dur) cubic-bezier(0.25, 0.6, 0.4, 1) var(--delay) both;
+}
+
+@keyframes confetti-fall {
+    from {
+        transform: translate3d(0, 0, 0) rotate(0);
+        opacity: 1;
+    }
+    to {
+        transform: translate3d(var(--drift), 110vh, 0) rotate(var(--rot));
+        opacity: 0.9;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .confetti {
+        display: none;
+    }
+
+    .sheet__bang {
+        animation: none;
+    }
+
+    .room--free:hover {
+        transform: none;
+    }
+}

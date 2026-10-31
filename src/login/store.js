@@ -6,6 +6,11 @@ let credentials = {
 
 let loginStore = [];
 
+// Becomes true at the first dispatch: the stored session has then been checked (or replaced)
+let sessionChecked = false;
+
+export const isSessionChecked = () => sessionChecked;
+
 export const register = (fct) => {
     loginStore.push(fct);
 };
@@ -20,6 +25,7 @@ export const unregister = (fct) => {
 
 export const dispatch = () => {
     let creds = getCredentials();
+    sessionChecked = true;
 
     loginStore.forEach((fct) => {
         fct(creds);
